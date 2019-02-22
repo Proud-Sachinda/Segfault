@@ -9,5 +9,6 @@ public class QuestionActivity extends UI {
         VerticalLayout layout = new VerticalLayout();
         setContent(layout);
         layout.addComponent(new Label("Hello, world!"));
+        // com.MyVaadinApplication
     }
 }

@@ -19,7 +19,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.13" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.16" level="application_server_libraries" />
     <orderEntry type="library" scope="PROVIDED" name="Vaadin Client" level="project" />
     <orderEntry type="library" name="Vaadin Server" level="project" />
   </component>
