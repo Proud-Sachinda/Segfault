@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="270.93332mm"
+   height="270.93332mm"
+   viewBox="0 0 270.93332 270.93332"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="logo-plain.svg"
+   inkscape:export-filename="C:\Users\Ntsiki\Desktop\qbank\extras\logo-small.png"
+   inkscape:export-xdpi="3.0000002"
+   inkscape:export-ydpi="3.0000002">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="18.543947"
+     inkscape:cy="425.32269"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-74.083336,80.522621)">
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 389.85742 114.14258 C 290.13742 114.14258 209.85742 194.42258 209.85742 294.14258 L 209.85742 729.85742 C 209.85742 829.57742 290.13742 909.85742 389.85742 909.85742 L 634.14258 909.85742 C 733.86258 909.85742 814.14258 829.57742 814.14258 729.85742 L 814.14258 321.63281 L 797.9043 320.66602 C 697.00811 314.68907 616.97946 232.23985 614.75195 130.40625 L 614.39844 114.14258 L 389.85742 114.14258 z M 357.71484 384 L 666.28516 384 L 666.28516 486.85742 L 357.71484 486.85742 L 357.71484 384 z M 357.71484 611.14258 L 666.28516 611.14258 L 666.28516 714 L 357.71484 714 L 357.71484 611.14258 z "
+       id="rect819"
+       transform="matrix(0.26458333,0,0,0.26458333,74.083336,-80.522621)" />
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:7.9375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 244.76645,-50.322397 c 0.54512,24.92088 20.04867,45.0030399 44.72544,46.46486 -0.54486,-24.92101 -20.04866,-45.00287 -44.72544,-46.46486 z"
+       id="rect819-2"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
