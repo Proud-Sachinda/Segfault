@@ -3,7 +3,7 @@ package com;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 
-public class MyVaadinApplication extends UI {
+public class QuestionActivity extends UI {
     @Override
     public void init(VaadinRequest request) {
         VerticalLayout layout = new VerticalLayout();
