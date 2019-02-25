@@ -53,7 +53,7 @@ public class MyUI extends UI {
         root.addComponent(verticalLayout);
 
     }
-    private void addContentPanel(){
+    protected void addContentPanel(){
         VerticalLayout verticalLayout = new VerticalLayout();
         Button button = new Button("Click Me");
         verticalLayout.addComponent(button);
