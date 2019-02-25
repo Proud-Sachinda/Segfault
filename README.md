@@ -1,3 +1,5 @@
+![Travis (.org)](https://img.shields.io/travis/Proud-Sachinda/Segfault.svg)
+
 vaadin-sample
 ==============
 
