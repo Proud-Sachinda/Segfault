@@ -1,4 +1,4 @@
-package com.jetbrains;
+package com;
 
 import javax.servlet.annotation.WebServlet;
 
