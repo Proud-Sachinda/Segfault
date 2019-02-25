@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="IdeaProjects" />
         <module name="Project" />
+        <module name="Segfault" />
       </profile>
     </annotationProcessing>
   </component>

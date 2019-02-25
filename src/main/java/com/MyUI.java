@@ -6,11 +6,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -22,10 +18,16 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+    private HorizontalLayout root;
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
-        
+        setupLayout();
+        addSidePanel();
+        addContentPanel();
+
+        /*
         final TextField name = new TextField();
         name.setCaption("Type your name here:");
 
@@ -35,9 +37,27 @@ public class MyUI extends UI {
                     + ", it works!"));
         });
         
-        layout.addComponents(name, button);
-        
-        setContent(layout);
+        layout.addComponents(name, button);*/
+    }
+
+    private void setupLayout() {
+        root = new HorizontalLayout();
+        setContent(root);
+    }
+    private void addSidePanel(){
+        Button button = new Button("Click Me");
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.setWidth("96px");
+        verticalLayout.setHeight("100%");
+        verticalLayout.addComponent(button);
+        root.addComponent(verticalLayout);
+
+    }
+    private void addContentPanel(){
+        VerticalLayout verticalLayout = new VerticalLayout();
+        Button button = new Button("Click Me");
+        verticalLayout.addComponent(button);
+        root.addComponent(verticalLayout);
     }
 
     public int multiply(int x, int y) {
