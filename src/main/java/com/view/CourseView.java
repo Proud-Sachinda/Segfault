@@ -33,6 +33,7 @@ public class CourseView extends HorizontalLayout implements View {
         setUpDashboard();
     }
 
+    @SuppressWarnings("Duplicates")
     private void setUpDashboard() {
 
         // set navigation size, color

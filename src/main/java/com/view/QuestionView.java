@@ -33,6 +33,7 @@ public class QuestionView extends HorizontalLayout implements View {
         setUpDashboard();
     }
 
+    @SuppressWarnings("Duplicates")
     private void setUpDashboard() {
 
         // set navigation size, color
