@@ -4,9 +4,14 @@ import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import com.view.CourseView;
+import com.view.ExportView;
+import com.view.SignInView;
+import com.view.QuestionView;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -14,44 +19,35 @@ import com.vaadin.ui.*;
  * <p>
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
  * overridden to add component to the user interface and initialize non-component functionality.
+ *
+ * !!!
+ * following tutorial : https://vaadin.com/docs/v8/framework/advanced/advanced-navigator.html
  */
 @Theme("mytheme")
 public class MyUI extends UI {
 
-    // root layout
-    final HorizontalLayout root = new HorizontalLayout();
-    // navigation layout
-    final VerticalLayout navigation = new VerticalLayout();
-    // content area
-    final VerticalLayout content = new VerticalLayout();
+    // navigator is used for changing pages
+    Navigator navigator;
+
+    // route strings - nothing special just things like qbank_exploded_war/route_name
+    protected final String question = "question";
+    protected final String course = "course";
+    protected final String export = "export";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        // set size of horizontal layout since it is not by default defined
-        root.setSizeFull();
+        // set title
+        getPage().setTitle("Welcome, Qbank");
 
-        // set up navigation and content area
-        navigation.setWidth("64px");
-        navigation.setHeight(100.0F, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        content.setSizeFull();
+        // Create a navigator to control the views
+        navigator = new Navigator(this, this);
 
-        // add navigation and content area to root layout
-        root.addComponent(navigation);
-        root.addComponentsAndExpand(content);
-        
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+        // Create and register the views
+        navigator.addView("", new SignInView(navigator));
+        navigator.addView(question, new QuestionView(navigator));
+        navigator.addView(course, new CourseView(navigator));
+        navigator.addView(export, new ExportView(navigator));
 
-        Button button = new Button("Click Me");
-        button.addClickListener(e -> {
-            content.addComponent(new Label("Thanks " + name.getValue()
-                    + ", it works!"));
-        });
-        
-        content.addComponents(name, button);
-        
-        setContent(root);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
