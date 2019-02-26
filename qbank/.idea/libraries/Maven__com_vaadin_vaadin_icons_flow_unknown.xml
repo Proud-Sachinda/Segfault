@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.vaadin:vaadin-icons-flow:unknown">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-icons-flow/unknown/vaadin-icons-flow-unknown.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-icons-flow/unknown/vaadin-icons-flow-unknown-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-icons-flow/unknown/vaadin-icons-flow-unknown-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
