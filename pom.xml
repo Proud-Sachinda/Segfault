@@ -85,6 +85,18 @@
 			<version>1.0.0</version>
 		</dependency>
 
+
+<!--I am trying to use mybatis here-->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+
+
+
+
+
 	</dependencies>
 
 	<build>

@@ -63,5 +63,6 @@
     <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-lumo-styles:1.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.webjars.bowergithub.polymerelements:iron-resizable-behavior:2.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-themable-mixin:1.4.4" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.5.0" level="project" />
   </component>
 </module>

@@ -44,6 +44,7 @@ public class SignInView extends VerticalLayout implements View {
             }
         });
 
+
         // add button component
         addComponent(button);
         setComponentAlignment(button, Alignment.MIDDLE_CENTER);
