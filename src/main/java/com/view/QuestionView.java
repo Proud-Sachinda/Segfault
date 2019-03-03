@@ -1,6 +1,7 @@
 package com.view;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -21,6 +22,10 @@ public class QuestionView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
+    // layouts for split panel
+    final VerticalLayout paper = new VerticalLayout();
+    final VerticalLayout explore = new VerticalLayout();
+
     public QuestionView(Navigator navigator) {
 
         // we get the Apps Navigator object
@@ -31,6 +36,9 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up dashboard
         setUpDashboard();
+
+        // set up splitter - paper side and question explorer
+        SplitLayout splitLayout = new SplitLayout();
     }
 
     @SuppressWarnings("Duplicates")
@@ -45,6 +53,10 @@ public class QuestionView extends HorizontalLayout implements View {
         // set content area
         content.setSizeFull();
         addComponent(content);
+    }
+
+    private Component getPaperLayout() {
+        return paper;
     }
 
     @Override
