@@ -27,8 +27,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private VerticalLayout explore = new VerticalLayout();
 
     // add button absolute
-    private final AbsoluteLayout absoluteLayout = new AbsoluteLayout();
-    private final Button add = new Button("awe");
+    private final Button add = new Button("+");
 
     public QuestionView(Navigator navigator) {
 
@@ -57,15 +56,13 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up search bar and add
         TextField search = new TextField();
-        search.setPlaceholder("Type in a phrase");
+        search.setPlaceholder("Search questions");
         search.addStyleName("main-flat-text-field");
         explore.addComponent(search);
 
         // set up add button
-        add.setIcon(new ExternalResource("../"));
-        absoluteLayout.setWidth("48px");
-        absoluteLayout.setHeight("48px");
-        absoluteLayout.addComponent(add, "right: 48px; bottom: 48px;");
+        add.addStyleNames("main-flat-round-button", "main-flat-round-button-position");
+        explore.addComponent(add);
     }
 
     @SuppressWarnings("Duplicates")
