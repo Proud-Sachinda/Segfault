@@ -84,20 +84,12 @@
 			<artifactId>vaadin-split-layout-flow</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-
-
-<!--I am trying to use mybatis here
+		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>3.5.0</version>
 		</dependency>
-		-->
-
-
-
-
-
 	</dependencies>
 
 	<build>
