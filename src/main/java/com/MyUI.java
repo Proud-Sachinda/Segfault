@@ -8,10 +8,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
-import com.view.CourseView;
-import com.view.ExportView;
-import com.view.SignInView;
-import com.view.QuestionView;
+import com.view.*;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -33,6 +30,7 @@ public class MyUI extends UI {
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
+    protected final String createquestion = "createquestion";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -47,6 +45,7 @@ public class MyUI extends UI {
         navigator.addView(question, new QuestionView(navigator));
         navigator.addView(course, new CourseView(navigator));
         navigator.addView(export, new ExportView(navigator));
+        navigator.addView(createquestion, new CreateQuestionView(navigator));
 
     }
 
