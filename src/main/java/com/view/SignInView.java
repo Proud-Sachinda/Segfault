@@ -3,10 +3,7 @@ package com.view;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 /**
  * This is the first page the app shows
@@ -41,8 +38,14 @@ public class SignInView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 navigator.navigateTo(question);
+
             }
         });
+
+        TextField t = new TextField("Username"){
+            //@Override
+            //public void
+        };
 
 
         // add button component
