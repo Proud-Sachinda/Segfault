@@ -4,7 +4,6 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 
 @DesignRoot
@@ -62,6 +61,12 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up add button
         add.addStyleNames("main-flat-round-button", "main-flat-round-button-position");
+        add.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                navigator.navigateTo("createquestion");
+            }
+        });
         explore.addComponent(add);
     }
 
