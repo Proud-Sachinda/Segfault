@@ -1,10 +1,10 @@
 package com.view;
 
 import com.vaadin.annotations.DesignRoot;
-import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 
 @DesignRoot
@@ -19,12 +19,16 @@ public class QuestionView extends HorizontalLayout implements View {
     protected final String export = "export";
 
     // navigation and content area
-    final VerticalLayout navigation = new VerticalLayout();
-    final VerticalLayout content = new VerticalLayout();
+    private final VerticalLayout navigation = new VerticalLayout();
+    private final HorizontalLayout content = new HorizontalLayout();
 
     // layouts for split panel
-    final VerticalLayout paper = new VerticalLayout();
-    final VerticalLayout explore = new VerticalLayout();
+    private VerticalLayout paper = new VerticalLayout();
+    private VerticalLayout explore = new VerticalLayout();
+
+    // add button absolute
+    private final AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+    private final Button add = new Button("awe");
 
     public QuestionView(Navigator navigator) {
 
@@ -37,8 +41,31 @@ public class QuestionView extends HorizontalLayout implements View {
         // set up dashboard
         setUpDashboard();
 
-        // set up splitter - paper side and question explorer
-        SplitLayout splitLayout = new SplitLayout();
+        // question paper section
+        paper.addComponent(new Label("awe"));
+        paper.setSizeFull();
+        paper.addStyleName("paper-border");
+
+        // set up split
+        content.addComponents(paper, explore);
+
+        // set up question explorer
+        setUpQuestionExplorer();
+    }
+
+    private void setUpQuestionExplorer() {
+
+        // set up search bar and add
+        TextField search = new TextField();
+        search.setPlaceholder("Type in a phrase");
+        search.addStyleName("main-flat-text-field");
+        explore.addComponent(search);
+
+        // set up add button
+        add.setIcon(new ExternalResource("../"));
+        absoluteLayout.setWidth("48px");
+        absoluteLayout.setHeight("48px");
+        absoluteLayout.addComponent(add, "right: 48px; bottom: 48px;");
     }
 
     @SuppressWarnings("Duplicates")
@@ -52,11 +79,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set content area
         content.setSizeFull();
-        addComponent(content);
-    }
-
-    private Component getPaperLayout() {
-        return paper;
+        addComponentsAndExpand(content);
     }
 
     @Override
