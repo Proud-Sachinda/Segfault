@@ -1,6 +1,7 @@
 package com.view;
 
 import com.vaadin.annotations.DesignRoot;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -51,6 +52,20 @@ public class QuestionView extends HorizontalLayout implements View {
         setUpQuestionExplorer();
     }
 
+    @SuppressWarnings("Duplicates")
+    private void setUpDashboard() {
+
+        // set navigation size, color
+        navigation.setWidth("80px");
+        navigation.setHeight(100.0f, Unit.PERCENTAGE);
+        navigation.setStyleName("main-blue");
+        addComponent(navigation);
+
+        // set content area
+        content.setSizeFull();
+        addComponentsAndExpand(content);
+    }
+
     private void setUpQuestionExplorer() {
 
         // set up search bar and add
@@ -68,20 +83,19 @@ public class QuestionView extends HorizontalLayout implements View {
             }
         });
         explore.addComponent(add);
-    }
 
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
-
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        addComponent(navigation);
-
-        // set content area
-        content.setSizeFull();
-        addComponentsAndExpand(content);
+        // set up filtering
+        NativeSelect<String> selectOrder = new NativeSelect<>();
+        selectOrder.setItems("Recent", "Difficulty", "Date used", "Date published");
+        selectOrder.setSelectedItem("Recent");
+        NativeSelect<String> selectFilter = new NativeSelect<>();
+        selectFilter.setItems("None", "Subject", "Tags");
+        selectFilter.setSelectedItem("None");
+        HorizontalLayout filtering = new HorizontalLayout();
+        Label order = new Label("Order by - ");
+        Label filter = new Label("Filter by - ");
+        filtering.addComponents(order, selectOrder, filter, selectFilter);
+        explore.addComponent(filtering);
     }
 
     @Override

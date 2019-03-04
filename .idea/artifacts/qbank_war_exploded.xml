@@ -33,6 +33,13 @@
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-element-mixin:2.1.2" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-usage-statistics:2.0.2" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-development-mode-detector:2.0.0" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin-select-flow:1.0.0" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-select:2.0.2" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-item:2.1.0" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-list-box:1.1.0" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-list-mixin:2.1.2" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.polymerelements:iron-resizable-behavior:2.1.1" />
+          <element id="library" level="project" name="Maven: org.webjars.bowergithub.polymerelements:iron-media-query:2.1.0" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:8.7.0" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.13" />
           <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
