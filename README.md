@@ -1,4 +1,4 @@
-![Travis (.org)](https://img.shields.io/travis/Proud-Sachinda/Segfault.svg)
+[![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
 ![Codecov](https://img.shields.io/codecov/c/gh/Proud-Sachinda/Segfault.svg)
 
 qbank
