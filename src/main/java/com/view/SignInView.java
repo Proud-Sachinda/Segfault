@@ -33,24 +33,18 @@ public class SignInView extends VerticalLayout implements View {
 
         // set to fill browser screen
         setSizeFull();
-       /* Panel logIn = new Panel("Name");
-        CustomLayout customLayout = new CustomLayout();
-       // customLayout.setSpacing(false);
-        customLayout.setSizeUndefined();
-        logIn.setContent(customLayout);
-        logIn.setSizeUndefined();
-        customLayout.addComponent(new TextField("USERNAME"));
-        customLayout.addComponent(new TextField("PASSWORD"));
-        */
-       LoginForm component = new LoginForm();
-      // Notification notification = Notification.show("Please enter your username");
+
+        // set wallpaper
+        addStyleName("main-sign-in-page-background");
+
+        // create login form
+        LoginForm component = new LoginForm();
         component.addLoginListener(e -> {
             boolean isAuthenticated = authentication(e);
             if (isAuthenticated) {
                 navigator.navigateTo(question);
             } else {
-                Notification.show("Incorrect username or password", Notification.Type.ERROR_MESSAGE);
-
+                Notification.show("Incorrect credentials", Notification.Type.ERROR_MESSAGE);
             }
 
         });
@@ -77,8 +71,9 @@ public class SignInView extends VerticalLayout implements View {
     }
 
     private boolean authentication(LoginForm.LoginEvent e) {
-       // Notification.show(e.getLoginParameter("Please enter"));
-        return false;
+        String username = e.getLoginParameter("username");
+        String password = e.getLoginParameter("password");
+        return username.equals("username") && password.equals("password");
     }
 
     @Override
