@@ -10,6 +10,8 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import com.view.*;
 
+
+
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
  * (or tab) or some part of an HTML page where a Vaadin application is embedded.
@@ -22,6 +24,8 @@ import com.view.*;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
+
+
 
     // navigator is used for changing pages
     Navigator navigator;

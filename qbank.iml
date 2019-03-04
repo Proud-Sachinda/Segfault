@@ -29,6 +29,26 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-button:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-control-state-mixin:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-overlay:3.2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-text-field:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-themable-mixin:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-material-styles:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-element-mixin:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-button:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-control-state-mixin:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-overlay:3.2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-text-field:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-themable-mixin:1.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-material-styles:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bowergithub.vaadin:vaadin-element-mixin:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.0.0" level="project" />
