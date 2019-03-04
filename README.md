@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
 ![Codecov](https://img.shields.io/codecov/c/gh/Proud-Sachinda/Segfault.svg)
+[![Codecov]](https://codecov.io/gh/Proud-Sachinda/Segfault/branch/master/graphs/commits.svg)(https://codecov.io/gh/Proud-Sachinda/Segfault/)
 
 qbank
 ==============
