@@ -3,6 +3,7 @@ package com.view;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 
 /**
@@ -32,25 +33,52 @@ public class SignInView extends VerticalLayout implements View {
 
         // set to fill browser screen
         setSizeFull();
+       /* Panel logIn = new Panel("Name");
+        CustomLayout customLayout = new CustomLayout();
+       // customLayout.setSpacing(false);
+        customLayout.setSizeUndefined();
+        logIn.setContent(customLayout);
+        logIn.setSizeUndefined();
+        customLayout.addComponent(new TextField("USERNAME"));
+        customLayout.addComponent(new TextField("PASSWORD"));
+        */
+       LoginForm component = new LoginForm();
+      // Notification notification = Notification.show("Please enter your username");
+        component.addLoginListener(e -> {
+            boolean isAuthenticated = authentication(e);
+            if (isAuthenticated) {
+                navigator.navigateTo(question);
+            } else {
+                Notification.show("Incorrect username or password", Notification.Type.ERROR_MESSAGE);
+
+            }
+
+        });
+
+
+
 
         // redirect to dashboard
-        Button button = new Button("Open Dashboard", new Button.ClickListener() {
+        Button button = new Button("Sign In", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 navigator.navigateTo(question);
-
             }
         });
+        //.addComponent(verticalLayout);
+       // component.addComponents(button);
 
-        TextField t = new TextField("Username"){
-            //@Override
-            //public void
-        };
+
 
 
         // add button component
-        addComponent(button);
-        setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+        addComponents(component);
+        setComponentAlignment(component, Alignment.MIDDLE_CENTER);
+    }
+
+    private boolean authentication(LoginForm.LoginEvent e) {
+       // Notification.show(e.getLoginParameter("Please enter"));
+        return false;
     }
 
     @Override
