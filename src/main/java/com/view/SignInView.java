@@ -48,6 +48,7 @@ public class SignInView extends VerticalLayout implements View {
             boolean isAuthenticated = authentication(e);
             if (isAuthenticated) {
                 navigator.navigateTo(question);
+
             } else {
                 Notification.show("Incorrect username or password", Notification.Type.ERROR_MESSAGE);
 
@@ -62,6 +63,7 @@ public class SignInView extends VerticalLayout implements View {
         Button button = new Button("Sign In", new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+
                 navigator.navigateTo(question);
             }
         });

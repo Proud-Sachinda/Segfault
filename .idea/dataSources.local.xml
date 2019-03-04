@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="postgres@localhost" uuid="e5d8a499-a437-440c-8adf-5943b50121f2">
+    <data-source name="postgres@localhost" uuid="1053ea37-7b5c-4e2c-9605-df3d67271f3f">
       <database-info product="PostgreSQL" version="11.2" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="11.2" exact-driver-version="42.2">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
@@ -9,11 +9,6 @@
       <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
       <introspection-schemas>@:@</introspection-schemas>
-    </data-source>
-    <data-source name="qbank@localhost" uuid="bdd42ddd-b039-464c-b69a-cd951f4478d7">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
-      <secret-storage>master_key</secret-storage>
-      <user-name>STUDENTS\1340076</user-name>
     </data-source>
   </component>
 </project>

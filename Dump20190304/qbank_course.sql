@@ -29,7 +29,8 @@ CREATE TABLE `course` (
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+insert into course (course_id, course_name, course_code)
+values (20,'Sofware Design', 'COMS3009');
 --
 -- Dumping data for table `course`
 --
