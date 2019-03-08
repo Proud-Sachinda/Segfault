@@ -4,6 +4,7 @@ import com.Models.person;
 import com.Models.personService;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.data.provider.Query;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -11,6 +12,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CourseView extends HorizontalLayout implements View {
 
@@ -28,6 +30,9 @@ public class CourseView extends HorizontalLayout implements View {
 
 //////////////////////////////////////////////////////////////////////////
     person myperson = new person();
+
+
+
 ////////////////////////////////////////////////////////////////////////
 
 
@@ -46,9 +51,14 @@ public class CourseView extends HorizontalLayout implements View {
         setUpDashboard();
 
         //////////////////////////////////////////////proud//////check////
+        ComboBox<person> comboBox = new ComboBox<>();
+       // comboBox.setItemLabelGenerator();
 
+        Grid<person> grid = new Grid<>();
+        grid.addColumn(person::getName);
+        grid.addColumn(person::getSurname);
 
-      // Grid<personService> grid = new Grid<>();
+        // Grid<personService> grid = new Grid<>();
        //grid.setItems((personService) personService.findAll());
        //grid.addColumn(personService -> person.class.getName()).setCaption("name");
 

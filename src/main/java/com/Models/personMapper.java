@@ -10,14 +10,24 @@ import java.util.List;
 
 public interface personMapper {
 
-/*
+
+
+
+    @Select("SELECT t.name FROM public.person t")
+    List<person> findAll();
+
+
+
+    /*
+
     @Select("SELECT * FROM person ORDER BY id")
     List<person> findAll();
 */
 
+/*
     @Select("SELECT id. content FROM person")
     List<person> findAll();
-
+*/
 
     @Insert("INSERT INTO person(content) VALUES (#{content})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
