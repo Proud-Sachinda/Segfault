@@ -2,14 +2,6 @@ language: java
 
 script: "mvn cobertura:cobertura"
 
-jdk:
-    - openjdk7
-    - oraclejdk7
-    - oraclejdk8
-    - openjdk9
-    - oraclejdk10
-    - oraclejdk11
-
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
