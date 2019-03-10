@@ -1,5 +1,6 @@
 package com;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -36,6 +37,8 @@ public class MyUI extends UI {
     protected final String export = "export";
     protected final String createquestion = "createquestion";
 
+    String string;
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         // set title
@@ -56,5 +59,6 @@ public class MyUI extends UI {
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
+
     }
 }

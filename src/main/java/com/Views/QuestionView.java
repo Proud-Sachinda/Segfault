@@ -1,13 +1,10 @@
 package com.Views;
 
-import com.Controllers.QuestionController;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
-
-import java.util.ArrayList;
 
 @DesignRoot
 public class QuestionView extends HorizontalLayout implements View {
@@ -20,10 +17,6 @@ public class QuestionView extends HorizontalLayout implements View {
     protected final String course = "course";
     protected final String export = "export";
 
-    // question controller - used to populate Views
-    private final QuestionController questionController = new QuestionController();
-    private ArrayList<QuestionController.Question> questionArrayList;
-
     // navigation and content area
     private final VerticalLayout navigation = new VerticalLayout();
     private final HorizontalLayout content = new HorizontalLayout();
@@ -31,6 +24,8 @@ public class QuestionView extends HorizontalLayout implements View {
     // layouts for split panel
     private VerticalLayout paper = new VerticalLayout();
     private VerticalLayout explore = new VerticalLayout();
+
+    public static String string = "awe";
 
     // add button absolute
     private final Button add = new Button("+");
@@ -116,7 +111,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up and add horizontal layout for difficulty badge, question, date
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.setWidth(100.f, Unit.PERCENTAGE);
+        horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
         Label difficulty = new Label("5");
         difficulty.addStyleNames("main-flat-badge-icon", "main-blue");
         Label question = new Label("What is a Client Program? What is a Server Program? Does a Server Program request");
@@ -126,12 +121,24 @@ public class QuestionView extends HorizontalLayout implements View {
         horizontalLayout.addComponent(date);
         verticalLayoutRoot.addComponent(horizontalLayout);
 
+        // set up and add horizontal layout for course code, course name, tags
+        HorizontalLayout horizontalLayoutCourse = new HorizontalLayout();
+        horizontalLayoutCourse.setWidth(100.0f, Unit.PERCENTAGE);
+        Label code = new Label("COMS3004");
+        Label subject = new Label("Computer Networks");
+        horizontalLayoutCourse.addComponents(code, subject);
+        verticalLayoutRoot.addComponent(horizontalLayoutCourse);
+
         // add root question layout
         explore.addComponent(verticalLayoutRoot);
+
+        // a
+        explore.addComponent(new Label(string));
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Question View");
+        //
+        Notification.show(string);
     }
 }
