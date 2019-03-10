@@ -73,9 +73,9 @@ CREATE TABLE course (
    PRIMARY KEY (course_id);
  ~~~~
 *Role Table*
-~~~~
+```sql
 CREATE TABLE role (
   role_id int(11) NOT NULL,
   role_description varchar(45) DEFAULT NULL,
   PRIMARY KEY (role_id);
-~~~~ 
+```
