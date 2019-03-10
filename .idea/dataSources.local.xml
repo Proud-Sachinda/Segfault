@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="postgres@localhost" uuid="17848b34-6518-4d55-b314-3c53195823be">
+<<<<<<< HEAD
+    <data-source name="postgres@localhost" uuid="05ac2e19-0c6d-4bd4-9f6c-274c7710b87a">
       <database-info product="PostgreSQL" version="11.2" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="11.2" exact-driver-version="42.2">
+=======
+    <data-source name="postgres@localhost" uuid="37b3a08d-2f20-4313-936d-9ec4ee3d4adf">
+      <database-info product="PostgreSQL" version="11.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
+>>>>>>> eef61e3c669f8087e483bb2783caf7411198a4ff
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
-      <introspection-schemas>@:@</introspection-schemas>
+      <introspection-schemas>postgres:public</introspection-schemas>
     </data-source>
   </component>
 </project>

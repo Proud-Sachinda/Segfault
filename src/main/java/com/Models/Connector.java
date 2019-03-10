@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Connector {
 
     // database variables
-    private final String url = "jdbc:postgresql://localhost:5432/qbank";
+    private final String url = "jdbc:postgresql://localhost:5432/postgres";
     private final String user = "postgres";
     private final String password = "postgres";
 
@@ -18,9 +18,12 @@ public class Connector {
 
         try {
             connection = DriverManager.getConnection(url, user, password);
+
         } catch (SQLException e) {
             return null;
         }
+
+        System.out.println("Connected");
 
         return connection;
     }

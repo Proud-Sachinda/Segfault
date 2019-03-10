@@ -57,25 +57,25 @@ If Vaadin pre-releases are not enabled by default, use the Maven parameter
 Run the following SQL Commands
 ----------------------------
 *Lecturer Table*
-~~~~
+```sql
 CREATE TABLE lecturer (
   lecturer_id varchar(12) NOT NULL,
   lecturer_fname varchar(50) NOT NULL,
   lecturer_lname varchar(50) NOT NULL,
   PRIMARY KEY (lecturer_id);
-~~~~
+```
 *Course Table*
-~~~~
+```sql
 CREATE TABLE course (
    course_id int(11) NOT NULL,
    course_name varchar(50) DEFAULT NULL,
    course_code varchar(12) DEFAULT NULL,
    PRIMARY KEY (course_id);
- ~~~~
+ ```
 *Role Table*
-~~~~
+```sql
 CREATE TABLE role (
   role_id int(11) NOT NULL,
   role_description varchar(45) DEFAULT NULL,
   PRIMARY KEY (role_id);
-~~~~ 
+```

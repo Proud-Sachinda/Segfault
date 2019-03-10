@@ -2,6 +2,9 @@ package com.Controllers;
 
 import java.util.ArrayList;
 
+import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.Model;
+
 public class QuestionController {
 
     // question items
@@ -35,7 +38,8 @@ public class QuestionController {
         return questionArrayList;
     }
 
-    public class Question {
+    public class Question extends Model {
+        
 
         // attributes
         private int used;

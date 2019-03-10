@@ -1,14 +1,21 @@
 package com.Views;
 
+import com.Models.Connector;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
+import java.sql.*;
+import com.vaadin.*;
+
+import javax.management.Query;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
+    Connector c = new Connector();
+
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -72,6 +79,19 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 navigator.navigateTo(question);
+            }
+        });
+        submit.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+
+
+                    String query = "INSERT INTO question VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+
+
+
+
             }
         });
 
