@@ -80,5 +80,6 @@ public class SignInView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         // Notification.show("Welcome to Qbank");
+        navigator.navigateTo(question);
     }
 }

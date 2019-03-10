@@ -2,6 +2,8 @@ package com.Views;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
 
@@ -27,12 +29,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
 
 
-    private TextField qname = new TextField("Question");
+    private TextArea qname = new TextArea("Question");
     private TextField answer = new TextField();
     private TextField mark = new TextField();
     private TextField space = new TextField("Space lines");
     private TextField difficulty = new TextField("Difficulty");
-    private TextField answername = new TextField("Answer");
+    private TextArea answername = new TextArea("Answer");
     private Button addLatex = new Button("+");
     private Button decrease = new Button("-");
     private Button increase = new Button("+");
@@ -44,6 +46,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private TextField sampleoutput = new TextField("Sample Output");
     private Button back = new Button("back");
     private Button submit = new Button("submit");
+
 
 
     public CreateQuestionView(Navigator navigator) {
@@ -81,6 +84,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         VerticalLayout extrastuff = new VerticalLayout();
         extrastuff.setMargin(false);
 
+        HorizontalLayout done = new HorizontalLayout();
+
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
         type.addComponents(normal,mcq,practical);
@@ -91,6 +96,13 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                extrastuff.addComponent(lines);
             }
         });
+
+        sampleinput.setWidth("91%");
+        sampleinput.setHeight("90px");
+        //sampleinput.setPlaceholder("Sample Input");
+        //sampleoutput.setPlaceholder("Sample Output");
+        sampleoutput.setHeight("90px");
+        sampleoutput.setWidth("91%");
         practical.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -133,7 +145,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         addq.addComponents(lstuff,qname,answername);
         addq.setStyleName("Segzy4");
 
-
+        back.setIcon(new ClassResource("left-arrow.png"));
+        //back.setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\left-arrow.png"));
         //everything for the mark
        /* HorizontalLayout addmark = new HorizontalLayout();
         mark.setWidth("40px");
@@ -141,22 +154,23 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mark.setStyleName("Segzy5-text");
         decrease.setStyleName("Segzy5-decrease");
         mark.setStyleName("segzyfield");
-        //increase .setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\add.png"));
+        back.setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\add.png"));
         addmark.addComponents(marklabel,decrease,mark,increase);*/
 
 
+        title.addComponents(caption);
+        //title.setComponentAlignment(back,Alignment.TOP_LEFT);
 
-
-        title.addComponents(back,caption);
-        title.setComponentAlignment(back,Alignment.TOP_LEFT);
-
+        submit.setStyleName("Segzy5");
+        back.setStyleName("Segzy6");
         caption.addStyleName("Segzy");
         //set content area
         form.addComponents(addq);
-        form1.addComponents(type,mark1,difficulty,extrastuff,submit);
+       // done.addComponents(submit);
+        form1.addComponents(type,mark1,difficulty,extrastuff,done);
         forms.addComponents(form,form1);
         forms.setWidth("100%");
-        content.addComponents(title,forms);
+        content.addComponents(title,forms,back,submit);
     }
 
 
