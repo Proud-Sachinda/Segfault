@@ -84,15 +84,29 @@
     padding-left: 0px;
     margin-top: -20px;
   }
-  .Segzy5-decrease{
+  .Segzy5-increase{
     width: 40px;
     margin-left: -12px;
     border-radius: 0px;
+    padding-left: 1px;
+    font-size: large;
+    padding-right: 1px;
+    background: #CDCDCD;
+    border: none;
+
   }
-  .Segzy5-increase{
+  .Segzy5-decrease{
     width: 40px;
     margin-right: -12px;
     border-radius: 0px;
+    font-size: large;
+    background: #CDCDCD;
+    border: none;
+  }
+  .segzyfield{
+    background-color: #CDCDCD;
+    border-radius: 0px;
+    border: none;
   }
   .Segzy5-text{
     width: 40px;
