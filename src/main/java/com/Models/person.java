@@ -1,7 +1,6 @@
 package com.Models;
 
-public class person {
-
+public class person{
 
     private int id;
 
@@ -9,6 +8,17 @@ public class person {
 
     private String Surname;
 
+/*
+    public person(int id, String firstName, String lastName) {
+        this.id = id;
+        this.name = firstName;
+        this.Surname = lastName;
+    }
+
+    public person(){
+
+    }
+*/
     public int getId() {
         return id;
     }

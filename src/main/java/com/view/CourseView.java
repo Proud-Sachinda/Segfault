@@ -1,11 +1,18 @@
 package com.view;
 
+import com.Models.person;
+import com.Models.personService;
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
+import com.vaadin.data.provider.Query;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CourseView extends HorizontalLayout implements View {
 
@@ -21,6 +28,17 @@ public class CourseView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
+//////////////////////////////////////////////////////////////////////////
+    person myperson = new person();
+
+
+
+////////////////////////////////////////////////////////////////////////
+
+
+
+
+
     public CourseView(Navigator navigator) {
 
         // we get the Apps Navigator object
@@ -31,6 +49,21 @@ public class CourseView extends HorizontalLayout implements View {
 
         // set up dashboard
         setUpDashboard();
+
+        //////////////////////////////////////////////proud//////check////
+        ComboBox<person> comboBox = new ComboBox<>();
+       // comboBox.setItemLabelGenerator();
+
+        Grid<person> grid = new Grid<>();
+        grid.addColumn(person::getName);
+        grid.addColumn(person::getSurname);
+
+        // Grid<personService> grid = new Grid<>();
+       //grid.setItems((personService) personService.findAll());
+       //grid.addColumn(personService -> person.class.getName()).setCaption("name");
+
+       //grid.addColumn(personService -> person.class.getSurname).setCaption("Surname");
+
     }
 
     @SuppressWarnings("Duplicates")
