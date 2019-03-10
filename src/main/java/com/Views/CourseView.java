@@ -1,18 +1,10 @@
-package com.view;
+package com.Views;
 
 import com.Models.person;
-import com.Models.personService;
-import com.vaadin.data.provider.DataProvider;
-import com.vaadin.data.provider.ListDataProvider;
-import com.vaadin.data.provider.Query;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CourseView extends HorizontalLayout implements View {
 

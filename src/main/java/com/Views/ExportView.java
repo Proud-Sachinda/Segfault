@@ -1,10 +1,9 @@
-package com.view;
+package com.Views;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 public class ExportView extends HorizontalLayout implements View {

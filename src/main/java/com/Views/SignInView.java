@@ -1,9 +1,8 @@
-package com.view;
+package com.Views;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 
 /**

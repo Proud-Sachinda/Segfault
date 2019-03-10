@@ -27,3 +27,7 @@ hs_err_pid*
 
 target/qbank-0.1/META-INF/MANIFEST.MF
 target/qbank-0.1/VAADIN/themes/mytheme/styles.scss.cache
+target/classes/com/Controllers/*.class
+target/classes/com/Models/*.class
+target/classes/com/Views/*.class
+target/classes/com/*.class

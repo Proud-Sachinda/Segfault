@@ -1,8 +1,6 @@
-package com.view;
+package com.Views;
 
 import com.Controllers.QuestionController;
-import com.Models.person;
-import com.Models.personService;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -22,7 +20,7 @@ public class QuestionView extends HorizontalLayout implements View {
     protected final String course = "course";
     protected final String export = "export";
 
-    // question controller - used to populate view
+    // question controller - used to populate Views
     private final QuestionController questionController = new QuestionController();
     private ArrayList<QuestionController.Question> questionArrayList;
 
