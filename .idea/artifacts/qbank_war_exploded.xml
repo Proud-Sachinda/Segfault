@@ -42,6 +42,14 @@
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.polymerelements:iron-resizable-behavior:2.1.1" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.polymerelements:iron-media-query:2.1.0" />
           <element id="library" level="project" name="Maven: org.vaadin.ui:numberfield:0.2.0" />
+          <element id="library" level="project" name="Maven: org.javalite:activejdbc:2.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.0" />
+          <element id="library" level="project" name="Maven: org.javalite:javalite-common:2.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.4" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.4" />
+          <element id="library" level="project" name="Maven: org.javalite:app-config:2.2" />
+          <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-shared:8.7.1" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-radio-button-flow:unknown" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:8.7.1" />
