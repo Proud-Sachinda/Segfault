@@ -32,7 +32,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.postgresql:postgresql:unknown" level="project" />
+=======
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.5" level="project" />
+>>>>>>> 9c8f6b3ff82ebc452b37c6007269e5bd2732d669
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.1.1" level="project" />

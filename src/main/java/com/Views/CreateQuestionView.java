@@ -1,4 +1,4 @@
-package com.view;
+package com.Views;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;

@@ -14,7 +14,11 @@
           <element id="module-output" name="qbank" />
         </element>
         <element id="directory" name="lib">
+<<<<<<< HEAD
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:unknown" />
+=======
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.5" />
+>>>>>>> 9c8f6b3ff82ebc452b37c6007269e5bd2732d669
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-lumo-styles:1.4.1" />

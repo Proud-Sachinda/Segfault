@@ -1,18 +1,12 @@
-package com.view;
+package com.Views;
 
-import com.Models.person;
-import com.Models.personService;
-import com.vaadin.data.provider.DataProvider;
-import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.*;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
 
-import java.util.List;
-
-public class CourseView extends HorizontalLayout implements View {
+public class ExportView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -26,15 +20,7 @@ public class CourseView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
-//////////////////////////////////////////////////////////////////////////
-    person myperson = new person();
-////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    public CourseView(Navigator navigator) {
+    public ExportView(Navigator navigator) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
@@ -44,16 +30,6 @@ public class CourseView extends HorizontalLayout implements View {
 
         // set up dashboard
         setUpDashboard();
-
-        //////////////////////////////////////////////proud//////check////
-
-
-      // Grid<personService> grid = new Grid<>();
-       //grid.setItems((personService) personService.findAll());
-       //grid.addColumn(personService -> person.class.getName()).setCaption("name");
-
-       //grid.addColumn(personService -> person.class.getSurname).setCaption("Surname");
-
     }
 
     @SuppressWarnings("Duplicates")
@@ -72,6 +48,6 @@ public class CourseView extends HorizontalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Course");
+        // Notification.show("Export View");
     }
 }

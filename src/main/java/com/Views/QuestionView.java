@@ -1,11 +1,13 @@
-package com.view;
+package com.Views;
 
+import com.Controllers.QuestionController;
 import com.vaadin.annotations.DesignRoot;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+
+import java.util.ArrayList;
 
 @DesignRoot
 public class QuestionView extends HorizontalLayout implements View {
@@ -17,6 +19,10 @@ public class QuestionView extends HorizontalLayout implements View {
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
+
+    // question controller - used to populate Views
+    private final QuestionController questionController = new QuestionController();
+    private ArrayList<QuestionController.Question> questionArrayList;
 
     // navigation and content area
     private final VerticalLayout navigation = new VerticalLayout();
@@ -50,6 +56,9 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up question explorer
         setUpQuestionExplorer();
+
+        // set up questions
+        setUpQuestions();
     }
 
     @SuppressWarnings("Duplicates")
@@ -84,6 +93,7 @@ public class QuestionView extends HorizontalLayout implements View {
         });
         explore.addComponent(add);
 
+
         // set up filtering
         NativeSelect<String> selectOrder = new NativeSelect<>();
         selectOrder.setItems("Recent", "Difficulty", "Date used", "Date published");
@@ -96,6 +106,28 @@ public class QuestionView extends HorizontalLayout implements View {
         Label filter = new Label("Filter by - ");
         filtering.addComponents(order, selectOrder, filter, selectFilter);
         explore.addComponent(filtering);
+    }
+
+    private void setUpQuestions() {
+
+        // set up root question layout
+        VerticalLayout verticalLayoutRoot = new VerticalLayout();
+        verticalLayoutRoot.setMargin(false);
+
+        // set up and add horizontal layout for difficulty badge, question, date
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setWidth(100.f, Unit.PERCENTAGE);
+        Label difficulty = new Label("5");
+        difficulty.addStyleNames("main-flat-badge-icon", "main-blue");
+        Label question = new Label("What is a Client Program? What is a Server Program? Does a Server Program request");
+        Label date = new Label("13 Mar 2018");
+        horizontalLayout.addComponent(difficulty);
+        horizontalLayout.addComponentsAndExpand(question);
+        horizontalLayout.addComponent(date);
+        verticalLayoutRoot.addComponent(horizontalLayout);
+
+        // add root question layout
+        explore.addComponent(verticalLayoutRoot);
     }
 
     @Override

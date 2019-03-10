@@ -137,6 +137,15 @@
   .main-flat-round-button:hover {
     background-color: rgba(67, 176, 92, 0.9);
   }
+  .main-flat-badge-icon {
+    color: white;
+    width: 48px;
+    height: 48px;
+    font-size: 30px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 800;
+  }
   .main-sign-in-page-background {
     background-image: url("background.png");
     background-repeat: no-repeat;
