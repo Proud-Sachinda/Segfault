@@ -24,7 +24,6 @@ hs_err_pid*
 
 .idea/
 .idea/workspace.xml
-.idea/artifacts/*.xml
 
 target/qbank-0.1/META-INF/MANIFEST.MF
 target/qbank-0.1/VAADIN/themes/mytheme/styles.scss.cache
