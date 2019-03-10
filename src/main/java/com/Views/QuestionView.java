@@ -59,25 +59,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up questions
         setUpQuestions();
-        setUpPeople();
-
-        /////////////////////////////////////////////////////////////////
-
-        /////////////////////////////////////////////////////////////
-    }
-
-
-    private void setUpPeople(){
-        NativeSelect<String> selectPeople = new NativeSelect<>();
-       // selectPeople.setItems(personService.findAll().toString());
-        //selectPeople.setSelectedItem();
-
-
-        HorizontalLayout filtering = new HorizontalLayout();
-        Label order = new Label("Order by - ");
-
-        filtering.addComponents(order, selectPeople);
-        paper.addComponent(filtering);
     }
 
     @SuppressWarnings("Duplicates")
@@ -112,9 +93,7 @@ public class QuestionView extends HorizontalLayout implements View {
         });
         explore.addComponent(add);
 
-        ///////////////////////////////////////////////////////////
 
-        //////////////////////////////////////////////////////
         // set up filtering
         NativeSelect<String> selectOrder = new NativeSelect<>();
         selectOrder.setItems("Recent", "Difficulty", "Date used", "Date published");

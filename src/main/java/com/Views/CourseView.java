@@ -55,8 +55,28 @@ public class CourseView extends HorizontalLayout implements View {
        //grid.addColumn(personService -> person.class.getName()).setCaption("name");
 
        //grid.addColumn(personService -> person.class.getSurname).setCaption("Surname");
+        //////////////////////////////////
+        setUpPeople();
 
+        //////////////////////
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    private void setUpPeople() {
+        NativeSelect<String> selectPeople = new NativeSelect<>();
+        // selectPeople.setItems(personService.findAll().toString());
+        //selectPeople.setSelectedItem();
+
+
+        HorizontalLayout filtering = new HorizontalLayout();
+        Label order = new Label("Order by - ");
+
+        filtering.addComponents(order, selectPeople);
+       // paper.addComponent(filtering);
+    }
+    ////////////////////////////////////////////////////////////////////////
+
 
     @SuppressWarnings("Duplicates")
     private void setUpDashboard() {
