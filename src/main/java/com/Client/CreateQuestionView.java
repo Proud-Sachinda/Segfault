@@ -4,13 +4,8 @@ import com.Server.QuestionServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ClassResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
-import java.sql.*;
-import com.vaadin.*;
-
-import javax.management.Query;
 
 import java.sql.Connection;
 
