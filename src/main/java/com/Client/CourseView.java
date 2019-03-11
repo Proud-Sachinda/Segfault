@@ -1,6 +1,5 @@
 package com.Client;
 
-import com.Server.person;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
