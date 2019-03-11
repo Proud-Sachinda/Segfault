@@ -131,13 +131,20 @@ public class QuestionView extends HorizontalLayout implements View {
             // set up and add horizontal layout for difficulty badge, question, date
             HorizontalLayout horizontalLayout = new HorizontalLayout();
             horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
-            Label difficulty = new Label(q.getQuestionDifficulty());
+
+            String badge = null;
+            String questionDifficulty = q.getQuestionDifficulty();
+            if (questionDifficulty.matches("easy")) badge = "1";
+            else if (questionDifficulty.matches("medium")) badge = "3";
+            else badge = "5";
+
+            Label difficulty = new Label(badge);
             difficulty.addStyleNames("main-flat-badge-icon", "main-blue");
             Label question = new Label(q.getQuestionBody());
-            Label date = new Label(q.getQuestionDate());
+            // Label date = new Label(q.getQuestionDate());
             horizontalLayout.addComponent(difficulty);
             horizontalLayout.addComponentsAndExpand(question);
-            horizontalLayout.addComponent(date);
+           // horizontalLayout.addComponent(date);
             verticalLayoutRoot.addComponent(horizontalLayout);
 
             // set up and add horizontal layout for course code, course name, tags

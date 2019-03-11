@@ -2,11 +2,9 @@ package com.Server;
 
 import com.vaadin.ui.Label;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class QuestionServer {
 
@@ -49,10 +47,10 @@ public class QuestionServer {
                 question.setQuestionBody(set.getString("question_body"));
                 question.setQuestionAns(set.getString("question_ans"));
                 question.setQuestionDifficulty(set.getString("question_difficulty"));
-                question.setQuestionDate(set.getString("question_date"));
-                question.setQuestionLastUsed(set.getString("question_last_used"));
-                question.setQuestionVariance(set.getString("question_variance"));
-                question.setQuestionMark(set.getString("question_mark"));
+                question.setQuestionDate(set.getDate("question_date"));
+                question.setQuestionLastUsed(set.getDate("question_last_used"));
+                question.setQuestionVariance(set.getInt("question_variance"));
+                question.setQuestionMark(set.getInt("question_mark"));
 
                 // add to array list
                 questions.add(question);
@@ -72,21 +70,44 @@ public class QuestionServer {
 
         // parameters
         String questionBody = q.question_body;
+        String questionAns = q.question_ans;
+        String questionType = q.question_type;
+        String questionDiff = "Easy";
+       int questionMark = q.question_mark;
+        int questionVar = 0;
+       // java.sql.Date questionDate = q.question_date;
+        Date question_lastused = q.question_last_used;
+        String lecturerID = q.lecturer_id;
+        int qId = 3;
+
         // TODO fill in rest
 
         try {
+            String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?)";
             // statement
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, qId);
+            statement.setString(2,lecturerID);
+            statement.setString(3,questionType);
+            statement.setString(4,questionBody);
+            statement.setString(5, questionAns);
+            statement.setString(6,questionDiff);
+            //statement.setDate(7,questionDate);
+            statement.setInt(7,questionVar);
+            statement.setInt(8, questionMark);
+
+
 
             // query
-            String query = "INSERT INTO public.question(question_body, question_ans)" +
-                    "VALUES ('blah blah blah', 'ans')"; // TODO the rest
+             // TODO the rest
 
-            int set = statement.executeUpdate(query);
+            int set = statement.executeUpdate();
 
             // if result inserted set > 0 "1 rows affected" - sql thing
             return set > 0;
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -103,10 +124,10 @@ public class QuestionServer {
         private String question_body;
         private String question_ans;
         private String question_difficulty;
-        private String question_date;
-        private String question_last_used;
-        private String question_variance;
-        private String question_mark;
+        private Date question_date;
+        private Date question_last_used;
+        private int question_variance;
+        private int question_mark;
 
         public String getLecturerId() {
             return lecturer_id;
@@ -128,19 +149,19 @@ public class QuestionServer {
             return question_difficulty;
         }
 
-        public String getQuestionDate() {
+        public Date getQuestionDate() {
             return question_date;
         }
 
-        public String getQuestionLastUsed() {
+        public Date getQuestionLastUsed() {
             return question_last_used;
         }
 
-        public String getQuestionVariance() {
+        public int getQuestionVariance() {
             return question_variance;
         }
 
-        public String getQuestionMark() {
+        public int getQuestionMark() {
             return question_mark;
         }
 
@@ -164,19 +185,19 @@ public class QuestionServer {
             this.question_difficulty = question_difficulty;
         }
 
-        public void setQuestionDate(String question_date) {
+        public void setQuestionDate(Date question_date) {
             this.question_date = question_date;
         }
 
-        public void setQuestionLastUsed(String question_last_used) {
+        public void setQuestionLastUsed(Date question_last_used) {
             this.question_last_used = question_last_used;
         }
 
-        public void setQuestionVariance(String question_variance) {
+        public void setQuestionVariance(int question_variance) {
             this.question_variance = question_variance;
         }
 
-        public void setQuestionMark(String question_mark) {
+        public void setQuestionMark(int question_mark) {
             this.question_mark = question_mark;
         }
     }

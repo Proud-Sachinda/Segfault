@@ -13,6 +13,7 @@ import com.vaadin.*;
 import javax.management.Query;
 
 import java.sql.Connection;
+import java.util.Date;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
@@ -38,10 +39,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Label caption = new Label("Create Question ");
 
 
-
     private TextArea qname = new TextArea("Question");
+    private Date qdate = new Date();
+    private Date qlastused = new Date();
     private TextField answer = new TextField();
     private TextField mark = new TextField();
+
     private TextField space = new TextField("Space lines");
     private TextField difficulty = new TextField("Difficulty");
     private TextArea answername = new TextArea("Answer");
@@ -59,6 +62,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
 
     public CreateQuestionView(Navigator navigator, Connection connection) {
+         final String t;
 
         // we get the Apps Navigator object
         this.navigator = navigator;
@@ -122,6 +126,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         group.setCaption("Difficulty");
         HorizontalLayout difficulty = new HorizontalLayout();
         difficulty.addComponent(group);
+
 
 
 
@@ -189,7 +194,30 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 QuestionServer.Question q = questionServer.getQuestion();
 
                 // set question variables
-                q.setQuestionBody(qname.getValue()); // get values of textfield
+
+                String m = mark1.getValue();
+                q.setQuestionBody(qname.getValue());
+                q.setQuestionAns(answername.getValue());
+                q.setQuestionDate(qdate);
+                q.setQuestionLastUsed(qlastused);
+                q.setQuestionMark(Integer.parseInt(m));
+                q.setQuestionDifficulty(difficulty.toString());
+                q.setQuestionType("Normal");
+
+
+
+
+                // get values of textfield
+                q.getQuestionBody();
+                q.getQuestionDate();
+                q.getQuestionAns();
+                q.getQuestionMark();
+                q.getQuestionLastUsed();
+                q.getQuestionType();
+
+
+
+
                 // TODO the rest
 
                 // if post returned true show successful notification otherwise error
