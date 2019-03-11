@@ -59,10 +59,10 @@
     border-radius: 24px;
   }
   .Segzy {
-    font-size: xx-large;
+    font-size: 45px;
     text-align: left;
-    color: darkred ;
-    margin-top: -40px;
+    margin-top: -30px;
+    margin-left: 20px;
   }
   .Segzy2 {
     width : 25px;
@@ -79,21 +79,35 @@
     padding: 4px 4px 4px 12px;
     border-width: 1px;
     width : 100%;
+    margin-top: -17px;
   }
   .Segzy4 {
     padding-left: 0px;
     margin-top: -20px;
   }
-  .Segzy5-increase{
-    width: 40px;
-    margin-left: -12px;
-    border-radius: 0px;
-    padding-left: 1px;
-    font-size: large;
-    padding-right: 1px;
-    background: #CDCDCD;
-    border: none;
+  .backbtn{
+    width: 55px;
+    height: 40px;
+    background-image: url("left-arrow2.svg");
+    background-repeat: no-repeat;
+    border: 0px;
+    box-shadow: none;
+    background-size: 40px;
+    margin: -25px;
+  }
+  .Segzy5{
 
+    margin-left: 200px;
+    position: absolute;
+    bottom: 70px;
+    right: 120px;
+
+  }
+  .Segzy6{
+    margin-left: 200px;
+    position: absolute;
+    bottom: 70px;
+    right: 230px;
   }
   .Segzy5-decrease{
     width: 40px;

@@ -2,6 +2,7 @@ package com.Client;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 
 import java.sql.Connection;
@@ -65,5 +66,10 @@ public class SignInView extends VerticalLayout implements View {
         String username = e.getLoginParameter("username");
         String password = e.getLoginParameter("password");
         return username.equals("username") && password.equals("password");
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        // Notification.show("Welcome to Qbank");
     }
 }

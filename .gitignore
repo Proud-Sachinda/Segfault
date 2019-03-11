@@ -31,3 +31,4 @@ target/classes/com/Controllers/*.class
 target/classes/com/Models/*.class
 target/classes/com/Views/*.class
 target/classes/com/*.class
+target/classes/com/MyUI.class
