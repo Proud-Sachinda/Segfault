@@ -5,6 +5,7 @@ import com.vaadin.ui.Label;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 public class QuestionServer {
 
@@ -78,7 +79,9 @@ public class QuestionServer {
        // java.sql.Date questionDate = q.question_date;
         Date question_lastused = q.question_last_used;
         String lecturerID = q.lecturer_id;
-        int qId = 3;
+        Random random = new Random();
+
+        int qId = random.nextInt(1000);
 
         // TODO fill in rest
 

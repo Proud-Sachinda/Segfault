@@ -10,11 +10,7 @@
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
-<<<<<<< HEAD
         <setting name="gwtSdkUrl" value="file://C:\Users\Shivesh Lappie\.m2\repository/com/vaadin/vaadin-client/8.7.1" />
-=======
-        <setting name="gwtSdkUrl" value="file://C:\Users\lizoe\.m2\repository/com/vaadin/vaadin-client/8.7.1" />
->>>>>>> 802c4b6bcb66221244c07c158f73521ad26798f1
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
       </configuration>
