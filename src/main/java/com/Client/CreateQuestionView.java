@@ -4,13 +4,8 @@ import com.Server.QuestionServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ClassResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
-import java.sql.*;
-import com.vaadin.*;
-
-import javax.management.Query;
 
 import java.sql.Connection;
 import java.util.Date;
@@ -52,17 +47,20 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button decrease = new Button("-");
     private Button increase = new Button("+");
     private Label marklabel = new Label("Mark Allocation");
-    private Button normal = new Button("Normal");
+    private Button normal = new Button("Written");
     private Button mcq = new Button("MCQ");
     private Button practical = new Button("Practical");
     private TextField sampleinput = new TextField("Sample Input");
     private TextField sampleoutput = new TextField("Sample Output");
     private Button back = new Button("back");
     private Button submit = new Button("submit");
+    private Button addChoice = new Button("add");
+    
 
 
     public CreateQuestionView(Navigator navigator, Connection connection) {
          final String t;
+
 
         // we get the Apps Navigator object
         this.navigator = navigator;
@@ -95,6 +93,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         HorizontalLayout done = new HorizontalLayout();
 
+
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
         type.addComponents(normal,mcq,practical);
@@ -103,6 +102,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeAllComponents();
                extrastuff.addComponent(lines);
+
             }
         });
 
@@ -117,6 +117,26 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeAllComponents();
                 extrastuff.addComponentsAndExpand(sampleinput,sampleoutput);
+            }
+        });
+
+        addChoice.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                TextField choice = new TextField();
+                HorizontalLayout mcqchoices = new HorizontalLayout();
+                mcqchoices.addComponents(choice,addChoice);
+                extrastuff.addComponentsAndExpand(mcqchoices);
+            }
+        });
+        mcq.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                extrastuff.removeAllComponents();
+                TextField choice = new TextField();
+                HorizontalLayout mcqchoices = new HorizontalLayout();
+                mcqchoices.addComponents(choice,addChoice);
+                extrastuff.addComponentsAndExpand(mcqchoices);
             }
         });
 
@@ -155,7 +175,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         addq.addComponents(lstuff,qname,answername);
         addq.setStyleName("Segzy4");
 
-        back.setIcon(new ClassResource("left-arrow.png"));
+        //back.setIcon(new ClassResource("left-arrow.png"));
         //back.setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\left-arrow.png"));
         //everything for the mark
         /* HorizontalLayout addmark = new HorizontalLayout();
@@ -168,6 +188,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         addmark.addComponents(marklabel,decrease,mark,increase);
         */
 
+        back.setStyleName("Segzy6");
+        submit.setStyleName("Segzy5");
         // set caption
         title.addComponents(back,caption);
         title.setComponentAlignment(back,Alignment.TOP_LEFT);
@@ -180,6 +202,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         forms.addComponents(form,form1);
         forms.setWidth("100%");
         content.addComponents(title,forms);
+        back.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                navigator.navigateTo(question);
+            }
+        });
 
         // set submit button listener
         submit.addClickListener(new Button.ClickListener() {

@@ -10,7 +10,11 @@
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
+<<<<<<< HEAD
         <setting name="gwtSdkUrl" value="file://C:\Users\Shivesh Lappie\.m2\repository/com/vaadin/vaadin-client/8.7.1" />
+=======
+        <setting name="gwtSdkUrl" value="file://C:\Users\lizoe\.m2\repository/com/vaadin/vaadin-client/8.7.1" />
+>>>>>>> 802c4b6bcb66221244c07c158f73521ad26798f1
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
       </configuration>
@@ -82,6 +86,5 @@
     <orderEntry type="library" name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-client-compiled:8.7.1" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-themes:8.7.1" level="project" />
-    <orderEntry type="library" name="Maven: org.mybatis:mybatis:3.5.0" level="project" />
   </component>
 </module>
