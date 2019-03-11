@@ -24,16 +24,6 @@ public class CourseView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
-//////////////////////////////////////////////////////////////////////////
-    person myperson = new person();
-
-
-
-////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     public CourseView(Navigator navigator, Connection connection) {
 
@@ -48,24 +38,6 @@ public class CourseView extends HorizontalLayout implements View {
 
         // set up dashboard
         setUpDashboard();
-
-        //////////////////////////////////////////////proud//////check////
-        ComboBox<person> comboBox = new ComboBox<>();
-       // comboBox.setItemLabelGenerator();
-
-        Grid<person> grid = new Grid<>();
-        grid.addColumn(person::getName);
-        grid.addColumn(person::getSurname);
-
-        // Grid<personService> grid = new Grid<>();
-       //grid.setItems((personService) personService.findAll());
-       //grid.addColumn(personService -> person.class.getName()).setCaption("name");
-
-       //grid.addColumn(personService -> person.class.getSurname).setCaption("Surname");
-        //////////////////////////////////
-        setUpPeople();
-
-        //////////////////////
     }
 
 
