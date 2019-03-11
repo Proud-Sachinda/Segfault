@@ -1,6 +1,5 @@
 package com;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -9,9 +8,9 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
-import com.Views.*;
+import com.Client.*;
 
-
+import java.sql.*;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -26,34 +25,41 @@ import com.Views.*;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-
-
-    // navigator is used for changing pages
-    Navigator navigator;
-
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
-    protected final String createquestion = "createquestion";
-
-    String string;
-
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         // set title
         getPage().setTitle("Welcome, Qbank");
 
-        // Create a navigator to control the views
-        navigator = new Navigator(this, this);
+        // create a navigator to control the views
+        Navigator navigator = new Navigator(this, this);
 
-        // Create and register the views
-        navigator.addView("", new SignInView(navigator));
-        navigator.addView(question, new QuestionView(navigator));
-        navigator.addView(course, new CourseView(navigator));
-        navigator.addView(export, new ExportView(navigator));
-        navigator.addView(createquestion, new CreateQuestionView(navigator));
+        // create connection variable and pass to views
+        Connection connection = null;
+        try {
+            connection = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
+                            "postgres", "postgres");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        // route strings - nothing special just things like qbank_exploded_war/#!route_name
+        String question = "question";
+        String course = "course";
+        String export = "export";
+        String createquestion = "createquestion";
+
+        if (connection != null) {
+            // create and register the views
+            navigator.addView("", new SignInView(navigator, connection));
+            navigator.addView(question, new QuestionView(navigator, connection));
+            navigator.addView(course, new CourseView(navigator, connection));
+            navigator.addView(export, new ExportView(navigator, connection));
+            navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
+        }
+        else {
+            Notification.show("Reload Page");
+        }
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

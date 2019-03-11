@@ -1,15 +1,20 @@
-package com.Views;
+package com.Client;
 
-import com.Models.person;
+import com.Server.person;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 
+import java.sql.Connection;
+
 public class CourseView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
+
+    // connection for database
+    private Connection connection;
 
     // route strings - nothing special just things like qbank_exploded_war/route_name
     protected final String question = "question";
@@ -31,10 +36,13 @@ public class CourseView extends HorizontalLayout implements View {
 
 
 
-    public CourseView(Navigator navigator) {
+    public CourseView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // set connection variable
+        this.connection = connection;
 
         // set to fill browser screen
         setSizeFull();

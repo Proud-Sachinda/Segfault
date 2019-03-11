@@ -1,13 +1,8 @@
-package com.Models;
+package com.Server;
 
-import com.MyUI;
 import org.apache.ibatis.annotations.Mapper;
 
-import org.apache.ibatis.annotations.Select;
-
-import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 
 import java.util.List;

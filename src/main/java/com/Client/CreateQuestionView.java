@@ -1,9 +1,12 @@
-package com.Views;
+package com.Client;
 
+import com.Server.QuestionServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
+
+import java.sql.Connection;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
@@ -11,16 +14,19 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
+    // connection for database
+    private Connection connection;
+
     // route strings - nothing special just things like qbank_exploded_war/route_name
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
 
     // navigation and content area
-    final VerticalLayout navigation = new VerticalLayout();
-    final VerticalLayout content = new VerticalLayout();
-    final HorizontalLayout forms = new HorizontalLayout();
-    final HorizontalLayout title = new HorizontalLayout();
+    private final VerticalLayout navigation = new VerticalLayout();
+    private final VerticalLayout content = new VerticalLayout();
+    private final HorizontalLayout forms = new HorizontalLayout();
+    private final HorizontalLayout title = new HorizontalLayout();
 
     //caption for whole page
     private Label caption = new Label("Create Question ");
@@ -46,10 +52,13 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button submit = new Button("submit");
 
 
-    public CreateQuestionView(Navigator navigator) {
+    public CreateQuestionView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // set connection variable
+        this.connection = connection;
 
         // set to fill browser screen
         setSizeFull();
@@ -62,15 +71,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         //number field for adding mark
         NumberField mark1 = new NumberField("Add Mark");
 
-        //numberfield for adding answer lines
+        // number field for adding answer lines
         NumberField lines = new NumberField("Answer Lines");
-
-        back.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                navigator.navigateTo(question);
-            }
-        });
 
         // code after the dashboard is setup
         VerticalLayout form = new VerticalLayout();
@@ -135,28 +137,55 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
 
         //everything for the mark
-       /* HorizontalLayout addmark = new HorizontalLayout();
+        /* HorizontalLayout addmark = new HorizontalLayout();
         mark.setWidth("40px");
         increase.setStyleName("Segzy5-increase");
         mark.setStyleName("Segzy5-text");
         decrease.setStyleName("Segzy5-decrease");
         mark.setStyleName("segzyfield");
         //increase .setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\add.png"));
-        addmark.addComponents(marklabel,decrease,mark,increase);*/
+        addmark.addComponents(marklabel,decrease,mark,increase);
+        */
 
-
-
-
+        // set caption
         title.addComponents(back,caption);
         title.setComponentAlignment(back,Alignment.TOP_LEFT);
-
         caption.addStyleName("Segzy");
+
         //set content area
         form.addComponents(addq);
         form1.addComponents(type,mark1,difficulty,extrastuff,submit);
         forms.addComponents(form,form1);
         forms.setWidth("100%");
         content.addComponents(title,forms);
+
+        // set submit button listener
+        submit.addClickListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                // TODO check if fields are empty before submitting (LATER)
+
+                // create question variable and send to database
+                QuestionServer questionServer = new QuestionServer(connection);
+                QuestionServer.Question q = questionServer.getQuestion();
+
+                // set question variables
+                q.setQuestionBody(qname.getValue()); // get values of textfield
+                // TODO the rest
+
+                // if post returned true show successful notification otherwise error
+                // and redirect
+                if (questionServer.post(q)) {
+                    Notification.show("Success");
+                    navigator.navigateTo(question);
+                }
+                else {
+                    Notification.show("Error submitting form");
+                }
+            }
+        });
     }
 
 

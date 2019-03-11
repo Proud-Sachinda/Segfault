@@ -1,9 +1,10 @@
-package com.Views;
+package com.Client;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+
+import java.sql.Connection;
 
 /**
  * This is the first page the app shows
@@ -22,13 +23,19 @@ public class SignInView extends VerticalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
+    // connection used for database
+    private Connection connection;
+
     // route strings - nothing special just things like qbank_exploded_war/route_name
     protected final String question = "question";
 
-    public SignInView(Navigator navigator) {
+    public SignInView(Navigator navigator, Connection connection) {
 
-        // we get the Apps Navigator object
+        // we get the apps Navigator object
         this.navigator = navigator;
+
+        // connector object for database
+        this.connection = connection;
 
         // set to fill browser screen
         setSizeFull();
@@ -49,23 +56,6 @@ public class SignInView extends VerticalLayout implements View {
 
         });
 
-
-
-
-        // redirect to dashboard
-        Button button = new Button("Sign In", new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-
-                navigator.navigateTo(question);
-            }
-        });
-        //.addComponent(verticalLayout);
-       // component.addComponents(button);
-
-
-
-
         // add button component
         addComponents(component);
         setComponentAlignment(component, Alignment.MIDDLE_CENTER);
@@ -75,10 +65,5 @@ public class SignInView extends VerticalLayout implements View {
         String username = e.getLoginParameter("username");
         String password = e.getLoginParameter("password");
         return username.equals("username") && password.equals("password");
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Welcome to Qbank");
     }
 }
