@@ -1,5 +1,6 @@
 package com.Client;
 
+import com.Dashboard;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -37,7 +38,12 @@ public class CourseView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        setUpDashboard();
+        Dashboard dashboard = new Dashboard(navigator);
+        addComponent(dashboard);
+
+        // set content area
+        content.setSizeFull();
+        addComponentsAndExpand(content);
     }
 
 
@@ -53,22 +59,6 @@ public class CourseView extends HorizontalLayout implements View {
 
         filtering.addComponents(order, selectPeople);
        // paper.addComponent(filtering);
-    }
-    ////////////////////////////////////////////////////////////////////////
-
-
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
-
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        addComponent(navigation);
-
-        // set content area
-        content.setSizeFull();
-        addComponent(content);
     }
 
     @Override

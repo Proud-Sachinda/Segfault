@@ -1,5 +1,6 @@
 package com.Client;
 
+import com.Dashboard;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -37,21 +38,12 @@ public class ExportView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        setUpDashboard();
-    }
-
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
-
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        addComponent(navigation);
+        Dashboard dashboard = new Dashboard(navigator);
+        addComponent(dashboard);
 
         // set content area
         content.setSizeFull();
-        addComponent(content);
+        addComponentsAndExpand(content);
     }
 
     @Override

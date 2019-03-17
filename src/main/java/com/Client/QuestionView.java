@@ -1,13 +1,17 @@
 package com.Client;
 
+import com.Dashboard;
 import com.MyTheme;
 import com.Server.QuestionServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -55,7 +59,13 @@ public class QuestionView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        setUpDashboard();
+        Dashboard dashboard = new Dashboard(navigator);
+        addComponent(dashboard);
+
+        // set content area
+        content.setSizeFull();
+        addComponentsAndExpand(content);
+
         // question paper section
         paper.setSizeFull();
         paper.addStyleName("paper-border");
@@ -68,20 +78,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up questions
         setUpQuestions();
-    }
-
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
-
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName(MyTheme.MAIN_BLUE);
-        addComponent(navigation);
-
-        // set content area
-        content.setSizeFull();
-        addComponentsAndExpand(content);
     }
 
     private void setUpQuestionExplorer() {

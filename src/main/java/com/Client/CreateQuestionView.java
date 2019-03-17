@@ -1,5 +1,6 @@
 package com.Client;
 
+import com.Dashboard;
 import com.Server.QuestionServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -72,7 +73,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        setUpDashboard();
+        Dashboard dashboard = new Dashboard(navigator);
+        addComponent(dashboard);
+
+        // set content area
+        content.setSizeFull();
+        addComponentsAndExpand(content);
 
         //
 
@@ -260,19 +266,5 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             }
         });
         content.addComponents(title,forms,back,submit);
-    }
-
-
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
-
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        addComponent(navigation);
-
-        // set content area
-        addComponentsAndExpand(content);
     }
 }
