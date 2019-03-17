@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class QuestionViewTest {
+class AuthenticationTest {
 
     @Test
-    void enter() {
+    void authenticate() {
     }
 }
