@@ -1,9 +1,12 @@
 package com.Client;
 
+import com.Server.SignInViewServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+
+import com.Client.Authentication;
 
 import java.sql.Connection;
 
@@ -47,8 +50,8 @@ public class SignInView extends VerticalLayout implements View {
         // create login form
         LoginForm component = new LoginForm();
         component.addLoginListener(e -> {
-            boolean isAuthenticated = authentication(e);
-            if (isAuthenticated) {
+            boolean Authentication = true;
+            if (Authentication) {
                 navigator.navigateTo(question);
 
             } else {
@@ -62,10 +65,14 @@ public class SignInView extends VerticalLayout implements View {
         setComponentAlignment(component, Alignment.MIDDLE_CENTER);
     }
 
-    private boolean authentication(LoginForm.LoginEvent e) {
+    private boolean Authentication(LoginForm.LoginEvent e) {
+        SignInViewServer signInViewServer = new SignInViewServer(connection);
         String username = e.getLoginParameter("username");
         String password = e.getLoginParameter("password");
-        return username.equals("username") && password.equals("password");
+
+        signInViewServer.setUsername(username);
+        signInViewServer.setPassword(password);
+        return signInViewServer.authenticate();
     }
 
     @Override
