@@ -2,11 +2,13 @@ package com.Client;
 
 import com.Dashboard;
 import com.Server.QuestionServer;
+import com.vaadin.event.ContextClickEvent;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ClassResource;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
+//import sun.font.TrueTypeFont;
 
 import java.sql.Connection;
 import java.util.Date;
@@ -56,6 +58,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button back = new Button("back");
     private Button submit = new Button("submit");
     private Button addChoice = new Button("add");
+    private  Button submitMCQ = new Button("Submit MCQ");
+    private String choices = "";
+
     
 
 
@@ -126,6 +131,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             }
         });
 
+
         addChoice.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -133,18 +139,29 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 HorizontalLayout mcqchoices = new HorizontalLayout();
                 mcqchoices.addComponents(choice,addChoice);
                 extrastuff.addComponentsAndExpand(mcqchoices);
+
             }
         });
+
+
+
+
         mcq.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeAllComponents();
+
                 TextField choice = new TextField();
+                extrastuff.removeAllComponents();
                 HorizontalLayout mcqchoices = new HorizontalLayout();
                 mcqchoices.addComponents(choice,addChoice);
                 extrastuff.addComponentsAndExpand(mcqchoices);
+                extrastuff.addComponent(submitMCQ);
+                System.out.println(choice.getValue());
+
             }
+
         });
+
 
         //radio buttons for difficulty
         RadioButtonGroup<String> group = new RadioButtonGroup<>();
@@ -152,6 +169,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         group.setCaption("Difficulty");
         HorizontalLayout difficulty = new HorizontalLayout();
         difficulty.addComponent(group);
+
 
 
 
@@ -215,11 +233,61 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             }
         });
 
+
+        submitMCQ.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                QuestionServer questionServer = new QuestionServer(connection);
+                QuestionServer.Question mcq = questionServer.getQuestion();
+
+
+                //mcq.setMcq_choices(ch.toString());
+                mcq.setQuestionBody(qname.toString());
+                mcq.setQuestionAns(answername.toString());
+                //mcq.setWritten_question_id();
+                mcq.setQuestionDifficulty(difficulty.toString());
+                mcq.setQuestionMark(Integer.parseInt(mark1.toString()));
+                mcq.setQuestionDate(qdate);
+                mcq.setQuestionLastUsed(qlastused);
+
+                mcq.getMcq_choices();
+                mcq.getQuestionDifficulty();
+                mcq.getQuestionType();
+                mcq.getQuestionLastUsed();
+                mcq.getQuestionMark();
+                mcq.getQuestionAns();
+                mcq.getQuestionBody();
+
+                System.out.println(getErrorMessage());
+
+
+              /*  if(questionServer.postMCQ(mcq)){
+                    Notification.show("MCQ Entered");
+                    navigator.navigateTo(question);
+
+                }
+
+                else {
+                    Notification.show("Error submitting form");
+                } */
+
+
+            }
+        });
+
+        content.addComponents(title,forms,back,submitMCQ);
+
         // set submit button listener
         submit.addClickListener(new Button.ClickListener() {
 
+
+
+
+
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+
+
 
                 // TODO check if fields are empty before submitting (LATER)
 
@@ -237,6 +305,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 q.setQuestionMark(Integer.parseInt(m));
                 q.setQuestionDifficulty(difficulty.toString());
                 q.setQuestionType("Normal");
+                q.setMcq_choices(addChoice.toString());
+
 
 
 
@@ -260,6 +330,10 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     Notification.show("Success");
                     navigator.navigateTo(question);
                 }
+              /*  else if(questionServer.postMCQ(q)){
+                    Notification.show("MCQ Entered");
+                    navigator.navigateTo(question);
+                } */
                 else {
                     Notification.show("Error submitting form");
                 }
