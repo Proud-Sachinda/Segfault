@@ -1,0 +1,5 @@
+setup:
+  codecov_url: "curl --data-binary @- https://codecov.io/validate"
+services:
+  notifications:
+    slack: "https://hooks.slack.com/ugh204uhg2"

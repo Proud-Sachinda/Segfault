@@ -44,6 +44,11 @@ public class QuestionView extends HorizontalLayout implements View {
     private QuestionServer questionServer;
     private ArrayList<QuestionServer.Question> questionArrayList;
 
+    public QuestionView(){
+
+    }
+
+
     public QuestionView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
@@ -162,5 +167,10 @@ public class QuestionView extends HorizontalLayout implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         //
         // Notification.show(string);
+    }
+
+    public int myfunction(int num1,int num2){
+
+        return num1+num2;
     }
 }

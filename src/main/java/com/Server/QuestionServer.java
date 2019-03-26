@@ -14,9 +14,15 @@ public class QuestionServer {
 
     // question array
     ArrayList<Question> questions = new ArrayList<>();
+    ArrayList<Written> writtens = new ArrayList<>();
+    ArrayList<Practical> practicals = new ArrayList<>();
+    ArrayList<Mcq> mcqs = new ArrayList<>();
 
     // question variable for post and delete
     Question question = new Question();
+    Written written = new Written();
+    Practical practical = new Practical();
+    Mcq mcq = new Mcq();
 
     public QuestionServer(Connection connection) {
 
@@ -64,60 +70,215 @@ public class QuestionServer {
         return this.questions;
     }
 
-    public boolean post(Question q) {
+    //post method for written question
+    public boolean post(Written q) {
 
         // TODO create-question form passes in a question variable
         // TODO if successful return true, if true redirect to question view
 
         // parameters
-        String questionBody = q.question_body;
-        String questionAns = q.question_ans;
-        String questionType = q.question_type;
+        String questionBody = q.getQuestionBody();
+        String questionAns = q.getQuestionAns();
+        String questionType = q.getQuestionType();
         String questionDiff = "Easy";
-       int questionMark = q.question_mark;
+        int questionMark = q.getQuestionMark();
         int questionVar = 0;
-       // java.sql.Date questionDate = q.question_date;
-        Date question_lastused = q.question_last_used;
-        String lecturerID = q.lecturer_id;
+        int question_line = q.question_line;
+        Date question_lastused = q.getQuestionLastUsed();
+        String lecturerID = q.getLecturerId();
         Random random = new Random();
-
         int qId = random.nextInt(1000);
-
-        // TODO fill in rest
+        Random random1 = new Random();
+        int written_question_id = random.nextInt(1000);
 
         try {
-            String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
-                    "VALUES (?,?,?,?,?,?,now(),now(),?,?)";
+           /* String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
+            String query1 = "INSERT INTO public.written_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,question_lines,written_question_id)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?)";
+
+
             // statement
-            PreparedStatement statement = connection.prepareStatement(query);
+           /* PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, qId);
             statement.setString(2,lecturerID);
             statement.setString(3,questionType);
             statement.setString(4,questionBody);
             statement.setString(5, questionAns);
             statement.setString(6,questionDiff);
-            //statement.setDate(7,questionDate);
             statement.setInt(7,questionVar);
-            statement.setInt(8, questionMark);
+            statement.setInt(8, questionMark);*/
+
+            PreparedStatement statement1 = connection.prepareStatement(query1);
+            statement1.setInt(1, qId);
+            statement1.setString(2,lecturerID);
+            statement1.setString(3,questionType);
+            statement1.setString(4,questionBody);
+            statement1.setString(5, questionAns);
+            statement1.setString(6,questionDiff);
+            statement1.setInt(7,questionVar);
+            statement1.setInt(8, questionMark);
+            statement1.setInt(9,question_line);
+            statement1.setInt(10,written_question_id);
 
 
+            int set1 = statement1.executeUpdate();
+           // int set = statement.executeUpdate();
 
-            // query
-             // TODO the rest
-
-            int set = statement.executeUpdate();
 
             // if result inserted set > 0 "1 rows affected" - sql thing
-            return set > 0;
+            return set1 > 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
+
+    }
+    //post method for practical
+    public boolean post(Practical q) {
+
+        // TODO create-question form passes in a question variable
+        // TODO if successful return true, if true redirect to question view
+
+        // parameters
+        String questionBody = q.getQuestionBody();
+        String questionAns = q.getQuestionAns();
+        String questionType = q.getQuestionType();
+        String questionDiff = "Easy";
+        int questionMark = q.getQuestionMark();
+        int questionVar = 0;
+        String sample_input =  q.sample_input;
+        String sample_output = q.sample_output;
+        Date question_lastused = q.getQuestionLastUsed();
+        String lecturerID = q.getLecturerId();
+        Random random = new Random();
+        int qId = random.nextInt(1000);
+        Random random1 = new Random();
+        int pq_id = random.nextInt(1000);
+
+        try {
+          /*  String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
+            String query1 = "INSERT INTO public.practical_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,sample_input,sample_output,pq_id)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?,?)";
+
+
+            // statement
+           /* PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, qId);
+            statement.setString(2,lecturerID);
+            statement.setString(3,questionType);
+            statement.setString(4,questionBody);
+            statement.setString(5, questionAns);
+            statement.setString(6,questionDiff);
+            statement.setInt(7,questionVar);
+            statement.setInt(8, questionMark);*/
+
+            PreparedStatement statement1 = connection.prepareStatement(query1);
+            statement1.setInt(1, qId);
+            statement1.setString(2,lecturerID);
+            statement1.setString(3,questionType);
+            statement1.setString(4,questionBody);
+            statement1.setString(5, questionAns);
+            statement1.setString(6,questionDiff);
+            statement1.setInt(7,questionVar);
+            statement1.setInt(8, questionMark);
+            statement1.setString(9,sample_input);
+            statement1.setString(10,sample_output);
+            statement1.setInt(11,pq_id);
+
+
+            int set1 = statement1.executeUpdate();
+           // int set = statement.executeUpdate();
+
+
+            // if result inserted set > 0 "1 rows affected" - sql thing
+            return set1 > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
+    //post method for mcq
+    public boolean post(Mcq q) {
+
+        // TODO create-question form passes in a question variable
+        // TODO if successful return true, if true redirect to question view
+
+        // parameters
+        String questionBody = q.getQuestionBody();
+        String questionAns = q.getQuestionAns();
+        String questionType = q.getQuestionType();
+        String questionDiff = "Easy";
+        int questionMark = q.getQuestionMark();
+        int questionVar = 0;
+        String mcq_choices = q.mcq_choices;
+        Date question_lastused = q.getQuestionLastUsed();
+        String lecturerID = q.getLecturerId();
+        Random random = new Random();
+        int qId = random.nextInt(1000);
+        Random random1 = new Random();
+        int mcq_id = random.nextInt(1000);
+
+        try {
+          /*  String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
+            String query1 = "INSERT INTO public.mcq_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,mcq_choices,mcq_id)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?)";
+
+
+            // statement
+           /* PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, qId);
+            statement.setString(2,lecturerID);
+            statement.setString(3,questionType);
+            statement.setString(4,questionBody);
+            statement.setString(5, questionAns);
+            statement.setString(6,questionDiff);
+            statement.setInt(7,questionVar);
+            statement.setInt(8, questionMark);*/
+
+            PreparedStatement statement1 = connection.prepareStatement(query1);
+            statement1.setInt(1, qId);
+            statement1.setString(2,lecturerID);
+            statement1.setString(3,questionType);
+            statement1.setString(4,questionBody);
+            statement1.setString(5, questionAns);
+            statement1.setString(6,questionDiff);
+            statement1.setInt(7,questionVar);
+            statement1.setInt(8, questionMark);
+            statement1.setString(9,mcq_choices);
+            statement1.setInt(10,mcq_id);
+
+
+            int set1 = statement1.executeUpdate();
+            // int set = statement.executeUpdate();
+
+
+            // if result inserted set > 0 "1 rows affected" - sql thing
+            return set1 > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
     }
 
+    //get
     public Question getQuestion() {
         return this.question;
     }
+    public Question getWritten() {
+        return this.written;
+    }
+    public Question getPractical() {
+        return this.practical;
+    }
+    public Question getMcq() {
+        return this.mcq;
+    }
+
 
     public class Question {
 
@@ -202,6 +363,48 @@ public class QuestionServer {
 
         public void setQuestionMark(int question_mark) {
             this.question_mark = question_mark;
+        }
+    }
+
+    //model for written question
+    public class Written extends Question{
+
+        //attributes
+        private int question_line;
+        //accessors
+        public int getQuestion_line() {
+            return question_line;
+        }
+        public void setQuestion_line(int question_line) {
+            this.question_line = question_line;
+        }
+    }
+    //model for practical question
+    public class Practical extends Question{
+
+        //attributes
+        private String sample_input;
+        private String sample_output;
+        //accessors
+        public String getSample_input() { return sample_input;}
+        public void setSample_input(String sample_input) {
+            this.sample_input = sample_output;
+        }
+
+        public String getSample_output() { return sample_output;}
+        public void setSample_output(String sample_input) {
+            this.sample_output = sample_output;
+        }
+    }
+    //model for mcq question
+    public class Mcq extends Question{
+
+        //attributes
+        private String mcq_choices;
+        //accessors
+        public String getMcq_choices() { return mcq_choices;}
+        public void setMcq_choices(String sample_input) {
+            this.mcq_choices = mcq_choices;
         }
     }
 }

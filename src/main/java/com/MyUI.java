@@ -39,6 +39,7 @@ public class MyUI extends UI {
             connection = DriverManager
                     .getConnection("jdbc:postgresql://localhost:5432/postgres",
                             "postgres", "postgres");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
