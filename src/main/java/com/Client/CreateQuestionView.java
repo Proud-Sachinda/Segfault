@@ -9,7 +9,12 @@ import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+//import static org.graalvm.compiler.nodeinfo.Verbosity.Name;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
@@ -41,6 +46,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private TextField answer = new TextField();
     private TextField mark = new TextField();
 
+
     private TextField space = new TextField("Space lines");
     private TextField difficulty = new TextField("Difficulty");
     private TextArea answername = new TextArea("Answer");
@@ -56,6 +62,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button back = new Button("back");
     private Button submit = new Button("submit");
     private Button addChoice = new Button("add");
+
+    //private TextField Course = new TextField("Choose Course");
+   // private Button chooseCourse = new Button("Choose Course");
     
 
 
@@ -102,6 +111,13 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
+
+        ComboBox combobox = new ComboBox("Select Course:");
+
+        //Add multiple items
+        combobox.setItems("Algebra", "Calculus","Physics","Applied Math","Software Design", "Other");
+
+        type.addComponent(combobox);
         type.addComponents(normal,mcq,practical);
         normal.addClickListener(new Button.ClickListener() {
             @Override
@@ -135,6 +151,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 extrastuff.addComponentsAndExpand(mcqchoices);
             }
         });
+
         mcq.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -145,6 +162,17 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 extrastuff.addComponentsAndExpand(mcqchoices);
             }
         });
+
+
+        /* comboBox.addValueChangeListener(event -> {
+            if (event.getSource().isEmpty()) {
+                chooseCourse.setText("No browser selected");
+            } else {
+                chooseCourse.setText("Selected browser: " + event.getValue());
+            }
+        });
+        */
+
 
         //radio buttons for difficulty
         RadioButtonGroup<String> group = new RadioButtonGroup<>();
