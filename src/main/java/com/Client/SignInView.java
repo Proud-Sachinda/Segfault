@@ -60,7 +60,7 @@ public class SignInView extends VerticalLayout implements View {
                 // navigate to page
                 navigator.navigateTo(question);
             } else {
-                Notification.show("Incorrect username", Notification.Type.ERROR_MESSAGE);
+                Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
             }
 
         });

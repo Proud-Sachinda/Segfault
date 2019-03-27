@@ -78,6 +78,10 @@ public class QuestionView extends HorizontalLayout implements View {
     private int currentSelectedPaginationPage;
     private ArrayList<QuestionPaginationComponent> questionPaginationComponents;
 
+    QuestionView() {
+        // for unit tests
+    }
+
     public QuestionView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
@@ -735,5 +739,10 @@ public class QuestionView extends HorizontalLayout implements View {
         private QuestionPaginationComponent get() {
             return this;
         }
+    }
+
+    public int myfunction(int num1,int num2){
+
+        return num1+num2;
     }
 }
