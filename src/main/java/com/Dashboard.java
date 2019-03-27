@@ -2,9 +2,9 @@ package com;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.FileResource;
-import com.vaadin.server.Sizeable;
-import com.vaadin.server.VaadinService;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.*;
 import com.vaadin.ui.*;
 
 import java.io.File;
@@ -117,20 +117,21 @@ public class Dashboard extends VerticalLayout {
         logo.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
 
         // create clickable
-        create.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+        create.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
         create.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(questionNavigation));
 
         // course clickable
-        course.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+        course.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
         course.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(courseNavigation));
 
         // export clickable
+        export.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
         export.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(exportNavigation));
 
         // profile clickable
-        profile.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+        profile.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE);
 
         // sign out clickable
-        signOut.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+        signOut.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
     }
 }

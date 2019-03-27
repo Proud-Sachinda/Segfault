@@ -1,12 +1,12 @@
 package com.Client;
 
+import com.Dashboard;
 import com.Server.SignInViewServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
-
-import com.Client.Authentication;
 
 import java.sql.Connection;
 
@@ -47,13 +47,18 @@ public class SignInView extends VerticalLayout implements View {
         // set wallpaper
         addStyleName("main-sign-in-page-background");
 
+        Dashboard dashboard = new Dashboard(navigator);
+
         // create login form
         LoginForm component = new LoginForm();
         component.addLoginListener(e -> {
             boolean Authentication = true;
             if (Authentication) {
-                navigator.navigateTo(question);
 
+                // set username
+                VaadinService.getCurrentRequest().setAttribute("username", e.getLoginParameter("username"));
+                // navigate to page
+                navigator.navigateTo(question);
             } else {
                 Notification.show("Incorrect username", Notification.Type.ERROR_MESSAGE);
             }

@@ -1,7 +1,5 @@
 package com.Server;
 
-import com.vaadin.ui.Label;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,11 +10,8 @@ public class QuestionServer {
     // connection variable
     private Connection connection;
 
-    // question array
-    ArrayList<Question> questions = new ArrayList<>();
-
     // question variable for post and delete
-    Question question = new Question();
+    private Question question = new Question();
 
     public QuestionServer(Connection connection) {
 
@@ -25,6 +20,9 @@ public class QuestionServer {
     }
 
     public ArrayList<Question> get() {
+
+        // question array
+        ArrayList<Question> questions = new ArrayList<>();
 
         try {
 
@@ -61,7 +59,7 @@ public class QuestionServer {
             e.printStackTrace();
         }
 
-        return this.questions;
+        return questions;
     }
 
     public boolean post(Question q) {
