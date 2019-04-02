@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 class QuestionViewTest {
 
@@ -22,11 +22,17 @@ class QuestionViewTest {
     @Test
     void Testmyfunction(){
 
-        assertEquals(5,myquestionview.myfunction(2,3));
+        assertEquals(7,myquestionview.myfunction(5,2));
     }
 
     @Test
     void getState() {
+        assertNotNull(myquestionview);
+        assertNotNull(myquestionview.course);
+       assertNotNull(myquestionview.export);
+        assertNotNull(myquestionview.question);
+        assertNotNull(myquestionview.getViewComponent());
+
     }
 
     @Test

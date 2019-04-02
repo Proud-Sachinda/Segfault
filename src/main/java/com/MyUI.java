@@ -37,8 +37,8 @@ public class MyUI extends UI {
         Connection connection = null;
         try {
             connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
-                            "postgres", "postgres");
+                    .getConnection("jdbc:postgresql://localhost:5432/qbank",
+                            "postgres", "@6125@psN");
 
         } catch (SQLException e) {
             e.printStackTrace();
