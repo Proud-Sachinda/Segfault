@@ -5,8 +5,6 @@ import com.MyTheme;
 import com.Server.QuestionServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
-import com.vaadin.data.converter.LocalDateToDateConverter;
-import com.vaadin.event.ContextClickEvent;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -23,10 +21,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
 import java.sql.*;
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -60,7 +54,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
     // question server
     private QuestionServer questionServer;
-    private ArrayList<QuestionServer.Question> questionArrayList;
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -276,7 +269,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private void setUpQuestions() {
 
         // get questions
-        questionArrayList = questionServer.get();
+        ArrayList<QuestionServer.Question> questionArrayList = questionServer.get();
 
         // set up root question layout
         VerticalLayout verticalLayoutRoot = new VerticalLayout();
@@ -291,6 +284,7 @@ public class QuestionView extends HorizontalLayout implements View {
             questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
             questionItemComponent.setQuestionBody(q.getQuestionBody());
             questionItemComponent.setQuestionDate(q.getQuestionDate());
+            questionItemComponent.setQuestionMark(q.getQuestionMark());
 
             // set up question item component
             questionItemComponent.setUpQuestionItemComponent();
@@ -391,7 +385,9 @@ public class QuestionView extends HorizontalLayout implements View {
                 else {
 
                     // set title of heading
-                    draftName = textField.getValue().trim();
+                    String textFieldValue = textField.getValue().trim();
+                    String s = (Character.toString(textFieldValue.charAt(0))).toUpperCase();
+                    draftName = s.concat(textFieldValue.substring(1));
 
                     // TODO take these values to database test table
 
@@ -422,6 +418,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private class QuestionItemComponent extends VerticalLayout {
 
         // attributes
+        private int id;
         private int questionMark;
         private Date questionDate;
         private String questionAns;
@@ -431,8 +428,13 @@ public class QuestionView extends HorizontalLayout implements View {
         private String questionBodyFull;
         private String questionDifficulty;
 
-        // component
-        Component fullComponent;
+        private int getQuestionId() {
+            return id;
+        }
+
+        private void setQuestionId(int id) {
+            this.id = id;
+        }
 
         private int getQuestionMark() {
             return questionMark;
@@ -505,6 +507,10 @@ public class QuestionView extends HorizontalLayout implements View {
             this.questionBodyFull = questionBodyFull;
         }
 
+        private QuestionItemComponent getThisQuestionItemComponent() {
+            return this;
+        }
+
         private void setUpQuestionItemComponent() {
 
             // set margin to false
@@ -564,39 +570,29 @@ public class QuestionView extends HorizontalLayout implements View {
             // set as draggable
             DragSourceExtension<AbstractComponent> dragSourceExtension = new DragSourceExtension<>(this);
             dragSourceExtension.setEffectAllowed(EffectAllowed.MOVE);
-            dragSourceExtension.setDataTransferText("hello receiver");
-            dragSourceExtension.setDataTransferData("text/html", "<label>hello receiver</label>");
+            dragSourceExtension.setDataTransferText(Integer.toString(questionMark));
 
             // drag start listener
-            dragSourceExtension.addDragStartListener(new DragStartListener<AbstractComponent>() {
-
-                @Override
-                public void dragStart(DragStartEvent<AbstractComponent> event) {
-                    removeAllComponents();
-                    VerticalLayout verticalLayout = new VerticalLayout();
-                    verticalLayout.setWidth("300px");
-                    verticalLayout.setMargin(false);
-                    verticalLayout.addComponent(new Label(questionBodyFull));
-                    addComponent(verticalLayout);
-                }
+            dragSourceExtension.addDragStartListener((DragStartListener<AbstractComponent>) event -> {
+                removeAllComponents();
+                HorizontalLayout horizontalLayout = new HorizontalLayout();
+                horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+                Label label = new Label(questionBodyFull);
+                horizontalLayout.addComponentsAndExpand(label);
+                addComponent(horizontalLayout);
             });
-
             // drag end listener
-            dragSourceExtension.addDragEndListener(new DragEndListener<AbstractComponent>() {
-                @Override
-                public void dragEnd(DragEndEvent<AbstractComponent> event) {
-                    if (event.isCanceled()) {
-                        removeAllComponents();
-                        setUpQuestionItemComponent();
-                    }
+            dragSourceExtension.addDragEndListener((DragEndListener<AbstractComponent>) event -> {
+                if (event.isCanceled()) {
+                    removeAllComponents();
+                    setUpQuestionItemComponent();
+                }
+                else {
+                    dragSourceExtension.remove();
                 }
             });
 
             //
-        }
-
-        private QuestionItemComponent getThisQuestionItemComponent() {
-            return this;
         }
     }
 
@@ -612,6 +608,13 @@ public class QuestionView extends HorizontalLayout implements View {
         private Label number;
         private VerticalLayout dropArea = new VerticalLayout();
 
+        // array list of question paper item components
+        ArrayList<QuestionPaperItemComponent> paperItemComponentArrayList;
+
+        private QuestionPaginationComponent get() {
+            return this;
+        }
+
         private QuestionPaginationComponent(int questionNumber) {
 
             // set attributes
@@ -619,6 +622,9 @@ public class QuestionView extends HorizontalLayout implements View {
             this.useNumeric = false;
             this.hasQuestions = false;
             this.questionNumber = questionNumber;
+
+            // declare
+            paperItemComponentArrayList = new ArrayList<>();
 
             // set up component
             setMargin(false);
@@ -633,7 +639,15 @@ public class QuestionView extends HorizontalLayout implements View {
             // add check box and checkbox listener
             CheckBox numeric = new CheckBox("use numbers");
             numeric.addValueChangeListener((HasValue.ValueChangeListener<Boolean>) event -> {
+
+                // set use numeric
                 useNumeric = event.getValue();
+
+                // change all question items
+                for (QuestionPaperItemComponent p : paperItemComponentArrayList) {
+                    p.setBullet(setQuestionPaperItemComponentValue());
+                    p.updateQuestionPaperItemComponentValue();
+                }
             });
 
             FileResource removeResource = new FileResource(
@@ -651,24 +665,21 @@ public class QuestionView extends HorizontalLayout implements View {
                 remove.setHeight(28.0f, Unit.PIXELS);
                 header.addComponent(remove);
 
-                remove.addClickListener(new MouseEvents.ClickListener() {
-                    @Override
-                    public void click(MouseEvents.ClickEvent event) {
+                remove.addClickListener((MouseEvents.ClickListener) event -> {
 
-                        // int used to remove component
-                        int removeInt = questionPaginationComponents.indexOf(get());
+                    // int used to remove component
+                    int removeInt = questionPaginationComponents.indexOf(get());
 
-                        // remove this component from array
-                        questionPaginationComponents.remove(removeInt);
+                    // remove this component from array
+                    questionPaginationComponents.remove(removeInt);
 
-                        // remove button also
-                        buttons.get(removeInt - 1).removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
-                        buttons.get(removeInt - 1).addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
-                        paginationCenter.removeComponent(buttons.get(removeInt));
-                        buttons.remove(removeInt);
+                    // remove button also
+                    buttons.get(removeInt - 1).removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
+                    buttons.get(removeInt - 1).addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
+                    paginationCenter.removeComponent(buttons.get(removeInt));
+                    buttons.remove(removeInt);
 
-                        reIncrementAllPaginationItems(removeInt);
-                    }
+                    reIncrementAllPaginationItems(removeInt);
                 });
             }
 
@@ -714,15 +725,20 @@ public class QuestionView extends HorizontalLayout implements View {
                     // unset height
                     dropArea.setHeightUndefined();
 
+                    // character incrementation
+                    String bulletIncrement = setQuestionPaperItemComponentValue();
+
                     // add question item
-                    HorizontalLayout horizontalLayout = new HorizontalLayout();
-                    horizontalLayout.addComponent(new Label("(a)"));
-                    horizontalLayout.addComponent(dragSource.get());
-                    dropArea.addComponent(horizontalLayout);
+                    QuestionPaperItemComponent itemComponent =
+                            new QuestionPaperItemComponent(bulletIncrement, dragSource.get());
+                    paperItemComponentArrayList.add(itemComponent);
+                    dropArea.addComponent(itemComponent);
 
                     // add marks
-                    questionMarks = 2;
-                    marks.setValue("(" + questionMarks + " marks)");
+                    questionMarks += Integer.parseInt(event.getDataTransferText());
+                    if (questionMarks == 0) marks.setValue("(no marks)");
+                    else if (questionMarks == 1) marks.setValue("(" + questionMarks + " mark)");
+                    else marks.setValue("(" + questionMarks + " marks)");
                 }
             });
         }
@@ -736,8 +752,65 @@ public class QuestionView extends HorizontalLayout implements View {
             number.setValue("Question " + this.questionNumber + " - ");
         }
 
-        private QuestionPaginationComponent get() {
-            return this;
+        private String setQuestionPaperItemComponentValue() {
+            // character incrementation
+            String bulletIncrement;
+
+            if (useNumeric) {
+                // get integer
+                if (paperItemComponentArrayList.size() == 0)
+                    bulletIncrement = questionNumber + "." + (paperItemComponentArrayList.size() + 1);
+                else bulletIncrement = questionNumber + "." + (paperItemComponentArrayList.size());
+            }
+            else {
+                // it's alphabetic
+                char alpha = 'a';
+                if (paperItemComponentArrayList.size() == 0) {
+                    bulletIncrement =  Character.toString(alpha);
+                }
+                else {
+                    alpha += paperItemComponentArrayList.size() - 1;
+                    bulletIncrement =  Character.toString(alpha);
+                }
+            }
+            return bulletIncrement.trim();
+        }
+    }
+
+    private class QuestionPaperItemComponent extends VerticalLayout {
+
+        // attributes
+        private String bullet;
+
+        // components
+        private Label bulletLabel;
+
+        private QuestionPaperItemComponent(String bullet, AbstractComponent source) {
+
+            // set up variables
+            this.bullet = bullet;
+
+            // set up root
+            setMargin(false);
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+
+            // set up components
+            if (bullet.length() > 1) bulletLabel = new Label(bullet);
+            else bulletLabel = new Label("(" + bullet + ")");
+            horizontalLayout.addComponent(bulletLabel);
+            horizontalLayout.addComponentsAndExpand(source);
+
+            addComponent(horizontalLayout);
+        }
+
+        private void setBullet(String bullet) {
+            this.bullet = bullet;
+        }
+
+        private void updateQuestionPaperItemComponentValue() {
+            if (bullet.length() > 1) bulletLabel.setValue(bullet);
+            else bulletLabel.setValue("(" + bullet + ")");
         }
     }
 
