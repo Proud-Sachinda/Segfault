@@ -130,24 +130,27 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
       //  HorizontalLayout type = new HorizontalLayout();
 
-        ComboBox combobox = new ComboBox("Select Course:");
+        //ComboBox combobox = new ComboBox("Select Course:");
 
         courseServer = new CourseServer(this.connection);
         CourseServer.Course c = new CourseServer.Course();
 
         courseArrayList = courseServer.get();
 
+        NativeSelect<CourseServer.Course> courseNativeSelect = new NativeSelect<>("Courses");
+        courseNativeSelect.setItems(c);
+
 
 
         //Add multiple items
-        combobox.setItems();
+        //combobox.setItems();
 
         HorizontalLayout done = new HorizontalLayout();
 
 
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
-        type.addComponentsAndExpand(combobox);
+        type.addComponentsAndExpand(courseNativeSelect);
         type.addComponents(normal,mcq,practical);
         normal.addClickListener(new Button.ClickListener() {
             @Override

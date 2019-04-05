@@ -35,7 +35,7 @@ public class CourseServer {
 
 
                 courses.add(course);
-                //System.out.println(course.getCourseCode());
+                System.out.println(course.getCourseCode());
             }
 
 
