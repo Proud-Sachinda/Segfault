@@ -3,6 +3,8 @@ package com.Server;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.vaadin.ui.NativeSelect;
+
 public class CourseServer {
 
     private Connection connection;
@@ -28,7 +30,10 @@ public class CourseServer {
             ResultSet set = statement.executeQuery(query);
 
             while(set.next()){
+
+                //NativeSelect<Course> courseNativeSelect = new NativeSelect<>("Course");
                 Course course = new Course();
+
 
                 course.setCourseName(set.getString("course_name"));
                 course.setCourseCode(set.getString("course_code"));

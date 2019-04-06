@@ -36,7 +36,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     //caption for whole page
     private Label caption = new Label("Create Question ");
 
-
+    public  ComboBox combobox;
     private TextArea qname = new TextArea("Question");
     private Date qdate = new Date();
     private Date qlastused = new Date();
@@ -130,27 +130,32 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
       //  HorizontalLayout type = new HorizontalLayout();
 
-        //ComboBox combobox = new ComboBox("Select Course:");
+
+        combobox = new ComboBox("Select Course:");
 
         courseServer = new CourseServer(this.connection);
-        CourseServer.Course c = new CourseServer.Course();
+       // CourseServer.Course c = new CourseServer.Course();
 
         courseArrayList = courseServer.get();
+        //System.out.println(courseArrayList);
 
-        NativeSelect<CourseServer.Course> courseNativeSelect = new NativeSelect<>("Courses");
-        courseNativeSelect.setItems(c);
+       // NativeSelect<CourseServer.Course> courseNativeSelect = new NativeSelect<>("Courses");
+       // courseNativeSelect.setItems();
 
 
+        for(int i = 0; i < courseArrayList.size(); i++){
 
+            combobox.setItems(courseArrayList.get(i).getCourseCode());
+        }
         //Add multiple items
-        //combobox.setItems();
+       // combobox.setItems();
 
         HorizontalLayout done = new HorizontalLayout();
 
 
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
-        type.addComponentsAndExpand(courseNativeSelect);
+        type.addComponentsAndExpand(combobox);
         type.addComponents(normal,mcq,practical);
         normal.addClickListener(new Button.ClickListener() {
             @Override

@@ -61,7 +61,7 @@ public class QuestionServer {
 
                 // add to array list
                 questions.add(question);
-                System.out.println(question.getQuestionBody());
+                //System.out.println(question.getQuestionBody());
             }
 
         } catch (SQLException e) {
