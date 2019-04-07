@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="postgres@localhost" uuid="4399693d-a71f-4b10-912e-555b8524451f">
+    <data-source name="qbank@localhost" uuid="b4bb9831-a950-411c-a02f-26009fe32474">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
       <introspection-schemas>@:@</introspection-schemas>
     </data-source>
