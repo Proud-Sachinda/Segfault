@@ -6,12 +6,16 @@ import com.Server.CourseServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ClassResource;
+import com.vaadin.shared.ui.Orientation;
+import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static com.vaadin.shared.ui.Orientation.HORIZONTAL;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
@@ -134,27 +138,45 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         combobox = new ComboBox("Select Course:");
 
         courseServer = new CourseServer(this.connection);
-       // CourseServer.Course c = new CourseServer.Course();
+
 
         courseArrayList = courseServer.get();
-        //System.out.println(courseArrayList);
-
-       // NativeSelect<CourseServer.Course> courseNativeSelect = new NativeSelect<>("Courses");
-       // courseNativeSelect.setItems();
 
 
         for(int i = 0; i < courseArrayList.size(); i++){
 
             combobox.setItems(courseArrayList.get(i).getCourseCode());
         }
+
+
+
+
         //Add multiple items
-       // combobox.setItems();
+
 
         HorizontalLayout done = new HorizontalLayout();
 
 
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
+        /*MenuBar questiontype = new MenuBar();
+        final Label qType = new Label("Question Type");
+        type.addComponent(qType);
+        MenuBar.Command myCommand = new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                qType.setValue(selectedItem.getText());
+
+            }
+        };
+        type.addComponent(questiontype);
+        questiontype.addItem("Written", myCommand );
+        questiontype.addItem("MCQ", myCommand);
+        questiontype.addItem("Practical", myCommand); */
+
+
+
+
         type.addComponentsAndExpand(combobox);
         type.addComponents(normal,mcq,practical);
         normal.addClickListener(new Button.ClickListener() {
@@ -297,12 +319,35 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         });
 
 
-        //radio buttons for difficulty
-        RadioButtonGroup<String> group = new RadioButtonGroup<>();
-        group.setItems("easy", "medium", "hard");
-        group.setCaption("Difficulty");
+        //Slider for difficulty
+        VerticalLayout v = new VerticalLayout();
         HorizontalLayout difficulty = new HorizontalLayout();
-        difficulty.addComponent(group);
+        final Label diffslidervalue = new Label();
+        diffslidervalue.setValue("Easy Medium Hard");
+        diffslidervalue.setWidth(difficulty.getWidth(), Unit.PERCENTAGE);
+        diffslidervalue.setSizeFull();
+       // difficulty.addComponent(diffslidervalue);
+
+
+        difficulty.setWidth(100.0f, Unit.PERCENTAGE);
+
+        Slider diffSlider = new Slider(1,5);
+
+        diffSlider.setOrientation(SliderOrientation.HORIZONTAL);
+        diffSlider.setWidth(100.0f, Unit.PERCENTAGE);
+        diffSlider.setCaption(diffslidervalue.getValue());
+
+        difficulty.addComponent(diffSlider);
+
+
+
+
+
+        diffSlider.addValueChangeListener(event -> {
+            float value = event.getValue().floatValue();
+            diffslidervalue.setValue(String.valueOf(value));
+
+        });
         //value change listener for radio button
 
 
@@ -401,7 +446,20 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
                 if(qtype.matches("written")){
                     QuestionServer.Written q = (QuestionServer.Written) questionServer.getWritten();
-                    String s= group.getValue();
+
+                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
+                        q.setQuestionDifficulty("Easy");
+                    }
+
+                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
+                        q.setQuestionDifficulty("Medium");
+                    }
+
+                    else{
+                        q.setQuestionDifficulty("Hard");
+                    }
+                    String s= q.getQuestionDifficulty();
+
                     String m = mark1.getValue();
                     String l=lines.getValue();
                     q.setQuestionBody(qname.getValue());
@@ -424,8 +482,20 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 }
                 else if(qtype.matches("practical")){
                     // q.setQuestionType("Practical");
+
                     QuestionServer.Practical q = (QuestionServer.Practical) questionServer.getPractical();
-                    String s= group.getValue();
+                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
+                        q.setQuestionDifficulty("Easy");
+                    }
+
+                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
+                        q.setQuestionDifficulty("Medium");
+                    }
+
+                    else{
+                        q.setQuestionDifficulty("Hard");
+                    }
+                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
@@ -449,7 +519,18 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 else if (qtype.matches("mcq")){
                     //  q.setQuestionType("Mcq");
                     QuestionServer.Mcq q = (QuestionServer.Mcq) questionServer.getMcq();
-                    String s= group.getValue();
+                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
+                        q.setQuestionDifficulty("Easy");
+                    }
+
+                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
+                        q.setQuestionDifficulty("Medium");
+                    }
+
+                    else{
+                        q.setQuestionDifficulty("Hard");
+                    }
+                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
