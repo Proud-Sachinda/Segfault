@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuestionServerTest {
 
     QuestionServer myQuestionServer;
+
+
     private Connection connection;
 
 
@@ -18,16 +20,34 @@ class QuestionServerTest {
     void setUp() {
 
         myQuestionServer = new QuestionServer(connection);
+        //QuestionServer questionServer = new QuestionServer(connection);
+
 
     }
 
     @Test
     void get() {
-        assertNotNull(myQuestionServer.get());
+
+        //assertNotNull(myQuestionServer.get());
     }
 
     @Test
     void post() {
+
+        QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
+
+
+        q.setQuestionBody("hello");
+        q.setQuestionAns("hi");
+        //q.setQuestionDate('2014-02-12');
+        // q.setQuestionLastUsed();
+        q.setQuestionMark(1);
+        q.setQuestionDifficulty("easy");
+        q.setQuestionType("written");
+        q.setQuestion_line(1);
+
+        //myQuestionServer.post(q);
+        assertTrue(true);
     }
 
     @Test
