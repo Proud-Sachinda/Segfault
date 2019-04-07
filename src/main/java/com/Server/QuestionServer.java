@@ -1,5 +1,7 @@
 package com.Server;
 
+import com.vaadin.ui.Label;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +12,6 @@ public class QuestionServer {
     // connection variable
     private Connection connection;
 
-    // question variable for post and delete
-    private Question question = new Question();
     // question array
     ArrayList<Question> questions = new ArrayList<>();
     ArrayList<Written> writtens = new ArrayList<>();
@@ -19,6 +19,7 @@ public class QuestionServer {
     ArrayList<Mcq> mcqs = new ArrayList<>();
 
     // question variable for post and delete
+    Question question = new Question();
     Written written = new Written();
     Practical practical = new Practical();
     Mcq mcq = new Mcq();
@@ -30,9 +31,6 @@ public class QuestionServer {
     }
 
     public ArrayList<Question> get() {
-
-        // question array
-        ArrayList<Question> questions = new ArrayList<>();
 
         try {
 
@@ -63,13 +61,14 @@ public class QuestionServer {
 
                 // add to array list
                 questions.add(question);
+                //System.out.println(question.getQuestionBody());
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return questions;
+        return this.questions;
     }
 
     //post method for written question
@@ -82,22 +81,22 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = "Easy";
+        String questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         int question_line = q.question_line;
         Date question_lastused = q.getQuestionLastUsed();
         String lecturerID = q.getLecturerId();
-        Random random = new Random();
-        int qId = random.nextInt(1000);
+       // Random random = new Random();
+        //int qId = random.nextInt(1000);
         Random random1 = new Random();
-        int written_question_id = random.nextInt(1000);
+        //int written_question_id = random.nextInt(1000);
 
         try {
            /* String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
                     "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
-            String query1 = "INSERT INTO public.written_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,question_lines,written_question_id)" +
-                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?)";
+            String query1 = "INSERT INTO public.written_question( lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,question_lines)" +
+                    "VALUES (?,?,?,?,?,now(),now(),?,?,?)";
 
 
             // statement
@@ -112,20 +111,20 @@ public class QuestionServer {
             statement.setInt(8, questionMark);*/
 
             PreparedStatement statement1 = connection.prepareStatement(query1);
-            statement1.setInt(1, qId);
-            statement1.setString(2,lecturerID);
-            statement1.setString(3,questionType);
-            statement1.setString(4,questionBody);
-            statement1.setString(5, questionAns);
-            statement1.setString(6,questionDiff);
-            statement1.setInt(7,questionVar);
-            statement1.setInt(8, questionMark);
-            statement1.setInt(9,question_line);
-            statement1.setInt(10,written_question_id);
+           // statement1.setInt(1, qId);
+            statement1.setString(1,lecturerID);
+            statement1.setString(2,questionType);
+            statement1.setString(3,questionBody);
+            statement1.setString(4, questionAns);
+            statement1.setString(5,questionDiff);
+            statement1.setInt(6,questionVar);
+            statement1.setInt(7, questionMark);
+            statement1.setInt(8,question_line);
+          //  statement1.setInt(9,written_question_id);
 
 
             int set1 = statement1.executeUpdate();
-           // int set = statement.executeUpdate();
+            // int set = statement.executeUpdate();
 
 
             // if result inserted set > 0 "1 rows affected" - sql thing
@@ -146,7 +145,7 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = "Easy";
+        String questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         String sample_input =  q.sample_input;
@@ -161,8 +160,8 @@ public class QuestionServer {
         try {
           /*  String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
                     "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
-            String query1 = "INSERT INTO public.practical_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,sample_input,sample_output,pq_id)" +
-                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?,?)";
+            String query1 = "INSERT INTO public.practical_question( lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,sample_input,sample_output)" +
+                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?)";
 
 
             // statement
@@ -177,21 +176,21 @@ public class QuestionServer {
             statement.setInt(8, questionMark);*/
 
             PreparedStatement statement1 = connection.prepareStatement(query1);
-            statement1.setInt(1, qId);
-            statement1.setString(2,lecturerID);
-            statement1.setString(3,questionType);
-            statement1.setString(4,questionBody);
-            statement1.setString(5, questionAns);
-            statement1.setString(6,questionDiff);
-            statement1.setInt(7,questionVar);
-            statement1.setInt(8, questionMark);
-            statement1.setString(9,sample_input);
-            statement1.setString(10,sample_output);
-            statement1.setInt(11,pq_id);
+
+            statement1.setString(1,lecturerID);
+            statement1.setString(2,questionType);
+            statement1.setString(3,questionBody);
+            statement1.setString(4, questionAns);
+            statement1.setString(5,questionDiff);
+            statement1.setInt(6,questionVar);
+            statement1.setInt(7, questionMark);
+            statement1.setString(8,sample_input);
+            statement1.setString(9,sample_output);
+
 
 
             int set1 = statement1.executeUpdate();
-           // int set = statement.executeUpdate();
+            // int set = statement.executeUpdate();
 
 
             // if result inserted set > 0 "1 rows affected" - sql thing
@@ -212,22 +211,20 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = "Easy";
+        String questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         String mcq_choices = q.mcq_choices;
         Date question_lastused = q.getQuestionLastUsed();
+        Date question_date = q.getQuestionDate();
         String lecturerID = q.getLecturerId();
-        Random random = new Random();
-        int qId = random.nextInt(1000);
-        Random random1 = new Random();
-        int mcq_id = random.nextInt(1000);
+
 
         try {
           /*  String query = "INSERT INTO public.question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark)" +
                     "VALUES (?,?,?,?,?,?,now(),now(),?,?)";*/
-            String query1 = "INSERT INTO public.mcq_question(question_id, lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,mcq_choices,mcq_id)" +
-                    "VALUES (?,?,?,?,?,?,now(),now(),?,?,?,?)";
+            String query1 = "INSERT INTO public.mcq_question( lecturer_id, question_type, question_body, question_ans, question_difficulty, question_date, question_last_used, question_variance, question_mark,mcq_choices)" +
+                    "VALUES (?,?,?,?,?,now(),now(),?,?,?)";
 
 
             // statement
@@ -242,16 +239,16 @@ public class QuestionServer {
             statement.setInt(8, questionMark);*/
 
             PreparedStatement statement1 = connection.prepareStatement(query1);
-            statement1.setInt(1, qId);
-            statement1.setString(2,lecturerID);
-            statement1.setString(3,questionType);
-            statement1.setString(4,questionBody);
-            statement1.setString(5, questionAns);
-            statement1.setString(6,questionDiff);
-            statement1.setInt(7,questionVar);
-            statement1.setInt(8, questionMark);
-            statement1.setString(9,mcq_choices);
-            statement1.setInt(10,mcq_id);
+
+            statement1.setString(1,lecturerID);
+            statement1.setString(2,questionType);
+            statement1.setString(3,questionBody);
+            statement1.setString(4, questionAns);
+            statement1.setString(5,questionDiff);
+            statement1.setInt(6,questionVar);
+            statement1.setInt(7, questionMark);
+            statement1.setString(8,mcq_choices);
+
 
 
             int set1 = statement1.executeUpdate();
