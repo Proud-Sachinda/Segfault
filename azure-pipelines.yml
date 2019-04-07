@@ -1,4 +1,4 @@
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
 pool:
   vmImage: 'ubuntu-16.04' # Other options: 'macOS-10.13', 'vs2017-win2016'
   
@@ -13,3 +13,9 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     goals: 'package'
+
+- task: AzureRmWebAppDeployment@3
+  inputs:
+    azureSubscription: 'Azure for Students'
+    WebAppName: 'quebank'
+    Package: '$(System.DefaultWorkingDirectory)/**/*.war'
