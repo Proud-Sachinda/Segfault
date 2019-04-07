@@ -1,24 +1,23 @@
 package com.Components;
 
+import com.Objects.CourseItem;
 import com.Server.QuestionViewServer;
 import com.vaadin.ui.ComboBox;
 
-import javax.validation.constraints.NotNull;
-import java.sql.Connection;
 import java.util.ArrayList;
 
-public class CourseComboBox extends ComboBox<QuestionViewServer.CourseItem> {
+public class CourseComboBox extends ComboBox<CourseItem> {
 
     // attributes
     private int courseId;
 
-    public CourseComboBox(ArrayList<QuestionViewServer.CourseItem> items) {
+    public CourseComboBox(ArrayList<CourseItem> items) {
 
         // set items
         setItems(items);
 
         // set item caption generator
-        setItemCaptionGenerator(QuestionViewServer.CourseItem::getCourseFullName);
+        setItemCaptionGenerator(CourseItem::getCourseFullName);
 
         // set place holder
         setPlaceholder("e.g: MATH1036 or Algebra");
@@ -34,8 +33,7 @@ public class CourseComboBox extends ComboBox<QuestionViewServer.CourseItem> {
     public void addComboBoxValueChangeListener() {
 
         // add listener
-        addValueChangeListener((ValueChangeListener<QuestionViewServer.CourseItem>) event -> {
-            courseId = event.getValue().getCourseId();
-        });
+        addValueChangeListener((ValueChangeListener<CourseItem>)
+                event -> courseId = event.getValue().getCourseId());
     }
 }
