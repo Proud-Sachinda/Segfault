@@ -8,17 +8,6 @@ after_success:
 
 jobs:
   include:
-# starter
-    - stage: starter
-      name: "Jupiter Starter Sample: Gradle & Java"
-      script: cd $TRAVIS_BUILD_DIR/junit5-jupiter-starter-gradle && ./gradlew test --console plain
-    - stage: starter
-      name: "Jupiter Starter Sample: Gradle & Kotlin"
-      script: cd $TRAVIS_BUILD_DIR/junit5-jupiter-starter-gradle-kotlin && ./gradlew test --console plain
-    - stage: starter
-      name: "Jupiter Starter Sample: Gradle & Groovy"
-      script: cd $TRAVIS_BUILD_DIR/junit5-jupiter-starter-gradle-groovy && ./gradlew test --console plain
-    - stage: starter
       name: "Jupiter Starter Sample: Maven"
-      script: cd $TRAVIS_BUILD_DIR/junit5-jupiter-starter-maven && ./mvnw test
+      script: cd $TRAVIS_BUILD_DIR/
  
