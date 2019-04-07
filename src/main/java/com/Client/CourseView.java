@@ -167,4 +167,25 @@ public class CourseView extends HorizontalLayout implements View {
         //panel.addComponentDetachListener(export);
         // Notification.show("Course");
     }
+
+    private class CourseComponent extends VerticalLayout {
+
+        private String CourseName;
+        private  String CourseCode;
+
+        private String getCourseName(){ return  CourseName;}
+        private  String getCourseCode(){ return  CourseCode;}
+
+        private void setCourseName( String CourseName){
+            this.CourseName = CourseName;
+        }
+
+        private void setCourseCode(String CourseCode){
+            this.CourseCode = CourseCode;
+        }
+
+    }
+
 }
+
+

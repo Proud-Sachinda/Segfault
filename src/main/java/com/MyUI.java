@@ -34,6 +34,7 @@ public class MyUI extends UI {
         Navigator navigator = new Navigator(this, this);
 
         // create connection variable and pass to views
+        //Using a connecion string, this is the most important connection to the database
         Connection connection = null;
         try {
             connection = DriverManager
