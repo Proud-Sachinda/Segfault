@@ -63,8 +63,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button submit = new Button("submit");
     private Button addChoice = new Button("add");
 
-    //private TextField Course = new TextField("Choose Course");
-   // private Button chooseCourse = new Button("Choose Course");
+    //private TextField CourseObject = new TextField("Choose CourseObject");
+   // private Button chooseCourse = new Button("Choose CourseObject");
     
 
 
@@ -112,7 +112,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         //stuff for choosing type of question
         HorizontalLayout type = new HorizontalLayout();
 
-        ComboBox combobox = new ComboBox("Select Course:");
+        ComboBox combobox = new ComboBox("Select CourseObject:");
 
         //Add multiple items
         combobox.setItems("Algebra", "Calculus","Physics","Applied Math","Software Design", "Other");

@@ -1,8 +1,10 @@
 package com.Client;
 
+import com.Components.CourseComboBox;
 import com.Dashboard;
+import com.DateConvert;
 import com.MyTheme;
-import com.Server.QuestionServer;
+import com.Server.QuestionViewServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
@@ -53,7 +55,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     // question server
-    private QuestionServer questionServer;
+    private QuestionViewServer questionViewServer;
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -84,7 +86,7 @@ public class QuestionView extends HorizontalLayout implements View {
         this.connection = connection;
 
         // set up question server
-        questionServer = new QuestionServer(this.connection);
+        questionViewServer = new QuestionViewServer(this.connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -269,22 +271,25 @@ public class QuestionView extends HorizontalLayout implements View {
     private void setUpQuestions() {
 
         // get questions
-        ArrayList<QuestionServer.Question> questionArrayList = questionServer.get();
+        ArrayList<QuestionViewServer.QuestionItem> questionArrayList = questionViewServer.getQuestionItems();
 
         // set up root question layout
         VerticalLayout verticalLayoutRoot = new VerticalLayout();
         verticalLayoutRoot.setMargin(false);
 
         // loop through questions and add to view
-        for (QuestionServer.Question q : questionArrayList) {
+        for (QuestionViewServer.QuestionItem q : questionArrayList) {
 
             // declare new question item component
             QuestionItemComponent questionItemComponent = new QuestionItemComponent();
             // set variables
-            questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
+            questionItemComponent.setQuestionId(q.getQuestionId());
+            questionItemComponent.setQuestionAns(q.getQuestionAns());
             questionItemComponent.setQuestionBody(q.getQuestionBody());
-            questionItemComponent.setQuestionDate(q.getQuestionDate());
             questionItemComponent.setQuestionMark(q.getQuestionMark());
+            questionItemComponent.setQuestionDate(q.getQuestionDate());
+            questionItemComponent.setQuestionLastUsed(q.getQuestionLastUsed());
+            questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
 
             // set up question item component
             questionItemComponent.setUpQuestionItemComponent();
@@ -371,16 +376,18 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setWidth(100.0f, Unit.PERCENTAGE);
             textField.setPlaceholder("Enter draft name");
 
-            // create sections
-            CheckBox checkBox = new CheckBox("Use sections");
+            // course subjects
+            CourseComboBox comboBox = new CourseComboBox(questionViewServer.getCourses());
+            comboBox.setWidth(100.0f, Unit.PERCENTAGE);
+            comboBox.addComboBoxValueChangeListener();
 
             // submit button
             Button submit = new Button("Create");
             submit.addClickListener((Button.ClickListener) event -> {
 
                 // check if text field is empty
-                if (textField.isEmpty()) {
-                    textField.setCaption("*required field");
+                if (textField.isEmpty() || !(comboBox.getCourseId() > 0)) {
+                    textField.setCaption("*fill all fields");
                 }
                 else {
 
@@ -389,7 +396,9 @@ public class QuestionView extends HorizontalLayout implements View {
                     String s = (Character.toString(textFieldValue.charAt(0))).toUpperCase();
                     draftName = s.concat(textFieldValue.substring(1));
 
-                    // TODO take these values to database test table
+                    // take to database
+                    if (!questionViewServer.postToTestTable(true, draftName, comboBox.getCourseId()))
+                        Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
                     // populate question pagination array list
                     questionPaginationComponents = new ArrayList<>();
@@ -407,7 +416,7 @@ public class QuestionView extends HorizontalLayout implements View {
             });
 
             // add components
-            addComponents(empty, label, textField, checkBox, submit);
+            addComponents(empty, label, textField, comboBox, submit);
 
             // align in middle
             setComponentAlignment(empty, Alignment.MIDDLE_CENTER);
@@ -426,7 +435,30 @@ public class QuestionView extends HorizontalLayout implements View {
         private String questionBody;
         private Date questionLastUsed;
         private String questionBodyFull;
-        private String questionDifficulty;
+        private int questionDifficulty;
+
+        // components
+        Label difficultyLabel;
+        Label questionBodyLabel;
+        Slider difficultySlider = new Slider();
+        VerticalLayout dateAndEdit = new VerticalLayout();
+        HorizontalLayout firstRow = new HorizontalLayout();
+        HorizontalLayout thirdRow = new HorizontalLayout();
+        TextArea editQuestionAnsTextField = new TextArea();
+        TextArea editQuestionBodyTextField = new TextArea();
+        Button seeMoreSeeLess = new Button("see more");
+        VerticalLayout seeMoreComponent = new VerticalLayout();
+        HorizontalLayout updateQuestionControls = new HorizontalLayout();
+
+        // file resource for images
+        FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/save.svg"));
+        FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/edit.svg"));
+        FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/trash.svg"));
+
+        // edit trash
+        Image save = new Image(null, saveResource);
+        Image edit = new Image(null, editResource);
+        Image trash = new Image(null, trashResource);
 
         private int getQuestionId() {
             return id;
@@ -474,7 +506,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
         private void setQuestionBody(String questionBody) {
 
-            if (questionBody.length() > 120) this.questionBody = questionBody.substring(0, 120) + " ...";
+            if (questionBody.length() > 140) this.questionBody = questionBody.substring(0, 140) + " ...";
             else this.questionBody = questionBody;
 
             setQuestionBodyFull(questionBody);
@@ -488,15 +520,12 @@ public class QuestionView extends HorizontalLayout implements View {
             this.questionLastUsed = questionLastUsed;
         }
 
-        private String getQuestionDifficulty() {
+        private int getQuestionDifficulty() {
             return questionDifficulty;
         }
 
-        private void setQuestionDifficulty(String questionDifficulty) {
-
-            if (questionDifficulty.matches("easy")) this.questionDifficulty = "1";
-            else if (questionDifficulty.matches("medium")) this.questionDifficulty = "3";
-            else this.questionDifficulty = "5";
+        private void setQuestionDifficulty(int questionDifficulty) {
+            this.questionDifficulty = questionDifficulty;
         }
 
         private String getQuestionBodyFull() {
@@ -518,47 +547,50 @@ public class QuestionView extends HorizontalLayout implements View {
 
             // first row ------------------------------------------------------
             // set up and add horizontal layout for difficulty badge, question, date
-            HorizontalLayout firstRow = new HorizontalLayout();
             firstRow.setWidth(100.0f, Unit.PERCENTAGE);
 
-            Label difficultyLabel = new Label(this.questionDifficulty);
-            difficultyLabel.addStyleNames("main-flat-badge-icon", "main-blue");
-            Label questionBodyLabel = new Label(this.getQuestionBody());
-            Label dateLabel = new Label(this.questionDate + "");
+            // image buttons for question body
+            edit.setWidth(22.0f, Unit.PIXELS);
+            edit.setHeight(22.0f, Unit.PIXELS);
+            save.setWidth(22.0f, Unit.PIXELS);
+            save.setHeight(22.0f, Unit.PIXELS);
+            trash.setWidth(22.0f, Unit.PIXELS);
+            trash.setHeight(22.0f, Unit.PIXELS);
+            edit.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+            save.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+            trash.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+
+            difficultyLabel = new Label(Integer.toString(this.questionDifficulty));
+            difficultyLabel.addStyleNames("main-flat-badge-icon", MyTheme.MAIN_BLUE);
+            questionBodyLabel = new Label(this.getQuestionBody());
+            questionBodyLabel.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
+            Label dateLabel = new Label(DateConvert.convertNumericDateToMinimumAlphabeticDate(this.questionLastUsed));
+            dateAndEdit.addComponent(dateLabel);
+            dateAndEdit.setWidthUndefined();
+            dateAndEdit.setMargin(false);
+            dateLabel.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_700);
+            updateQuestionControls.addComponents(edit, trash);
+            dateAndEdit.addComponent(updateQuestionControls);
+            dateAndEdit.setComponentAlignment(updateQuestionControls, Alignment.MIDDLE_RIGHT);
 
             // add difficulty and question body and date
             firstRow.addComponent(difficultyLabel);
             firstRow.addComponentsAndExpand(questionBodyLabel);
-            firstRow.addComponent(dateLabel);
+            firstRow.addComponent(dateAndEdit);
+
+            // set up listeners
+            setUpUpdateQuestionClickListeners();
 
             // add first row to ui
             addComponent(firstRow);
 
             // second row -----------------------------------------------------
             // set up see more, question statistics and answer
-            Button seeMoreSeeLess = new Button("see more");
             seeMoreSeeLess.addStyleNames(MyTheme.MAIN_TEXT_GREEN, MyTheme.MAIN_TEXT_WEIGHT_900, "main-flat-button");
             addComponent(seeMoreSeeLess);
 
-            // see more see less on click listener
-            seeMoreSeeLess.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    if (seeMoreSeeLess.getCaption().equals("see more")) {
-                        seeMoreSeeLess.setCaption("see less");
-                        questionBodyLabel.setValue(getQuestionBodyFull());
-                    }
-                    else {
-                        seeMoreSeeLess.setCaption("see more");
-                        questionBodyLabel.setValue(getQuestionBody());
-                    }
-                }
-            });
-
             // third row ------------------------------------------------------
             // set up subject label, tags and question marks
-            HorizontalLayout thirdRow = new HorizontalLayout();
-
             Label courseCode = new Label("COMS3004");
             courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
             Label subject = new Label("Computer Networks");
@@ -566,6 +598,34 @@ public class QuestionView extends HorizontalLayout implements View {
 
             // add third row to ui
             addComponent(thirdRow);
+
+            // see more see less on click listener
+            seeMoreSeeLess.addClickListener((Button.ClickListener) event -> {
+                if (seeMoreSeeLess.getCaption().equals("see more")) {
+
+                    // remove any instance of it if present
+                    removeComponent(seeMoreComponent);
+
+                    // set caption
+                    seeMoreSeeLess.setCaption("see less");
+
+                    // question body to full
+                    questionBodyLabel.setValue(getQuestionBodyFull());
+
+                    // add see more component
+                    setUpSeeMoreComponent();
+                    removeComponent(thirdRow);
+                    addComponents(seeMoreComponent, thirdRow);
+                }
+                else {
+                    // remove any instance of it if present
+                    removeComponent(seeMoreComponent);
+                    seeMoreSeeLess.setCaption("see more");
+                    questionBodyLabel.setValue(getQuestionBody());
+                    seeMoreComponent.removeAllComponents();
+                    removeComponent(seeMoreComponent);
+                }
+            });
 
             // set as draggable
             DragSourceExtension<AbstractComponent> dragSourceExtension = new DragSourceExtension<>(this);
@@ -591,8 +651,176 @@ public class QuestionView extends HorizontalLayout implements View {
                     dragSourceExtension.remove();
                 }
             });
+        }
 
-            //
+        private void setUpUpdateQuestionClickListeners() {
+
+            // add click listeners
+            edit.addClickListener((MouseEvents.ClickListener) event -> {
+                // remove question body and label
+                firstRow.removeComponent(dateAndEdit);
+                firstRow.removeComponent(questionBodyLabel);
+
+                // add save button
+                updateQuestionControls.removeComponent(edit);
+                updateQuestionControls.addComponentAsFirst(save);
+
+                // replace first row
+                editQuestionBodyTextField.setValue(questionBodyFull);
+                firstRow.addComponentsAndExpand(editQuestionBodyTextField);
+                editQuestionBodyTextField.focus();
+                firstRow.addComponent(dateAndEdit);
+
+                // remove third row and see more
+                removeComponent(thirdRow);
+                removeComponent(seeMoreSeeLess);
+                seeMoreSeeLess.setCaption("see more");
+                removeComponent(seeMoreComponent);
+
+
+                // add difficulty and answer
+                difficultySlider.setMin(1);
+                difficultySlider.setMax(5);
+                setUpQuestionDifficultySlider(questionDifficulty);
+                difficultySlider.setValue((double) questionDifficulty);
+                difficultySlider.setWidth(100.0f, Unit.PERCENTAGE);
+                difficultySlider.addValueChangeListener((HasValue.ValueChangeListener<Double>) event1 -> {
+                    int x = event1.getValue().intValue();
+                    questionDifficulty = x;
+                    setUpQuestionDifficultySlider(x);
+                });
+                editQuestionAnsTextField.setValue(questionAns);
+                editQuestionAnsTextField.setCaption("Answer");
+                editQuestionAnsTextField.setWidth(100.0f, Unit.PERCENTAGE);
+
+                // add slider, answer, see more see less button and third row
+                addComponents(difficultySlider, editQuestionAnsTextField, seeMoreSeeLess, thirdRow);
+            });
+            save.addClickListener((MouseEvents.ClickListener) event -> {
+
+                // update variables
+                String s = editQuestionBodyTextField.getValue();
+                this.questionBodyFull = s;
+                this.questionAns = editQuestionAnsTextField.getValue();
+                this.questionDifficulty = difficultySlider.getValue().intValue();
+                if (s.length() > 140) this.questionBody = s.substring(0, 140) + " ...";
+                else this.questionBody = s;
+
+                // remove text areas and slider
+                removeComponent(difficultySlider);
+                firstRow.removeComponent(dateAndEdit);
+                removeComponent(editQuestionAnsTextField);
+                updateQuestionControls.removeComponent(save);
+                firstRow.removeComponent(editQuestionBodyTextField);
+
+                // update labels
+                difficultyLabel.setValue(Integer.toString(this.questionDifficulty));
+                questionBodyLabel.setValue(this.questionBody);
+                updateQuestionControls.addComponentAsFirst(edit);
+
+                // add label
+                firstRow.addComponentsAndExpand(questionBodyLabel);
+                firstRow.addComponent(dateAndEdit);
+
+                // take to database
+                QuestionViewServer.QuestionItem item = questionViewServer.getQuestionItem();
+                item.setQuestionDifficulty(getQuestionDifficulty());
+                item.setQuestionBody(getQuestionBodyFull());
+                item.setQuestionAns(getQuestionAns());
+                item.setQuestionId(getQuestionId());
+
+                if (questionViewServer.updateQuestionItem(item))
+                    Notification.show("SUCCESS", "Question updated", Notification.Type.TRAY_NOTIFICATION);
+                else Notification.show("ERROR", "Something went wrong", Notification.Type.ERROR_MESSAGE);
+            });
+            trash.addClickListener((MouseEvents.ClickListener) event -> {
+               // delete question
+            });
+        }
+
+        private void setUpQuestionDifficultySlider(int x) {
+
+            // check
+            if (x == 1) difficultySlider.setCaption("Difficulty - Beginner");
+            else if (x == 2) difficultySlider.setCaption("Difficulty - Basic");
+            else if (x == 3) difficultySlider.setCaption("Difficulty - Intermediate");
+            else if (x == 4) difficultySlider.setCaption("Difficulty - Advanced");
+            else if (x == 5) difficultySlider.setCaption("Difficulty - Expert");
+        }
+
+        private void setUpSeeMoreComponent() {
+
+            // root of see more component
+            seeMoreComponent.setMargin(false);
+
+            // add answer row
+            HorizontalLayout answerRow = new HorizontalLayout();
+            Label ans = new Label("ANSWER: ");
+            ans.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_WARNING,
+                    MyTheme.MAIN_TEXT_WEIGHT_900);
+            Label answer = new Label(this.questionAns);
+            answer.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_CHARCOAL);
+            answerRow.addComponents(ans, answer);
+            seeMoreComponent.addComponentsAndExpand(answerRow);
+
+            // add variance row
+            HorizontalLayout usageStatisticsRow = new HorizontalLayout();
+            Label statistics = new Label("USAGE STATISTICS:");
+            statistics.addStyleNames(MyTheme.MAIN_OPACITY_60,
+                    MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_WEIGHT_900);
+            usageStatisticsRow.addComponent(statistics);
+            Label variantUsed = new Label("A variant of this was used");
+            variantUsed.addStyleName(MyTheme.MAIN_TEXT_SIZE_SMALL);
+            usageStatisticsRow.addComponent(variantUsed);
+            seeMoreComponent.addComponent(usageStatisticsRow);
+
+            // other details
+            HorizontalLayout otherRow = new HorizontalLayout();
+            otherRow.setWidth(100.0f, Unit.PERCENTAGE);
+            HorizontalLayout usedColumn = new HorizontalLayout();
+            VerticalLayout variance = new VerticalLayout();
+            VerticalLayout published = new VerticalLayout();
+
+            // add to other row
+            otherRow.addComponentsAndExpand(usedColumn, variance, published);
+
+            // add other row elements
+            Label usedXLabel = new Label("used");
+            Label usedXNumberLabel = new Label("10x");
+            usedXLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
+                    MyTheme.MAIN_TEXT_SIZE_LARGE, MyTheme.MAIN_OPACITY_40);
+            usedXNumberLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_EXTRA_LARGE,
+                    MyTheme.MAIN_TEXT_WEIGHT_900, MyTheme.MAIN_TEXT_GREEN);
+            usedColumn.addComponents(usedXLabel, usedXNumberLabel);
+            Label isVariantLabel = new Label("is variant");
+            isVariantLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
+                    MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_OPACITY_40);
+            Label isVariantLabelGoto = new Label("GOTO");
+            isVariantLabelGoto.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM,
+                    MyTheme.MAIN_TEXT_WEIGHT_900, MyTheme.MAIN_TEXT_GREEN, MyTheme.MAIN_CONTROL_CLICKABLE);
+            variance.addComponents(isVariantLabel, isVariantLabelGoto);
+            variance.setMargin(false);
+            variance.addStyleName(MyTheme.MAIN_FLAT_DARK_LEFT_RIGHT_BORDER);
+            Label datePublishedLabel = new Label("date published");
+            datePublishedLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
+                    MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_OPACITY_40);
+            Label datePublishedDateLabel = new Label(DateConvert.convertNumericDateToAlphabeticDate(questionDate));
+            datePublishedDateLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM,
+                    MyTheme.MAIN_TEXT_WEIGHT_900, MyTheme.MAIN_TEXT_GREEN);
+            published.setMargin(false);
+            published.addComponents(datePublishedLabel, datePublishedDateLabel);
+            published.setComponentAlignment(datePublishedLabel, Alignment.MIDDLE_CENTER);
+            published.setComponentAlignment(datePublishedDateLabel, Alignment.MIDDLE_CENTER);
+
+            // align
+            usedColumn.setComponentAlignment(usedXLabel, Alignment.MIDDLE_LEFT);
+            variance.setComponentAlignment(isVariantLabel, Alignment.MIDDLE_CENTER);
+            variance.setComponentAlignment(isVariantLabelGoto, Alignment.MIDDLE_CENTER);
+            otherRow.setComponentAlignment(usedColumn, Alignment.MIDDLE_CENTER);
+
+            // add other row
+            seeMoreComponent.addStyleName(MyTheme.MAIN_FLAT_DARK_TOP_BOTTOM_BORDER);
+            seeMoreComponent.addComponent(otherRow);
         }
     }
 
@@ -645,7 +873,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
                 // change all question items
                 for (QuestionPaperItemComponent p : paperItemComponentArrayList) {
-                    p.setBullet(setQuestionPaperItemComponentValue());
+                    p.setBullet(setQuestionPaperItemComponentValue(paperItemComponentArrayList.indexOf(p)));
                     p.updateQuestionPaperItemComponentValue();
                 }
             });
@@ -726,7 +954,7 @@ public class QuestionView extends HorizontalLayout implements View {
                     dropArea.setHeightUndefined();
 
                     // character incrementation
-                    String bulletIncrement = setQuestionPaperItemComponentValue();
+                    String bulletIncrement = setQuestionPaperItemComponentValue(paperItemComponentArrayList.size());
 
                     // add question item
                     QuestionPaperItemComponent itemComponent =
@@ -752,26 +980,16 @@ public class QuestionView extends HorizontalLayout implements View {
             number.setValue("Question " + this.questionNumber + " - ");
         }
 
-        private String setQuestionPaperItemComponentValue() {
+        private String setQuestionPaperItemComponentValue(int index) {
             // character incrementation
             String bulletIncrement;
 
-            if (useNumeric) {
-                // get integer
-                if (paperItemComponentArrayList.size() == 0)
-                    bulletIncrement = questionNumber + "." + (paperItemComponentArrayList.size() + 1);
-                else bulletIncrement = questionNumber + "." + (paperItemComponentArrayList.size());
-            }
+            if (useNumeric) bulletIncrement = questionNumber + "." + (index + 1);
             else {
                 // it's alphabetic
                 char alpha = 'a';
-                if (paperItemComponentArrayList.size() == 0) {
-                    bulletIncrement =  Character.toString(alpha);
-                }
-                else {
-                    alpha += paperItemComponentArrayList.size() - 1;
-                    bulletIncrement =  Character.toString(alpha);
-                }
+                alpha += index;
+                bulletIncrement = Character.toString(alpha);
             }
             return bulletIncrement.trim();
         }
