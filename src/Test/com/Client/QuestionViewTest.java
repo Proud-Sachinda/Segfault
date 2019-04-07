@@ -1,14 +1,45 @@
 package com.Client;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.JUnitCore;
 
 import static org.junit.Assert.*;
 
 class QuestionViewTest {
 
     QuestionView myquestionview;
+
+    @BeforeClass
+    /*
+Executed once, before the start of all tests. It is used to perform time intensive activities,
+ for example, to connect to a database.
+Methods marked with this annotation need to be defined as static to work with JUnit.
+
+
+     */
+
+    @AfterClass
+    /*
+Executed once, after all tests have been finished. It is used to perform clean-up activities,
+for example, to disconnect from a database.
+Methods annotated with this annotation need to be defined as static to work with JUnit.
+
+     */
+
+    @Ignore
+    /*
+    Marks that the test should be disabled.
+    This is useful when the underlying code has been changed and the test case has not yet been adapted.
+    Or if the execution time of this test is too long to be included.
+    It is best practice to provide the optional description, why the test is disabled.
+     */
+    //@Ignore("Why disabled")
+
 
     @BeforeEach
     void setUp() {
@@ -20,7 +51,7 @@ class QuestionViewTest {
     }
 
     @Test
-    void Testmyfunction(){
+    void myfunctionTest(){
 
         assertEquals(7,myquestionview.myfunction(5,2));
     }
