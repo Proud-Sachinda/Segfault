@@ -1,11 +1,16 @@
 package com.Client;
 
 import com.Dashboard;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Sizeable;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 
+import javax.swing.*;
+import javax.validation.constraints.Null;
 import java.sql.Connection;
 
 public class CourseView extends HorizontalLayout implements View {
@@ -15,6 +20,12 @@ public class CourseView extends HorizontalLayout implements View {
 
     // connection for database
     private Connection connection;
+
+    //Create a button
+    private Button export1 = new Button("Export");
+    private Button export2 = new Button("Export");
+    private Button createcourse =  new Button("CreateCourse");
+
 
     // route strings - nothing special just things like qbank_exploded_war/route_name
     protected final String question = "question";
@@ -44,6 +55,7 @@ public class CourseView extends HorizontalLayout implements View {
         // set content area
         content.setSizeFull();
         addComponentsAndExpand(content);
+        setUpPeople();
     }
 
 
@@ -55,14 +67,104 @@ public class CourseView extends HorizontalLayout implements View {
 
 
         HorizontalLayout filtering = new HorizontalLayout();
-        Label order = new Label("Order by - ");
+        Panel panel = new Panel();
 
-        filtering.addComponents(order, selectPeople);
-       // paper.addComponent(filtering);
+        VerticalLayout panelContent = new VerticalLayout();
+        panel.addStyleName("lizo");
+
+        panelContent.setWidth(100.0f, Unit.PERCENTAGE);
+        panelContent.setHeight(100.0f, Unit.PERCENTAGE);
+
+
+        Label label = new Label();
+        Label label2 = new Label();
+        label2.setValue("COMS 3009");
+        label2.addStyleName("lol");
+        label.setValue("Software Design");
+        label.addStyleName("lol");
+        panelContent.addComponents(label);
+        panelContent.addComponents(label2);
+        //panelContent.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+        //panelContent.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+
+
+        panelContent.addComponents(export2, new Button((((VaadinIcons.SHARE)))));
+        panel.setContent(panelContent);
+
+        Panel panel1 = new Panel();
+        VerticalLayout verticalLayout = new VerticalLayout();
+        panel1.addStyleName("lizo");
+
+
+        verticalLayout.addComponents(new TabSheet());
+        verticalLayout.addComponents(new TabSheet());
+
+        verticalLayout.addComponents(export1);
+        verticalLayout.addComponents(new Button(((VaadinIcons.SHARE))));
+        panel1.setContent(verticalLayout);
+
+// Set the panel as the content of the UI
+        //setContent(panel);
+
+/*
+        VerticalLayout verticalLayout = new VerticalLayout();
+        VerticalLayout vertical = new VerticalLayout();
+        verticalLayout.addStyleName("lizo");
+        vertical.addStyleName("lizo");
+        verticalLayout.addComponents(new Panel("Muntu"));
+        vertical.addComponents(new TextArea("Hello"));
+*/
+        filtering.addComponents(panel, panel1, createcourse);
+
+        // filtering.addComponents(selectPeople);
+        content.addComponent(filtering);
+        export1.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                navigator.navigateTo(question);
+
+
+            }
+        });
+
+        export2.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                navigator.navigateTo(question);
+
+
+            }
+        });
+
+
+
+    }
+
+
+    private void showButtonClickedMessage(Button.ClickEvent clickEvent) {
+        VerticalLayout vertic = new VerticalLayout();
+        vertic.addStyleName("esmond");
+
+        vertic.addComponents(createcourse);
+
+        createcourse.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                navigator.navigateTo(question);
+
+
+            }
+        });
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+
+
+        //panel.addComponentDetachListener(export);
         // Notification.show("Course");
     }
 }
