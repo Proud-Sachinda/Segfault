@@ -10,11 +10,7 @@
     </facet>
     <facet type="gwt" name="GWT">
       <configuration>
-<<<<<<< HEAD
         <setting name="gwtSdkUrl" value="file://C:\Users\User\.m2\repository/com/vaadin/vaadin-client/8.7.1" />
-=======
-        <setting name="gwtSdkUrl" value="file://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/8.7.1" />
->>>>>>> a27aa75f661b640240b6be8360af8c5ab922bf35
         <setting name="gwtSdkType" value="Vaadin-Maven" />
         <setting name="webFacet" value="Web" />
       </configuration>
@@ -30,7 +26,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
     <orderEntry type="library" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.2.0-M1" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-engine:1.2.0-M1" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-surefire-provider:1.2.0-M1" level="project" />
@@ -39,8 +34,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.maven.surefire:surefire-logger-api:2.21.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.maven.surefire:common-java5:2.21.0" level="project" />
     <orderEntry type="library" name="Maven: com.vaadin:vaadin-server:8.7.1" level="project" />
-=======
->>>>>>> a27aa75f661b640240b6be8360af8c5ab922bf35
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:42.2.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.4.0" level="project" />
