@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1536147626">
+  <project timestamp="1536147626">
+    <package name="php\Signing">
+      <file name="C:\xampp/htdocs/php/Signing/SignIn.php">
+        <class name="SignIn" namespace="php\Signing">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+        </class>
+        <line num="5" type="method" name="returnTrue" crap="1" count="1"/>
+        <line num="6" type="stmt" count="1"/>
+        <metrics loc="8" ncloc="8" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+      </file>
+    </package>
+    <package name="Composer\Autoload">
+      <file name="C:\xampp/htdocs/vendor/composer/ClassLoader.php">
+        <class name="ClassLoader" namespace="Composer\Autoload">
+          <metrics methods="21" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="130" coveredstatements="27" elements="151" coveredelements="30"/>
+        </class>
+        <line num="60" type="method" name="getPrefixes" crap="6" count="0"/>
+        <line num="62" type="stmt" count="0"/>
+        <line num="63" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="0"/>
+        <line num="69" type="method" name="getPrefixesPsr4" crap="2" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="74" type="method" name="getFallbackDirs" crap="2" count="0"/>
+        <line num="76" type="stmt" count="0"/>
+        <line num="79" type="method" name="getFallbackDirsPsr4" crap="2" count="0"/>
+        <line num="81" type="stmt" count="0"/>
+        <line num="84" type="method" name="getClassMap" crap="2" count="0"/>
+        <line num="86" type="stmt" count="0"/>
+        <line num="92" type="method" name="addClassMap" crap="6" count="0"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="99" type="stmt" count="0"/>
+        <line num="109" type="method" name="add" crap="30" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="112" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="0"/>
+        <line num="114" type="stmt" count="0"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="0"/>
+        <line num="119" type="stmt" count="0"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="124" type="stmt" count="0"/>
+        <line num="127" type="stmt" count="0"/>
+        <line num="128" type="stmt" count="0"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="131" type="stmt" count="0"/>
+        <line num="133" type="stmt" count="0"/>
+        <line num="134" type="stmt" count="0"/>
+        <line num="135" type="stmt" count="0"/>
+        <line num="136" type="stmt" count="0"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="0"/>
+        <line num="141" type="stmt" count="0"/>
+        <line num="144" type="stmt" count="0"/>
+        <line num="156" type="method" name="addPsr4" crap="42" count="0"/>
+        <line num="158" type="stmt" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="161" type="stmt" count="0"/>
+        <line num="162" type="stmt" count="0"/>
+        <line num="163" type="stmt" count="0"/>
+        <line num="166" type="stmt" count="0"/>
+        <line num="167" type="stmt" count="0"/>
+        <line num="168" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="173" type="stmt" count="0"/>
+        <line num="174" type="stmt" count="0"/>
+        <line num="175" type="stmt" count="0"/>
+        <line num="177" type="stmt" count="0"/>
+        <line num="178" type="stmt" count="0"/>
+        <line num="179" type="stmt" count="0"/>
+        <line num="181" type="stmt" count="0"/>
+        <line num="182" type="stmt" count="0"/>
+        <line num="183" type="stmt" count="0"/>
+        <line num="187" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <line num="189" type="stmt" count="0"/>
+        <line num="192" type="stmt" count="0"/>
+        <line num="201" type="method" name="set" crap="6" count="0"/>
+        <line num="203" type="stmt" count="0"/>
+        <line num="204" type="stmt" count="0"/>
+        <line num="206" type="stmt" count="0"/>
+        <line num="208" type="stmt" count="0"/>
+        <line num="219" type="method" name="setPsr4" crap="12" count="0"/>
+        <line num="221" type="stmt" count="0"/>
+        <line num="222" type="stmt" count="0"/>
+        <line num="224" type="stmt" count="0"/>
+        <line num="225" type="stmt" count="0"/>
+        <line num="226" type="stmt" count="0"/>
+        <line num="228" type="stmt" count="0"/>
+        <line num="229" type="stmt" count="0"/>
+        <line num="231" type="stmt" count="0"/>
+        <line num="238" type="method" name="setUseIncludePath" crap="2" count="0"/>
+        <line num="240" type="stmt" count="0"/>
+        <line num="241" type="stmt" count="0"/>
+        <line num="249" type="method" name="getUseIncludePath" crap="2" count="0"/>
+        <line num="251" type="stmt" count="0"/>
+        <line num="260" type="method" name="setClassMapAuthoritative" crap="2" count="0"/>
+        <line num="262" type="stmt" count="0"/>
+        <line num="263" type="stmt" count="0"/>
+        <line num="270" type="method" name="isClassMapAuthoritative" crap="2" count="0"/>
+        <line num="272" type="stmt" count="0"/>
+        <line num="280" type="method" name="setApcuPrefix" crap="12" count="0"/>
+        <line num="282" type="stmt" count="0"/>
+        <line num="283" type="stmt" count="0"/>
+        <line num="290" type="method" name="getApcuPrefix" crap="2" count="0"/>
+        <line num="292" type="stmt" count="0"/>
+        <line num="300" type="method" name="register" crap="2" count="0"/>
+        <line num="302" type="stmt" count="0"/>
+        <line num="303" type="stmt" count="0"/>
+        <line num="308" type="method" name="unregister" crap="2" count="0"/>
+        <line num="310" type="stmt" count="0"/>
+        <line num="311" type="stmt" count="0"/>
+        <line num="319" type="method" name="loadClass" crap="2" count="1"/>
+        <line num="321" type="stmt" count="1"/>
+        <line num="322" type="stmt" count="1"/>
+        <line num="324" type="stmt" count="1"/>
+        <line num="326" type="stmt" count="1"/>
+        <line num="335" type="method" name="findFile" crap="15.27" count="1"/>
+        <line num="338" type="stmt" count="1"/>
+        <line num="339" type="stmt" count="1"/>
+        <line num="341" type="stmt" count="1"/>
+        <line num="342" type="stmt" count="0"/>
+        <line num="344" type="stmt" count="1"/>
+        <line num="345" type="stmt" count="0"/>
+        <line num="346" type="stmt" count="0"/>
+        <line num="347" type="stmt" count="0"/>
+        <line num="351" type="stmt" count="1"/>
+        <line num="354" type="stmt" count="1"/>
+        <line num="355" type="stmt" count="0"/>
+        <line num="358" type="stmt" count="1"/>
+        <line num="359" type="stmt" count="0"/>
+        <line num="362" type="stmt" count="1"/>
+        <line num="364" type="stmt" count="1"/>
+        <line num="367" type="stmt" count="1"/>
+        <line num="370" type="method" name="findFileWithExtension" crap="81.43" count="1"/>
+        <line num="373" type="stmt" count="1"/>
+        <line num="375" type="stmt" count="1"/>
+        <line num="376" type="stmt" count="1"/>
+        <line num="377" type="stmt" count="0"/>
+        <line num="378" type="stmt" count="0"/>
+        <line num="379" type="stmt" count="0"/>
+        <line num="380" type="stmt" count="0"/>
+        <line num="381" type="stmt" count="0"/>
+        <line num="382" type="stmt" count="0"/>
+        <line num="383" type="stmt" count="0"/>
+        <line num="384" type="stmt" count="0"/>
+        <line num="385" type="stmt" count="0"/>
+        <line num="393" type="stmt" count="1"/>
+        <line num="394" type="stmt" count="0"/>
+        <line num="395" type="stmt" count="0"/>
+        <line num="400" type="stmt" count="1"/>
+        <line num="402" type="stmt" count="0"/>
+        <line num="403" type="stmt" count="0"/>
+        <line num="406" type="stmt" count="1"/>
+        <line num="409" type="stmt" count="1"/>
+        <line num="410" type="stmt" count="1"/>
+        <line num="411" type="stmt" count="1"/>
+        <line num="412" type="stmt" count="0"/>
+        <line num="413" type="stmt" count="0"/>
+        <line num="414" type="stmt" count="1"/>
+        <line num="422" type="stmt" count="1"/>
+        <line num="423" type="stmt" count="0"/>
+        <line num="424" type="stmt" count="0"/>
+        <line num="429" type="stmt" count="1"/>
+        <line num="430" type="stmt" count="0"/>
+        <line num="433" type="stmt" count="1"/>
+        <line num="444" type="stmt" count="1"/>
+        <line num="445" type="stmt" count="1"/>
+        <metrics loc="445" ncloc="281" classes="1" methods="21" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="132" coveredstatements="29" elements="153" coveredelements="30"/>
+      </file>
+      <file name="C:\xampp/htdocs/vendor/composer/autoload_static.php">
+        <class name="ComposerStaticInit8d900122d14769b59c1a3046d03a3575" namespace="Composer\Autoload">
+          <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="0" elements="12" coveredelements="0"/>
+        </class>
+        <line num="604" type="method" name="getInitializer" crap="1" count="0"/>
+        <line num="607" type="stmt" count="0"/>
+        <line num="608" type="stmt" count="0"/>
+        <line num="609" type="stmt" count="0"/>
+        <line num="610" type="stmt" count="0"/>
+        <line num="612" type="stmt" count="0"/>
+        <metrics loc="614" ncloc="612" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="6" coveredelements="0"/>
+      </file>
+    </package>
+    <file name="C:\xampp/htdocs/vendor/composer/autoload_real.php">
+      <class name="ComposerAutoloaderInit8d900122d14769b59c1a3046d03a3575" namespace="global">
+        <metrics methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="0" elements="30" coveredelements="0"/>
+      </class>
+      <line num="9" type="method" name="loadClassLoader" crap="6" count="0"/>
+      <line num="11" type="stmt" count="0"/>
+      <line num="12" type="stmt" count="0"/>
+      <line num="14" type="stmt" count="0"/>
+      <line num="16" type="method" name="getLoader" crap="132" count="0"/>
+      <line num="18" type="stmt" count="0"/>
+      <line num="19" type="stmt" count="0"/>
+      <line num="22" type="stmt" count="0"/>
+      <line num="23" type="stmt" count="0"/>
+      <line num="24" type="stmt" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="27" type="stmt" count="0"/>
+      <line num="28" type="stmt" count="0"/>
+      <line num="30" type="stmt" count="0"/>
+      <line num="32" type="stmt" count="0"/>
+      <line num="33" type="stmt" count="0"/>
+      <line num="34" type="stmt" count="0"/>
+      <line num="37" type="stmt" count="0"/>
+      <line num="38" type="stmt" count="0"/>
+      <line num="39" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="0"/>
+      <line num="43" type="stmt" count="0"/>
+      <line num="44" type="stmt" count="0"/>
+      <line num="48" type="stmt" count="0"/>
+      <line num="50" type="stmt" count="0"/>
+      <line num="51" type="stmt" count="0"/>
+      <line num="53" type="stmt" count="0"/>
+      <line num="55" type="stmt" count="0"/>
+      <line num="56" type="stmt" count="0"/>
+      <line num="59" type="stmt" count="0"/>
+      <line num="65" type="stmt" count="0"/>
+      <line num="66" type="stmt" count="0"/>
+      <line num="68" type="stmt" count="0"/>
+      <line num="70" type="stmt" count="0"/>
+      <metrics loc="70" ncloc="68" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="32" coveredstatements="0" elements="34" coveredelements="0"/>
+    </file>
+    <file name="C:\xampp/htdocs/vendor/myclabs/deep-copy/src/DeepCopy/deep_copy.php">
+      <line num="18" type="stmt" count="0"/>
+      <metrics loc="20" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="1" coveredelements="0"/>
+    </file>
+    <file name="C:\xampp/php/pear/Text/Template/Autoload.php">
+      <line num="48" type="stmt" count="1"/>
+      <line num="49" type="stmt" count="1"/>
+      <line num="51" type="stmt" count="1"/>
+      <line num="53" type="stmt" count="0"/>
+      <line num="56" type="stmt" count="0"/>
+      <line num="59" type="stmt" count="1"/>
+      <line num="61" type="stmt" count="1"/>
+      <line num="62" type="stmt" count="0"/>
+      <line num="64" type="stmt" count="1"/>
+      <metrics loc="65" ncloc="22" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="6" elements="9" coveredelements="6"/>
+    </file>
+    <metrics files="6" loc="1222" ncloc="1003" classes="4" methods="25" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="180" coveredstatements="36" elements="205" coveredelements="38"/>
+  </project>
+</coverage>
