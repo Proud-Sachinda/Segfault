@@ -107,7 +107,6 @@ public class ExportView extends HorizontalLayout implements View {
                 String qbody = q.getQuestionBody();
                     Q.add(qbody);
                 System.out.println(qbody);
-
                 }
 
                 CreatePDF(Q);

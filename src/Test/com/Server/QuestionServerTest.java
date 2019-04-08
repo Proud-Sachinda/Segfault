@@ -26,13 +26,13 @@ class QuestionServerTest {
     }
 
     @Test
-    void get() {
+    void Testget() {
 
         //assertNotNull(myQuestionServer.get());
     }
 
     @Test
-    void post() {
+    void Testpost() {
 
         QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
 
@@ -51,26 +51,26 @@ class QuestionServerTest {
     }
 
     @Test
-    void post1() {
+    void Testpost1() {
     }
 
     @Test
-    void post2() {
+    void Testpost2() {
     }
 
     @Test
-    void getQuestion() {
+    void TestgetQuestion() {
     }
 
     @Test
-    void getWritten() {
+    void TestgetWritten() {
     }
 
     @Test
-    void getPractical() {
+    void TestgetPractical() {
     }
 
     @Test
-    void getMcq() {
+    void TestgetMcq() {
     }
 }
