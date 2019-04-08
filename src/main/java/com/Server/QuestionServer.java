@@ -1,7 +1,5 @@
 package com.Server;
 
-import com.vaadin.ui.Label;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,15 +28,17 @@ public class QuestionServer {
         this.connection = connection;
     }
 
-    public ArrayList<Question> get() {
+    public Question get(int questionId) {
 
+        Question question1 = new Question();
         try {
 
             // get database variables
             Statement statement = connection.createStatement();
 
             // query
-            String query = "SELECT * FROM public.question";
+            String query = "SELECT * FROM public.question where question_id ="+questionId;
+
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
@@ -46,29 +46,30 @@ public class QuestionServer {
             while(set.next()) {
 
                 // Question class variable
-                Question question = new Question();
+
 
                 // set variables
-                question.setLecturerId(set.getString("lecturer_id"));
-                question.setQuestionType(set.getString("question_type"));
-                question.setQuestionBody(set.getString("question_body"));
-                question.setQuestionAns(set.getString("question_ans"));
-                question.setQuestionDifficulty(set.getString("question_difficulty"));
-                question.setQuestionDate(set.getDate("question_date"));
-                question.setQuestionLastUsed(set.getDate("question_last_used"));
-                question.setQuestionVariance(set.getInt("question_variance"));
-                question.setQuestionMark(set.getInt("question_mark"));
+                question1.setLecturerId(set.getString("lecturer_id"));
+                question1.setQuestionType(set.getString("question_type"));
+                question1.setQuestionBody(set.getString("question_body"));
+                question1.setQuestionAns(set.getString("question_ans"));
+                question1.setQuestionDifficulty(set.getInt("question_difficulty"));
+                question1.setQuestionDate(set.getDate("question_date"));
+                question1.setQuestionLastUsed(set.getDate("question_last_used"));
+                question1.setQuestionVariance(set.getInt("question_variance"));
+                question1.setQuestionMark(set.getInt("question_mark"));
 
                 // add to array list
-                questions.add(question);
+
                 //System.out.println(question.getQuestionBody());
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
-        return this.questions;
+        return question1;
     }
 
     //post method for written question
@@ -81,7 +82,7 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = q.getQuestionDifficulty();
+        int questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         int question_line = q.question_line;
@@ -116,7 +117,7 @@ public class QuestionServer {
             statement1.setString(2,questionType);
             statement1.setString(3,questionBody);
             statement1.setString(4, questionAns);
-            statement1.setString(5,questionDiff);
+            statement1.setInt(5,questionDiff);
             statement1.setInt(6,questionVar);
             statement1.setInt(7, questionMark);
             statement1.setInt(8,question_line);
@@ -145,7 +146,7 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = q.getQuestionDifficulty();
+        int questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         String sample_input =  q.sample_input;
@@ -181,7 +182,7 @@ public class QuestionServer {
             statement1.setString(2,questionType);
             statement1.setString(3,questionBody);
             statement1.setString(4, questionAns);
-            statement1.setString(5,questionDiff);
+            statement1.setInt(5,questionDiff);
             statement1.setInt(6,questionVar);
             statement1.setInt(7, questionMark);
             statement1.setString(8,sample_input);
@@ -202,6 +203,7 @@ public class QuestionServer {
 
     }
     //post method for mcq
+    @SuppressWarnings("Duplicates")
     public boolean post(Mcq q) {
 
         // TODO create-question form passes in a question variable
@@ -211,7 +213,7 @@ public class QuestionServer {
         String questionBody = q.getQuestionBody();
         String questionAns = q.getQuestionAns();
         String questionType = q.getQuestionType();
-        String questionDiff = q.getQuestionDifficulty();
+        int questionDiff = q.getQuestionDifficulty();
         int questionMark = q.getQuestionMark();
         int questionVar = 0;
         String mcq_choices = q.mcq_choices;
@@ -244,7 +246,7 @@ public class QuestionServer {
             statement1.setString(2,questionType);
             statement1.setString(3,questionBody);
             statement1.setString(4, questionAns);
-            statement1.setString(5,questionDiff);
+            statement1.setInt(5,questionDiff);
             statement1.setInt(6,questionVar);
             statement1.setInt(7, questionMark);
             statement1.setString(8,mcq_choices);
@@ -286,7 +288,7 @@ public class QuestionServer {
         private String question_type;
         private String question_body;
         private String question_ans;
-        private String question_difficulty;
+        private int question_difficulty;
         private Date question_date;
         private Date question_last_used;
         private int question_variance;
@@ -308,7 +310,7 @@ public class QuestionServer {
             return question_ans;
         }
 
-        public String getQuestionDifficulty() {
+        public int getQuestionDifficulty() {
             return question_difficulty;
         }
 
@@ -344,7 +346,7 @@ public class QuestionServer {
             this.question_ans = question_ans;
         }
 
-        public void setQuestionDifficulty(String question_difficulty) {
+        public void setQuestionDifficulty(int question_difficulty) {
             this.question_difficulty = question_difficulty;
         }
 

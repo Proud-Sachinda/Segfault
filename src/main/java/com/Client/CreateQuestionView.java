@@ -89,11 +89,18 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Button removeChoice2 = new Button("remove");
     private Button removeChoice3 = new Button("remove");
     private Button removeChoice4 = new Button("remove");
+    //horizontal layouts for each mcq choice
     HorizontalLayout mcqchoice = new HorizontalLayout();
     HorizontalLayout mcqchoice1 = new HorizontalLayout();
     HorizontalLayout mcqchoice2 = new HorizontalLayout();
     HorizontalLayout mcqchoice3 = new HorizontalLayout();
     HorizontalLayout mcqchoice4 = new HorizontalLayout();
+    //status for each choice
+    boolean choicestatus1 = false;
+    boolean choicestatus2 = false;
+    boolean choicestatus3 = false;
+    boolean choicestatus4 = false;
+    boolean choicestatus5 = false;
     private ArrayList<CourseServer.Course> courseArrayList;
     private CourseServer courseServer;
 
@@ -218,6 +225,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 mcqchoice4.removeAllComponents();
                 mcqchoice.addComponents(choice,addChoice);
                 extrastuff.addComponentsAndExpand(mcqchoice);
+                choicestatus1 = true;
                 qtype = "mcq";
             }
         });
@@ -225,10 +233,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         addChoice.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                choices= choices+choice.getValue();
+                choices= choices+"&"+choice.getValue();
                 mcqchoice.removeComponent(addChoice);
                 mcqchoice.addComponent(removeChoice);
                 mcqchoice1.addComponents(choice1,addChoice1);
+                choicestatus2 = true;
                 extrastuff.addComponentsAndExpand(mcqchoice1);
 
             }
@@ -242,6 +251,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 mcqchoice1.removeComponent(addChoice1);
                 mcqchoice1.addComponent(removeChoice1);
                 mcqchoice2.addComponents(choice2,addChoice2);
+                choicestatus3 = true;
                 extrastuff.addComponentsAndExpand(mcqchoice2);
 
             }
@@ -255,6 +265,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 mcqchoice2.removeComponent(addChoice2);
                 mcqchoice2.addComponent(removeChoice2);
                 mcqchoice3.addComponents(choice3,addChoice3);
+                choicestatus4 = true;
                 extrastuff.addComponentsAndExpand(mcqchoice3);
 
             }
@@ -268,6 +279,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 mcqchoice3.removeComponent(addChoice3);
                 mcqchoice3.addComponent(removeChoice3);
                 mcqchoice4.addComponents(choice4,removeChoice4);
+                choicestatus5 = true;
                 extrastuff.addComponentsAndExpand(mcqchoice4);
 
             }
@@ -277,6 +289,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeComponent(mcqchoice);
+                choicestatus1 = false;
+
+                if((choicestatus2 = false) & (choicestatus3 = false) & (choicestatus4 = false) &( choicestatus5 = false)){
+                    extrastuff.addComponent(mcqchoice);
+                }
                 choice.clear();
 
             }
@@ -286,6 +303,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeComponent(mcqchoice1);
+                choicestatus2 = false;
+
+                if((choicestatus1 = false) & (choicestatus3 = false) & (choicestatus4 = false) &( choicestatus5 = false)){
+                    extrastuff.addComponent(mcqchoice);
+                }
                 choice1.clear();
 
             }
@@ -295,6 +317,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeComponent(mcqchoice2);
+                choicestatus3 = false;
+
+                if((choicestatus2 = false) & (choicestatus1 = false) & (choicestatus4 = false) &( choicestatus5 = false)){
+                    extrastuff.addComponent(mcqchoice);
+                }
                 choice2.clear();
 
             }
@@ -304,6 +331,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeComponent(mcqchoice3);
+                choicestatus4 = false;
+
+                if((choicestatus2 = false) & (choicestatus3 = false) & (choicestatus1 = false) &( choicestatus5 = false)){
+                    extrastuff.addComponent(mcqchoice);
+                }
                 choice3.clear();
 
             }
@@ -313,6 +345,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 extrastuff.removeComponent(mcqchoice4);
+                choicestatus5 = false;
+
+                if((choicestatus2 = false) & (choicestatus3 = false) & (choicestatus4 = false) &( choicestatus1 = false)){
+                    extrastuff.addComponent(mcqchoice);
+                }
                 choice4.clear();
 
             }
@@ -387,18 +424,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         addq.addComponents(latexstuff,qname,answername);
         addq.setStyleName("Segzy4");
 
-        //back.setIcon(new ClassResource("left-arrow.png"));
-        //back.setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\left-arrow.png"));
-        //everything for the mark
-        /* HorizontalLayout addmark = new HorizontalLayout();
-        mark.setWidth("40px");
-        increase.setStyleName("Segzy5-increase");
-        mark.setStyleName("Segzy5-text");
-        decrease.setStyleName("Segzy5-decrease");
-        mark.setStyleName("segzyfield");
-        //increase .setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\add.png"));
-        addmark.addComponents(marklabel,decrease,mark,increase);
-        */
+
 
         back.setStyleName("Segzy6");
         submit.setStyleName("Segzy5");
@@ -447,19 +473,6 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 if(qtype.matches("written")){
                     QuestionServer.Written q = (QuestionServer.Written) questionServer.getWritten();
 
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
-
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
-
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
-
                     String m = mark1.getValue();
                     String l=lines.getValue();
                     q.setQuestionBody(qname.getValue());
@@ -467,7 +480,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setQuestion_line(Integer.parseInt(l));
 
@@ -485,24 +499,24 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
                     QuestionServer.Practical q = (QuestionServer.Practical) questionServer.getPractical();
                     if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
+                        //q.setQuestionDifficulty("Easy");
                     }
 
                     else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
+                        //q.setQuestionDifficulty("Medium");
                     }
 
                     else{
-                        q.setQuestionDifficulty("Hard");
+                        //q.setQuestionDifficulty("Hard");
                     }
-                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setSample_input(sampleinput.getValue());
                     q.setSample_output(sampleoutput.getValue());
@@ -519,25 +533,14 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 else if (qtype.matches("mcq")){
                     //  q.setQuestionType("Mcq");
                     QuestionServer.Mcq q = (QuestionServer.Mcq) questionServer.getMcq();
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
-
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
-
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setMcq_choices(choices);
 
