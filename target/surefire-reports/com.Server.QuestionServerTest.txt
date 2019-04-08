@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.Server.QuestionServerTest
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.118 s <<< FAILURE! - in com.Server.QuestionServerTest
-Testget  Time elapsed: 0.07 s  <<< ERROR!
-java.lang.NullPointerException
-	at com.Server.QuestionServerTest.Testget(QuestionServerTest.java:31)
-
