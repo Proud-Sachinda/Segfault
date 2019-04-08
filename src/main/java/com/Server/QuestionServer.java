@@ -30,15 +30,17 @@ public class QuestionServer {
         this.connection = connection;
     }
 
-    public ArrayList<Question> get() {
+    public Question get(int questionId) {
 
+        Question question1 = new Question();
         try {
 
             // get database variables
             Statement statement = connection.createStatement();
 
             // query
-            String query = "SELECT * FROM public.question";
+            String query = "SELECT * FROM public.question where question_id ="+questionId;
+
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
@@ -46,29 +48,30 @@ public class QuestionServer {
             while(set.next()) {
 
                 // Question class variable
-                Question question = new Question();
+
 
                 // set variables
-                question.setLecturerId(set.getString("lecturer_id"));
-                question.setQuestionType(set.getString("question_type"));
-                question.setQuestionBody(set.getString("question_body"));
-                question.setQuestionAns(set.getString("question_ans"));
-                question.setQuestionDifficulty(set.getString("question_difficulty"));
-                question.setQuestionDate(set.getDate("question_date"));
-                question.setQuestionLastUsed(set.getDate("question_last_used"));
-                question.setQuestionVariance(set.getInt("question_variance"));
-                question.setQuestionMark(set.getInt("question_mark"));
+                question1.setLecturerId(set.getString("lecturer_id"));
+                question1.setQuestionType(set.getString("question_type"));
+                question1.setQuestionBody(set.getString("question_body"));
+                question1.setQuestionAns(set.getString("question_ans"));
+                question1.setQuestionDifficulty(set.getString("question_difficulty"));
+                question1.setQuestionDate(set.getDate("question_date"));
+                question1.setQuestionLastUsed(set.getDate("question_last_used"));
+                question1.setQuestionVariance(set.getInt("question_variance"));
+                question1.setQuestionMark(set.getInt("question_mark"));
 
                 // add to array list
-                questions.add(question);
+
                 //System.out.println(question.getQuestionBody());
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
 
-        return this.questions;
+        return question1;
     }
 
     //post method for written question
