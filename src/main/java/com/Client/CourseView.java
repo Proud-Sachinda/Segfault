@@ -8,6 +8,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
+import org.w3c.dom.Text;
 
 import javax.swing.*;
 import javax.validation.constraints.Null;
@@ -21,16 +22,33 @@ public class CourseView extends HorizontalLayout implements View {
     // connection for database
     private Connection connection;
 
+    String type = "";
+
     //Create a button
     private Button export1 = new Button("Export");
     private Button export2 = new Button("Export");
     private Button createcourse =  new Button("CreateCourse");
+    private Button wola = new Button("Add");
+
+    private TextField sampleinput = new TextField("Add Course Name");
+    private TextField sampleoutput = new TextField("Add Course Id");
 
 
     // route strings - nothing special just things like qbank_exploded_war/route_name
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
+
+
+    HorizontalLayout choice = new HorizontalLayout();
+    HorizontalLayout lay = new HorizontalLayout();
+
+
+    TextField text = new TextField();
+
+
+
+
 
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
@@ -93,11 +111,17 @@ public class CourseView extends HorizontalLayout implements View {
 
         Panel panel1 = new Panel();
         VerticalLayout verticalLayout = new VerticalLayout();
+
+        Label label4 =  new Label();
+        Label label5 =  new Label();
+        label4.setValue("Real Analysis");
+        label5.setValue("MATH");
+
         panel1.addStyleName("lizo");
 
 
-        verticalLayout.addComponents(new TabSheet());
-        verticalLayout.addComponents(new TabSheet());
+        //verticalLayout.addComponents(label4);
+        verticalLayout.addComponents(label5,label4);
 
         verticalLayout.addComponents(export1);
         verticalLayout.addComponents(new Button(((VaadinIcons.SHARE))));
@@ -114,7 +138,7 @@ public class CourseView extends HorizontalLayout implements View {
         verticalLayout.addComponents(new Panel("Muntu"));
         vertical.addComponents(new TextArea("Hello"));
 */
-        filtering.addComponents(panel, panel1, createcourse);
+
 
         // filtering.addComponents(selectPeople);
         content.addComponent(filtering);
@@ -122,7 +146,7 @@ public class CourseView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
 
-                navigator.navigateTo(question);
+                navigator.navigateTo(export);
 
 
             }
@@ -132,11 +156,49 @@ public class CourseView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
 
-                navigator.navigateTo(question);
+                navigator.navigateTo(export);
 
 
             }
         });
+
+        Panel panel3 = new Panel();
+
+
+        VerticalLayout vertic = new VerticalLayout();
+
+        Label label3 = new Label();
+        label3.setValue("Allows you to add course");
+        label3.addStyleName("lol");
+        vertic.addComponents(label3);
+
+
+        vertic.addComponents();
+
+        panel3.setContent(vertic);
+
+
+        //vertic.addStyleName("esmond");
+
+        ////vertic.addComponents(createcourse);
+
+        sampleinput.setWidth("91%");
+        sampleinput.setHeight("90px");
+        sampleoutput.setHeight("90px");
+        sampleoutput.setWidth("91%");
+
+
+        createcourse.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                vertic.removeAllComponents();
+                vertic.addComponentsAndExpand(sampleinput,sampleoutput,wola);
+                type = "CreateCourse";
+
+            }
+        });
+
+        filtering.addComponents(panel, panel1,panel3, createcourse);
 
 
 
@@ -144,20 +206,8 @@ public class CourseView extends HorizontalLayout implements View {
 
 
     private void showButtonClickedMessage(Button.ClickEvent clickEvent) {
-        VerticalLayout vertic = new VerticalLayout();
-        vertic.addStyleName("esmond");
-
-        vertic.addComponents(createcourse);
-
-        createcourse.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-
-                navigator.navigateTo(question);
 
 
-            }
-        });
     }
 
     @Override
