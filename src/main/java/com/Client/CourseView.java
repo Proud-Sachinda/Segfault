@@ -63,7 +63,7 @@ public class CourseView extends HorizontalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Course");
+        // Notification.show("CourseObject");
     }
 
     private class CourseComponent extends VerticalLayout {

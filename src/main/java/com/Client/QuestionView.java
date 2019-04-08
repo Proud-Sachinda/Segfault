@@ -1,12 +1,14 @@
 package com.Client;
 
+import com.Components.CourseComboBox;
+import com.Components.QuestionItemComponent;
 import com.Dashboard;
+import com.DateConvert;
 import com.MyTheme;
-import com.Server.QuestionServer;
+import com.Objects.QuestionItem;
+import com.Server.QuestionViewServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
-import com.vaadin.data.converter.LocalDateToDateConverter;
-import com.vaadin.event.ContextClickEvent;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -23,10 +25,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
 import java.sql.*;
-import java.text.DateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -59,20 +57,17 @@ public class QuestionView extends HorizontalLayout implements View {
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     // question server
-    private QuestionServer questionServer;
-    private ArrayList<QuestionServer.Question> questionArrayList;
+    private QuestionViewServer questionViewServer;
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     // paper area variables
+    private int testId;
     private String draftName;
 
     // boolean to check if user has been on this page before
     private boolean hasEnteredPageBefore = false;
-
-    // question item variables
-    private ArrayList<QuestionItemComponent> questionItemComponents;
 
     // pagination variables
     private int currentSelectedPaginationPage;
@@ -91,7 +86,7 @@ public class QuestionView extends HorizontalLayout implements View {
         this.connection = connection;
 
         // set up question server
-        questionServer = new QuestionServer(this.connection);
+        questionViewServer = new QuestionViewServer(this.connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -141,7 +136,10 @@ public class QuestionView extends HorizontalLayout implements View {
         else {
             // show a list of drafts and finals
             Label label = new Label("Recent");
-            label.addStyleNames(MyTheme.MAIN_TEXT_SIZE_LARGE, MyTheme.MAIN_OPACITY_60);
+            label.addStyleNames(MyTheme.MAIN_TEXT_SIZE_LARGE, MyTheme.MAIN_OPACITY_60, MyTheme.MAIN_TEXT_WEIGHT_900);
+
+            // add labels to paper
+            paper.addComponent(label);
         }
 
     }
@@ -276,21 +274,28 @@ public class QuestionView extends HorizontalLayout implements View {
     private void setUpQuestions() {
 
         // get questions
-        questionArrayList = questionServer.get();
+        ArrayList<QuestionItem> questionArrayList = questionViewServer.getQuestionItems();
 
         // set up root question layout
         VerticalLayout verticalLayoutRoot = new VerticalLayout();
         verticalLayoutRoot.setMargin(false);
 
         // loop through questions and add to view
-        for (QuestionServer.Question q : questionArrayList) {
+        for (QuestionItem q : questionArrayList) {
 
             // declare new question item component
-            QuestionItemComponent questionItemComponent = new QuestionItemComponent();
+            QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionViewServer);
             // set variables
-            questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
+            questionItemComponent.setCourseId(q.getCourseId());
+            questionItemComponent.setCourseCode(q.getCourseId());
+            questionItemComponent.setCourseName(q.getCourseId());
+            questionItemComponent.setQuestionId(q.getQuestionId());
+            questionItemComponent.setQuestionAns(q.getQuestionAns());
             questionItemComponent.setQuestionBody(q.getQuestionBody());
+            questionItemComponent.setQuestionMark(q.getQuestionMark());
             questionItemComponent.setQuestionDate(q.getQuestionDate());
+            questionItemComponent.setQuestionLastUsed(q.getQuestionLastUsed());
+            questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
 
             // set up question item component
             questionItemComponent.setUpQuestionItemComponent();
@@ -377,23 +382,30 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setWidth(100.0f, Unit.PERCENTAGE);
             textField.setPlaceholder("Enter draft name");
 
-            // create sections
-            CheckBox checkBox = new CheckBox("Use sections");
+            // course subjects
+            CourseComboBox comboBox = new CourseComboBox(questionViewServer.getCourses());
+            comboBox.setWidth(100.0f, Unit.PERCENTAGE);
+            comboBox.addComboBoxValueChangeListener();
 
             // submit button
             Button submit = new Button("Create");
             submit.addClickListener((Button.ClickListener) event -> {
 
                 // check if text field is empty
-                if (textField.isEmpty()) {
-                    textField.setCaption("*required field");
+                if (textField.isEmpty() || !(comboBox.getCourseId() > 0)) {
+                    textField.setCaption("*fill all fields");
                 }
                 else {
 
                     // set title of heading
-                    draftName = textField.getValue().trim();
+                    String textFieldValue = textField.getValue().trim();
+                    String s = (Character.toString(textFieldValue.charAt(0))).toUpperCase();
+                    draftName = s.concat(textFieldValue.substring(1));
 
-                    // TODO take these values to database test table
+                    // take to database
+                    testId = questionViewServer.postToTestTable(true, draftName, comboBox.getCourseId());
+                    if (!(testId > 0))
+                        Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
                     // populate question pagination array list
                     questionPaginationComponents = new ArrayList<>();
@@ -411,192 +423,11 @@ public class QuestionView extends HorizontalLayout implements View {
             });
 
             // add components
-            addComponents(empty, label, textField, checkBox, submit);
+            addComponents(empty, label, textField, comboBox, submit);
 
             // align in middle
             setComponentAlignment(empty, Alignment.MIDDLE_CENTER);
             setComponentAlignment(submit, Alignment.MIDDLE_CENTER);
-        }
-    }
-
-    private class QuestionItemComponent extends VerticalLayout {
-
-        // attributes
-        private int questionMark;
-        private Date questionDate;
-        private String questionAns;
-        private String questionType;
-        private String questionBody;
-        private Date questionLastUsed;
-        private String questionBodyFull;
-        private String questionDifficulty;
-
-        // component
-        Component fullComponent;
-
-        private int getQuestionMark() {
-            return questionMark;
-        }
-
-        private void setQuestionMark(int questionMark) {
-            this.questionMark = questionMark;
-        }
-
-        private Date getQuestionDate() {
-            return questionDate;
-        }
-
-        private void setQuestionDate(Date questionDate) {
-            this.questionDate = questionDate;
-        }
-
-        private String getQuestionAns() {
-            return questionAns;
-        }
-
-        private void setQuestionAns(String questionAns) {
-            this.questionAns = questionAns;
-        }
-
-        private String getQuestionType() {
-            return questionType;
-        }
-
-        private void setQuestionType(String questionType) {
-            this.questionType = questionType;
-        }
-
-        private String getQuestionBody() {
-            return questionBody;
-        }
-
-        private void setQuestionBody(String questionBody) {
-
-            if (questionBody.length() > 120) this.questionBody = questionBody.substring(0, 120) + " ...";
-            else this.questionBody = questionBody;
-
-            setQuestionBodyFull(questionBody);
-        }
-
-        private Date getQuestionLastUsed() {
-            return questionLastUsed;
-        }
-
-        private void setQuestionLastUsed(Date questionLastUsed) {
-            this.questionLastUsed = questionLastUsed;
-        }
-
-        private String getQuestionDifficulty() {
-            return questionDifficulty;
-        }
-
-        private void setQuestionDifficulty(String questionDifficulty) {
-
-            if (questionDifficulty.matches("easy")) this.questionDifficulty = "1";
-            else if (questionDifficulty.matches("medium")) this.questionDifficulty = "3";
-            else this.questionDifficulty = "5";
-        }
-
-        private String getQuestionBodyFull() {
-            return questionBodyFull;
-        }
-
-        private void setQuestionBodyFull(String questionBodyFull) {
-            this.questionBodyFull = questionBodyFull;
-        }
-
-        private void setUpQuestionItemComponent() {
-
-            // set margin to false
-            setMargin(false);
-
-            // first row ------------------------------------------------------
-            // set up and add horizontal layout for difficulty badge, question, date
-            HorizontalLayout firstRow = new HorizontalLayout();
-            firstRow.setWidth(100.0f, Unit.PERCENTAGE);
-
-            Label difficultyLabel = new Label(this.questionDifficulty);
-            difficultyLabel.addStyleNames("main-flat-badge-icon", "main-blue");
-            Label questionBodyLabel = new Label(this.getQuestionBody());
-            Label dateLabel = new Label(this.questionDate + "");
-
-            // add difficulty and question body and date
-            firstRow.addComponent(difficultyLabel);
-            firstRow.addComponentsAndExpand(questionBodyLabel);
-            firstRow.addComponent(dateLabel);
-
-            // add first row to ui
-            addComponent(firstRow);
-
-            // second row -----------------------------------------------------
-            // set up see more, question statistics and answer
-            Button seeMoreSeeLess = new Button("see more");
-            seeMoreSeeLess.addStyleNames(MyTheme.MAIN_TEXT_GREEN, MyTheme.MAIN_TEXT_WEIGHT_900, "main-flat-button");
-            addComponent(seeMoreSeeLess);
-
-            // see more see less on click listener
-            seeMoreSeeLess.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    if (seeMoreSeeLess.getCaption().equals("see more")) {
-                        seeMoreSeeLess.setCaption("see less");
-                        questionBodyLabel.setValue(getQuestionBodyFull());
-                    }
-                    else {
-                        seeMoreSeeLess.setCaption("see more");
-                        questionBodyLabel.setValue(getQuestionBody());
-                    }
-                }
-            });
-
-            // third row ------------------------------------------------------
-            // set up subject label, tags and question marks
-            HorizontalLayout thirdRow = new HorizontalLayout();
-
-            Label courseCode = new Label("COMS3004");
-            courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
-            Label subject = new Label("Computer Networks");
-            thirdRow.addComponents(courseCode, subject);
-
-            // add third row to ui
-            addComponent(thirdRow);
-
-            // set as draggable
-            DragSourceExtension<AbstractComponent> dragSourceExtension = new DragSourceExtension<>(this);
-            dragSourceExtension.setEffectAllowed(EffectAllowed.MOVE);
-            dragSourceExtension.setDataTransferText("hello receiver");
-            dragSourceExtension.setDataTransferData("text/html", "<label>hello receiver</label>");
-
-            // drag start listener
-            dragSourceExtension.addDragStartListener(new DragStartListener<AbstractComponent>() {
-
-                @Override
-                public void dragStart(DragStartEvent<AbstractComponent> event) {
-                    removeAllComponents();
-                    VerticalLayout verticalLayout = new VerticalLayout();
-                    verticalLayout.setWidth("300px");
-                    verticalLayout.setMargin(false);
-                    verticalLayout.addComponent(new Label(questionBodyFull));
-                    addComponent(verticalLayout);
-                }
-            });
-
-            // drag end listener
-            dragSourceExtension.addDragEndListener(new DragEndListener<AbstractComponent>() {
-                @Override
-                public void dragEnd(DragEndEvent<AbstractComponent> event) {
-                    if (event.isCanceled()) {
-                        removeAllComponents();
-                        setUpQuestionItemComponent();
-                    }
-                }
-            });
-
-            //
-        }
-
-        private QuestionItemComponent getThisQuestionItemComponent() {
-            return this;
         }
     }
 
@@ -612,6 +443,13 @@ public class QuestionView extends HorizontalLayout implements View {
         private Label number;
         private VerticalLayout dropArea = new VerticalLayout();
 
+        // array list of question paper item components
+        ArrayList<QuestionPaperItemComponent> paperItemComponentArrayList;
+
+        private QuestionPaginationComponent get() {
+            return this;
+        }
+
         private QuestionPaginationComponent(int questionNumber) {
 
             // set attributes
@@ -619,6 +457,9 @@ public class QuestionView extends HorizontalLayout implements View {
             this.useNumeric = false;
             this.hasQuestions = false;
             this.questionNumber = questionNumber;
+
+            // declare
+            paperItemComponentArrayList = new ArrayList<>();
 
             // set up component
             setMargin(false);
@@ -633,7 +474,15 @@ public class QuestionView extends HorizontalLayout implements View {
             // add check box and checkbox listener
             CheckBox numeric = new CheckBox("use numbers");
             numeric.addValueChangeListener((HasValue.ValueChangeListener<Boolean>) event -> {
+
+                // set use numeric
                 useNumeric = event.getValue();
+
+                // change all question items
+                for (QuestionPaperItemComponent p : paperItemComponentArrayList) {
+                    p.setBullet(setQuestionPaperItemComponentValue(paperItemComponentArrayList.indexOf(p)));
+                    p.updateQuestionPaperItemComponentValue();
+                }
             });
 
             FileResource removeResource = new FileResource(
@@ -651,24 +500,21 @@ public class QuestionView extends HorizontalLayout implements View {
                 remove.setHeight(28.0f, Unit.PIXELS);
                 header.addComponent(remove);
 
-                remove.addClickListener(new MouseEvents.ClickListener() {
-                    @Override
-                    public void click(MouseEvents.ClickEvent event) {
+                remove.addClickListener((MouseEvents.ClickListener) event -> {
 
-                        // int used to remove component
-                        int removeInt = questionPaginationComponents.indexOf(get());
+                    // int used to remove component
+                    int removeInt = questionPaginationComponents.indexOf(get());
 
-                        // remove this component from array
-                        questionPaginationComponents.remove(removeInt);
+                    // remove this component from array
+                    questionPaginationComponents.remove(removeInt);
 
-                        // remove button also
-                        buttons.get(removeInt - 1).removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
-                        buttons.get(removeInt - 1).addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
-                        paginationCenter.removeComponent(buttons.get(removeInt));
-                        buttons.remove(removeInt);
+                    // remove button also
+                    buttons.get(removeInt - 1).removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
+                    buttons.get(removeInt - 1).addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
+                    paginationCenter.removeComponent(buttons.get(removeInt));
+                    buttons.remove(removeInt);
 
-                        reIncrementAllPaginationItems(removeInt);
-                    }
+                    reIncrementAllPaginationItems(removeInt);
                 });
             }
 
@@ -714,15 +560,30 @@ public class QuestionView extends HorizontalLayout implements View {
                     // unset height
                     dropArea.setHeightUndefined();
 
+                    // character incrementation
+                    String bulletIncrement = setQuestionPaperItemComponentValue(paperItemComponentArrayList.size());
+
                     // add question item
-                    HorizontalLayout horizontalLayout = new HorizontalLayout();
-                    horizontalLayout.addComponent(new Label("(a)"));
-                    horizontalLayout.addComponent(dragSource.get());
-                    dropArea.addComponent(horizontalLayout);
+                    QuestionPaperItemComponent itemComponent =
+                            new QuestionPaperItemComponent(bulletIncrement, dragSource.get());
+                    int qId = 1;
+                    if (event.getDataTransferData("id").isPresent()) {
+                        qId = Integer.parseInt(event.getDataTransferData("id").get());
+                    }
+                    itemComponent.setQuestionId(qId);
+                    paperItemComponentArrayList.add(itemComponent);
+                    dropArea.addComponent(itemComponent);
 
                     // add marks
-                    questionMarks = 2;
-                    marks.setValue("(" + questionMarks + " marks)");
+                    questionMarks += Integer.parseInt(event.getDataTransferText());
+                    if (questionMarks == 0) marks.setValue("(no marks)");
+                    else if (questionMarks == 1) marks.setValue("(" + questionMarks + " mark)");
+                    else marks.setValue("(" + questionMarks + " marks)");
+
+                    // send to track table
+                    int bulletIncrementValue = getQuestionPaperItemComponentValue(findIndexOfQuestionPaperItemComponent(qId));
+                    if (!questionViewServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
+                        Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
                 }
             });
         }
@@ -736,8 +597,92 @@ public class QuestionView extends HorizontalLayout implements View {
             number.setValue("Question " + this.questionNumber + " - ");
         }
 
-        private QuestionPaginationComponent get() {
-            return this;
+        private String setQuestionPaperItemComponentValue(int index) {
+            // character incrementation
+            String bulletIncrement;
+
+            if (useNumeric) bulletIncrement = questionNumber + "." + (index + 1);
+            else {
+                // it's alphabetic
+                char alpha = 'a';
+                alpha += index;
+                bulletIncrement = Character.toString(alpha);
+            }
+            return bulletIncrement.trim();
+        }
+
+        private int getQuestionPaperItemComponentValue(int index) {
+
+            // return variable
+            int bulletIncrementValue;
+
+            if (useNumeric) bulletIncrementValue = (index +  1);
+            else {
+                // it's alphabetic
+                char alpha = 'a';
+                alpha += index;
+                bulletIncrementValue = Character.getNumericValue(alpha);
+                System.out.println(bulletIncrementValue - 1);
+                bulletIncrementValue -= (bulletIncrementValue - index - 1);
+            }
+
+            return bulletIncrementValue;
+        }
+
+        private int findIndexOfQuestionPaperItemComponent(int qId) {
+
+            int index = 0;
+
+            for (QuestionPaperItemComponent i : paperItemComponentArrayList) {
+                if (i.getQuestionId() == qId) index = paperItemComponentArrayList.indexOf(i);
+            }
+            return index;
+        }
+    }
+
+    private class QuestionPaperItemComponent extends VerticalLayout {
+
+        // attributes
+        private int questionId;
+        private String bullet;
+
+        // components
+        private Label bulletLabel;
+
+        private QuestionPaperItemComponent(String bullet, AbstractComponent source) {
+
+            // set up variables
+            this.bullet = bullet;
+
+            // set up root
+            setMargin(false);
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+
+            // set up components
+            if (bullet.length() > 1) bulletLabel = new Label(bullet);
+            else bulletLabel = new Label("(" + bullet + ")");
+            horizontalLayout.addComponent(bulletLabel);
+            horizontalLayout.addComponentsAndExpand(source);
+
+            addComponent(horizontalLayout);
+        }
+
+        private void setBullet(String bullet) {
+            this.bullet = bullet;
+        }
+
+        public int getQuestionId() {
+            return questionId;
+        }
+
+        public void setQuestionId(int questionId) {
+            this.questionId = questionId;
+        }
+
+        private void updateQuestionPaperItemComponentValue() {
+            if (bullet.length() > 1) bulletLabel.setValue(bullet);
+            else bulletLabel.setValue("(" + bullet + ")");
         }
     }
 
