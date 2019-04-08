@@ -473,19 +473,6 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 if(qtype.matches("written")){
                     QuestionServer.Written q = (QuestionServer.Written) questionServer.getWritten();
 
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
-
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
-
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
-
                     String m = mark1.getValue();
                     String l=lines.getValue();
                     q.setQuestionBody(qname.getValue());
@@ -493,7 +480,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setQuestion_line(Integer.parseInt(l));
 
@@ -511,24 +499,24 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
                     QuestionServer.Practical q = (QuestionServer.Practical) questionServer.getPractical();
                     if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
+                        //q.setQuestionDifficulty("Easy");
                     }
 
                     else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
+                        //q.setQuestionDifficulty("Medium");
                     }
 
                     else{
-                        q.setQuestionDifficulty("Hard");
+                        //q.setQuestionDifficulty("Hard");
                     }
-                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setSample_input(sampleinput.getValue());
                     q.setSample_output(sampleoutput.getValue());
@@ -545,25 +533,14 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 else if (qtype.matches("mcq")){
                     //  q.setQuestionType("Mcq");
                     QuestionServer.Mcq q = (QuestionServer.Mcq) questionServer.getMcq();
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
-
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
-
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
                     String m = mark1.getValue();
                     q.setQuestionBody(qname.getValue());
                     q.setQuestionAns(answername.getValue());
                     q.setQuestionDate(qdate);
                     q.setQuestionLastUsed(qlastused);
                     q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
+                    int xxx = (int) diffSlider.getValue().doubleValue();
+                    q.setQuestionDifficulty(xxx);
                     q.setQuestionType(qtype);
                     q.setMcq_choices(choices);
 
