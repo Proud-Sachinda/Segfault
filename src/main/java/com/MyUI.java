@@ -38,8 +38,7 @@ public class MyUI extends UI {
         Connection connection = null;
         try {
             connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
-                            "postgres", "postgres");
+                    .getConnection(jdbc:postgresql://qbank.postgres.database.azure.com:5432/postgres?user=segfault@qbank&password=12345&Post&sslmode=required);
 
         } catch (SQLException e) {
             e.printStackTrace();
