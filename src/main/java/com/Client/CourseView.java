@@ -187,6 +187,14 @@ public class CourseView extends HorizontalLayout implements View {
         sampleoutput.setHeight("90px");
         sampleoutput.setWidth("91%");
 
+        wola.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+
+            }
+        });
+
 
         createcourse.addClickListener(new Button.ClickListener() {
             @Override
