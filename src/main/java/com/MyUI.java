@@ -38,8 +38,8 @@ public class MyUI extends UI {
         Connection connection = null;
         try {
             connection = DriverManager
-                    .getConnection("jdbc:postgresql://qbank.postgres.database.azure.com:5432/postgres",
-                            "segfault@qbank", "12345&Post");
+                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
+                            "postgres", "postgres");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,6 +50,7 @@ public class MyUI extends UI {
         String course = "course";
         String export = "export";
         String createquestion = "createquestion";
+        String createcourse = "createcourse";
 
         if (connection != null) {
             // create and register the views
@@ -58,6 +59,7 @@ public class MyUI extends UI {
             navigator.addView(course, new CourseView(navigator, connection));
             navigator.addView(export, new ExportView(navigator, connection));
             navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
+            navigator.addView(createcourse, new CreateCourseView(navigator, connection));
         }
         else {
             Notification.show("Reload Page");
