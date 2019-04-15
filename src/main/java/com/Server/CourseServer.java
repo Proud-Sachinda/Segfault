@@ -97,6 +97,28 @@ public class CourseServer {
 
         }
 
+    public boolean PostCourse2(Course g){
+        String coursename1 = g.getCourseName();
+        String coursecode1 = g.getCourseCode();
+
+        try{
+            String query = "INSERT INTO public.course(course_name, course_code) VALUES (?,?)";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1,coursename1);
+            ps.setString(2,coursecode1);
+
+            int set2 = ps.executeUpdate();
+
+            return set2 > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
+
     public Course getCourse(){
 
         return this.course;
@@ -110,11 +132,11 @@ public class CourseServer {
         public String getCourseName(){ return  CourseName;}
         public  String getCourseCode(){ return  CourseCode;}
 
-        private void setCourseName( String CourseName){
+        public void setCourseName(String CourseName){
             this.CourseName = CourseName;
         }
 
-        private void setCourseCode(String CourseCode){
+        public void setCourseCode(String CourseCode){
             this.CourseCode = CourseCode;
         }
 

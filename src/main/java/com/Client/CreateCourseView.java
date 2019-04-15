@@ -1,13 +1,12 @@
 package com.Client;
 
+import com.Server.CourseServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 import java.sql.Connection;
+import java.util.Date;
 
 public class CreateCourseView extends HorizontalLayout implements View {
 
@@ -20,9 +19,13 @@ public class CreateCourseView extends HorizontalLayout implements View {
     // route strings - nothing special just things like qbank_exploded_war/route_name
     //protected final String Course = "Course";
 
+    private Date qdate = new Date();
+
 
     private TextField addcourse = new TextField("Course Name");
     private TextField coursecode  = new TextField("Course Code");
+
+    protected final String course = "course";
 
 
 
@@ -76,6 +79,34 @@ public class CreateCourseView extends HorizontalLayout implements View {
                 vec.removeAllComponents();
                 vec.addComponentsAndExpand(addcourse,coursecode);
                 tp = "addnew";
+
+            }
+        });
+
+        addChoice.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                CourseServer courseServer = new CourseServer(connection);
+                CourseServer.Course q = (CourseServer.Course) courseServer.getCourse();
+
+
+
+                  //  CourseServer.Course q = (CourseServer.Course) courseServer.getCourse();
+
+                    q.setCourseName(addcourse.getValue());
+                    q.setCourseCode(coursecode.getValue());
+
+
+
+
+                if (courseServer.PostCourse(q)) {
+                    Notification.show("Success");
+                    navigator.navigateTo(course);
+                }
+                else {
+                    Notification.show("Error submitting form");
+                }
 
             }
         });
