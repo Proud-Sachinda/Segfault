@@ -1,7 +1,11 @@
 package com.Client;
 
+import com.Components.CourseItemComponent;
 import com.Dashboard;
-import com.Server.QuestionServer;
+import com.Objects.CourseItem;
+import com.Components.CourseItemComponent;
+import com.Server.CourseServer;
+import com.Server.CourseViewServer;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -15,6 +19,7 @@ import org.w3c.dom.Text;
 import javax.swing.*;
 import javax.validation.constraints.Null;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 public class CourseView extends HorizontalLayout implements View {
 
@@ -25,6 +30,8 @@ public class CourseView extends HorizontalLayout implements View {
     private Connection connection;
 
     String type = "";
+
+    private CourseViewServer courseServer;
 
     //Create a button
     private Button export1 = new Button("Export");
@@ -118,6 +125,36 @@ public class CourseView extends HorizontalLayout implements View {
                navigator.navigateTo(createcourse);
             }
         });
+
+
+    }
+
+    public  void setUpCourse(){
+
+        // get questions
+        ArrayList<CourseItem> courseArrayList = courseServer.getCourses();
+
+        // set up root question layout
+        VerticalLayout verticalLayoutRoot = new VerticalLayout();
+        verticalLayoutRoot.setMargin(false);
+
+
+        // loop through questions and add to view
+        for (CourseItem q : courseArrayList) {
+
+            // declare new question item component
+            CourseItemComponent courseItemComponent = new CourseItemComponent(courseServer);
+            // set variables
+            courseItemComponent.setCourseId(q.getCourseId());
+            courseItemComponent.setCourseCode(q.getCourseId());
+            courseItemComponent.setCourseName(q.getCourseId());
+
+            // set up question item component
+            courseItemComponent.setUpCourseItemComponent();
+
+            // add to vertical layout root
+            verticalLayoutRoot.addComponent(courseItemComponent.getThisCourseItemComponent());
+        }
 
     }
 
