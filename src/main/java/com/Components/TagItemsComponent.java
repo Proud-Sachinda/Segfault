@@ -38,7 +38,7 @@ public class TagItemsComponent extends HorizontalLayout {
         // tags label
         // components
         Label tags = new Label("Tags ");
-        tags.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_800);
+        tags.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_500);
 
         // set add image button
         FileResource addResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/tag-add.svg"));
@@ -150,6 +150,9 @@ public class TagItemsComponent extends HorizontalLayout {
          * used for new tags
          */
         private TagItemComponent() {
+
+            // declare
+            tag = new TagItem();
 
             // set style
             addStyleName(MyTheme.MAIN_FLAT_TAG_EDIT_LAYOUT);
