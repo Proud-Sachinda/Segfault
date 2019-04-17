@@ -62,7 +62,7 @@ CREATE TABLE lecturer (
   lecturer_id varchar(12) NOT NULL,
   lecturer_fname varchar(50) NOT NULL,
   lecturer_lname varchar(50) NOT NULL,
-  PRIMARY KEY (lecturer_id);
+  PRIMARY KEY (lecturer_id));
 ```
 *Course Table*
 ```sql
@@ -70,12 +70,21 @@ CREATE TABLE course (
    course_id int(11) NOT NULL,
    course_name varchar(50) DEFAULT NULL,
    course_code varchar(12) DEFAULT NULL,
-   PRIMARY KEY (course_id);
+   PRIMARY KEY (course_id));
  ```
 *Role Table*
 ```sql
 CREATE TABLE role (
   role_id int(11) NOT NULL,
   role_description varchar(45) DEFAULT NULL,
-  PRIMARY KEY (role_id);
+  PRIMARY KEY (role_id));
+```
+*Tag Table*
+```sql
+CREATE TABLE tag(
+  tag_id SERIAL PRIMARY KEY,
+  tag_name VARCHAR NOT NULL,
+  question_id INTEGER,
+  FOREIGN KEY (question_id)
+    REFERENCES question(question_id));
 ```

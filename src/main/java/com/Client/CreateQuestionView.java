@@ -1,21 +1,30 @@
 
 package com.Client;
 
-import com.Server.QuestionServer;
-import com.Server.CourseServer;
+import com.Components.CourseComboBox;
+import com.Components.FormItemComponent;
+import com.Components.MultipleChoiceItemComponent;
+import com.Components.TagItemsComponent;
+import com.Dashboard;
+import com.MyTheme;
+import com.Objects.QuestionItem;
+import com.Server.QuestionViewServer;
+import com.vaadin.data.HasValue;
+import com.vaadin.event.LayoutEvents;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.server.ClassResource;
-import com.vaadin.shared.ui.Orientation;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.*;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.ui.NumberField;
 
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
-
-import static com.vaadin.shared.ui.Orientation.HORIZONTAL;
+import java.util.Arrays;
 
 
 public class CreateQuestionView extends HorizontalLayout implements View {
@@ -23,574 +32,656 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
-    // connection for database
-    private Connection connection;
-
-    // route strings - nothing special just things like qbank_exploded_war/route_name
+    // route strings
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
 
-    // navigation and content area
-    private final VerticalLayout navigation = new VerticalLayout();
-    private final VerticalLayout content = new VerticalLayout();
-    private final HorizontalLayout forms = new HorizontalLayout();
-    private final HorizontalLayout title = new HorizontalLayout();
+    // question server
+    private QuestionViewServer questionViewServer;
 
-    //caption for whole page
-    private Label caption = new Label("Create Question ");
+    // layouts for split panel
+    private VerticalLayout rootLayout = new VerticalLayout();
+    private VerticalLayout mainQuestionFormArea = new VerticalLayout();
+    private VerticalLayout otherQuestionFormArea = new VerticalLayout();
 
-    public  ComboBox combobox;
-    private TextArea qname = new TextArea("Question");
-    private Date qdate = new Date();
-    private Date qlastused = new Date();
-    private TextField answer = new TextField();
-    private TextField mark = new TextField();
+    // base path
+    private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
-    private TextField space = new TextField("Space lines");
-    //private TextField difficulty = new TextField("Difficulty");
-    private TextArea answername = new TextArea("Answer");
-    private Button addLatex = new Button("+");
-    private Button decrease = new Button("-");
-    private Button increase = new Button("+");
-    private Label marklabel = new Label("Mark Allocation");
-    private Button normal = new Button("Written");
-    private Button mcq = new Button("MCQ");
-    private Button practical = new Button("Practical");
-    private TextField sampleinput = new TextField("Sample Input");
-    private TextField sampleoutput = new TextField("Sample Output");
-    private Button back = new Button("back");
-    private Button submit = new Button("submit");
-    private Button addChoice = new Button("add");
-    private Button square = new Button();
-    private Button power = new Button();
-    private Button sqrroot = new Button();
-    private Button root = new Button();
-    private Button frac = new Button();
-    private Button log = new Button();
-    private Button pi = new Button();
-    private Button theta = new Button();
-    private Button infinity = new Button();
-    private Button integral = new Button();
-    private Button derivitive = new Button("d/dx");
-    String qtype = "";
-    //stuff for mcq
-    String choices = "";
-    TextField choice = new TextField();
-    TextField choice1 = new TextField();
-    TextField choice2 = new TextField();
-    TextField choice3 = new TextField();
-    TextField choice4 = new TextField();
-    private Button addChoice1 = new Button("add");
-    private Button addChoice2 = new Button("add");
-    private Button addChoice3 = new Button("add");
-    private Button removeChoice = new Button("remove");
-    private Button removeChoice1 = new Button("remove");
-    private Button removeChoice2 = new Button("remove");
-    private Button removeChoice3 = new Button("remove");
-    private Button removeChoice4 = new Button("remove");
-    HorizontalLayout mcqchoice = new HorizontalLayout();
-    HorizontalLayout mcqchoice1 = new HorizontalLayout();
-    HorizontalLayout mcqchoice2 = new HorizontalLayout();
-    HorizontalLayout mcqchoice3 = new HorizontalLayout();
-    HorizontalLayout mcqchoice4 = new HorizontalLayout();
-    private ArrayList<CourseServer.Course> courseArrayList;
-    private CourseServer courseServer;
+    // latex things
+    private HorizontalLayout latexRoot = new HorizontalLayout();
+    private FileResource sRootResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/latex/root.svg"));
+    private Image sRoot = new Image(null, sRootResource);
 
+    // array of form item components
+    private ArrayList<FormItemComponent> formItemComponents;
 
+    // form items
+    private Image cancel;
+    private Label mcqHeader;
+    private Label mcqAnswer;
+    private Label createQuestionLabel;
+    private HorizontalLayout headerLayout;
+    private HorizontalLayout footerFinish;
+    private FormItemComponent comboBoxItem;
+    private FormItemComponent questionBodyItem;
+    private FormItemComponent questionMarksItem;
+    private FormItemComponent questionAnswerItem;
+    private FormItemComponent questionDifficultyItem;
+    private FormItemComponent questionSampleInputItem;
+    private FormItemComponent questionSampleOutputItem;
+    private FormItemComponent questionNumberOfLinesItem;
+    private ComboBox<MultipleChoiceItemComponent> choiceItemComponentComboBox;
+    private ArrayList<MultipleChoiceItemComponent> multipleChoiceItemComponents;
+
+    // vertical layout to replace question content
+    private VerticalLayout replacementLayout;
+
+    // question item for form submission
+    private QuestionItem questionItem = new QuestionItem();
+
+    // tags item component
+    private TagItemsComponent tags;
 
     public CreateQuestionView(Navigator navigator, Connection connection) {
-
-
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
-        // set connection variable
-        this.connection = connection;
+        // set up question server
+        questionViewServer = new QuestionViewServer(connection);
+
+        // declare form item components array
+        formItemComponents = new ArrayList<>();
+
+        // by default question type is written
+        questionItem.setQuestionType("written");
 
         // set to fill browser screen
         setSizeFull();
 
         // set up dashboard
-        setUpDashboard();
+        Dashboard dashboard = new Dashboard(navigator);
+        addComponent(dashboard);
 
+        // set up root layout
+        addComponentsAndExpand(rootLayout);
+        rootLayout.setHeightUndefined();
 
-        //number field for adding mark
-        NumberField mark1 = new NumberField("Add Mark");
+        // set up header
+        setUpCreateQuestionHeader();
 
-        // number field for adding answer lines
-        NumberField lines = new NumberField("Answer Lines");
+        // set up split area
+        HorizontalLayout splitAreaRoot = new HorizontalLayout();
+        HorizontalLayout mainQuestionFormAreaRoot = new HorizontalLayout();
+        HorizontalLayout otherQuestionFormAreaRoot = new HorizontalLayout();
 
-        // code after the dashboard is setup
-        VerticalLayout form = new VerticalLayout();
-        VerticalLayout form1 = new VerticalLayout();
-        form.setSizeFull();
-        form1.setSizeFull();
-        VerticalLayout right = new VerticalLayout();
-        VerticalLayout extrastuff = new VerticalLayout();
-        extrastuff.setMargin(false);
+        // add split areas to root
+        splitAreaRoot.addComponentsAndExpand(mainQuestionFormAreaRoot, otherQuestionFormAreaRoot);
+        rootLayout.addComponentsAndExpand(splitAreaRoot);
 
+        // add vertical split layouts to split areas
+        mainQuestionFormAreaRoot.addComponent(mainQuestionFormArea);
+        otherQuestionFormAreaRoot.addComponent(otherQuestionFormArea);
 
-      //  HorizontalLayout type = new HorizontalLayout();
+        // set up main form area
+        setUpMainQuestionFormArea();
 
+        // set up other form ara
+        setUpOtherQuestionFormArea();
 
-        combobox = new ComboBox("Select Course:");
+        // set up up footer
+        setUpCreateQuestionFooter();
+    }
 
-        courseServer = new CourseServer(this.connection);
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Create question");
+    }
 
-        courseArrayList = courseServer.get();
+    private void setUpCreateQuestionHeader() {
 
+        // horizontal layout for header
+        headerLayout = new HorizontalLayout();
 
-        for(int i = 0; i < courseArrayList.size(); i++){
+        // set up cancel button
+        FileResource cancelResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/cancel.svg"));
+        cancel = new Image(null, cancelResource);
+        cancel.setWidth(48.0f, Unit.PIXELS);
+        cancel.setHeight(48.0f, Unit.PIXELS);
+        cancel.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE);
+        cancel.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(question));
 
-            combobox.setItems(courseArrayList.get(i).getCourseCode());
+        // set up create question label
+        createQuestionLabel = new Label("Create Question");
+        createQuestionLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_EXTRA_LARGE);
+
+        // add to header and root
+        headerLayout.addComponents(cancel, createQuestionLabel);
+        headerLayout.setComponentAlignment(cancel, Alignment.MIDDLE_CENTER);
+        rootLayout.addComponent(headerLayout);
+    }
+
+    private void setUpMainQuestionFormArea() {
+
+        // set border
+        mainQuestionFormArea.addStyleName(ValoTheme.LAYOUT_CARD);
+
+        // set up latex items
+        sRoot.setWidth(64.0f, Unit.PIXELS);
+        sRoot.setHeight(64.0f, Unit.PIXELS);
+
+        // add to latex root
+        latexRoot.addComponent(sRoot);
+
+        // horizontal layout for course combo box and number field marks
+        HorizontalLayout courseAndMarks = new HorizontalLayout();
+        courseAndMarks.setWidth(100.0f, Unit.PERCENTAGE);
+        mainQuestionFormArea.addComponent(courseAndMarks);
+
+        // add course combo box drop down
+        CourseComboBox comboBox = new CourseComboBox(questionViewServer.getCourses());
+        comboBox.setCaption(null);
+        comboBox.addComboBoxValueChangeListener();
+        comboBoxItem = new FormItemComponent("Subject", comboBox,
+                FormItemComponent.ComponentType.COURSE_COMBO_BOX);
+        formItemComponents.add(comboBoxItem);
+
+        // add marks number field
+        NumberField questionMarksNumberField = new NumberField();
+        questionMarksItem = new FormItemComponent("Marks",
+                questionMarksNumberField, FormItemComponent.ComponentType.NUMBER_FIELD);
+        questionMarksItem.setComponentWidth(196.0f, Unit.PIXELS);
+        formItemComponents.add(questionMarksItem);
+
+        // add to horizontal layout
+        courseAndMarks.addComponentsAndExpand(comboBoxItem);
+        courseAndMarks.addComponent(questionMarksItem);
+
+        // add question body
+        TextArea questionBodyTextArea = new TextArea();
+        questionBodyItem = new FormItemComponent("Question",
+                questionBodyTextArea, FormItemComponent.ComponentType.TEXT_AREA);
+        formItemComponents.add(questionBodyItem);
+
+        // add question difficulty
+        Slider questionDifficultySlider = new Slider();
+        questionDifficultySlider.setMin(1);
+        questionDifficultySlider.setMax(5);
+        questionDifficultySlider.setValue((double) 1);
+        questionDifficultySlider.setOrientation(SliderOrientation.HORIZONTAL);
+        questionDifficultyItem = new FormItemComponent("Difficulty",
+                questionDifficultySlider, FormItemComponent.ComponentType.SLIDER);
+        formItemComponents.add(questionDifficultyItem);
+
+        // add
+        tags = new TagItemsComponent(questionViewServer, basePath);
+
+        // add everything to form area
+        mainQuestionFormArea.addComponents(latexRoot, courseAndMarks,
+                questionBodyItem, questionDifficultyItem, tags);
+    }
+
+    private void setUpOtherQuestionFormArea() {
+
+        // set border
+        otherQuestionFormArea.addStyleName(ValoTheme.LAYOUT_CARD);
+
+        // add menu bar
+        setUpQuestionTypeMenuBar();
+
+        // define written question components
+        setUpDefaultQuestion();
+
+        // define mcq question components
+        multipleChoiceItemComponents = new ArrayList<>();
+
+        // set up practical question
+        setUpPracticalQuestion();
+    }
+
+    private void setUpDefaultQuestion() {
+
+        // default question
+        TextArea questionAnswerTextArea = new TextArea();
+        questionAnswerItem = new FormItemComponent("Answer",
+                questionAnswerTextArea, FormItemComponent.ComponentType.TEXT_AREA);
+        formItemComponents.add(questionAnswerItem);
+
+        // add marks number field
+        NumberField questionNumberOfLinesNumberField = new NumberField();
+        questionNumberOfLinesItem = new FormItemComponent("Number of lines",
+                questionNumberOfLinesNumberField, FormItemComponent.ComponentType.NUMBER_FIELD);
+        questionNumberOfLinesItem.setComponentWidth(196.0f, Unit.PIXELS);
+        formItemComponents.add(questionNumberOfLinesItem);
+
+        // default question type
+        replacementLayout.addComponents(questionAnswerItem, questionNumberOfLinesItem);
+    }
+
+    private void setUpPracticalQuestion() {
+
+        // default question
+        TextArea questionSampleInputTextArea = new TextArea();
+        questionSampleInputTextArea.setHeight(64.0f, Unit.PIXELS);
+        questionSampleInputItem = new FormItemComponent("Sample Input",
+                questionSampleInputTextArea, FormItemComponent.ComponentType.TEXT_AREA);
+
+        // default question
+        TextArea questionSampleOutputTextArea = new TextArea();
+        questionSampleOutputTextArea.setHeight(64.0f, Unit.PIXELS);
+        questionSampleOutputItem = new FormItemComponent("Sample Output",
+                questionSampleOutputTextArea, FormItemComponent.ComponentType.TEXT_AREA);
+    }
+
+    private void setUpCreateQuestionFooter() {
+
+        // horizontal layout for header
+        HorizontalLayout footerLayout = new HorizontalLayout();
+        footerLayout.setWidth(100.0f, Unit.PERCENTAGE);
+
+        // set up finish button
+        FileResource finishResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/finish.svg"));
+        Image finish = new Image(null, finishResource);
+        finish.setWidth(40.0f, Unit.PIXELS);
+        finish.setHeight(40.0f, Unit.PIXELS);
+
+        // set up create question label
+        Label finishQuestionLabel = new Label("FINISH");
+        finishQuestionLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM);
+
+        // create a button thing
+        footerFinish = new HorizontalLayout();
+        footerFinish.addComponents(finishQuestionLabel, finish);
+        footerFinish.setComponentAlignment(finish, Alignment.MIDDLE_CENTER);
+        footerFinish.setComponentAlignment(finishQuestionLabel, Alignment.MIDDLE_CENTER);
+        footerFinish.addStyleNames(MyTheme.MAIN_FLAT_FINISH_BUTTON, MyTheme.MAIN_CONTROL_CLICKABLE);
+
+        // add finish click listener
+        submitQuestionForm();
+
+        // add to header and root
+        footerLayout.addComponent(footerFinish);
+        footerLayout.setComponentAlignment(footerFinish, Alignment.MIDDLE_RIGHT);
+        rootLayout.addComponent(footerLayout);
+    }
+
+    private void setUpQuestionTypeMenuBar() {
+
+        // menu bar layout replace
+        replacementLayout = new VerticalLayout();
+        replacementLayout.setMargin(false);
+
+        // written question command
+        MenuBar.Command writtenQuestionCommand = (MenuBar.Command) selectedItem -> {
+
+            // if question type is not written replace content
+            if (!questionItem.getQuestionType().equals("written")) {
+
+                // remove replacement components
+                replacementLayout.removeAllComponents();
+
+                // remove all mcq
+                removeAllMultipleChoiceItemsFromArrayList();
+
+                // remove all practical
+                formItemComponents.remove(questionSampleInputItem);
+                formItemComponents.remove(questionSampleOutputItem);
+
+                // add question answer item
+                unsetComponentWarningLabelAndReset(questionAnswerItem, questionNumberOfLinesItem);
+                addToFormItemComponentArrayList(questionAnswerItem, questionNumberOfLinesItem);
+                replacementLayout.addComponents(questionAnswerItem, questionNumberOfLinesItem);
+            }
+
+            // set question type
+            questionItem.setQuestionType("written");
+        };
+
+        // mcq question command
+        MenuBar.Command multipleChoiceQuestionCommand = (MenuBar.Command) selectedItem -> {
+
+            // if question type is not written replace content
+            if (!questionItem.getQuestionType().equals("mcq")) {
+
+                // remove replacement components
+                replacementLayout.removeAllComponents();
+
+                // remove all mcq items
+                removeAllMultipleChoiceItemsFromArrayList();
+
+                // remove answer item
+                formItemComponents.remove(questionAnswerItem);
+                formItemComponents.remove(questionNumberOfLinesItem);
+
+                // remove all practical
+                formItemComponents.remove(questionSampleInputItem);
+                formItemComponents.remove(questionSampleOutputItem);
+
+                // add mcq item
+                setUpMultipleChoiceToReplacementLayout();
+            }
+            // set question type
+            questionItem.setQuestionType("mcq");
+        };
+
+        // mcq question command
+        MenuBar.Command practicalQuestionCommand = (MenuBar.Command) selectedItem -> {
+
+            // if question type is not written replace content
+            if (!questionItem.getQuestionType().equals("practical")) {
+
+                // remove replacement components
+                replacementLayout.removeAllComponents();
+
+                // remove answer item
+                formItemComponents.remove(questionAnswerItem);
+                formItemComponents.remove(questionNumberOfLinesItem);
+
+                // add practical items
+                unsetComponentWarningLabelAndReset(questionAnswerItem,
+                        questionSampleInputItem, questionSampleOutputItem);
+                addToFormItemComponentArrayList(questionAnswerItem,
+                        questionSampleInputItem, questionSampleOutputItem);
+
+                // remove all mcq components
+                removeAllMultipleChoiceItemsFromArrayList();
+
+                replacementLayout.addComponents(questionSampleInputItem,
+                        questionSampleOutputItem, questionAnswerItem);
+            }
+
+            // set question type
+            questionItem.setQuestionType("practical");
+        };
+
+        // create menu bar and add items
+        MenuBar menuBar = new MenuBar();
+        menuBar.addItem("Written", writtenQuestionCommand);
+        menuBar.addItem("Multiple Choice", multipleChoiceQuestionCommand);
+        menuBar.addItem("Practical", practicalQuestionCommand);
+
+        // add to other form
+        otherQuestionFormArea.addComponent(menuBar);
+        otherQuestionFormArea.addComponent(replacementLayout);
+        otherQuestionFormArea.setComponentAlignment(menuBar, Alignment.TOP_CENTER);
+    }
+
+    private boolean areAnyFormItemComponentsEmpty() {
+
+        // return variable
+        boolean empty = false;
+
+        // check if everything is filled
+        for (FormItemComponent i : formItemComponents) {
+            if (i.isEmpty()) {
+                empty = true;
+                break;
+            }
         }
 
+        return empty;
+    }
 
+    private boolean areAnyMultipleChoiceItemsEmpty() {
 
+        // return variable
+        boolean empty = false;
 
-        //Add multiple items
-
-
-        HorizontalLayout done = new HorizontalLayout();
-
-
-        //stuff for choosing type of question
-        HorizontalLayout type = new HorizontalLayout();
-        /*MenuBar questiontype = new MenuBar();
-        final Label qType = new Label("Question Type");
-        type.addComponent(qType);
-        MenuBar.Command myCommand = new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                qType.setValue(selectedItem.getText());
-
+        // if any of the mcq stuff is empty
+        for (MultipleChoiceItemComponent i : multipleChoiceItemComponents) {
+            if (i.isEmpty()) {
+                empty = true;
+                break;
             }
-        };
-        type.addComponent(questiontype);
-        questiontype.addItem("Written", myCommand );
-        questiontype.addItem("MCQ", myCommand);
-        questiontype.addItem("Practical", myCommand); */
+        }
 
-
-
-
-        type.addComponentsAndExpand(combobox);
-        type.addComponents(normal,mcq,practical);
-        normal.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeAllComponents();
-                extrastuff.addComponent(lines);
-                qtype = "written";
-
+        // mcq answer
+        if (multipleChoiceItemComponents.size() > 0) {
+            if (choiceItemComponentComboBox.getValue() == null) {
+                mcqAnswer.addStyleName(MyTheme.MAIN_TEXT_WARNING);
             }
-        });
+            else mcqAnswer.removeStyleName(MyTheme.MAIN_TEXT_WARNING);
+        }
 
-        sampleinput.setWidth("91%");
-        sampleinput.setHeight("90px");
-        //sampleinput.setPlaceholder("Sample Input");
-        //sampleoutput.setPlaceholder("Sample Output");
-        sampleoutput.setHeight("90px");
-        sampleoutput.setWidth("91%");
-        practical.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeAllComponents();
-                extrastuff.addComponentsAndExpand(sampleinput,sampleoutput);
-                qtype = "practical";
-            }
-        });
+        return empty;
+    }
 
+    private void submitQuestionForm() {
 
-        //stuff for mcq
-        //add the first choice when the mcq button is clicked
-        mcq.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeAllComponents();
-                mcqchoice.removeAllComponents();
-                mcqchoice1.removeAllComponents();
-                mcqchoice2.removeAllComponents();
-                mcqchoice3.removeAllComponents();
-                mcqchoice4.removeAllComponents();
-                mcqchoice.addComponents(choice,addChoice);
-                extrastuff.addComponentsAndExpand(mcqchoice);
-                qtype = "mcq";
-            }
-        });
-        //add second option
-        addChoice.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                choices= choices+choice.getValue();
-                mcqchoice.removeComponent(addChoice);
-                mcqchoice.addComponent(removeChoice);
-                mcqchoice1.addComponents(choice1,addChoice1);
-                extrastuff.addComponentsAndExpand(mcqchoice1);
+        // check if everything is filled
+        footerFinish.addLayoutClickListener((LayoutEvents.LayoutClickListener) event -> {
 
-            }
-        });
-        //add third option
-        addChoice1.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                choices= choices+choice1.getValue();
-                System.out.println(choices);
-                mcqchoice1.removeComponent(addChoice1);
-                mcqchoice1.addComponent(removeChoice1);
-                mcqchoice2.addComponents(choice2,addChoice2);
-                extrastuff.addComponentsAndExpand(mcqchoice2);
+            // empty variable
+            boolean emptyFormItems = areAnyFormItemComponentsEmpty();
+            boolean emptyMultipleChoiceItems = areAnyMultipleChoiceItemsEmpty();
 
-            }
-        });
-        //add fourth option
-        addChoice2.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                choices= choices+choice2.getValue();
-                System.out.println(choices);
-                mcqchoice2.removeComponent(addChoice2);
-                mcqchoice2.addComponent(removeChoice2);
-                mcqchoice3.addComponents(choice3,addChoice3);
-                extrastuff.addComponentsAndExpand(mcqchoice3);
+            if (emptyFormItems) {
 
-            }
-        });
-        //add fifth option
-        addChoice3.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                choices= choices+choice3.getValue();
-                System.out.println(choices);
-                mcqchoice3.removeComponent(addChoice3);
-                mcqchoice3.addComponent(removeChoice3);
-                mcqchoice4.addComponents(choice4,removeChoice4);
-                extrastuff.addComponentsAndExpand(mcqchoice4);
+                // fill in all fields label
+                Label fillInLabel = new Label("* fill in all fields");
+                fillInLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_EXTRA_LARGE, MyTheme.MAIN_TEXT_WARNING);
+                headerLayout.removeAllComponents();
+                headerLayout.addComponents(cancel, createQuestionLabel, fillInLabel);
+                headerLayout.setComponentAlignment(cancel, Alignment.MIDDLE_CENTER);
 
-            }
-        });
-        //remove first choice
-        removeChoice.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeComponent(mcqchoice);
-                choice.clear();
-
-            }
-        });
-        //remove second choice
-        removeChoice1.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeComponent(mcqchoice1);
-                choice1.clear();
-
-            }
-        });
-        //remove third choice
-        removeChoice2.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeComponent(mcqchoice2);
-                choice2.clear();
-
-            }
-        });
-        //remove fourth choice
-        removeChoice3.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeComponent(mcqchoice3);
-                choice3.clear();
-
-            }
-        });
-        //remove fifth choice
-        removeChoice4.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                extrastuff.removeComponent(mcqchoice4);
-                choice4.clear();
-
-            }
-        });
-
-
-        //Slider for difficulty
-        VerticalLayout v = new VerticalLayout();
-        HorizontalLayout difficulty = new HorizontalLayout();
-        final Label diffslidervalue = new Label();
-        diffslidervalue.setValue("Easy Medium Hard");
-        diffslidervalue.setWidth(difficulty.getWidth(), Unit.PERCENTAGE);
-        diffslidervalue.setSizeFull();
-       // difficulty.addComponent(diffslidervalue);
-
-
-        difficulty.setWidth(100.0f, Unit.PERCENTAGE);
-
-        Slider diffSlider = new Slider(1,5);
-
-        diffSlider.setOrientation(SliderOrientation.HORIZONTAL);
-        diffSlider.setWidth(100.0f, Unit.PERCENTAGE);
-        diffSlider.setCaption(diffslidervalue.getValue());
-
-        difficulty.addComponent(diffSlider);
-
-
-
-
-
-        diffSlider.addValueChangeListener(event -> {
-            float value = event.getValue().floatValue();
-            diffslidervalue.setValue(String.valueOf(value));
-
-        });
-        //value change listener for radio button
-
-
-
-
-
-        //everything for adding question
-        //layout for adding question
-        VerticalLayout addq = new VerticalLayout();
-        //latex stuff
-        square.setStyleName("power");
-        sqrroot.setStyleName("sqroot");
-        frac.setStyleName("fraction");
-        power.setStyleName("Segzy2");
-        pi.setStyleName("pi");
-        root.setStyleName("Segzy2");
-        log.setStyleName("log");
-        theta.setStyleName("theta");
-        infinity.setStyleName("infinite");
-        integral.setStyleName("integral");
-        derivitive.setStyleName("Segzy2");
-        HorizontalLayout latexstuff = new HorizontalLayout();
-        //HorizontalLayout lstuff = new HorizontalLayout();
-        // Label latex = new Label("latex stuff");
-        latexstuff.addStyleName("Segzy3");
-        latexstuff.addComponents(square,sqrroot,frac,power,pi,root,log,theta,infinity,integral,derivitive);
-        latexstuff.setHeight("70px");
-
-
-        //add the add question stuff
-        qname.setWidth("100%");
-        qname.setHeight("100px");
-        qname.setPlaceholder("Type your Question here");
-        answername.setWidth("100%");
-        answername.setHeight("100px");
-        answername.setPlaceholder("Type your Answer here");
-        addq.addComponents(latexstuff,qname,answername);
-        addq.setStyleName("Segzy4");
-
-        //back.setIcon(new ClassResource("left-arrow.png"));
-        //back.setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\left-arrow.png"));
-        //everything for the mark
-        /* HorizontalLayout addmark = new HorizontalLayout();
-        mark.setWidth("40px");
-        increase.setStyleName("Segzy5-increase");
-        mark.setStyleName("Segzy5-text");
-        decrease.setStyleName("Segzy5-decrease");
-        mark.setStyleName("segzyfield");
-        //increase .setIcon(new ClassResource("C:\\Users\\User\\IdeaProjects\\Segfault\\Extra Resources\\images\\add.png"));
-        addmark.addComponents(marklabel,decrease,mark,increase);
-        */
-
-        back.setStyleName("Segzy6");
-        submit.setStyleName("Segzy5");
-        // set caption
-        title.addComponents(back,caption);
-        title.setComponentAlignment(back,Alignment.TOP_LEFT);
-        caption.addStyleName("Segzy");
-
-        //set content area
-        form.addComponents(addq);
-        // done.addComponents(submit);
-        form1.addComponents(type,mark1,difficulty,extrastuff,done);
-        forms.addComponents(form,form1);
-        forms.setWidth("100%");
-        content.addComponents(title,forms);
-        back.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                navigator.navigateTo(question);
-            }
-        });
-
-        // set submit button listener
-        submit.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-
-                // TODO check if fields are empty before submitting (LATER)
-
-                // create question variable and send to database
-                QuestionServer questionServer = new QuestionServer(connection);
-               /* QuestionServer.Question q = questionServer.getQuestion();
-
-                // set question variables
-
-                String m = mark1.getValue();
-                q.setQuestionBody(qname.getValue());
-                q.setQuestionAns(answername.getValue());
-                q.setQuestionDate(qdate);
-                q.setQuestionLastUsed(qlastused);
-                q.setQuestionMark(Integer.parseInt(m));
-                q.setQuestionDifficulty(difficulty.toString());*/
-
-
-                if(qtype.matches("written")){
-                    QuestionServer.Written q = (QuestionServer.Written) questionServer.getWritten();
-
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
-
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
-
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
-
-                    String m = mark1.getValue();
-                    String l=lines.getValue();
-                    q.setQuestionBody(qname.getValue());
-                    q.setQuestionAns(answername.getValue());
-                    q.setQuestionDate(qdate);
-                    q.setQuestionLastUsed(qlastused);
-                    q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
-                    q.setQuestionType(qtype);
-                    q.setQuestion_line(Integer.parseInt(l));
-
-                    if (questionServer.post(q)) {
-                        Notification.show("Success");
-                        navigator.navigateTo(question);
-                    }
-                    else {
-                        Notification.show("Error submitting form");
-                    }
-
+                // unset warning labels
+                for (FormItemComponent i : formItemComponents) {
+                    if (i.isEmpty()) i.setWarningLabel();
+                    else i.unsetWarningLabel();
                 }
-                else if(qtype.matches("practical")){
-                    // q.setQuestionType("Practical");
+            }
 
-                    QuestionServer.Practical q = (QuestionServer.Practical) questionServer.getPractical();
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
+            if (multipleChoiceItemComponents.size() > 0) {
+                if (emptyMultipleChoiceItems) mcqHeader.addStyleName(MyTheme.MAIN_TEXT_WARNING);
+                else mcqHeader.removeStyleName(MyTheme.MAIN_TEXT_WARNING);
+            }
 
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
+            // send to database if both aren't empty
+            if (!emptyFormItems && !emptyMultipleChoiceItems) {
 
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
-                    String m = mark1.getValue();
-                    q.setQuestionBody(qname.getValue());
-                    q.setQuestionAns(answername.getValue());
-                    q.setQuestionDate(qdate);
-                    q.setQuestionLastUsed(qlastused);
-                    q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
-                    q.setQuestionType(qtype);
-                    q.setSample_input(sampleinput.getValue());
-                    q.setSample_output(sampleoutput.getValue());
+                // remove fill in all fields
+                headerLayout.removeAllComponents();
+                headerLayout.addComponents(cancel, createQuestionLabel);
+                headerLayout.setComponentAlignment(cancel, Alignment.MIDDLE_CENTER);
 
-
-                    if (questionServer.post(q)) {
-                        Notification.show("Success");
-                        navigator.navigateTo(question);
-                    }
-                    else {
-                        Notification.show("Error submitting form");
-                    }
+                // unset warning labels
+                for (FormItemComponent i : formItemComponents) {
+                    if (i.isEmpty()) i.setWarningLabel();
+                    else i.unsetWarningLabel();
                 }
-                else if (qtype.matches("mcq")){
-                    //  q.setQuestionType("Mcq");
-                    QuestionServer.Mcq q = (QuestionServer.Mcq) questionServer.getMcq();
-                    if(diffSlider.getValue() == 1 || diffSlider.getValue() ==2){
-                        q.setQuestionDifficulty("Easy");
-                    }
+                if (multipleChoiceItemComponents.size() > 0)
+                    mcqHeader.removeStyleName(MyTheme.MAIN_TEXT_WARNING);
 
-                    else if( diffSlider.getValue() == 3 || diffSlider.getValue() == 4){
-                        q.setQuestionDifficulty("Medium");
-                    }
+                // set up core variables
+                questionItem.setCourseId(comboBoxItem.getValeOfComponent());
+                questionItem.setQuestionBody(questionBodyItem.getValueOfComponent());
+                questionItem.setQuestionMark(questionMarksItem.getValeOfComponent());
+                questionItem.setQuestionDifficulty(questionDifficultyItem.getValeOfComponent());
 
-                    else{
-                        q.setQuestionDifficulty("Hard");
-                    }
-                    String s= q.getQuestionDifficulty();
-                    String m = mark1.getValue();
-                    q.setQuestionBody(qname.getValue());
-                    q.setQuestionAns(answername.getValue());
-                    q.setQuestionDate(qdate);
-                    q.setQuestionLastUsed(qlastused);
-                    q.setQuestionMark(Integer.parseInt(m));
-                    q.setQuestionDifficulty(s);
-                    q.setQuestionType(qtype);
-                    q.setMcq_choices(choices);
-
-                    if (questionServer.post(q)) {
-                        Notification.show("Success");
-                        navigator.navigateTo(question);
-                    }
-                    else {
-                        Notification.show("Error submitting form");
-                    }
+                // set up specialised variables
+                switch (questionItem.getQuestionType()) {
+                    case "written":
+                        // get answer and number of lines
+                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
+                        break;
+                    case "mcq":
+                        // choices
+                        StringBuilder stringBuilder = new StringBuilder();
+                        // iterate choices
+                        int length = multipleChoiceItemComponents.size();
+                        for (int i = 0; i < length; i++) {
+                            if (i != length - 1) {
+                                stringBuilder.append(multipleChoiceItemComponents.get(i).getTextField().getValue());
+                                stringBuilder.append(";");
+                            } else stringBuilder.append(multipleChoiceItemComponents.get(i).getTextField().getValue());
+                        }
+                        // get choices and answer
+                        if (choiceItemComponentComboBox.getValue() != null)
+                            questionItem.setQuestionAns(choiceItemComponentComboBox.getValue().getNumberValue());
+                        questionItem.setQuestionMcqChoices(stringBuilder.toString());
+                        break;
+                    case "practical":
+                        // get sample input/output and answer
+                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
+                        questionItem.setQuestionPracticalSampleInput(questionSampleInputItem.getValueOfComponent());
+                        questionItem.setQuestionPracticalSampleOutput(questionSampleOutputItem.getValueOfComponent());
+                        break;
                 }
 
+                // post
+                if (questionViewServer.postToQuestionTable(questionItem) > 0) {
 
+                    // also post tags
+                    questionViewServer.postToTagTable(tags);
 
+                    // set variable for notification
+                    VaadinService.getCurrentRequest().setAttribute("question-post", true);
 
-                // get values of textfield
-               /* q.getQuestionBody();
-                q.getQuestionDate();
-                q.getQuestionAns();
-                q.getQuestionMark();
-                q.getQuestionLastUsed();
-                q.getQuestionType();*/
-
-
-
-
-                // TODO the rest
-
-                // if post returned true show successful notification otherwise error
-                // and redirect
-                /*if (questionServer.post(q)) {
-                    Notification.show("Success");
+                    // navigate to question view
                     navigator.navigateTo(question);
                 }
                 else {
-                    Notification.show("Error submitting form");
-                }*/
+                    Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
+                }
             }
         });
-        content.addComponents(title,forms,back,submit);
     }
 
+    private void unsetComponentWarningLabelAndReset(FormItemComponent... components) {
 
-    @SuppressWarnings("Duplicates")
-    private void setUpDashboard() {
+        // unset and reset
+        for (FormItemComponent i : components) {
+            i.resetItem();
+            i.unsetWarningLabel();
+        }
+    }
 
-        // set navigation size, color
-        navigation.setWidth("80px");
-        navigation.setHeight(100.0f, Unit.PERCENTAGE);
-        navigation.setStyleName("main-blue");
-        addComponent(navigation);
+    private void addToFormItemComponentArrayList(FormItemComponent... components) {
 
-        // set content area
-        addComponentsAndExpand(content);
+        // add all
+        formItemComponents.addAll(Arrays.asList(components));
+    }
+
+    private void setUpMultipleChoiceToReplacementLayout() {
+
+        // add Label
+        mcqHeader = new Label("Choices");
+        mcqHeader.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_500);
+        replacementLayout.addComponent(mcqHeader);
+
+        // create mcq item
+        int index = multipleChoiceItemComponents.size();
+
+        if (index == 0) {
+
+            // you must have at minimum two choices
+            MultipleChoiceItemComponent item = new MultipleChoiceItemComponent(index + 1);
+            MultipleChoiceItemComponent item2 = new MultipleChoiceItemComponent(index + 2);
+
+            // add to array list
+            multipleChoiceItemComponents.add(item);
+            multipleChoiceItemComponents.add(item2);
+
+            // set on click listeners
+            item.getAddButton().addClickListener((Button.ClickListener)
+                    event -> addMultipleChoiceToReplacementLayout());
+            item2.getAddButton().addClickListener((Button.ClickListener)
+                    event -> addMultipleChoiceToReplacementLayout());
+            item.getTextField().addValueChangeListener((HasValue.ValueChangeListener<String>)
+                    event -> choiceItemComponentComboBox.setItems(multipleChoiceItemComponents));
+            item2.getTextField().addValueChangeListener((HasValue.ValueChangeListener<String>)
+                    event -> choiceItemComponentComboBox.setItems(multipleChoiceItemComponents));
+
+            // add to replacement layout
+            replacementLayout.addComponents(item, item2);
+
+            // combo box for answer
+            choiceItemComponentComboBox = new ComboBox<>();
+            choiceItemComponentComboBox.setWidth(100.0f, Unit.PERCENTAGE);
+            choiceItemComponentComboBox.setPlaceholder("Select Multiple Choice answer");
+            choiceItemComponentComboBox.setItems(multipleChoiceItemComponents);
+            choiceItemComponentComboBox.setItemCaptionGenerator(MultipleChoiceItemComponent::getItemValue);
+
+            // add listener
+            choiceItemComponentComboBox.addValueChangeListener((HasValue.ValueChangeListener<MultipleChoiceItemComponent>)
+                    event -> questionItem.setQuestionAns(event.getValue().getNumberValue()));
+
+            // add combo box
+            mcqAnswer = new Label("Answer");
+            mcqAnswer.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_500);
+            replacementLayout.addComponents(mcqAnswer, choiceItemComponentComboBox);
+        }
+    }
+
+    private void addMultipleChoiceToReplacementLayout() {
+
+        // create mcq item
+        int index = multipleChoiceItemComponents.size();
+
+        if (2 <= index && index < 5) {
+
+            // add with a remove option
+            MultipleChoiceItemComponent item = new MultipleChoiceItemComponent(index + 1);
+
+            // add to array list
+            multipleChoiceItemComponents.add(item);
+
+            // set on click listeners
+            item.getAddButton().addClickListener((Button.ClickListener)
+                    event -> addMultipleChoiceToReplacementLayout());
+            item.getRemoveButton().addClickListener((Button.ClickListener)
+                    event -> removeMultipleChoiceFromReplacementLayout(item));
+            item.getTextField().addValueChangeListener((HasValue.ValueChangeListener<String>)
+                    event -> choiceItemComponentComboBox.setItems(multipleChoiceItemComponents));
+
+            // get index
+            int i = replacementLayout.getComponentCount();
+
+            // set combo box
+            choiceItemComponentComboBox.setItems(multipleChoiceItemComponents);
+
+            // add to replacement layout
+            replacementLayout.addComponent(item, i - 2);
+        }
+        else {
+            Notification.show("ERROR", "Maximum choices reached", Notification.Type.WARNING_MESSAGE);
+        }
+    }
+
+    private void removeMultipleChoiceFromReplacementLayout(MultipleChoiceItemComponent itemComponent) {
+
+        // remove
+        multipleChoiceItemComponents.remove(itemComponent);
+        replacementLayout.removeComponent(itemComponent);
+
+        // re number
+        for (int i = 0; i < multipleChoiceItemComponents.size(); i++) {
+
+            // get char
+            char c = 'a';
+            c += i;
+
+            // number
+            multipleChoiceItemComponents.get(i).setNumberValue(Character.toString(c));
+
+            // set remove id
+            multipleChoiceItemComponents.get(i).setRemoveButtonId(Character.toString(c));
+        }
+
+        // set combo box
+        choiceItemComponentComboBox.setItems(multipleChoiceItemComponents);
+    }
+
+    private void removeAllMultipleChoiceItemsFromArrayList() {
+
+        int i = multipleChoiceItemComponents.size();
+        while (i > 0) {
+            multipleChoiceItemComponents.remove(i - 1);
+
+            i  = multipleChoiceItemComponents.size();
+        }
     }
 }

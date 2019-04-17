@@ -1,9 +1,9 @@
 package com.Client;
 
 import com.Components.CourseComboBox;
+import com.Components.EmptyQuestionsComponent;
 import com.Components.QuestionItemComponent;
 import com.Dashboard;
-import com.DateConvert;
 import com.MyTheme;
 import com.Objects.QuestionItem;
 import com.Server.QuestionViewServer;
@@ -16,9 +16,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.dnd.DropEffect;
-import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.ui.*;
-import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.DropTargetExtension;
 import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -26,7 +24,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 
 @DesignRoot
@@ -96,7 +93,6 @@ public class QuestionView extends HorizontalLayout implements View {
         addComponent(dashboard);
 
         // set content area
-        // navigation and content area]
         HorizontalLayout content = new HorizontalLayout();
         content.setSizeFull();
         addComponentsAndExpand(content);
@@ -118,11 +114,21 @@ public class QuestionView extends HorizontalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Question Editor");
+
         // set up questions
         setUpQuestions();
 
         // set page as entered
         hasEnteredPageBefore = true;
+
+        // show notification is from create question page
+        if (VaadinService.getCurrentRequest().getAttribute("question-post") != null) {
+            boolean success = (boolean) VaadinService.getCurrentRequest().getAttribute("question-post");
+            if (success) Notification.show("SUCCESS", "Question added", Notification.Type.TRAY_NOTIFICATION);
+            VaadinService.getCurrentRequest().setAttribute("question-post", false);
+        }
     }
 
     private void setUpPaperExplorer() {
@@ -280,28 +286,42 @@ public class QuestionView extends HorizontalLayout implements View {
         VerticalLayout verticalLayoutRoot = new VerticalLayout();
         verticalLayoutRoot.setMargin(false);
 
-        // loop through questions and add to view
-        for (QuestionItem q : questionArrayList) {
+        if (questionArrayList.isEmpty()) {
 
-            // declare new question item component
-            QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionViewServer);
-            // set variables
-            questionItemComponent.setCourseId(q.getCourseId());
-            questionItemComponent.setCourseCode(q.getCourseId());
-            questionItemComponent.setCourseName(q.getCourseId());
-            questionItemComponent.setQuestionId(q.getQuestionId());
-            questionItemComponent.setQuestionAns(q.getQuestionAns());
-            questionItemComponent.setQuestionBody(q.getQuestionBody());
-            questionItemComponent.setQuestionMark(q.getQuestionMark());
-            questionItemComponent.setQuestionDate(q.getQuestionDate());
-            questionItemComponent.setQuestionLastUsed(q.getQuestionLastUsed());
-            questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
+            // show user that they dont have questions in database create question
+            verticalLayoutRoot.setSizeFull();
 
-            // set up question item component
-            questionItemComponent.setUpQuestionItemComponent();
+            // no questions found
+            EmptyQuestionsComponent component = new EmptyQuestionsComponent(basePath, true);
 
-            // add to vertical layout root
-            verticalLayoutRoot.addComponent(questionItemComponent.getThisQuestionItemComponent());
+            // add to root
+            verticalLayoutRoot.addComponent(component);
+            verticalLayoutRoot.setComponentAlignment(component, Alignment.MIDDLE_CENTER);
+        }
+        else {
+            // add questions loop through questions and add to view
+            for (QuestionItem q : questionArrayList) {
+
+                // declare new question item component
+                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionViewServer);
+                // set variables
+                questionItemComponent.setCourseId(q.getCourseId());
+                questionItemComponent.setCourseCode(q.getCourseId());
+                questionItemComponent.setCourseName(q.getCourseId());
+                questionItemComponent.setQuestionId(q.getQuestionId());
+                questionItemComponent.setQuestionAns(q.getQuestionAns());
+                questionItemComponent.setQuestionBody(q.getQuestionBody());
+                questionItemComponent.setQuestionMark(q.getQuestionMark());
+                questionItemComponent.setQuestionDate(q.getQuestionDate());
+                questionItemComponent.setQuestionLastUsed(q.getQuestionLastUsed());
+                questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
+
+                // set up question item component
+                questionItemComponent.setUpQuestionItemComponent();
+
+                // add to vertical layout root
+                verticalLayoutRoot.addComponent(questionItemComponent.getThisQuestionItemComponent());
+            }
         }
 
         // add root question layout
@@ -366,7 +386,7 @@ public class QuestionView extends HorizontalLayout implements View {
             setWidth(60.0f, Unit.PERCENTAGE);
 
             // create draft image
-            FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty.svg"));
+            FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-papers.svg"));
             Image empty = new Image(null, emptyResource);
             empty.setWidth(64.0f, Unit.PIXELS);
             empty.setHeight(64.0f, Unit.PIXELS);

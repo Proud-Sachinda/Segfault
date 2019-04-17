@@ -60,7 +60,7 @@
     margin-top: -17px;
   }
   .Segzy4 {
-    padding-left: 0px;
+    padding-left: 0;
     margin-top: -20px;
   }
   .backbtn{
@@ -68,7 +68,7 @@
     height: 40px;
     background-image: url("left-arrow2.svg");
     background-repeat: no-repeat;
-    border: 0px;
+    border: 0;
     box-shadow: none;
     background-size: 40px;
     margin: -25px;
@@ -90,19 +90,19 @@
   .Segzy5-decrease{
     width: 40px;
     margin-right: -12px;
-    border-radius: 0px;
+    border-radius: 0;
     font-size: large;
     background: #CDCDCD;
     border: none;
   }
   .segzyfield{
     background-color: #CDCDCD;
-    border-radius: 0px;
+    border-radius: 0;
     border: none;
   }
   .Segzy5-text{
     width: 40px;
-    border-radius: 0px;
+    border-radius: 0;
   }
   //------------------------------------------------------- Main CSS
   // colors
@@ -110,7 +110,7 @@
     background-color: #2c5aa0;
   }
   .main-green {
-    background-color: #43b05c;
+    background-color: #4fba6f;
   }
   .main-charcoal {
     background-color: #323232;
@@ -168,6 +168,9 @@
   .main-text-alignment-center {
     text-align: center;
   }
+  .main-text-alignment-right {
+    text-align: right;
+  }
 
   // opacity
   .main-opacity-20 {
@@ -188,6 +191,46 @@
     border-right-style: dashed;
     border-right-width: 1px;
     border-right-color: #323232;
+  }
+
+  .main-flat-difficulty-badge-1 {
+    background: #49b055;
+  }
+
+  .main-flat-difficulty-badge-2 {
+    background: #adff2f;
+  }
+
+  .main-flat-difficulty-badge-3 {
+    background: #ffe835;
+  }
+
+  .main-flat-difficulty-badge-4 {
+    background: #ffbd30;
+  }
+
+  .main-flat-difficulty-badge-5 {
+    background: #ff363d;
+  }
+
+  .main-flat-finish-button {
+    color: white;
+    padding: 4px 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    background: #43b05c;
+  }
+
+  .main-flat-finish-button:hover {
+    opacity: 0.75;
+  }
+
+  .main-flat-new-badge {
+    font-weight: 900;
+    border-radius: 24px;
+    background: orange;
+    padding: 4px 12px;
+    color: white;
   }
 
   .main-flat-border {
@@ -263,6 +306,45 @@
     box-shadow: 0 2px 10px 1px #a1a1a1;
     z-index: 100;
   }
+  .main-flat-round-button-mini {
+    width: 12px;
+    height: 12px;
+    border: none;
+    padding: 0;
+    background-color: #43b05c;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    font-size: 0.5rem;
+    font-weight: 200;
+    box-shadow: 0 2px 10px 1px #a1a1a1;
+  }
+
+  .main-flat-tag-edit-layout {
+    padding: 4px 12px;
+    border-radius: 32px;
+    background-color: #323232;
+  }
+
+  .main-flat-tag-text-field {
+    padding: 2px 12px;
+    color: white;
+    font-weight: 900;
+    border-radius: 10px;
+    background-color: #323232;
+  }
+
+  .main-flat-tag-label {
+    color: grey;
+    border-radius: 24px;
+    background: lightgray;
+    padding: 2px 12px;
+  }
+
+  .main-flat-tag-edit-layout:hover {
+    background-color: #404040;
+  }
+
   .main-flat-round-button-position {
     position: absolute;
     bottom: 32px;
@@ -335,7 +417,6 @@
   .main-control-clickable {
     cursor: pointer;
   }
-
   .main-navigation-link {
     opacity: 0.6;
   }

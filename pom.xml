@@ -200,11 +200,14 @@
 				<executions>
 					<execution>
 						<goals>
+							<goal>clean</goal>
+							<goal>resources</goal>
 							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
-							<goal>compile</goal>
-							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
 							<goal>compile-theme</goal>
+							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
+							<goal>compile</goal>
+							<goal>test</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -217,7 +220,7 @@
 				<configuration>
 					<filesets>
 						<fileset>
-							<directory>src/main/webapp/VAADIN/themes</directory>
+							<directory>src/main/webapp/VAADIN/themes/</directory>
 							<includes>
 								<include>**/styles.css</include>
 								<include>**/styles.scss.cache</include>

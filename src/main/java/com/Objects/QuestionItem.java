@@ -7,15 +7,22 @@ public class QuestionItem {
     // attributes
     private int course_id;
     private int question_id;
+    private int question_mark;
     private String lecturer_id;
+    private Date question_date;
+    private String question_ans;
     private String question_type;
     private String question_body;
-    private String question_ans;
-    private int question_difficulty;
-    private Date question_date;
-    private Date question_last_used;
     private int question_variance;
-    private int question_mark;
+    private int question_difficulty;
+    private Date question_last_used;
+    private String question_mcq_choices;
+    private int question_written_no_of_lines;
+    private String question_practical_sample_input;
+    private String question_practical_sample_output;
+
+    public QuestionItem() {
+    }
 
     public int getQuestionId() {
         return question_id;
@@ -103,5 +110,37 @@ public class QuestionItem {
 
     public void setCourseId(int course_id) {
         this.course_id = course_id;
+    }
+
+    public String getQuestionMcqChoices() {
+        return question_mcq_choices;
+    }
+
+    public void setQuestionMcqChoices(String question_mcq_choices) {
+        this.question_mcq_choices = question_mcq_choices;
+    }
+
+    public String getQuestionPracticalSampleInput() {
+        return question_practical_sample_input;
+    }
+
+    public void setQuestionPracticalSampleInput(String question_practical_sample_input) {
+        this.question_practical_sample_input = question_practical_sample_input;
+    }
+
+    public String getQuestionPracticalSampleOutput() {
+        return question_practical_sample_output;
+    }
+
+    public void setQuestionPracticalSampleOutput(String question_practical_sample_output) {
+        this.question_practical_sample_output = question_practical_sample_output;
+    }
+
+    public int getQuestionWrittenNoOfLines() {
+        return question_written_no_of_lines;
+    }
+
+    public void setQuestionWrittenNoOfLines(int question_written_no_of_lines) {
+        this.question_written_no_of_lines = question_written_no_of_lines;
     }
 }

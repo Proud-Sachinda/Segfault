@@ -15229,7 +15229,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .Segzy4 {
-	padding-left: 0px;
+	padding-left: 0;
 	margin-top: -20px;
 }
 
@@ -15238,7 +15238,7 @@ div.v-layout.v-horizontal.v-widget {
 	height: 40px;
 	background-image: url("left-arrow2.svg");
 	background-repeat: no-repeat;
-	border: 0px;
+	border: 0;
 	box-shadow: none;
 	background-size: 40px;
 	margin: -25px;
@@ -15261,7 +15261,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .Segzy5-decrease {
 	width: 40px;
 	margin-right: -12px;
-	border-radius: 0px;
+	border-radius: 0;
 	font-size: large;
 	background: #CDCDCD;
 	border: none;
@@ -15269,13 +15269,13 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .segzyfield {
 	background-color: #CDCDCD;
-	border-radius: 0px;
+	border-radius: 0;
 	border: none;
 }
 
 .mytheme .Segzy5-text {
 	width: 40px;
-	border-radius: 0px;
+	border-radius: 0;
 }
 
 .mytheme .main-blue {
@@ -15283,7 +15283,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .main-green {
-	background-color: #43b05c;
+	background-color: #4fba6f;
 }
 
 .mytheme .main-charcoal {
@@ -15302,8 +15302,12 @@ div.v-layout.v-horizontal.v-widget {
 	color: #43b05c;
 }
 
-.mytheme .main-text-size-small {
+.mytheme .main-text-size-extra-small {
 	font-size: 0.5rem;
+}
+
+.mytheme .main-text-size-small {
+	font-size: 0.75rem;
 }
 
 .mytheme .main-text-size-normal {
@@ -15322,8 +15326,32 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 3rem;
 }
 
+.mytheme .main-text-weight-500 {
+	font-weight: 500;
+}
+
+.mytheme .main-text-weight-600 {
+	font-weight: 600;
+}
+
+.mytheme .main-text-weight-700 {
+	font-weight: 700;
+}
+
+.mytheme .main-text-weight-800 {
+	font-weight: 800;
+}
+
 .mytheme .main-text-weight-900 {
 	font-weight: 900;
+}
+
+.mytheme .main-text-alignment-center {
+	text-align: center;
+}
+
+.mytheme .main-text-alignment-right {
+	text-align: right;
 }
 
 .mytheme .main-opacity-20 {
@@ -15348,8 +15376,59 @@ div.v-layout.v-horizontal.v-widget {
 	border-right-color: #323232;
 }
 
+.mytheme .main-flat-difficulty-badge-1 {
+	background: #49b055;
+}
+
+.mytheme .main-flat-difficulty-badge-2 {
+	background: #adff2f;
+}
+
+.mytheme .main-flat-difficulty-badge-3 {
+	background: #ffe835;
+}
+
+.mytheme .main-flat-difficulty-badge-4 {
+	background: #ffbd30;
+}
+
+.mytheme .main-flat-difficulty-badge-5 {
+	background: #ff363d;
+}
+
+.mytheme .main-flat-finish-button {
+	color: white;
+	padding: 4px 12px;
+	font-weight: 500;
+	border-radius: 8px;
+	background: #43b05c;
+}
+
+.mytheme .main-flat-finish-button:hover {
+	opacity: 0.75;
+}
+
+.mytheme .main-flat-new-badge {
+	font-weight: 900;
+	border-radius: 24px;
+	background: orange;
+	padding: 4px 12px;
+	color: white;
+}
+
 .mytheme .main-flat-border {
 	border: 1px dashed #323232;
+}
+
+.mytheme .main-flat-dark-top-bottom-border {
+	padding: 4px;
+	border-radius: 4px;
+	background: #f2f2f2;
+}
+
+.mytheme .main-flat-dark-left-right-border {
+	border-left: solid 2px #c3c3c3;
+	border-right: solid 2px #c3c3c3;
 }
 
 .mytheme .main-flat-button {
@@ -15410,12 +15489,52 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 24px;
 	font-weight: 200;
 	box-shadow: 0 2px 10px 1px #a1a1a1;
+	z-index: 100;
+}
+
+.mytheme .main-flat-round-button-mini {
+	width: 12px;
+	height: 12px;
+	border: none;
+	padding: 0;
+	background-color: #43b05c;
+	border-radius: 50%;
+	color: white;
+	text-align: center;
+	font-size: 0.5rem;
+	font-weight: 200;
+	box-shadow: 0 2px 10px 1px #a1a1a1;
+}
+
+.mytheme .main-flat-tag-edit-layout {
+	padding: 4px 12px;
+	border-radius: 32px;
+	background-color: #323232;
+}
+
+.mytheme .main-flat-tag-text-field {
+	padding: 2px 12px;
+	color: white;
+	font-weight: 900;
+	border-radius: 10px;
+	background-color: #323232;
+}
+
+.mytheme .main-flat-tag-label {
+	color: grey;
+	border-radius: 24px;
+	background: lightgray;
+	padding: 2px 12px;
+}
+
+.mytheme .main-flat-tag-edit-layout:hover {
+	background-color: #404040;
 }
 
 .mytheme .main-flat-round-button-position {
 	position: absolute;
-	bottom: 48px;
-	right: 48px;
+	bottom: 32px;
+	right: 32px;
 }
 
 .mytheme .main-flat-round-button:active {

@@ -45,6 +45,15 @@ public class MyUI extends UI {
             e.printStackTrace();
         }
 
+        try {
+            connection = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
+                            "postgres", "postgres");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         // route strings - nothing special just things like qbank_exploded_war/#!route_name
         String question = "question";
         String course = "course";
@@ -58,6 +67,8 @@ public class MyUI extends UI {
             navigator.addView(course, new CourseView(navigator, connection));
             navigator.addView(export, new ExportView(navigator, connection));
             navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
+            // navigate to app for now
+            navigator.navigateTo(question);
         }
         else {
             Notification.show("Reload Page");

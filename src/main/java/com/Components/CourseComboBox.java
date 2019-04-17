@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CourseComboBox extends ComboBox<CourseItem> {
 
     // attributes
-    private int courseId;
+    private int courseId = 0;
 
     public CourseComboBox(ArrayList<CourseItem> items) {
 

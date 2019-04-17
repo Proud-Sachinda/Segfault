@@ -2,9 +2,8 @@ package com;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
 import java.io.File;
@@ -20,7 +19,9 @@ public class Dashboard extends VerticalLayout {
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     // navigation root
-    private VerticalLayout nav = new VerticalLayout();
+    private VerticalLayout top = new VerticalLayout();
+    private VerticalLayout bottom = new VerticalLayout();
+    private VerticalLayout center = new VerticalLayout();
 
     // navigation variable
     private Navigator navigator;
@@ -34,12 +35,12 @@ public class Dashboard extends VerticalLayout {
     private FileResource signOutResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/sign-out.svg"));
 
     // navigation icons
-    private final Image logo = new Image("", logoResource);
+    private final Image logo = new Image(null, logoResource);
     private final Image create = new Image("", createResource);
     private final Image course = new Image("", courseResource);
     private final Image export = new Image("", exportResource);
     private final Image profile = new Image("", profileResource);
-    private final Image signOut = new Image("", signOutResource);
+    private final Image signOut = new Image(null, signOutResource);
 
     public Dashboard(Navigator navigator) {
 
@@ -47,7 +48,7 @@ public class Dashboard extends VerticalLayout {
         this.navigator = navigator;
 
         // set width and height
-        setWidth(80.f, Sizeable.Unit.PIXELS);
+        setWidth(64.f, Sizeable.Unit.PIXELS);
         setHeight(100.f, Sizeable.Unit.PERCENTAGE);
 
         // set colour
@@ -57,24 +58,44 @@ public class Dashboard extends VerticalLayout {
         setMargin(false);
 
         // set icons height and width
-        setSize(logo, 64.0f);
+        setSize(logo, 54.0f);
         setSize(create, 48.0f);
         setSize(course, 48.0f);
         setSize(export, 48.f);
         setSize(profile, 48.f);
         setSize(signOut, 48.0f);
 
+        // set descriptions
+        logo.setDescription("Home");
+        create.setDescription("View Questions");
+        course.setDescription("View Papers");
+        export.setDescription("Export Papers");
+        profile.setDescription("Edit Profile");
+        signOut.setDescription("Sign out");
+
+        // add logo
+        top.setMargin(false);
+        top.addComponent(logo);
+        top.setWidth(64.0f, Unit.PIXELS);
+        top.setHeight(64.0f, Unit.PIXELS);
+        top.addStyleName(MyTheme.MAIN_CHARCOAL);
+
         // add to nav root then center nav root
+        center.setMargin(new MarginInfo(true, false));
+        center.addComponents(create, course, export);
+        VerticalLayout nav = new VerticalLayout();
         nav.setMargin(false);
-        nav.addComponent(create);
-        nav.addComponent(course);
-        nav.addComponent(export);
+        nav.addComponent(center);
+        nav.setComponentAlignment(center, Alignment.MIDDLE_CENTER);
+
+        // add profile and sign out
+        bottom.setMargin(new MarginInfo(false));
+        bottom.addComponents(profile, signOut);
 
         // add links
-        addComponent(logo);
+        addComponent(top);
         addComponentsAndExpand(nav);
-        addComponent(profile);
-        addComponent(signOut);
+        addComponent(bottom);
 
         // align to center
         alignComponents();
@@ -93,28 +114,30 @@ public class Dashboard extends VerticalLayout {
     private void alignComponents() {
 
         // logo component
-        setComponentAlignment(logo, Alignment.TOP_CENTER);
+        top.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 
         // create alignment
-        nav.setComponentAlignment(create, Alignment.BOTTOM_CENTER);
+        center.setComponentAlignment(create, Alignment.MIDDLE_CENTER);
 
         // course alignment
-        nav.setComponentAlignment(course, Alignment.MIDDLE_CENTER);
+        center.setComponentAlignment(course, Alignment.MIDDLE_CENTER);
 
         // export alignment
-        nav.setComponentAlignment(export, Alignment.TOP_CENTER);
+        center.setComponentAlignment(export, Alignment.MIDDLE_CENTER);
 
         // profile
-        setComponentAlignment(profile, Alignment.BOTTOM_CENTER);
+        bottom.setComponentAlignment(profile, Alignment.BOTTOM_CENTER);
 
         // sign out component
-        setComponentAlignment(signOut, Alignment.TOP_CENTER);
+        bottom.setComponentAlignment(signOut, Alignment.BOTTOM_CENTER);
     }
 
     private void addMouseListener() {
 
         // logo clickable
         logo.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
+        logo.addClickListener((MouseEvents.ClickListener)
+                event -> getUI().getPage().open("https://github.com/Proud-Sachinda/Segfault", "GitHub", false));
 
         // create clickable
         create.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);

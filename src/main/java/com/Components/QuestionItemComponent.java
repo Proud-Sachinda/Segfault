@@ -13,6 +13,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.event.DragEndListener;
 import com.vaadin.ui.dnd.event.DragStartListener;
+import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.ui.NumberField;
 
 import java.io.File;
 import java.util.Date;
@@ -34,17 +36,21 @@ public class QuestionItemComponent extends VerticalLayout {
     private int questionDifficulty;
 
     // components
-    private Label difficultyLabel;
-    private Label questionBodyLabel;
-    private Slider difficultySlider = new Slider();
-    private VerticalLayout dateAndEdit = new VerticalLayout();
-    private HorizontalLayout firstRow = new HorizontalLayout();
-    private HorizontalLayout thirdRow = new HorizontalLayout();
-    private TextArea editQuestionAnsTextField = new TextArea();
-    private TextArea editQuestionBodyTextField = new TextArea();
-    private Button seeMoreSeeLess = new Button("see more");
-    private VerticalLayout seeMoreComponent = new VerticalLayout();
-    private HorizontalLayout updateQuestionControls = new HorizontalLayout();
+    private final Label marksLabel = new Label();
+    private final Label difficultyLabel = new Label();
+    private final Label questionAnsLabel = new Label();
+    private final Label questionBodyLabel = new Label();
+    private final Slider difficultySlider = new Slider();
+    private final NumberField marksNumberField = new NumberField();
+    private final VerticalLayout dateAndEdit = new VerticalLayout();
+    private final HorizontalLayout firstRow = new HorizontalLayout();
+    private final HorizontalLayout thirdRow = new HorizontalLayout();
+    private final TextArea editQuestionAnsTextField = new TextArea();
+    private final TextArea editQuestionBodyTextField = new TextArea();
+    private final HorizontalLayout marksLayout = new HorizontalLayout();
+    private final Button seeMoreSeeLess = new Button("see more");
+    private final VerticalLayout seeMoreComponent = new VerticalLayout();
+    private final HorizontalLayout updateQuestionControls = new HorizontalLayout();
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -192,15 +198,25 @@ public class QuestionItemComponent extends VerticalLayout {
         save.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
         trash.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
 
-        difficultyLabel = new Label(Integer.toString(this.questionDifficulty));
-        difficultyLabel.addStyleNames("main-flat-badge-icon", MyTheme.MAIN_BLUE);
-        questionBodyLabel = new Label(this.getQuestionBody());
-        questionBodyLabel.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
-        Label dateLabel = new Label(DateConvert.convertNumericDateToMinimumAlphabeticDate(this.questionLastUsed));
+        difficultyLabel.setValue(Integer.toString(this.questionDifficulty));
+        difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_BADGE_ICON);
+
+        // set badge colour
+        setUpDifficultyBadgeColor();
+
+        // body label
+        questionBodyLabel.setValue(this.getQuestionBody());
+        questionBodyLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_500);
+        Label dateLabel = new Label();
+        if (this.questionLastUsed != null) dateLabel.setValue(DateConvert.convertNumericDateToMinimumAlphabeticDate(this.questionLastUsed));
+        else {
+            dateLabel.setValue("NEW");
+            dateLabel.addStyleName(MyTheme.MAIN_FLAT_NEW_BADGE);
+        }
         dateAndEdit.addComponent(dateLabel);
         dateAndEdit.setWidthUndefined();
         dateAndEdit.setMargin(false);
-        dateLabel.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_700);
+        dateLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_700);
         updateQuestionControls.addComponents(edit, trash);
         dateAndEdit.addComponent(updateQuestionControls);
         dateAndEdit.setComponentAlignment(updateQuestionControls, Alignment.MIDDLE_RIGHT);
@@ -225,11 +241,18 @@ public class QuestionItemComponent extends VerticalLayout {
         // set up subject label, tags and question marks
         Label courseCode = new Label(getCourseCode());
         courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
-        Label subject = new Label(getCourseName());
-        thirdRow.addComponents(courseCode, subject);
+        Label subject = new Label();
+        subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
+        shortenCourseNameIfTooLong(getCourseName(), subject);
+        TagItemsComponent tags = new TagItemsComponent(questionViewServer, basePath, id);
+        thirdRow.addComponents(courseCode, subject, tags);
+        thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
+        setUpMarksLabel();
 
         // add third row to ui
-        addComponent(thirdRow);
+        addComponentsAndExpand(thirdRow);
+        thirdRow.setComponentAlignment(courseCode, Alignment.MIDDLE_LEFT);
+        thirdRow.setComponentAlignment(subject, Alignment.MIDDLE_LEFT);
 
         // see more see less on click listener
         setUpSeeMoreSeeLessClickListener();
@@ -266,6 +289,41 @@ public class QuestionItemComponent extends VerticalLayout {
                 dragSourceExtension.remove();
             }
         });
+    }
+
+    private void shortenCourseNameIfTooLong(String string, Label label) {
+
+        // if shorter than 20 characters send back string
+        if (string.length() < 20) label.setValue(string);
+        else {
+            // get acronym
+            String [] acronym = string.split(" ");
+
+            // null string
+            StringBuilder tmp = new StringBuilder();
+
+            for (String s : acronym)
+                if (!s.toLowerCase().equals("to") && !s.toLowerCase().equals("and"))
+                    tmp.append(s.charAt(0));
+
+            // set label
+            label.setValue(tmp.toString().toUpperCase().trim());
+            label.setDescription(string);
+        }
+    }
+
+    private void setUpMarksLabel() {
+
+        // marks label
+        if (questionMark == 0) marksLabel.setValue("no marks");
+        else if (questionMark == 1) marksLabel.setValue("1 mark");
+        else marksLabel.setValue(questionMark + " marks");
+        marksLabel.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_600);
+
+        marksLayout.addComponent(marksLabel);
+        marksLayout.setWidth(100f, Unit.PERCENTAGE);
+        thirdRow.addComponentsAndExpand(marksLayout);
+        marksLayout.setComponentAlignment(marksLabel, Alignment.MIDDLE_RIGHT);
     }
 
     private void setUpSeeMoreSeeLessClickListener() {
@@ -333,9 +391,17 @@ public class QuestionItemComponent extends VerticalLayout {
                 questionDifficulty = x;
                 setUpQuestionDifficultySlider(x);
             });
-            editQuestionAnsTextField.setValue(questionAns);
+
+            editQuestionAnsTextField.setValue(this.questionAns);
             editQuestionAnsTextField.setCaption("Answer");
             editQuestionAnsTextField.setWidth(100.0f, Unit.PERCENTAGE);
+
+            // remove mark label add text field
+            marksLabel.setValue("marks");
+            marksNumberField.setWidth(64f, Unit.PIXELS);
+            marksNumberField.setValue(questionMark + "");
+            marksLayout.addComponentAsFirst(marksNumberField);
+            marksLayout.setComponentAlignment(marksNumberField, Alignment.MIDDLE_RIGHT);
 
             // add slider, answer, see more see less button and third row
             addComponents(difficultySlider, editQuestionAnsTextField, seeMoreSeeLess, thirdRow);
@@ -359,15 +425,25 @@ public class QuestionItemComponent extends VerticalLayout {
 
             // update labels
             difficultyLabel.setValue(Integer.toString(this.questionDifficulty));
+            setUpDifficultyBadgeColor();
             questionBodyLabel.setValue(this.questionBody);
+            questionAnsLabel.setValue(this.questionAns);
             updateQuestionControls.addComponentAsFirst(edit);
 
             // add label
             firstRow.addComponentsAndExpand(questionBodyLabel);
             firstRow.addComponent(dateAndEdit);
 
+            // remove mark editor and set value
+            questionMark = Integer.parseInt(marksNumberField.getValue());
+            if (questionMark == 0) marksLabel.setValue("no marks");
+            else if (questionMark == 1) marksLabel.setValue("1 mark");
+            else marksLabel.setValue(questionMark + " marks");
+            marksLayout.removeComponent(marksNumberField);
+
             // take to database
             QuestionItem item = new QuestionItem();
+            item.setQuestionMark(getQuestionMark());
             item.setQuestionDifficulty(getQuestionDifficulty());
             item.setQuestionBody(getQuestionBodyFull());
             item.setQuestionAns(getQuestionAns());
@@ -392,19 +468,53 @@ public class QuestionItemComponent extends VerticalLayout {
         else if (x == 5) difficultySlider.setCaption("Difficulty - Expert");
     }
 
+    private void setUpDifficultyBadgeColor() {
+
+        // remove existing color
+        difficultySlider.removeStyleNames(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_1,
+                MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_2, MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_3,
+                MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_4, MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_5);
+
+        // add color
+        switch (this.questionDifficulty) {
+            case 1:
+                difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_1);
+                break;
+            case 2:
+                difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_2);
+                break;
+            case 3:
+                difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_3);
+                break;
+            case 4:
+                difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_4);
+                break;
+            case 5:
+                difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_5);
+                break;
+            default:
+                difficultyLabel.addStyleNames(MyTheme.MAIN_CHARCOAL);
+                break;
+        }
+    }
+
     private void setUpSeeMoreComponent() {
 
         // root of see more component
         seeMoreComponent.setMargin(false);
+        removeComponent(seeMoreComponent);
+        seeMoreComponent.removeAllComponents();
 
         // add answer row
         HorizontalLayout answerRow = new HorizontalLayout();
+        answerRow.setWidth(100.0f, Unit.PERCENTAGE);
         Label ans = new Label("ANSWER: ");
         ans.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_WARNING,
                 MyTheme.MAIN_TEXT_WEIGHT_900);
-        Label answer = new Label(this.questionAns);
-        answer.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_CHARCOAL);
-        answerRow.addComponents(ans, answer);
+        questionAnsLabel.setValue(this.questionAns);
+        questionAnsLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_CHARCOAL);
+        answerRow.addComponent(ans);
+        answerRow.addComponentsAndExpand(questionAnsLabel);
         seeMoreComponent.addComponentsAndExpand(answerRow);
 
         // add variance row

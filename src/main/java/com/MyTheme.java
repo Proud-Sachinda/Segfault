@@ -5,6 +5,7 @@ public class MyTheme {
     // colours
     public static final String MAIN_BLUE = "main-blue";
     static final String MAIN_GREEN = "main-green";
+    public static final String MAIN_CHARCOAL = "main-charcoal";
 
     // text colors
     public static final String MAIN_TEXT_GREEN = "main-text-green";
@@ -12,7 +13,7 @@ public class MyTheme {
     public static final String MAIN_TEXT_CHARCOAL = "main-text-charcoal";
 
     // text size
-    public static final String MAIN_TEXT_EXTRA_SMALL = "main-text-size-extra-small";
+    public static final String MAIN_TEXT_SIZE_EXTRA_SMALL = "main-text-size-extra-small";
     public static final String MAIN_TEXT_SIZE_SMALL = "main-text-size-small";
     public static final String MAIN_TEXT_SIZE_NORMAL = "main-text-size-normal";
     public static final String MAIN_TEXT_SIZE_MEDIUM = "main-text-size-medium";
@@ -27,6 +28,7 @@ public class MyTheme {
     public static final String MAIN_TEXT_WEIGHT_900 = "main-text-weight-900";
 
     // text alignment
+    public static final String MAIN_TEXT_ALIGNMENT_RIGHT = "main-text-alignment-right";
     public static final String MAIN_TEXT_ALIGNMENT_CENTER = "main-text-alignment-center";
 
     // opacity
@@ -38,7 +40,19 @@ public class MyTheme {
     // components
     public static final String MAIN_FLAT_BORDER = "main-flat-border";
     public static final String MAIN_GREY_LABEL = "main-flat-grey-label";
+    public static final String MAIN_FLAT_TAG_LABEL = "main-flat-tag-label";
+    public static final String MAIN_FLAT_NEW_BADGE = "main-flat-new-badge";
+    public static final String MAIN_FLAT_BADGE_ICON = "main-flat-badge-icon";
     public static final String MAIN_FLAT_FLOATING_BOX = "main-flat-floating-box";
+    public static final String MAIN_FLAT_FINISH_BUTTON = "main-flat-finish-button";
+    public static final String MAIN_FLAT_TAG_TEXT_FIELD = "main-flat-tag-text-field";
+    public static final String MAIN_FLAT_TAG_EDIT_LAYOUT = "main-flat-tag-edit-layout";
+    public static final String MAIN_FLAT_ROUND_BUTTON_MINI = "main-flat-round-button-mini";
+    public static final String MAIN_FLAT_DIFFICULTY_BADGE_1 = "main-flat-difficulty-badge-1";
+    public static final String MAIN_FLAT_DIFFICULTY_BADGE_2 = "main-flat-difficulty-badge-2";
+    public static final String MAIN_FLAT_DIFFICULTY_BADGE_3 = "main-flat-difficulty-badge-3";
+    public static final String MAIN_FLAT_DIFFICULTY_BADGE_4 = "main-flat-difficulty-badge-4";
+    public static final String MAIN_FLAT_DIFFICULTY_BADGE_5 = "main-flat-difficulty-badge-5";
     public static final String MAIN_FLAT_DARK_TOP_BOTTOM_BORDER = "main-flat-dark-top-bottom-border";
     public static final String MAIN_FLAT_DARK_LEFT_RIGHT_BORDER = "main-flat-dark-left-right-border";
     public static final String MAIN_FLAT_ROUND_BUTTON_PAGINATION = "main-flat-round-button-pagination";
