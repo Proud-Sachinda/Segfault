@@ -377,7 +377,7 @@ public class QuestionView extends HorizontalLayout implements View {
     }
 
     // reusable components
-    private class CreateDraftComponent extends VerticalLayout {
+    public class CreateDraftComponent extends VerticalLayout {
 
         CreateDraftComponent() {
 

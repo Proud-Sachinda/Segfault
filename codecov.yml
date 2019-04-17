@@ -21,11 +21,6 @@ parsers:
       macro: no
 
 comment:
-  layout: "header, diff"
+  layout: "reach, diff, flags, files, footer"
   behavior: default
-  require_changes: no
-
-codecov:
-  token: 7c13a12e-464b-4ac6-b5be-079f148a1695
-  
-bash <(curl -x https://raw.githubusercontent.com/codecov/codecov-bash/master/codecov) -t 0fd4bb3c-9610-496b-b43f-fc1de2c0b07f
+require_changes: no

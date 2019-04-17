@@ -1,48 +1,110 @@
 package com.Server;
 
-import org.postgresql.copy.CopyManager;
-import org.postgresql.core.BaseConnection;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class ExportServer {
+    // connection variable
+    private Connection connection;
 
-    public static void main(String[] args) {
+    Track tracky = new Track();
 
-        String url = "jdbc:postgresql://localhost:5432/postgres";
-        String username = "postgres";
-        String password = "postgres";
+    public ExportServer(Connection connection) {
 
-        try {
+        // initialise connection variable
+        this.connection = connection;
+    }
 
-            Connection con = DriverManager.getConnection(url, username, password);
-            CopyManager cm = new CopyManager((BaseConnection) con);
+    public Track getTrack(){
+        return this.tracky;
+    }
 
-            String fileName = "src/main/resources/friends";
+    public ArrayList<Track> get(int testid) {
+        //arraylist to store  tracks
+        ArrayList<Track> tracks = new ArrayList<>();
+        try{
+            // get database variables
+            Statement statement = connection.createStatement();
 
-            try (FileOutputStream fos = new FileOutputStream(fileName);
-                 OutputStreamWriter osw = new OutputStreamWriter(fos,
-                         StandardCharsets.UTF_8)) {
+            // query
+            String query = "SELECT * FROM public.track where test_id =" +testid;
 
-                cm.copyOut("COPY question TO STDOUT WITH DELIMITER AS '|'", osw);
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // Question class variable
+                Track track = new Track();
+
+                // set variables
+                track.setTrack_id(set.getInt("track_id"));
+                track.setQuestion_id(set.getInt("question_id"));
+                track.setTest_id(set.getInt("test_id"));
+                track.setQuestion_number(set.getInt("question_number"));
+                track.setTrack_order(set.getInt("track_order"));
+
+
+                // add to array list
+                tracks.add(track);
+                System.out.println("i am");
+            }
+            for(int i=0;i<tracks.size();i++){
+                System.out.println(tracks.get(i).getTrackId());
             }
 
-            System.out.println(cm);
-
-        } catch (SQLException | IOException ex) {
-            System.out.println(ex.getMessage());
-
-            Logger lgr = Logger.getLogger(
-                    ExportServer.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
+        return tracks;
+    }
+
+
+    public class Track{
+        private int track_id;
+        private int question_id;
+        private int test_id;
+        private int question_number;
+        private int track_order;
+        //private String question_description;
+
+        public int getTrackId() {
+            return track_id;
+        }
+
+        public int getQuestionId() {
+            return question_id;
+        }
+
+        public int getTestId() {
+            return test_id;
+        }
+
+        public int getQuestionNumber() {
+            return question_number;
+        }
+
+        public int getTrackOrder() {
+            return track_order;
+        }
+
+
+
+        public void setTrack_id(int trackid) {
+            this.track_id = trackid;
+        }
+        public void setQuestion_id(int questionId) {
+            this.question_id = questionId;
+        }
+        public void setTest_id(int testid) {
+            this.test_id = testid;
+        }
+        public void setQuestion_number(int questionnum) {
+            this.question_number = questionnum;
+        }
+        public void setTrack_order(int trackorder) {
+            this.track_order = trackorder;
+        }
+
     }
 }

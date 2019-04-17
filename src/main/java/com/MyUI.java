@@ -59,6 +59,7 @@ public class MyUI extends UI {
         String course = "course";
         String export = "export";
         String createquestion = "createquestion";
+        String createcourse = "createcourse";
 
         if (connection != null) {
             // create and register the views
@@ -67,6 +68,7 @@ public class MyUI extends UI {
             navigator.addView(course, new CourseView(navigator, connection));
             navigator.addView(export, new ExportView(navigator, connection));
             navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
+            navigator.addView(createcourse, new CreateCourseView(navigator, connection));
             // navigate to app for now
             navigator.navigateTo(question);
         }
