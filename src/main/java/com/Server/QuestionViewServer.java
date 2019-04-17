@@ -171,6 +171,28 @@ public class QuestionViewServer {
         return tags;
     }
 
+    public String getLectureId() {
+
+        // return string
+        String query = "SELECT * FROM public.lecturer ORDER BY lecturer_id DESC LIMIT 1";
+
+        try {
+            // create statement
+            Statement statement = connection.createStatement();
+
+            // execute statement
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                query = resultSet.getString("lecturer_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return query;
+    }
+
 
     // -------------------------------- POST METHODS (INSERT)
     public int postToQuestionTable(QuestionItem item) {
@@ -185,7 +207,7 @@ public class QuestionViewServer {
                     "(lecturer_id, question_type, question_body, question_ans, question_date, " +
                     "question_mark, question_difficulty, course_id)" +
                     "VALUES" +
-                    "('" + "a1234567" + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
+                    "('" + getLectureId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
                     item.getQuestionAns() + "', now(), " + item.getQuestionMark() + ", " + item.getQuestionDifficulty() +
                     ", " + item.getCourseId() + ")";
 
