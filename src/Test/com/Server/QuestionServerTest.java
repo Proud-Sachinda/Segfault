@@ -1,5 +1,6 @@
 package com.Server;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,67 +11,65 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionServerTest {
 
-    QuestionServer myQuestionServer;
+
 
 
     private Connection connection;
 
 
+    QuestionServer myQuestionServer =  new QuestionServer(connection);
+
     @BeforeEach
     void setUp() {
 
-        myQuestionServer = new QuestionServer(connection);
-        //QuestionServer questionServer = new QuestionServer(connection);
-
 
     }
 
     @Test
-    void Testget() {
+    void myFunction(){
 
-        //assertNotNull(myQuestionServer.get());
+        assertEquals(4,myQuestionServer.myFunction(2,2));
+    }
+
+
+    @Test
+    void get() {
+       // System.out.println(myQuestionServer.get(11));
+       // Assert.assertNull(myQuestionServer.get(11));
     }
 
     @Test
-    void Testpost() {
+    void post() {
 
-        QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
+     //   QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
 
 
-        q.setQuestionBody("hello");
-        q.setQuestionAns("hi");
-        //q.setQuestionDate('2014-02-12');
-        // q.setQuestionLastUsed();
-        q.setQuestionMark(1);
-        q.setQuestionDifficulty("easy");
-        q.setQuestionType("written");
-        q.setQuestion_line(1);
 
         //myQuestionServer.post(q);
-        assertTrue(true);
+      //  assertTrue(true);
     }
 
     @Test
-    void Testpost1() {
+    void post1() {
     }
 
     @Test
-    void Testpost2() {
+    void post2() {
     }
 
     @Test
-    void TestgetQuestion() {
+    void getQuestion() {
     }
 
     @Test
-    void TestgetWritten() {
+    void getWritten() {
     }
 
     @Test
-    void TestgetPractical() {
+    void getPractical() {
     }
 
     @Test
-    void TestgetMcq() {
+    void getMcq() {
     }
 }

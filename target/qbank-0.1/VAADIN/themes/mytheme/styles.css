@@ -15244,6 +15244,23 @@ div.v-layout.v-horizontal.v-widget {
 	margin: -25px;
 }
 
+.mytheme .lol {
+	font-size: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.mytheme .lizo {
+	border-color: #2c5aa0;
+	border-radius: 30px;
+	width: 225px;
+	height: 200px;
+}
+
+.mytheme .esmond {
+	border-radius: 30px;
+}
+
 .mytheme .Segzy5 {
 	margin-left: 200px;
 	position: absolute;

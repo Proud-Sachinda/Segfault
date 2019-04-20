@@ -22,11 +22,18 @@ public class QuestionServer {
     Practical practical = new Practical();
     Mcq mcq = new Mcq();
 
+    //this constructor takes in a connection and pass it to the connection of this class
     public QuestionServer(Connection connection) {
 
         // initialise connection variable
         this.connection = connection;
     }
+
+    public int myFunction(int x, int y){
+        return x + y;
+    }
+
+
 
     public Question get(int questionId) {
 
