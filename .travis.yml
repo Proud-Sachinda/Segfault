@@ -7,3 +7,13 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 
+cache:
+  directories:
+  - "$HOME/.m2"
+
+install: true
+script: mvn clean package -nsu -DskipITs
+
+branches:
+  only:
+- master
