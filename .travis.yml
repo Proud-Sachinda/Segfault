@@ -1,7 +1,14 @@
 language: java
 
 #script: "mvn cobertura:cobertura"
-script: "mvn surefire:test"
+#script: "mvn surefire:test"
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
+
+jdk:
+      - oraclejdk8
+      - openjdk7
+
+before_install:
+      - cd java
