@@ -21,188 +21,188 @@ class QuestionItemTest {
     }
 
     @Test
-    void getQuestionId() {
+    void getQuestionIdTest() {
         QuestionItemObject.setQuestionId(5);
         assertEquals(5 ,QuestionItemObject.getQuestionId());
     }
 
     @Test
-    void setQuestionId() {
+    void setQuestionIdTest() {
 
         QuestionItemObject.setQuestionId(5);
        assertEquals(5 ,QuestionItemObject.getQuestionId());
     }
 
     @Test
-    void getLecturerId() {
+    void getLecturerIdTest() {
         QuestionItemObject.setLecturerId("5");
         assertEquals("5",QuestionItemObject.getLecturerId());
     }
 
     @Test
-    void getQuestionType() {
+    void getQuestionTypeTest() {
         QuestionItemObject.setQuestionType("MCQ");
         assertEquals("MCQ", QuestionItemObject.getQuestionType());
     }
 
     @Test
-    void getQuestionBody() {
+    void getQuestionBodyTest() {
         QuestionItemObject.setQuestionBody("What is my name?");
         assertEquals("What is my name?",QuestionItemObject.getQuestionBody());
     }
 
     @Test
-    void getQuestionAns() {
+    void getQuestionAnsTest() {
         QuestionItemObject.setQuestionAns("Proud man");
         assertEquals("Proud man",QuestionItemObject.getQuestionAns());
     }
 
     @Test
-    void getQuestionDifficulty() {
+    void getQuestionDifficultyTest() {
         QuestionItemObject.setQuestionDifficulty(5);
         assertEquals(5,QuestionItemObject.getQuestionDifficulty());
     }
 
     @Test
-    void getQuestionDate() {
+    void getQuestionDateTest() {
         java.util.Date date = new java.util.Date();
         QuestionItemObject.setQuestionDate(date);
         assertEquals(date,QuestionItemObject.getQuestionDate());
     }
 
     @Test
-    void getQuestionLastUsed() {
+    void getQuestionLastUsedTest() {
         java.util.Date date = new java.util.Date();
         QuestionItemObject.setQuestionLastUsed(date);
         assertEquals(date,QuestionItemObject.getQuestionLastUsed());
     }
 
     @Test
-    void getQuestionVariance() {
+    void getQuestionVarianceTest() {
         QuestionItemObject.setQuestionVariance(5);
         assertEquals(5,QuestionItemObject.getQuestionVariance());
     }
 
     @Test
-    void getQuestionMark() {
+    void getQuestionMarkTest() {
         QuestionItemObject.setQuestionMark(5);
         assertEquals(5,QuestionItemObject.getQuestionMark());
 
     }
 
     @Test
-    void setLecturerId() {
+    void setLecturerIdTest() {
         QuestionItemObject.setLecturerId("5");
         assertEquals("5",QuestionItemObject.getLecturerId());
     }
 
     @Test
-    void setQuestionType() {
+    void setQuestionTypeTest() {
         QuestionItemObject.setQuestionType("MCQ");
         assertEquals("MCQ", QuestionItemObject.getQuestionType());
     }
 
     @Test
-    void setQuestionBody() {
+    void setQuestionBodyTest() {
         QuestionItemObject.setQuestionBody("What is my name?");
         assertEquals("What is my name?",QuestionItemObject.getQuestionBody());
     }
 
     @Test
-    void setQuestionAns() {
+    void setQuestionAnsTest() {
         QuestionItemObject.setQuestionAns("Proud man");
         assertEquals("Proud man",QuestionItemObject.getQuestionAns());
     }
 
     @Test
-    void setQuestionDifficulty() {
+    void setQuestionDifficultyTest() {
         QuestionItemObject.setQuestionDifficulty(5);
         assertEquals(5,QuestionItemObject.getQuestionDifficulty());
     }
 
     @Test
-    void setQuestionDate() {
+    void setQuestionDateTest() {
         java.util.Date date = new java.util.Date();
         QuestionItemObject.setQuestionDate(date);
         assertEquals(date,QuestionItemObject.getQuestionDate());
     }
 
     @Test
-    void setQuestionLastUsed() {
+    void setQuestionLastUsedTest() {
         java.util.Date date = new java.util.Date();
         QuestionItemObject.setQuestionLastUsed(date);
         assertEquals(date,QuestionItemObject.getQuestionLastUsed());
     }
 
     @Test
-    void setQuestionVariance() {
+    void setQuestionVarianceTest() {
         QuestionItemObject.setQuestionVariance(5);
         assertEquals(5,QuestionItemObject.getQuestionVariance());
     }
 
     @Test
-    void setQuestionMark() {
+    void setQuestionMarkTest() {
         QuestionItemObject.setQuestionMark(5);
         assertEquals(5,QuestionItemObject.getQuestionMark());
     }
 
     @Test
-    void getCourseId() {
+    void getCourseIdTest() {
         QuestionItemObject.setCourseId(5);
         assertEquals(5,QuestionItemObject.getCourseId());
     }
 
     @Test
-    void setCourseId() {
+    void setCourseIdTest() {
         QuestionItemObject.setCourseId(5);
         assertEquals(5,QuestionItemObject.getCourseId());
     }
 
     @Test
-    void getQuestionMcqChoices(){
+    void getQuestionMcqChoicesTest(){
         QuestionItemObject.setQuestionMcqChoices("a, b, c");
         assertEquals("a, b, c", QuestionItemObject.getQuestionMcqChoices());
     }
 
     @Test
-    void setQuestionMcqChoices(){
+    void setQuestionMcqChoicesTest(){
         QuestionItemObject.setQuestionMcqChoices("a, b, c");
         assertEquals("a, b, c", QuestionItemObject.getQuestionMcqChoices());
     }
 
     @Test
-    void getQuestionPracticalSampleInput(){
+    void getQuestionPracticalSampleInputTest(){
         QuestionItemObject.setQuestionPracticalSampleInput("Object object = new Object()");
         assertEquals("Object object = new Object()", QuestionItemObject.getQuestionPracticalSampleInput());
 
     }
 
     @Test
-    void setQuestionPracticalSampleInput(){
+    void setQuestionPracticalSampleInputTest(){
         QuestionItemObject.setQuestionPracticalSampleInput("Object object = new Object()");
         assertEquals("Object object = new Object()", QuestionItemObject.getQuestionPracticalSampleInput());
     }
 
     @Test
-    void getQuestionPracticalSampleOutput(){
+    void getQuestionPracticalSampleOutputTest(){
     QuestionItemObject.setQuestionPracticalSampleOutput("An object has been created");
     assertEquals("An object has been created", QuestionItemObject.getQuestionPracticalSampleOutput());
     }
 
     @Test
-    void setQuestionPracticalSampleOutput(){
+    void setQuestionPracticalSampleOutputTest(){
         QuestionItemObject.setQuestionPracticalSampleOutput("An object has been created");
         assertEquals("An object has been created", QuestionItemObject.getQuestionPracticalSampleOutput());
     }
 
     @Test
-    void getQuestionWrittenNoOfLines(){
+    void getQuestionWrittenNoOfLinesTest(){
     QuestionItemObject.setQuestionWrittenNoOfLines(5);
     assertEquals(5, QuestionItemObject.getQuestionWrittenNoOfLines());
     }
 
     @Test
-    void setQuestionWrittenNoOfLines(){
+    void setQuestionWrittenNoOfLinesTest(){
         QuestionItemObject.setQuestionWrittenNoOfLines(5);
         assertEquals(5, QuestionItemObject.getQuestionWrittenNoOfLines());
     }
