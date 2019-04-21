@@ -1,7 +1,7 @@
 language: java
 
 #script: "mvn cobertura:cobertura"
-script: mvn surefire:test -Dtest=TestCircle
+script: mvn surefire:test 
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
