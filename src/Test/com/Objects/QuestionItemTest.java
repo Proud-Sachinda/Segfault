@@ -157,4 +157,53 @@ class QuestionItemTest {
         QuestionItemObject.setCourseId(5);
         assertEquals(5,QuestionItemObject.getCourseId());
     }
+
+    @Test
+    void getQuestionMcqChoices(){
+        QuestionItemObject.setQuestionMcqChoices("a, b, c");
+        assertEquals("a, b, c", QuestionItemObject.getQuestionMcqChoices());
+    }
+
+    @Test
+    void setQuestionMcqChoices(){
+        QuestionItemObject.setQuestionMcqChoices("a, b, c");
+        assertEquals("a, b, c", QuestionItemObject.getQuestionMcqChoices());
+    }
+
+    @Test
+    void getQuestionPracticalSampleInput(){
+        QuestionItemObject.setQuestionPracticalSampleInput("Object object = new Object()");
+        assertEquals("Object object = new Object()", QuestionItemObject.getQuestionPracticalSampleInput());
+
+    }
+
+    @Test
+    void setQuestionPracticalSampleInput(){
+        QuestionItemObject.setQuestionPracticalSampleInput("Object object = new Object()");
+        assertEquals("Object object = new Object()", QuestionItemObject.getQuestionPracticalSampleInput());
+    }
+
+    @Test
+    void getQuestionPracticalSampleOutput(){
+    QuestionItemObject.setQuestionPracticalSampleOutput("An object has been created");
+    assertEquals("An object has been created", QuestionItemObject.getQuestionPracticalSampleOutput());
+    }
+
+    @Test
+    void setQuestionPracticalSampleOutput(){
+        QuestionItemObject.setQuestionPracticalSampleOutput("An object has been created");
+        assertEquals("An object has been created", QuestionItemObject.getQuestionPracticalSampleOutput());
+    }
+
+    @Test
+    void getQuestionWrittenNoOfLines(){
+    QuestionItemObject.setQuestionWrittenNoOfLines(5);
+    assertEquals(5, QuestionItemObject.getQuestionWrittenNoOfLines());
+    }
+
+    @Test
+    void setQuestionWrittenNoOfLines(){
+        QuestionItemObject.setQuestionWrittenNoOfLines(5);
+        assertEquals(5, QuestionItemObject.getQuestionWrittenNoOfLines());
+    }
 }
