@@ -181,7 +181,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
+				<version>2.22.0</version>
 				<!--<version>3.2.0</version>-->
 				<configuration>
 					<includes>
@@ -191,6 +191,9 @@
 						<include>**/*TestCase.java</include>
 					</includes>
 				</configuration>
+
+
+
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -249,6 +252,14 @@
 					<scanIntervalSeconds>2</scanIntervalSeconds>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.0</version>
+
+			</plugin>
+
 		</plugins>
 	</build>
 
