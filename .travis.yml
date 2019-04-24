@@ -6,6 +6,6 @@ script: "mvn clean test"
 
 after_success:
 #  - bash -f /target/surefire-reports
-  - bash <(curl -s https://codecov.io/bash) -f /target/surefire-reports/TEST-com.Server.SignInViewServerTest.txt
+  - bash <(curl -s https://codecov.io/bash) -f /target/surefire-reports/com.Objects.CourseItemTest.txt
 
 
