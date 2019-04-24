@@ -5,6 +5,6 @@ script: "mvn clean test"
 #script: "mvn test"
 
 after_success:
-  - bash <(curl -s /target/surefire-reports https://codecov.io/bash)
+  - bash <(curl -f /target/surefire-reports)
 
 
