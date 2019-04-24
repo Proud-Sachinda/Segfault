@@ -6,5 +6,5 @@ script: "mvn clean test"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - target/surefire-reports/*.xml
+  - cat target/surefire-reports/*.xml
 
