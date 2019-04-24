@@ -163,7 +163,7 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/Test/com</testSourceDirectory>
+		<testSourceDirectory>src/Test</testSourceDirectory>
 		<plugins>
 
 			<plugin>

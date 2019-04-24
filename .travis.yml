@@ -1,9 +1,10 @@
 language: java
 
 #script: "mvn cobertura:cobertura"
-#script: "mvn clean test"
-script: "mvn test"
+script: "mvn clean test"
+#script: "mvn test"
 
 after_success:
+  - target/surefire-reports
   - bash <(curl -s https://codecov.io/bash)
 
