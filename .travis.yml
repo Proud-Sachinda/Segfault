@@ -1,6 +1,6 @@
 language: java
 
-script: "mvn cobertura:cobertura"
+#script: "mvn cobertura:cobertura"
 
 
 after_success:
