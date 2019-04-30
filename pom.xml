@@ -205,9 +205,8 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<!--<testSourceDirectory>src/Test/com</testSourceDirectory>-->
+		<testSourceDirectory>src/Test/com</testSourceDirectory>
 		<plugins>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
@@ -268,11 +267,14 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
+
 				<!-- Clean up also any pre-compiled themes -->
+
 				<configuration>
 					<filesets>
 						<fileset>
