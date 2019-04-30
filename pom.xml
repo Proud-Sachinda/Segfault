@@ -205,7 +205,8 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/Test</testSourceDirectory>
+		<!--<testSourceDirectory>src/Test</testSourceDirectory>-->
+		<testOutputDirectory>target/site</testOutputDirectory>
 		<plugins>
 
 			<plugin>
