@@ -5,6 +5,7 @@ script:
 
 
 after_success:
+  - -X gcov
   - bash <(curl -s https://codecov.io/bash)
 
 
