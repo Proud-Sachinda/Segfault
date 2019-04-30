@@ -1,8 +1,8 @@
 language: java
 
 script:
-  - "mvn test"
-#  - "mvn cobertura:cobertura"
+#  - "mvn test"
+  - "mvn cobertura:cobertura"
 
 
 after_success:
