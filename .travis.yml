@@ -1,12 +1,10 @@
 language: java
 
 script:
-  - "mvn test"
   - "mvn cobertura:cobertura"
 
 
 after_success:
-  - -X gcov
   - bash <(curl -s https://codecov.io/bash)
 
 
