@@ -13,6 +13,16 @@
 		<maven>3</maven>
 	</prerequisites>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-latex-plugin-repo</id>
+			<url>http://akquinet.github.com/maven-latex-plugin/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<properties>
 		<vaadin.version>8.7.0</vaadin.version>
 		<vaadin.plugin.version>8.7.0</vaadin.plugin.version>
@@ -33,6 +43,32 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/net.sf.nervalreports/tex-pdf-converter -->
+			<dependency>
+				<groupId>net.sf.nervalreports</groupId>
+				<artifactId>tex-pdf-converter</artifactId>
+				<version>LATEST</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/de.akquinet.jbosscc.latex/maven-latex-plugin -->
+			<dependency>
+				<groupId>de.akquinet.jbosscc.latex</groupId>
+				<artifactId>maven-latex-plugin</artifactId>
+				<version>LATEST</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.doxia/doxia-module-latex -->
+			<dependency>
+				<groupId>org.apache.maven.doxia</groupId>
+				<artifactId>doxia-module-latex</artifactId>
+				<version>1.8</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-latex -->
+			<dependency>
+				<groupId>net.sourceforge.owlapi</groupId>
+				<artifactId>owlapi-latex</artifactId>
+				<version>LATEST</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
@@ -66,7 +102,12 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
-			<version>5.5.13</version>
+			<version>LATEST</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>layout</artifactId>
+			<version>LATEST</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

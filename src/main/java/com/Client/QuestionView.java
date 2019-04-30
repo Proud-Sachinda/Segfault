@@ -589,7 +589,9 @@ public class QuestionView extends HorizontalLayout implements View {
                     int qId = 1;
                     if (event.getDataTransferData("id").isPresent()) {
                         qId = Integer.parseInt(event.getDataTransferData("id").get());
+                        System.out.println(qId);
                     }
+                    System.out.println(qId);
                     itemComponent.setQuestionId(qId);
                     paperItemComponentArrayList.add(itemComponent);
                     dropArea.addComponent(itemComponent);

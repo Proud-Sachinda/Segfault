@@ -243,7 +243,7 @@ public class QuestionItemComponent extends VerticalLayout {
         courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
         Label subject = new Label();
         subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-        shortenCourseNameIfTooLong(getCourseName(), subject);
+        //shortenCourseNameIfTooLong(getCourseName(), subject);
         TagItemsComponent tags = new TagItemsComponent(questionViewServer, basePath, id);
         thirdRow.addComponents(courseCode, subject, tags);
         thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
@@ -291,7 +291,7 @@ public class QuestionItemComponent extends VerticalLayout {
         });
     }
 
-    private void shortenCourseNameIfTooLong(String string, Label label) {
+   /* private void shortenCourseNameIfTooLong(String string, Label label) {
 
         // if shorter than 20 characters send back string
         if (string.length() < 20) label.setValue(string);
@@ -310,7 +310,7 @@ public class QuestionItemComponent extends VerticalLayout {
             label.setValue(tmp.toString().toUpperCase().trim());
             label.setDescription(string);
         }
-    }
+    } */
 
     private void setUpMarksLabel() {
 
