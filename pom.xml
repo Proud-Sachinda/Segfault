@@ -121,11 +121,13 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.2.0-M1</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-surefire-provider</artifactId>
 			<version>1.2.0-M1</version>
 		</dependency>
+		-->
 		<!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-login-flow -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -203,6 +205,7 @@
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/Test/com</testSourceDirectory>
 		<plugins>
 
 			<plugin>
@@ -218,12 +221,13 @@
 				</configuration>
 			</plugin>
 
-
+<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M1</version>
-				<!--<version>3.2.0</version>-->
+				<version>3.2.0</version>-->
+			<!--
 				<configuration>
 					<includes>
 						<include>**/Test*.java</include>
@@ -232,7 +236,9 @@
 						<include>**/*TestCase.java</include>
 					</includes>
 				</configuration>
+
 			</plugin>
+		-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>

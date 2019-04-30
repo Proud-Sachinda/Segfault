@@ -25,11 +25,6 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.13" />
           <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.2.0-M1" />
           <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-engine:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-surefire-provider:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-launcher:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:surefire-api:2.21.0" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:surefire-logger-api:2.21.0" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:common-java5:2.21.0" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-lumo-styles:1.4.1" />
