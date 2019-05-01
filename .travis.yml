@@ -18,9 +18,9 @@ script:
   # other script steps might be done before running the actual analysis
   - sonar-scanner
 
-mvn sonar:sonar \
-  -Dsonar.projectKey=Proud-Sachinda_Segfault \
-  -Dsonar.organization=proud-sachinda-github \
-  -Dsonar.host.url=https://sonarcloud.io \
-  -Dsonar.login=a37abbd1637b1e7099ecc3c3b37675a054ee6def
+#mvn sonar:sonar \
+#  -Dsonar.projectKey=Proud-Sachinda_Segfault \
+#  -Dsonar.organization=proud-sachinda-github \
+#  -Dsonar.host.url=https://sonarcloud.io \
+#  -Dsonar.login=a37abbd1637b1e7099ecc3c3b37675a054ee6def
  
