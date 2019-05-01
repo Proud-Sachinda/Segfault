@@ -101,7 +101,7 @@ CREATE TABLE tag(
     REFERENCES question(question_id));
 ```
 
-================================================================================
+=======================================================================
 
 
 ![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/logo1.PNG)
