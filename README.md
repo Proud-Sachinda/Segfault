@@ -1,5 +1,5 @@
 
-![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG)![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/logo1.PNG)
+![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG)
 
 
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
@@ -100,3 +100,8 @@ CREATE TABLE tag(
   FOREIGN KEY (question_id)
     REFERENCES question(question_id));
 ```
+
+============================================================================================
+
+
+![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/logo1.PNG)
