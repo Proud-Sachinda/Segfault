@@ -24,7 +24,7 @@ jdk:
 script:
   # other script steps might be done before running the actual analysis
 #  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:report package sonar:sonar
-  - mvn cobertura:cobertura -Dcobertura.report.format=xml
+  - mvn clean test
   
 cache:
   directories:
