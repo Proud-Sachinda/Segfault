@@ -2,8 +2,8 @@ language: java
 
 script:
 #  - "mvn test"
-#  - "mvn cobertura:cobertura"
-  - "mvn cobertura:cobertura -Dcobertura.report.format=xml"
+  - "mvn cobertura:cobertura"
+#  - "mvn cobertura:cobertura -Dcobertura.report.format=xml"
 
 
 after_success:
