@@ -207,7 +207,7 @@
 	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<!--<testSourceDirectory>src/Test</testSourceDirectory>-->
+		<testSourceDirectory>src/Test</testSourceDirectory>
 
 		<plugins>
 
@@ -223,7 +223,7 @@
 					</formats>
 					<check />
 				</configuration>
-\
+
 			</plugin>
 
 
