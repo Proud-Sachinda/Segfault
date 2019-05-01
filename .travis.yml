@@ -23,13 +23,15 @@ jdk:
 
 script:
   # other script steps might be done before running the actual analysis
- # - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:report package sonar:sonar
-  - mvn clean install sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:report package sonar:sonar
   
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 #mvn sonar:sonar \
 #  -Dsonar.projectKey=Proud-Sachinda_Segfault \
