@@ -1,5 +1,8 @@
 language: java
 
+sudo: false
+install: true
+
 #script:
 #  - "mvn test"
 #  - "mvn cobertura:cobertura"
@@ -14,9 +17,19 @@ addons:
     organization: "proud-sachinda-github" # the key of the org you chose at step #3
     token:
       secure: 05581b91745d5e82217f5ea1f39791ad7cf2e885 # encrypted value of your token
+      
+jdk:
+- oraclejdk8
+
 script:
   # other script steps might be done before running the actual analysis
   - sonar-scanner
+  - mvn cobertura:cobertura :report package sonar:sonar
+  
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
 
 #mvn sonar:sonar \
 #  -Dsonar.projectKey=Proud-Sachinda_Segfault \
