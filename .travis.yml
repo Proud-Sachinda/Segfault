@@ -1,13 +1,22 @@
 language: java
 
-script:
+#script:
 #  - "mvn test"
-  - "mvn cobertura:cobertura"
+#  - "mvn cobertura:cobertura"
 #  - "mvn cobertura:cobertura -Dcobertura.report.format=xml"
 
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
+
+addons:
+  sonarcloud:
+    organization: "proud-sachinda-github" # the key of the org you chose at step #3
+    token:
+      secure: 05581b91745d5e82217f5ea1f39791ad7cf2e885 # encrypted value of your token
+script:
+  # other script steps might be done before running the actual analysis
+  - sonar-scanner
 
 mvn sonar:sonar \
   -Dsonar.projectKey=Proud-Sachinda_Segfault \
