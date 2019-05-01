@@ -1,4 +1,6 @@
-https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG
+![Cover photo of project](/img/cover/github-cover-photo.png)
+![Cover photo of project](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG)
+
 
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
 [![codecov](https://codecov.io/gh/Proud-Sachinda/Segfault/branch/master/graph/badge.svg)](https://codecov.io/gh/Proud-Sachinda/Segfault)
