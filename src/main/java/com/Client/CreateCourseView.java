@@ -22,8 +22,8 @@ public class CreateCourseView extends HorizontalLayout implements View {
     private Date qdate = new Date();
 
 
-    private TextField addcourse = new TextField("Course Name");
-    private TextField coursecode  = new TextField("Course Code");
+    TextField addcourse = new TextField("Course Name");
+    TextField coursecode  = new TextField("Course Code");
 
     protected final String course = "course";
 
@@ -40,7 +40,6 @@ public class CreateCourseView extends HorizontalLayout implements View {
     private Button addChoice = new Button("Add");
 
     String tp = "";
-
 
     public CreateCourseView(Navigator navigator, Connection connection){
 
@@ -94,8 +93,8 @@ public class CreateCourseView extends HorizontalLayout implements View {
 
                   //  CourseServer.Course q = (CourseServer.Course) courseServer.getCourse();
 
-                    q.setCourseName(addcourse.getValue());
-                    q.setCourseCode(coursecode.getValue());
+                    //q.setCourseName(addcourse.getValue());
+                    //q.setCourseCode(coursecode.getValue());
 
 
 

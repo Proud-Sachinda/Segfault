@@ -15350,10 +15350,13 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 }
 
+<<<<<<< HEAD
 .mytheme .main-text-alignment-right {
 	text-align: right;
 }
 
+=======
+>>>>>>> 5594a270531dbfd202bd82ede7f0b0be4fefb862
 .mytheme .main-opacity-20 {
 	opacity: 0.2;
 }
@@ -15490,6 +15493,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: 200;
 	box-shadow: 0 2px 10px 1px #a1a1a1;
 	z-index: 100;
+<<<<<<< HEAD
 }
 
 .mytheme .main-flat-round-button-mini {
@@ -15529,6 +15533,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .main-flat-tag-edit-layout:hover {
 	background-color: #404040;
+=======
+>>>>>>> 5594a270531dbfd202bd82ede7f0b0be4fefb862
 }
 
 .mytheme .main-flat-round-button-position {

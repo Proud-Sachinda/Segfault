@@ -1,6 +1,7 @@
 package com.Client;
 
 import com.Dashboard;
+import com.Objects.QuestionItem;
 import com.Server.QuestionServer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfName;
@@ -104,7 +105,7 @@ public class ExportView extends HorizontalLayout implements View {
                 ArrayList<ExportServer.Track> tracks= retreivetracks();
                 for(int i=0;i<tracks.size();i++){
 
-                QuestionServer.Question q = retreivequestion(tracks.get(i));
+                QuestionItem q = retreivequestion(tracks.get(i));
                 String qbody = q.getQuestionBody();
                     Q.add(qbody);
                 System.out.println(qbody);
@@ -142,12 +143,10 @@ public class ExportView extends HorizontalLayout implements View {
     }
 
     //methodfor retrieving question
-    public QuestionServer.Question retreivequestion(ExportServer.Track t){
+    public QuestionItem retreivequestion(ExportServer.Track t){
         int id=t.getQuestionId();
         QuestionServer questionServer = new QuestionServer(connection);
-        QuestionServer.Question q = questionServer.get(id);
-
-        return q;
+        return questionServer.getQuestionItemById(id);
     }
     //method for retreiving tracks
     public ArrayList<ExportServer.Track> retreivetracks(){

@@ -3,15 +3,17 @@ package com.Server;
 import java.sql.*;
 import java.util.ArrayList;
 
+import com.Objects.CourseItem;
 import com.vaadin.ui.NativeSelect;
 
 public class CourseServer {
 
     private Connection connection;
-    ArrayList<Course> courses = new ArrayList<>();
+    private ArrayList<Course> courses = new ArrayList<>();
 
-    Course course = new Course();
+    private Course course = new Course();
 
+    // -------------------------------- GET METHODS (SELECT)
 
     public CourseServer(Connection connection){
         this.connection = connection;
@@ -53,7 +55,6 @@ public class CourseServer {
 
 }
 
-
     public boolean ShowCourse(Course c){
         String coursename = c.getCourseName();
         String coursecode = c.getCourseCode();
@@ -73,6 +74,49 @@ public class CourseServer {
         }
 
 
+    }
+
+    public CourseItem getCourseItemByQuestionId(int questionId) {
+
+        // create return course item
+        CourseItem item = new CourseItem();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.question WHERE question_id = " + questionId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            int courseId = 0;
+
+            while(set.next()) {
+
+                // set variables
+                courseId = set.getInt("course_id");
+            }
+
+            // query
+            query = "SELECT * FROM public.course WHERE course_id = " + courseId;
+
+            // execute statement
+            set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // get course item
+                item.setUpCourseItem(set);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return item;
     }
 
     public boolean PostCourse(Course c){

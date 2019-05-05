@@ -8,7 +8,7 @@ import com.Components.TagItemsComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
-import com.Server.QuestionViewServer;
+import com.Server.QuestionServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.MouseEvents;
@@ -38,7 +38,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     protected final String export = "export";
 
     // question server
-    private QuestionViewServer questionViewServer;
+    private QuestionServer questionServer;
 
     // layouts for split panel
     private VerticalLayout rootLayout = new VerticalLayout();
@@ -89,7 +89,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         this.navigator = navigator;
 
         // set up question server
-        questionViewServer = new QuestionViewServer(connection);
+        questionServer = new QuestionServer(connection);
 
         // declare form item components array
         formItemComponents = new ArrayList<>();
@@ -182,7 +182,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mainQuestionFormArea.addComponent(courseAndMarks);
 
         // add course combo box drop down
-        CourseComboBox comboBox = new CourseComboBox(questionViewServer.getCourses());
+        CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
         comboBox.setCaption(null);
         comboBox.addComboBoxValueChangeListener();
         comboBoxItem = new FormItemComponent("Subject", comboBox,
@@ -217,7 +217,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         formItemComponents.add(questionDifficultyItem);
 
         // add
-        tags = new TagItemsComponent(questionViewServer, basePath);
+        tags = new TagItemsComponent(questionServer, basePath);
 
         // add everything to form area
         mainQuestionFormArea.addComponents(latexRoot, courseAndMarks,
@@ -496,7 +496,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     mcqHeader.removeStyleName(MyTheme.MAIN_TEXT_WARNING);
 
                 // set up core variables
-                questionItem.setCourseId(comboBoxItem.getValeOfComponent());
+                // questionItem.setCourseId(comboBoxItem.getValeOfComponent());
                 questionItem.setQuestionBody(questionBodyItem.getValueOfComponent());
                 questionItem.setQuestionMark(questionMarksItem.getValeOfComponent());
                 questionItem.setQuestionDifficulty(questionDifficultyItem.getValeOfComponent());
@@ -532,10 +532,10 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 }
 
                 // post
-                if (questionViewServer.postToQuestionTable(questionItem) > 0) {
+                if (questionServer.postToQuestionTable(questionItem) > 0) {
 
                     // also post tags
-                    questionViewServer.postToTagTable(tags);
+                    questionServer.postToTagTable(tags);
 
                     // set variable for notification
                     VaadinService.getCurrentRequest().setAttribute("question-post", true);

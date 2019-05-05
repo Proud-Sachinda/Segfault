@@ -68,6 +68,10 @@ public class ExportServer {
         private int track_order;
         //private String question_description;
 
+        Track() {
+
+        }
+
         public int getTrackId() {
             return track_id;
         }

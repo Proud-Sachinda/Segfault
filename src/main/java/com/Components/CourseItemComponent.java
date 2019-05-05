@@ -1,6 +1,5 @@
 package com.Components;
 
-import com.Client.CreateCourseView;
 import com.MyTheme;
 import com.Server.CourseViewServer;
 import com.vaadin.server.FileResource;

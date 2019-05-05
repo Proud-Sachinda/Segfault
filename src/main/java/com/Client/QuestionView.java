@@ -3,10 +3,12 @@ package com.Client;
 import com.Components.CourseComboBox;
 import com.Components.EmptyQuestionsComponent;
 import com.Components.QuestionItemComponent;
+import com.Components.QuestionPaperItemComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
-import com.Server.QuestionViewServer;
+import com.Server.CourseServer;
+import com.Server.QuestionServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
@@ -22,6 +24,7 @@ import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -46,6 +49,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private VerticalLayout explore = new VerticalLayout();
     private VerticalLayout paperArea = new VerticalLayout();
     private HorizontalLayout pagination = new HorizontalLayout();
+    private VerticalLayout verticalLayoutRoot = new VerticalLayout();
     private HorizontalLayout paginationCenter = new HorizontalLayout();
 
     // add button absolute
@@ -53,8 +57,9 @@ public class QuestionView extends HorizontalLayout implements View {
     private final Button addPage = new Button("+");
     private final ArrayList<Button> buttons = new ArrayList<>();
 
-    // question server
-    private QuestionViewServer questionViewServer;
+    // server
+    private CourseServer courseServer;
+    private QuestionServer questionServer;
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -70,6 +75,12 @@ public class QuestionView extends HorizontalLayout implements View {
     private int currentSelectedPaginationPage;
     private ArrayList<QuestionPaginationComponent> questionPaginationComponents;
 
+    // storage for question item components
+    private ArrayList<QuestionItemComponent> questionItemComponents = new ArrayList<>();
+
+    // empty component
+    private EmptyQuestionsComponent emptyQuestionsComponent = new EmptyQuestionsComponent(basePath);
+
     QuestionView() {
         // for unit tests
     }
@@ -82,8 +93,9 @@ public class QuestionView extends HorizontalLayout implements View {
         // set connection variable
         this.connection = connection;
 
-        // set up question server
-        questionViewServer = new QuestionViewServer(this.connection);
+        // set up servers
+        courseServer = new CourseServer(this.connection);
+        questionServer = new QuestionServer(this.connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -129,6 +141,10 @@ public class QuestionView extends HorizontalLayout implements View {
             if (success) Notification.show("SUCCESS", "Question added", Notification.Type.TRAY_NOTIFICATION);
             VaadinService.getCurrentRequest().setAttribute("question-post", false);
         }
+    }
+
+    public EmptyQuestionsComponent getEmptyQuestionsComponent() {
+        return this.emptyQuestionsComponent;
     }
 
     private void setUpPaperExplorer() {
@@ -280,10 +296,10 @@ public class QuestionView extends HorizontalLayout implements View {
     private void setUpQuestions() {
 
         // get questions
-        ArrayList<QuestionItem> questionArrayList = questionViewServer.getQuestionItems();
+        questionItemComponents = new ArrayList<>();
+        ArrayList<QuestionItem> questionArrayList = questionServer.getQuestionItems();
 
         // set up root question layout
-        VerticalLayout verticalLayoutRoot = new VerticalLayout();
         verticalLayoutRoot.setMargin(false);
 
         if (questionArrayList.isEmpty()) {
@@ -292,32 +308,33 @@ public class QuestionView extends HorizontalLayout implements View {
             verticalLayoutRoot.setSizeFull();
 
             // no questions found
-            EmptyQuestionsComponent component = new EmptyQuestionsComponent(basePath, true);
+            emptyQuestionsComponent.setQuestionType(EmptyQuestionsComponent.FIRST);
 
             // add to root
-            verticalLayoutRoot.addComponent(component);
-            verticalLayoutRoot.setComponentAlignment(component, Alignment.MIDDLE_CENTER);
+            verticalLayoutRoot.addComponent(emptyQuestionsComponent);
+            verticalLayoutRoot.setComponentAlignment(emptyQuestionsComponent, Alignment.MIDDLE_CENTER);
         }
         else {
             // add questions loop through questions and add to view
             for (QuestionItem q : questionArrayList) {
 
                 // declare new question item component
-                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionViewServer);
+                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionServer, courseServer);
                 // set variables
-                questionItemComponent.setCourseId(q.getCourseId());
-                questionItemComponent.setCourseCode(q.getCourseId());
-                questionItemComponent.setCourseName(q.getCourseId());
-                questionItemComponent.setQuestionId(q.getQuestionId());
-                questionItemComponent.setQuestionAns(q.getQuestionAns());
-                questionItemComponent.setQuestionBody(q.getQuestionBody());
-                questionItemComponent.setQuestionMark(q.getQuestionMark());
-                questionItemComponent.setQuestionDate(q.getQuestionDate());
-                questionItemComponent.setQuestionLastUsed(q.getQuestionLastUsed());
-                questionItemComponent.setQuestionDifficulty(q.getQuestionDifficulty());
+                // questionItemComponent.getCourseItem().setCourseId(q.getCourseId());
+                // questionItemComponent.getCourseItem().setCourseCode(q.getCourseId());
+                // questionItemComponent.getCourseItem().setCourseName(q.getCourseId());
+                questionItemComponent.getQuestionItem().setQuestionId(q.getQuestionId());
+                questionItemComponent.getQuestionItem().setQuestionAns(q.getQuestionAns());
+                questionItemComponent.getQuestionItem().setQuestionBody(q.getQuestionBody());
+                questionItemComponent.getQuestionItem().setQuestionMark(q.getQuestionMark());
+                questionItemComponent.getQuestionItem().setQuestionDate(q.getQuestionDate());
+                questionItemComponent.getQuestionItem().setQuestionLastUsed(q.getQuestionLastUsed());
+                questionItemComponent.getQuestionItem().setQuestionDifficulty(q.getQuestionDifficulty());
 
                 // set up question item component
                 questionItemComponent.setUpQuestionItemComponent();
+                questionItemComponents.add(questionItemComponent);
 
                 // add to vertical layout root
                 verticalLayoutRoot.addComponent(questionItemComponent.getThisQuestionItemComponent());
@@ -376,6 +393,18 @@ public class QuestionView extends HorizontalLayout implements View {
         changeQuestionPaginationComponent();
     }
 
+    private QuestionItemComponent findQuestionItemComponent(int questionId) {
+
+        // index variable
+        QuestionItemComponent index = null;
+
+        for (QuestionItemComponent i : questionItemComponents) {
+            if (i.getQuestionItem().getQuestionId() == questionId) index = i;
+        }
+
+        return index;
+    }
+
     // reusable components
     public class CreateDraftComponent extends VerticalLayout {
 
@@ -403,7 +432,7 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setPlaceholder("Enter draft name");
 
             // course subjects
-            CourseComboBox comboBox = new CourseComboBox(questionViewServer.getCourses());
+            CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
             comboBox.setWidth(100.0f, Unit.PERCENTAGE);
             comboBox.addComboBoxValueChangeListener();
 
@@ -423,7 +452,7 @@ public class QuestionView extends HorizontalLayout implements View {
                     draftName = s.concat(textFieldValue.substring(1));
 
                     // take to database
-                    testId = questionViewServer.postToTestTable(true, draftName, comboBox.getCourseId());
+                    testId = questionServer.postToTestTable(true, draftName, comboBox.getCourseId());
                     if (!(testId > 0))
                         Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
@@ -584,13 +613,24 @@ public class QuestionView extends HorizontalLayout implements View {
                     String bulletIncrement = setQuestionPaperItemComponentValue(paperItemComponentArrayList.size());
 
                     // add question item
-                    QuestionPaperItemComponent itemComponent =
-                            new QuestionPaperItemComponent(bulletIncrement, dragSource.get());
                     int qId = 1;
                     if (event.getDataTransferData("id").isPresent()) {
                         qId = Integer.parseInt(event.getDataTransferData("id").get());
                     }
-                    itemComponent.setQuestionId(qId);
+
+                    // remove component from vertical layout root
+                    if (verticalLayoutRoot.getComponentCount() == 1) {
+                        emptyQuestionsComponent.setQuestionType(EmptyQuestionsComponent.NO_MORE_QUESTIONS);
+                        verticalLayoutRoot.addComponent(emptyQuestionsComponent);
+                        verticalLayoutRoot.setComponentAlignment(emptyQuestionsComponent, Alignment.TOP_CENTER);
+                    }
+                    else verticalLayoutRoot.removeComponent(findQuestionItemComponent(qId));
+
+                    // question paper item component
+                    QuestionPaperItemComponent itemComponent =
+                            new QuestionPaperItemComponent(bulletIncrement, qId, questionServer, basePath,
+                                    paperItemComponentArrayList, dropArea, questionItemComponents, verticalLayoutRoot,
+                                    emptyQuestionsComponent);
                     paperItemComponentArrayList.add(itemComponent);
                     dropArea.addComponent(itemComponent);
 
@@ -602,7 +642,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
                     // send to track table
                     int bulletIncrementValue = getQuestionPaperItemComponentValue(findIndexOfQuestionPaperItemComponent(qId));
-                    if (!questionViewServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
+                    if (!questionServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
                         Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
                 }
             });
@@ -642,7 +682,6 @@ public class QuestionView extends HorizontalLayout implements View {
                 char alpha = 'a';
                 alpha += index;
                 bulletIncrementValue = Character.getNumericValue(alpha);
-                System.out.println(bulletIncrementValue - 1);
                 bulletIncrementValue -= (bulletIncrementValue - index - 1);
             }
 
@@ -657,52 +696,6 @@ public class QuestionView extends HorizontalLayout implements View {
                 if (i.getQuestionId() == qId) index = paperItemComponentArrayList.indexOf(i);
             }
             return index;
-        }
-    }
-
-    private class QuestionPaperItemComponent extends VerticalLayout {
-
-        // attributes
-        private int questionId;
-        private String bullet;
-
-        // components
-        private Label bulletLabel;
-
-        private QuestionPaperItemComponent(String bullet, AbstractComponent source) {
-
-            // set up variables
-            this.bullet = bullet;
-
-            // set up root
-            setMargin(false);
-            HorizontalLayout horizontalLayout = new HorizontalLayout();
-            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
-
-            // set up components
-            if (bullet.length() > 1) bulletLabel = new Label(bullet);
-            else bulletLabel = new Label("(" + bullet + ")");
-            horizontalLayout.addComponent(bulletLabel);
-            horizontalLayout.addComponentsAndExpand(source);
-
-            addComponent(horizontalLayout);
-        }
-
-        private void setBullet(String bullet) {
-            this.bullet = bullet;
-        }
-
-        public int getQuestionId() {
-            return questionId;
-        }
-
-        public void setQuestionId(int questionId) {
-            this.questionId = questionId;
-        }
-
-        private void updateQuestionPaperItemComponentValue() {
-            if (bullet.length() > 1) bulletLabel.setValue(bullet);
-            else bulletLabel.setValue("(" + bullet + ")");
         }
     }
 
