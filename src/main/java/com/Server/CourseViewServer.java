@@ -12,15 +12,6 @@ public class CourseViewServer {
 
 
     // connection variable
-    private Connection connection;
-
-    public CourseViewServer(@NotNull Connection connection) {
-
-        // initialise connection variable
-        this.connection = connection;
-    }
-
-    // -------------------------------- GET METHODS (SELECT)
     public ArrayList<CourseItem> getCourses() {
 
         // course items
@@ -56,8 +47,39 @@ public class CourseViewServer {
         return courseItems;
     }
 
+    private Connection connection;
+
+    public CourseViewServer(@NotNull Connection connection) {
+
+        // initialise connection variable
+        this.connection = connection;
+    }
+    // -------------------------------- GET METHODS (SELECT)
+
     @SuppressWarnings("Duplicates")
 
+
+    public boolean PostCourse(CourseItem c){
+        String coursename = c.getCourseName();
+        String coursecode = c.getCourseCode();
+
+        try{
+            String query = "INSERT INTO public.course(course_name, course_code) VALUES (?,?)";
+
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ps.setString(1,coursename);
+            ps.setString(2,coursecode);
+
+            int set2 = ps.executeUpdate();
+
+            return set2 > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
+    }
 
     public CourseItem getCourseItemById(int courseId) {
 

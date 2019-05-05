@@ -121,7 +121,9 @@ public class CourseView extends HorizontalLayout implements View {
         createcourse1.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
+                CourseItemComponent blah = new CourseItemComponent(courseServer, connection);
+                blah.setUpSeeMoreComponent();
+                filtering.addComponent(blah);
                navigator.navigateTo(createcourse);
             }
         });
@@ -129,7 +131,7 @@ public class CourseView extends HorizontalLayout implements View {
 
     }
 
-    public  void setUpCourse(){
+   /* public  void setUpCourse(){
 
         // get questions
         ArrayList<CourseItem> courseArrayList = courseServer.getCourses();
@@ -156,7 +158,7 @@ public class CourseView extends HorizontalLayout implements View {
             verticalLayoutRoot.addComponent(courseItemComponent.getThisCourseItemComponent());
         }
 
-    }
+    }*/
 
 
     private void showButtonClickedMessage(Button.ClickEvent clickEvent) {

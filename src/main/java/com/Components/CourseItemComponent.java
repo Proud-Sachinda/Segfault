@@ -1,15 +1,18 @@
 package com.Components;
 
 import com.MyTheme;
+import com.Objects.CourseItem;
+import com.Server.CourseServer;
 import com.Server.CourseViewServer;
-import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 
-import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class CourseItemComponent extends VerticalLayout {
 
@@ -21,30 +24,60 @@ public class CourseItemComponent extends VerticalLayout {
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
-    // file resource for images
-    private FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/save.svg"));
-    private FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/edit.svg"));
-    private FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/trash.svg"));
 
-    // edit trash
-    private Image save = new Image(null, saveResource);
-    private Image edit = new Image(null, editResource);
-    private Image trash = new Image(null, trashResource);
 
     //Components
     private HorizontalLayout firstRow = new HorizontalLayout();
     private HorizontalLayout thirdRow = new HorizontalLayout();
+    private VerticalLayout seeMoreComponent = new VerticalLayout();
+
+    String courseN = "";
+    String courseC = "";
 
 
 
     // course view server
     private CourseViewServer courseViewServer;
 
-    public CourseItemComponent(CourseViewServer courseViewServer){
+    public CourseItemComponent(CourseViewServer courseViewServer, Connection connection){
+        //String courseN = "";
+
+        CourseViewServer server = new CourseViewServer(connection);
+        ArrayList<CourseItem> courses = server.getCourses();
+
+
+
+
+            try{
+
+                Statement statement = connection.createStatement();
+                //courseN = statement.executeQuery(query);
+                String query = "SELECT course_name,course_code FROM public.course ORDER BY course_id DESC LIMIT 1";
+
+                ResultSet set = statement.executeQuery(query);
+                //courseC =  statement.executeQuery(query);
+
+                while(set.next()) {
+                    courseN =  set.getString("course_name");
+                    courseC = set.getString("course_code");
+
+                }
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            //return courseN;
 
         // initialise course view server
         this.courseViewServer = courseViewServer;
 
+        setSizeFull();
+
+        seeMoreComponent.addStyleName("esmond");
+        setUpCourseItemComponent();
+        setUpSeeMoreComponent();
+        addComponent(seeMoreComponent);
     }
 
     public void setCourseId(int courseId) {
@@ -81,21 +114,8 @@ public class CourseItemComponent extends VerticalLayout {
         // first row ------------------------------------------------------
         // set up and add horizontal layout for difficulty badge, question, date
         firstRow.setWidth(100.0f, Unit.PERCENTAGE);
+        //firstRow.addStyleName("lizo");
 
-        // image buttons for question updating and copying
-        edit.setWidth(22.0f, Unit.PIXELS);
-        edit.setHeight(22.0f, Unit.PIXELS);
-        save.setWidth(22.0f, Unit.PIXELS);
-        save.setHeight(22.0f, Unit.PIXELS);
-        trash.setWidth(22.0f, Unit.PIXELS);
-        trash.setHeight(22.0f, Unit.PIXELS);
-        edit.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
-        save.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
-        trash.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
-
-
-        // set up listeners
-       // setUpUpdateCourseClickListeners();
 
         // add first row to ui
         addComponent(firstRow);
@@ -103,13 +123,38 @@ public class CourseItemComponent extends VerticalLayout {
         // third row ------------------------------------------------------
         // set up subject label, tags and question marks
         Label courseCode = new Label(getCourseCode());
-        courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
+        courseCode.setValue(courseN);
+        courseCode.setValue(courseC);
         Label subject = new Label(getCourseName());
         thirdRow.addComponents(courseCode, subject);
 
+
         // add third row to ui
+        setUpSeeMoreComponent();
         addComponent(thirdRow);
 
+
+    }
+
+    public void setUpSeeMoreComponent() {
+
+        // root of see more component
+        seeMoreComponent.setMargin(false);
+
+        // add answer row
+        HorizontalLayout answerRow = new HorizontalLayout();
+        Label ans = new Label(this.courseName);
+        Label code =  new Label(this.courseCode);
+        ans.addStyleName("esmond");
+        answerRow.addComponents(ans,code);
+        answerRow.addStyleName("esmond");
+        seeMoreComponent.addStyleName("esmond");
+        setWidth(100.0f,Unit.PIXELS);
+        setHeight(100.0f,Unit.PIXELS);
+        seeMoreComponent.addComponentsAndExpand(answerRow);
+
+        //System.out.println(answerRow.getComponentCount());
+        System.out.println();
 
     }
 
