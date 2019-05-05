@@ -220,7 +220,7 @@ public class QuestionServer {
                     "(lecturer_id, question_type, question_body, question_ans, question_date, " +
                     "question_mark, question_difficulty, course_id)" +
                     "VALUES" +
-                    "('" + getLectureId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
+                    "('" + item.getLecturerId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
                     item.getQuestionAns() + "', now(), " + item.getQuestionMark() + ", " + item.getQuestionDifficulty() +
                     ", " + /*item.getCourseId()*/ 1 + ")";
 
@@ -238,6 +238,7 @@ public class QuestionServer {
 
             while (resultSet.next()) {
                 questionId = resultSet.getInt("question_id");
+                System.out.println("reached result set");
             }
 
             if (questionId > 0) {
@@ -253,8 +254,10 @@ public class QuestionServer {
                             "question_mark, question_difficulty, course_id FROM public.question " +
                             "WHERE question_id = " + questionId;
 
+
                     // execute statement
                     statement.executeUpdate(query);
+                    System.out.println("reached if");
                 }
                 else if (item.getQuestionType().equals("mcq")) {
 
