@@ -1,11 +1,12 @@
 package com.Objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class QuestionItem {
 
     // attributes
-    private int course_id;
     private int question_id;
     private int question_mark;
     private String lecturer_id;
@@ -16,12 +17,34 @@ public class QuestionItem {
     private int question_variance;
     private int question_difficulty;
     private Date question_last_used;
+    private String question_body_full;
     private String question_mcq_choices;
     private int question_written_no_of_lines;
     private String question_practical_sample_input;
     private String question_practical_sample_output;
 
     public QuestionItem() {
+    }
+
+    public void setUpQuestionItem(ResultSet set) {
+
+        try {
+
+            // set up variables
+            this.question_type = set.getString("question_type");
+            this.question_id = set.getInt("question_id");
+            this.lecturer_id = set.getString("lecturer_id");
+            this.question_body = set.getString("question_body");
+            this.question_ans = set.getString("question_ans");
+            this.question_difficulty = set.getInt("question_difficulty");
+            this.question_date = set.getDate("question_date");
+            this.question_last_used = set.getDate("question_last_used");
+            this.question_variance = set.getInt("question_variance");
+            this.question_mark = set.getInt("question_mark");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getQuestionId() {
@@ -77,7 +100,18 @@ public class QuestionItem {
     }
 
     public void setQuestionBody(String question_body) {
-        this.question_body = question_body;
+        if (question_body.length() > 170) this.question_body = question_body.substring(0, 170) + " ...";
+        else this.question_body = question_body;
+
+        setQuestionBodyFull(question_body);
+    }
+
+    public String getQuestionBodyFull() {
+        return this.question_body_full;
+    }
+
+    public void setQuestionBodyFull(String question_body_full) {
+        this.question_body_full = question_body_full;
     }
 
     public void setQuestionAns(String question_ans) {
@@ -102,14 +136,6 @@ public class QuestionItem {
 
     public void setQuestionMark(int question_mark) {
         this.question_mark = question_mark;
-    }
-
-    public int getCourseId() {
-        return course_id;
-    }
-
-    public void setCourseId(int course_id) {
-        this.course_id = course_id;
     }
 
     public String getQuestionMcqChoices() {

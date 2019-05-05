@@ -129,7 +129,7 @@ public class Dashboard extends VerticalLayout {
         bottom.setComponentAlignment(profile, Alignment.BOTTOM_CENTER);
 
         // sign out component
-        bottom.setComponentAlignment(signOut, Alignment.BOTTOM_CENTER);
+        bottom.setComponentAlignment(signOut, Alignment.TOP_CENTER);
     }
 
     private void addMouseListener() {

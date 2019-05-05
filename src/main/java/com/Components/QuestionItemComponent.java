@@ -2,8 +2,10 @@ package com.Components;
 
 import com.DateConvert;
 import com.MyTheme;
+import com.Objects.CourseItem;
 import com.Objects.QuestionItem;
-import com.Server.QuestionViewServer;
+import com.Server.CourseServer;
+import com.Server.QuestionServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
@@ -13,7 +15,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.event.DragEndListener;
 import com.vaadin.ui.dnd.event.DragStartListener;
-import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.ui.NumberField;
 
 import java.io.File;
@@ -22,18 +23,22 @@ import java.util.Date;
 public class QuestionItemComponent extends VerticalLayout {
 
     // attributes
-    private int id;
-    private int courseId;
-    private int questionMark;
-    private Date questionDate;
-    private String courseCode;
-    private String courseName;
-    private String questionAns;
-    private String questionType;
-    private String questionBody;
-    private Date questionLastUsed;
-    private String questionBodyFull;
-    private int questionDifficulty;
+//    private int id;
+//    private int courseId;
+//    private int questionMark;
+//    private Date questionDate;
+//    private String courseCode;
+//    private String courseName;
+//    private String questionAns;
+//    private String questionType;
+//    private String questionBody;
+//    private Date questionLastUsed;
+//    private String questionBodyFull;
+//    private int questionDifficulty;
+
+    // attributes
+    private CourseItem courseItem;
+    private QuestionItem questionItem;
 
     // components
     private final Label marksLabel = new Label();
@@ -65,114 +70,140 @@ public class QuestionItemComponent extends VerticalLayout {
     private Image edit = new Image(null, editResource);
     private Image trash = new Image(null, trashResource);
 
-    // question view server
-    private QuestionViewServer questionViewServer;
+    // servers
+    private CourseServer courseServer;
+    private QuestionServer questionServer;
 
-    public QuestionItemComponent(QuestionViewServer questionViewServer) {
+    public QuestionItemComponent(QuestionServer questionServer, CourseServer courseServer) {
 
-        // initialise question view server
-        this.questionViewServer = questionViewServer;
+        // initialise attributes
+        this.questionItem = new QuestionItem();
+
+        // initialise servers
+        this.courseServer = courseServer;
+        this.questionServer = questionServer;
     }
 
-    private int getQuestionId() {
-        return id;
+    HorizontalLayout getFirstRow() {
+        return this.firstRow;
     }
 
-    public void setQuestionId(int id) {
-        this.id = id;
+    HorizontalLayout getThirdRow() {
+        return this.thirdRow;
     }
 
-    public int getCourseId() {
-        return courseId;
+    VerticalLayout getDateAndEdit() {
+        return this.dateAndEdit;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    HorizontalLayout getUpdateQuestionControls() {
+        return this.updateQuestionControls;
     }
 
-    private int getQuestionMark() {
-        return questionMark;
+    public CourseItem getCourseItem() { return this.courseItem; }
+    public QuestionItem getQuestionItem() {
+        return this.questionItem;
     }
 
-    public void setQuestionMark(int questionMark) {
-        this.questionMark = questionMark;
-    }
-
-    private String getCourseCode() {
-        return this.courseCode;
-    }
-
-    public void setCourseCode(int courseCode) {
-        this.courseCode = questionViewServer.getCourseItemById(courseCode).getCourseCode();
-    }
-
-    private String getCourseName() {
-        return this.courseName;
-    }
-
-    public void setCourseName(int courseCode) {
-        this.courseName = questionViewServer.getCourseItemById(courseCode).getCourseName();
-    }
-
-    private Date getQuestionDate() {
-        return questionDate;
-    }
-
-    public void setQuestionDate(Date questionDate) {
-        this.questionDate = questionDate;
-    }
-
-    private String getQuestionAns() {
-        return questionAns;
-    }
-
-    public void setQuestionAns(String questionAns) {
-        this.questionAns = questionAns;
-    }
-
-    private String getQuestionType() {
-        return questionType;
-    }
-
-    private void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    private String getQuestionBody() {
-        return questionBody;
-    }
-
-    public void setQuestionBody(String questionBody) {
-
-        if (questionBody.length() > 170) this.questionBody = questionBody.substring(0, 170) + " ...";
-        else this.questionBody = questionBody;
-
-        setQuestionBodyFull(questionBody);
-    }
-
-    private Date getQuestionLastUsed() {
-        return questionLastUsed;
-    }
-
-    public void setQuestionLastUsed(Date questionLastUsed) {
-        this.questionLastUsed = questionLastUsed;
-    }
-
-    private int getQuestionDifficulty() {
-        return questionDifficulty;
-    }
-
-    public void setQuestionDifficulty(int questionDifficulty) {
-        this.questionDifficulty = questionDifficulty;
-    }
-
-    private String getQuestionBodyFull() {
-        return questionBodyFull;
-    }
-
-    private void setQuestionBodyFull(String questionBodyFull) {
-        this.questionBodyFull = questionBodyFull;
-    }
+//    public int getQuestionId() {
+//        return id;
+//    }
+//
+//    public void setQuestionId(int id) {
+//        this.id = id;
+//    }
+//
+//    public int getCourseId() {
+//        return courseId;
+//    }
+//
+//    public void setCourseId(int courseId) {
+//        this.courseId = courseId;
+//    }
+//
+//    private int getQuestionMark() {
+//        return questionMark;
+//    }
+//
+//    public void setQuestionMark(int questionMark) {
+//        this.questionMark = questionMark;
+//    }
+//
+//    private String getCourseCode() {
+//        return this.courseCode;
+//    }
+//
+//    public void setCourseCode(int courseCode) {
+//        this.courseCode = questionServer.getCourseItemById(courseCode).getCourseCode();
+//    }
+//
+//    private String getCourseName() {
+//        return this.courseName;
+//    }
+//
+//    public void setCourseName(int courseCode) {
+//        this.courseName = questionServer.getCourseItemById(courseCode).getCourseName();
+//    }
+//
+//    private Date getQuestionDate() {
+//        return questionDate;
+//    }
+//
+//    public void setQuestionDate(Date questionDate) {
+//        this.questionDate = questionDate;
+//    }
+//
+//    private String getQuestionAns() {
+//        return questionAns;
+//    }
+//
+//    public void setQuestionAns(String questionAns) {
+//        this.questionAns = questionAns;
+//    }
+//
+//    private String getQuestionType() {
+//        return questionType;
+//    }
+//
+//    private void setQuestionType(String questionType) {
+//        this.questionType = questionType;
+//    }
+//
+//    private String getQuestionBody() {
+//        return questionBody;
+//    }
+//
+//    public void setQuestionBody(String questionBody) {
+//
+//        if (questionBody.length() > 170) this.questionBody = questionBody.substring(0, 170) + " ...";
+//        else this.questionBody = questionBody;
+//
+//        setQuestionBodyFull(questionBody);
+//    }
+//
+//    private Date getQuestionLastUsed() {
+//        return questionLastUsed;
+//    }
+//
+//    public void setQuestionLastUsed(Date questionLastUsed) {
+//        this.questionLastUsed = questionLastUsed;
+//    }
+//
+//    private int getQuestionDifficulty() {
+//        return questionDifficulty;
+//    }
+//
+//    public void setQuestionDifficulty(int questionDifficulty) {
+//        this.questionDifficulty = questionDifficulty;
+//    }
+//
+//    private String getQuestionBodyFull() {
+//        return questionBodyFull;
+//    }
+//
+//    private void setQuestionBodyFull(String questionBodyFull) {
+//        this.questionBodyFull = questionBodyFull;
+//    }
 
     public QuestionItemComponent getThisQuestionItemComponent() {
         return this;
@@ -182,6 +213,9 @@ public class QuestionItemComponent extends VerticalLayout {
 
         // set margin to false
         setMargin(false);
+
+        // set up course code
+        courseItem = courseServer.getCourseItemByQuestionId(questionItem.getQuestionId());
 
         // first row ------------------------------------------------------
         // set up and add horizontal layout for difficulty badge, question, date
@@ -198,17 +232,19 @@ public class QuestionItemComponent extends VerticalLayout {
         save.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
         trash.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
 
-        difficultyLabel.setValue(Integer.toString(this.questionDifficulty));
+        difficultyLabel.setValue(Integer.toString(questionItem.getQuestionDifficulty()));
         difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_BADGE_ICON);
 
         // set badge colour
         setUpDifficultyBadgeColor();
 
         // body label
-        questionBodyLabel.setValue(this.getQuestionBody());
+        questionBodyLabel.setValue(questionItem.getQuestionBody());
         questionBodyLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_500);
         Label dateLabel = new Label();
-        if (this.questionLastUsed != null) dateLabel.setValue(DateConvert.convertNumericDateToMinimumAlphabeticDate(this.questionLastUsed));
+        if (questionItem.getQuestionLastUsed() != null)
+            dateLabel.setValue(DateConvert.
+                    convertNumericDateToMinimumAlphabeticDate(questionItem.getQuestionLastUsed()));
         else {
             dateLabel.setValue("NEW");
             dateLabel.addStyleName(MyTheme.MAIN_FLAT_NEW_BADGE);
@@ -239,12 +275,12 @@ public class QuestionItemComponent extends VerticalLayout {
 
         // third row ------------------------------------------------------
         // set up subject label, tags and question marks
-        Label courseCode = new Label(getCourseCode());
+        Label courseCode = new Label(courseItem.getCourseCode());
         courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
         Label subject = new Label();
         subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-        //shortenCourseNameIfTooLong(getCourseName(), subject);
-        TagItemsComponent tags = new TagItemsComponent(questionViewServer, basePath, id);
+        shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
+        TagItemsComponent tags = new TagItemsComponent(questionServer, basePath, questionItem.getQuestionId());
         thirdRow.addComponents(courseCode, subject, tags);
         thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
         setUpMarksLabel();
@@ -260,15 +296,15 @@ public class QuestionItemComponent extends VerticalLayout {
         // set as draggable
         DragSourceExtension<AbstractComponent> dragSourceExtension = new DragSourceExtension<>(this);
         dragSourceExtension.setEffectAllowed(EffectAllowed.MOVE);
-        dragSourceExtension.setDataTransferText(Integer.toString(questionMark));
-        dragSourceExtension.setDataTransferData("id", Integer.toString(id));
+        dragSourceExtension.setDataTransferText(Integer.toString(questionItem.getQuestionMark()));
+        dragSourceExtension.setDataTransferData("id", Integer.toString(questionItem.getQuestionId()));
 
         // drag start listener
         dragSourceExtension.addDragStartListener((DragStartListener<AbstractComponent>) event -> {
             removeAllComponents();
             HorizontalLayout horizontalLayout = new HorizontalLayout();
             horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
-            Label label = new Label(questionBodyFull);
+            Label label = new Label(questionItem.getQuestionBody());
             horizontalLayout.addComponentsAndExpand(label);
             addComponent(horizontalLayout);
         });
@@ -286,12 +322,12 @@ public class QuestionItemComponent extends VerticalLayout {
             }
             else {
                 // remove listener
-                dragSourceExtension.remove();
+                removeAllComponents();
             }
         });
     }
 
-   /* private void shortenCourseNameIfTooLong(String string, Label label) {
+   private void shortenCourseNameIfTooLong(String string, Label label) {
 
         // if shorter than 20 characters send back string
         if (string.length() < 20) label.setValue(string);
@@ -310,11 +346,12 @@ public class QuestionItemComponent extends VerticalLayout {
             label.setValue(tmp.toString().toUpperCase().trim());
             label.setDescription(string);
         }
-    } */
+    }
 
     private void setUpMarksLabel() {
 
         // marks label
+        int questionMark = questionItem.getQuestionMark();
         if (questionMark == 0) marksLabel.setValue("no marks");
         else if (questionMark == 1) marksLabel.setValue("1 mark");
         else marksLabel.setValue(questionMark + " marks");
@@ -326,7 +363,7 @@ public class QuestionItemComponent extends VerticalLayout {
         marksLayout.setComponentAlignment(marksLabel, Alignment.MIDDLE_RIGHT);
     }
 
-    private void setUpSeeMoreSeeLessClickListener() {
+    void setUpSeeMoreSeeLessClickListener() {
         seeMoreSeeLess.addClickListener((Button.ClickListener) event -> {
             if (seeMoreSeeLess.getCaption().equals("see more")) {
 
@@ -337,7 +374,7 @@ public class QuestionItemComponent extends VerticalLayout {
                 seeMoreSeeLess.setCaption("see less");
 
                 // question body to full
-                questionBodyLabel.setValue(getQuestionBodyFull());
+                questionBodyLabel.setValue(questionItem.getQuestionBodyFull());
 
                 // add see more component
                 setUpSeeMoreComponent();
@@ -348,14 +385,14 @@ public class QuestionItemComponent extends VerticalLayout {
                 // remove any instance of it if present
                 removeComponent(seeMoreComponent);
                 seeMoreSeeLess.setCaption("see more");
-                questionBodyLabel.setValue(getQuestionBody());
+                questionBodyLabel.setValue(questionItem.getQuestionBody());
                 seeMoreComponent.removeAllComponents();
                 removeComponent(seeMoreComponent);
             }
         });
     }
 
-    private void setUpUpdateQuestionClickListeners() {
+    void setUpUpdateQuestionClickListeners() {
 
         // add click listeners
         edit.addClickListener((MouseEvents.ClickListener) event -> {
@@ -368,7 +405,7 @@ public class QuestionItemComponent extends VerticalLayout {
             updateQuestionControls.addComponentAsFirst(save);
 
             // replace first row
-            editQuestionBodyTextField.setValue(questionBodyFull);
+            editQuestionBodyTextField.setValue(questionItem.getQuestionBodyFull());
             firstRow.addComponentsAndExpand(editQuestionBodyTextField);
             editQuestionBodyTextField.focus();
             firstRow.addComponent(dateAndEdit);
@@ -383,23 +420,23 @@ public class QuestionItemComponent extends VerticalLayout {
             // add difficulty and answer
             difficultySlider.setMin(1);
             difficultySlider.setMax(5);
-            setUpQuestionDifficultySlider(questionDifficulty);
-            difficultySlider.setValue((double) questionDifficulty);
+            setUpQuestionDifficultySlider(questionItem.getQuestionDifficulty());
+            difficultySlider.setValue((double) questionItem.getQuestionDifficulty());
             difficultySlider.setWidth(100.0f, Unit.PERCENTAGE);
             difficultySlider.addValueChangeListener((HasValue.ValueChangeListener<Double>) event1 -> {
                 int x = event1.getValue().intValue();
-                questionDifficulty = x;
+                questionItem.setQuestionDifficulty(x);
                 setUpQuestionDifficultySlider(x);
             });
 
-            editQuestionAnsTextField.setValue(this.questionAns);
+            editQuestionAnsTextField.setValue(questionItem.getQuestionAns());
             editQuestionAnsTextField.setCaption("Answer");
             editQuestionAnsTextField.setWidth(100.0f, Unit.PERCENTAGE);
 
             // remove mark label add text field
             marksLabel.setValue("marks");
             marksNumberField.setWidth(64f, Unit.PIXELS);
-            marksNumberField.setValue(questionMark + "");
+            marksNumberField.setValue(questionItem.getQuestionMark() + "");
             marksLayout.addComponentAsFirst(marksNumberField);
             marksLayout.setComponentAlignment(marksNumberField, Alignment.MIDDLE_RIGHT);
 
@@ -410,11 +447,11 @@ public class QuestionItemComponent extends VerticalLayout {
 
             // update variables
             String s = editQuestionBodyTextField.getValue();
-            this.questionBodyFull = s;
-            this.questionAns = editQuestionAnsTextField.getValue();
-            this.questionDifficulty = difficultySlider.getValue().intValue();
-            if (s.length() > 170) this.questionBody = s.substring(0, 170) + " ...";
-            else this.questionBody = s;
+            questionItem.setQuestionBodyFull(s);
+            questionItem.setQuestionAns(editQuestionAnsTextField.getValue());
+            questionItem.setQuestionDifficulty(difficultySlider.getValue().intValue());
+            if (s.length() > 170) questionItem.setQuestionBody(s.substring(0, 170) + " ...");
+            else questionItem.setQuestionBody(s);
 
             // remove text areas and slider
             removeComponent(difficultySlider);
@@ -424,10 +461,10 @@ public class QuestionItemComponent extends VerticalLayout {
             firstRow.removeComponent(editQuestionBodyTextField);
 
             // update labels
-            difficultyLabel.setValue(Integer.toString(this.questionDifficulty));
+            difficultyLabel.setValue(Integer.toString(questionItem.getQuestionDifficulty()));
             setUpDifficultyBadgeColor();
-            questionBodyLabel.setValue(this.questionBody);
-            questionAnsLabel.setValue(this.questionAns);
+            questionBodyLabel.setValue(questionItem.getQuestionBody());
+            questionAnsLabel.setValue(questionItem.getQuestionAns());
             updateQuestionControls.addComponentAsFirst(edit);
 
             // add label
@@ -435,21 +472,21 @@ public class QuestionItemComponent extends VerticalLayout {
             firstRow.addComponent(dateAndEdit);
 
             // remove mark editor and set value
-            questionMark = Integer.parseInt(marksNumberField.getValue());
-            if (questionMark == 0) marksLabel.setValue("no marks");
-            else if (questionMark == 1) marksLabel.setValue("1 mark");
-            else marksLabel.setValue(questionMark + " marks");
+            questionItem.setQuestionMark(Integer.parseInt(marksNumberField.getValue()));
+            if (questionItem.getQuestionMark() == 0) marksLabel.setValue("no marks");
+            else if (questionItem.getQuestionMark() == 1) marksLabel.setValue("1 mark");
+            else marksLabel.setValue(questionItem.getQuestionMark() + " marks");
             marksLayout.removeComponent(marksNumberField);
 
             // take to database
             QuestionItem item = new QuestionItem();
-            item.setQuestionMark(getQuestionMark());
-            item.setQuestionDifficulty(getQuestionDifficulty());
-            item.setQuestionBody(getQuestionBodyFull());
-            item.setQuestionAns(getQuestionAns());
-            item.setQuestionId(getQuestionId());
+            item.setQuestionMark(questionItem.getQuestionMark());
+            item.setQuestionDifficulty(questionItem.getQuestionDifficulty());
+            item.setQuestionBody(questionItem.getQuestionBodyFull());
+            item.setQuestionAns(questionItem.getQuestionAns());
+            item.setQuestionId(questionItem.getQuestionId());
 
-            if (questionViewServer.updateQuestionItem(item))
+            if (questionServer.updateQuestionItem(item))
                 Notification.show("SUCCESS", "Question updated", Notification.Type.TRAY_NOTIFICATION);
             else Notification.show("ERROR", "Something went wrong", Notification.Type.ERROR_MESSAGE);
         });
@@ -476,7 +513,7 @@ public class QuestionItemComponent extends VerticalLayout {
                 MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_4, MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_5);
 
         // add color
-        switch (this.questionDifficulty) {
+        switch (questionItem.getQuestionDifficulty()) {
             case 1:
                 difficultyLabel.addStyleName(MyTheme.MAIN_FLAT_DIFFICULTY_BADGE_1);
                 break;
@@ -511,7 +548,7 @@ public class QuestionItemComponent extends VerticalLayout {
         Label ans = new Label("ANSWER: ");
         ans.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_WARNING,
                 MyTheme.MAIN_TEXT_WEIGHT_900);
-        questionAnsLabel.setValue(this.questionAns);
+        questionAnsLabel.setValue(questionItem.getQuestionAns());
         questionAnsLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_CHARCOAL);
         answerRow.addComponent(ans);
         answerRow.addComponentsAndExpand(questionAnsLabel);
@@ -558,7 +595,8 @@ public class QuestionItemComponent extends VerticalLayout {
         Label datePublishedLabel = new Label("date published");
         datePublishedLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
                 MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_OPACITY_40);
-        Label datePublishedDateLabel = new Label(DateConvert.convertNumericDateToAlphabeticDate(questionDate));
+        Label datePublishedDateLabel = new Label(
+                DateConvert.convertNumericDateToAlphabeticDate(questionItem.getQuestionDate()));
         datePublishedDateLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM,
                 MyTheme.MAIN_TEXT_WEIGHT_900, MyTheme.MAIN_TEXT_GREEN);
         published.setMargin(false);

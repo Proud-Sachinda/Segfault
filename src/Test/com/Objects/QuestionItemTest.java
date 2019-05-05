@@ -147,18 +147,6 @@ class QuestionItemTest {
     }
 
     @Test
-    void getCourseIdTest() {
-        QuestionItemObject.setCourseId(5);
-        assertEquals(5,QuestionItemObject.getCourseId());
-    }
-
-    @Test
-    void setCourseIdTest() {
-        QuestionItemObject.setCourseId(5);
-        assertEquals(5,QuestionItemObject.getCourseId());
-    }
-
-    @Test
     void getQuestionMcqChoicesTest(){
         QuestionItemObject.setQuestionMcqChoices("a, b, c");
         assertEquals("a, b, c", QuestionItemObject.getQuestionMcqChoices());

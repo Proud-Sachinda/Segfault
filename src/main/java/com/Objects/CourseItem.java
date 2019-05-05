@@ -1,5 +1,8 @@
 package com.Objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class CourseItem {
 
     // attributes
@@ -7,6 +10,19 @@ public class CourseItem {
     private String course_name;
     private String course_code;
 
+    public void setUpCourseItem(ResultSet set) {
+
+        try {
+
+            // set up variables
+            this.course_id = set.getInt("course_id");
+            this.course_code = set.getString("course_code");
+            this.course_name = set.getString("course_name");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getCourseId() {
         return course_id;

@@ -1,6 +1,8 @@
 
-![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG)
+![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG) 
 
+
+[![codecov](https://codecov.io/gh/1272371/Atom/branch/master/graph/badge.svg)](https://codecov.io/gh/1272371/Atom)
 
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
 [![codecov](https://codecov.io/gh/Proud-Sachinda/Segfault/branch/master/graph/badge.svg)](https://codecov.io/gh/Proud-Sachinda/Segfault)
@@ -11,6 +13,8 @@
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=alert_status)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
 
 qbank
