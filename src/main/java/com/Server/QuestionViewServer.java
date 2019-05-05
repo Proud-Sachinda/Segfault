@@ -199,6 +199,7 @@ public class QuestionViewServer {
 
         // return variable
         int questionId = 0;
+        boolean success = false;
 
         try {
 
@@ -207,7 +208,7 @@ public class QuestionViewServer {
                     "(lecturer_id, question_type, question_body, question_ans, question_date, " +
                     "question_mark, question_difficulty, course_id)" +
                     "VALUES" +
-                    "('" + getLectureId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
+                    "('" + 2 + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
                     item.getQuestionAns() + "', now(), " + item.getQuestionMark() + ", " + item.getQuestionDifficulty() +
                     ", " + item.getCourseId() + ")";
 
@@ -219,12 +220,13 @@ public class QuestionViewServer {
 
             // get question id
             query = "SELECT question_id FROM public.question ORDER BY question_id DESC LIMIT 1";
-
+            System.out.println("after query");
             // execute statement
             ResultSet resultSet = statement.executeQuery(query);
-
+            System.out.println("after result set");
             while (resultSet.next()) {
                 questionId = resultSet.getInt("question_id");
+
             }
 
             if (questionId > 0) {

@@ -15,6 +15,10 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.5" />
+          <element id="library" level="project" name="Maven: org.easymock:easymock:3.0" />
+          <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.2" />
+          <element id="library" level="project" name="Maven: org.objenesis:objenesis:1.2" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.6" />
           <element id="library" level="project" name="Maven: org.apiguardian:apiguardian-api:1.0.0" />
           <element id="library" level="project" name="Maven: org.opentest4j:opentest4j:1.1.1" />
           <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-commons:1.4.0" />

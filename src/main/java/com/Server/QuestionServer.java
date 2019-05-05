@@ -281,7 +281,7 @@ public class QuestionServer {
     }
 
 
-    public class Question {
+    public static class Question {
 
         // attributes
         private String lecturer_id;
