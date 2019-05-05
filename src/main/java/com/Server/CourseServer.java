@@ -147,25 +147,6 @@ public class CourseServer {
         return this.course;
     }
 
-    public static class Course{
-
-        public String CourseName;
-        public  String CourseCode;
-
-        public String getCourseName(){ return  CourseName;}
-        public  String getCourseCode(){ return  CourseCode;}
-
-        public void setCourseName(String CourseName){
-            this.CourseName = CourseName;
-        }
-
-        public void setCourseCode(String CourseCode){
-            this.CourseCode = CourseCode;
-        }
-
-
-
-    }
 }
 
 

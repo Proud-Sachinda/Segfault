@@ -36,7 +36,7 @@ class CourseServerTest {
     @Mock
     CourseServer cs;
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception{
 
         MockitoAnnotations.initMocks(this);
 
@@ -44,7 +44,11 @@ class CourseServerTest {
         courseItem.setCourseCode("MATH1012");
         courseItem.setCourseName("yona eo");
 
-        cs = new CourseServer(connection);
+        Mockito.when(connection.createStatement()).thenReturn(statement);
+        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+
     }
 
     @AfterEach
@@ -53,24 +57,25 @@ class CourseServerTest {
 
     @Test
     void get() throws Exception{
+        cs = new CourseServer(connection);
         ArrayList<QuestionItem> courses = new ArrayList<>();
-        Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Assert.assertNotNull(courses);
     }
 
     @Test
     void showCourse() throws Exception{
-        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        cs = new CourseServer(connection);
         Assert.assertTrue(cs.ShowCourse(courseItem));
+        Mockito.verify(connection, Mockito.times(1)).prepareStatement(anyString());
+        Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
     }
 
     @Test
     void postCourse() throws Exception{
-        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        cs = new CourseServer(connection);
         Assert.assertTrue(cs.PostCourse(courseItem));
+        Mockito.verify(connection, Mockito.times(1)).prepareStatement(anyString());
+        Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
     }
 
     @Test
@@ -79,12 +84,17 @@ class CourseServerTest {
        // Assert.assertFalse(cs.PostCourse(courseItem1));
     }
     @Test
-    void getCourseItemByQuestionId() {
+    void getCourseItemByQuestionId() throws Exception{
 
+        cs = new CourseServer(connection);
+        cs.getCourseItemByQuestionId(courseItem.getCourseId());
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
     }
 
     @Test
     void getCourse() {
+        cs = new CourseServer(connection);
         Assert.assertNotNull(cs.getCourse());
     }
 }
