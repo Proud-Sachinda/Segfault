@@ -1,5 +1,5 @@
 
-![90%](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG) 
+![](https://github.com/Proud-Sachinda/Segfault/blob/master/Extra%20Resources/images/Logo.PNG) 
 
 
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
