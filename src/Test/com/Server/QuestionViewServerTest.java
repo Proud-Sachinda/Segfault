@@ -72,19 +72,7 @@ class QuestionViewServerTest {
         ArrayList<QuestionItem> questions = new ArrayList<>();
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
-
-       /* Date date = question.getQuestionLastUsed();
-        Mockito.when(resultSet.getString("question_type")).thenReturn(question.getQuestionType());
-        Mockito.when(resultSet.getInt("question_id")).thenReturn(question.getQuestionId());
-        Mockito.when(resultSet.getString("lecturer_id")).thenReturn(question.getLecturerId());
-        Mockito.when(resultSet.getInt("course_id")).thenReturn(question.getCourseId());
-        Mockito.when(resultSet.getString("question_body")).thenReturn(question.getQuestionBody());
-        Mockito.when(resultSet.getString("question_ans")).thenReturn(question.getQuestionAns());
-        Mockito.when(resultSet.getInt("question_difficulty")).thenReturn(question.getQuestionDifficulty());
-       // Mockito.when(resultSet.getDate("question_date")).thenReturn(date);
-       // Mockito.when(resultSet.getDate("question_last_used")).thenReturn(question.getQuestionLastUsed());
-        Mockito.when(resultSet.getInt("question_variance")).thenReturn(2);
-        Mockito.when(resultSet.getInt("question_mark")).thenReturn(question.getQuestionMark());*/
+        //postToQuestionTable(question);
         Assert.assertNotNull(questions);
     }
 

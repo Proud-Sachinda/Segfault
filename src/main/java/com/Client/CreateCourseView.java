@@ -1,5 +1,6 @@
 package com.Client;
 
+import com.Objects.CourseItem;
 import com.Server.CourseServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -88,7 +89,7 @@ public class CreateCourseView extends HorizontalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 CourseServer courseServer = new CourseServer(connection);
-                CourseServer.Course q = (CourseServer.Course) courseServer.getCourse();
+                CourseItem q =  courseServer.getCourse();
 
 
 
