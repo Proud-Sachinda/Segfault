@@ -327,7 +327,7 @@ public class QuestionItemComponent extends VerticalLayout {
         });
     }
 
-    private void shortenCourseNameIfTooLong(String string, Label label) {
+   /* private void shortenCourseNameIfTooLong(String string, Label label) {
 
         // if shorter than 20 characters send back string
         if (string.length() < 20) label.setValue(string);
@@ -346,7 +346,7 @@ public class QuestionItemComponent extends VerticalLayout {
             label.setValue(tmp.toString().toUpperCase().trim());
             label.setDescription(string);
         }
-    }
+    } */
 
     private void setUpMarksLabel() {
 

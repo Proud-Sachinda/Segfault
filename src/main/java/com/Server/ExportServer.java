@@ -23,6 +23,7 @@ public class ExportServer {
         //arraylist to store  tracks
         ArrayList<Track> tracks = new ArrayList<>();
         try{
+            //int testid=0;
             // get database variables
             Statement statement = connection.createStatement();
 
@@ -31,6 +32,7 @@ public class ExportServer {
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
+            System.out.println(query);
 
             while(set.next()) {
 

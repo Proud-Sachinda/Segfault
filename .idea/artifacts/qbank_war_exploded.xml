@@ -15,17 +15,20 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.5" />
+          <element id="library" level="project" name="Maven: org.easymock:easymock:3.0" />
+          <element id="library" level="project" name="Maven: cglib:cglib-nodep:2.2" />
+          <element id="library" level="project" name="Maven: org.objenesis:objenesis:1.2" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.6" />
           <element id="library" level="project" name="Maven: org.apiguardian:apiguardian-api:1.0.0" />
           <element id="library" level="project" name="Maven: org.opentest4j:opentest4j:1.1.1" />
           <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-commons:1.4.0" />
           <element id="library" level="project" name="Maven: com.itextpdf:itextpdf:5.5.13" />
+          <element id="library" level="project" name="Maven: com.itextpdf:layout:7.1.6" />
+          <element id="library" level="project" name="Maven: com.itextpdf:kernel:7.1.6" />
+          <element id="library" level="project" name="Maven: com.itextpdf:io:7.1.6" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.13" />
           <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.2.0-M1" />
           <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-engine:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-surefire-provider:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-launcher:1.2.0-M1" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:surefire-api:2.21.0" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:surefire-logger-api:2.21.0" />
-          <element id="library" level="project" name="Maven: org.apache.maven.surefire:common-java5:2.21.0" />
           <element id="library" level="project" name="Maven: com.vaadin:vaadin-login-flow:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-login:1.0.0" />
           <element id="library" level="project" name="Maven: org.webjars.bowergithub.vaadin:vaadin-lumo-styles:1.4.1" />

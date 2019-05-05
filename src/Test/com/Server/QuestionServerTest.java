@@ -3,10 +3,7 @@ package com.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import java.sql.Connection;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionServerTest {
 
@@ -33,8 +30,12 @@ class QuestionServerTest {
 
     @Test
     void Testpost() {
+<<<<<<< HEAD
 
         /*
+=======
+/*
+>>>>>>> 1f9408fc89786999317382d18dd118c8adb5f8f1
         QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
 
 
@@ -43,13 +44,14 @@ class QuestionServerTest {
         //q.setQuestionDate('2014-02-12');
         // q.setQuestionLastUsed();
         q.setQuestionMark(1);
-        q.setQuestionDifficulty("easy");
+      //  q.setQuestionDifficulty("easy");
         q.setQuestionType("written");
         q.setQuestion_line(1);
         */
 
         //myQuestionServer.post(q);
         assertTrue(true);
+        */
     }
 
     @Test

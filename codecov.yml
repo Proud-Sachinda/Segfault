@@ -24,3 +24,15 @@ comment:
   layout: "reach, diff, flags, files, footer"
   behavior: default
 require_changes: no
+
+ignore:
+  - "src/main/java/Components/**/*"
+  - "src/main/java/Client/Authentication.java"
+  - "src/main/java/Client/CourseView.java "
+  - "src/main/java/Client/CreateQuestionView.java"
+  - "src/main/java/Client/ExportView.java"
+  - "src/main/java/Client/QuestionView.java "
+#  - "path/to/folder"  # ignore folders and all its contents
+#  - "test_*.rb"       # wildcards accepted
+#  - "**/*.py"         # glob accepted
+#  - "[a-z]+/test_.*"  # regexp accepted

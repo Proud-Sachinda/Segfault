@@ -13,6 +13,16 @@
 		<maven>3</maven>
 	</prerequisites>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-latex-plugin-repo</id>
+			<url>http://akquinet.github.com/maven-latex-plugin/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<properties>
 		<vaadin.version>8.7.0</vaadin.version>
 		<vaadin.plugin.version>8.7.0</vaadin.plugin.version>
@@ -33,6 +43,36 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- https://mvnrepository.com/artifact/net.sf.nervalreports/tex-pdf-converter -->
+			<dependency>
+				<groupId>net.sf.nervalreports</groupId>
+				<artifactId>tex-pdf-converter</artifactId>
+				<version>LATEST</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/de.akquinet.jbosscc.latex/maven-latex-plugin -->
+			<dependency>
+				<groupId>de.akquinet.jbosscc.latex</groupId>
+				<artifactId>maven-latex-plugin</artifactId>
+				<version>LATEST</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.doxia/doxia-module-latex -->
+			<dependency>
+				<groupId>org.apache.maven.doxia</groupId>
+				<artifactId>doxia-module-latex</artifactId>
+				<version>1.8</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openapitools</groupId>
+				<artifactId>jackson-databind-nullable</artifactId>
+				<version>0.1.0</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-latex -->
+			<dependency>
+				<groupId>net.sourceforge.owlapi</groupId>
+				<artifactId>owlapi-latex</artifactId>
+				<version>LATEST</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
@@ -56,6 +96,52 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.2.5</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.5.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock -->
+		<!--<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock</artifactId>
+			<version>1.5</version>
+			<type>pom</type>
+		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.4.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+
+
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -66,7 +152,12 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
-			<version>5.5.13</version>
+			<version>LATEST</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>layout</artifactId>
+			<version>LATEST</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -80,11 +171,13 @@
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.2.0-M1</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-surefire-provider</artifactId>
 			<version>1.2.0-M1</version>
 		</dependency>
+		-->
 		<!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-login-flow -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -160,14 +253,19 @@
 			<version>8.7.1</version>
 		</dependency>
 	</dependencies>
+	
+	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/Test</testSourceDirectory>
+
 		<plugins>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.7</version>
+
 				<configuration>
 					<formats>
 						<format>html</format>
@@ -175,6 +273,7 @@
 					</formats>
 					<check />
 				</configuration>
+
 			</plugin>
 
 
@@ -183,6 +282,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M1</version>
 				<!--<version>3.2.0</version>-->
+
 				<configuration>
 					<includes>
 						<include>**/Test*.java</include>
@@ -191,7 +291,9 @@
 						<include>**/*TestCase.java</include>
 					</includes>
 				</configuration>
+
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -221,11 +323,14 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
+
 				<!-- Clean up also any pre-compiled themes -->
+
 				<configuration>
 					<filesets>
 						<fileset>
@@ -250,6 +355,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
 	</build>
 
 	<profiles>

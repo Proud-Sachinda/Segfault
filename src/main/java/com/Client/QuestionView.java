@@ -616,6 +616,7 @@ public class QuestionView extends HorizontalLayout implements View {
                     int qId = 1;
                     if (event.getDataTransferData("id").isPresent()) {
                         qId = Integer.parseInt(event.getDataTransferData("id").get());
+                        System.out.println(qId);
                     }
 
                     // remove component from vertical layout root
