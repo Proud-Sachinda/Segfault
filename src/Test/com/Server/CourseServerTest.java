@@ -78,6 +78,10 @@ class CourseServerTest {
         CourseItem courseItem1 = new CourseItem();
         Assert.assertFalse(cs.PostCourse(courseItem1));
     }
+    @Test
+    void getCourseItemByQuestionId() {
+        
+    }
 
     @Test
     void getCourse() {

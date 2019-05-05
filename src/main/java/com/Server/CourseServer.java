@@ -1,5 +1,7 @@
 package com.Server;
 
+import com.Objects.CourseItem;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -73,7 +75,7 @@ public class CourseServer {
 
     }
 
-    public boolean PostCourse(CourseItem c){
+    //public boolean PostCourse(CourseItem c){
     public CourseItem getCourseItemByQuestionId(int questionId) {
 
         // create return course item
@@ -117,7 +119,7 @@ public class CourseServer {
         return item;
     }
 
-    public boolean PostCourse(Course c){
+    public boolean PostCourse(CourseItem c){
         String coursename = c.getCourseName();
         String coursecode = c.getCourseCode();
 
