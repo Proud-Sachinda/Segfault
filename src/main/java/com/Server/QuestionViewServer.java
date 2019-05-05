@@ -422,6 +422,7 @@ public class QuestionViewServer {
             // statement
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
+            System.out.println(success);
             // set strings
             preparedStatement.setInt(1, item.getQuestionDifficulty());
             preparedStatement.setInt(2, item.getQuestionMark());
@@ -436,6 +437,7 @@ public class QuestionViewServer {
             success = false;
         }
 
+        System.out.println(success);
         return success;
     }
 }

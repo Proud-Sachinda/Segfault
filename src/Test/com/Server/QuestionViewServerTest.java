@@ -12,11 +12,9 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.mockito.Matchers.anyString;
@@ -34,6 +32,9 @@ class QuestionViewServerTest {
 
     @Mock
     private ResultSet resultSet;
+
+    @Mock
+    private PreparedStatement preparedStatement;
 
     @Mock
     QuestionViewServer qvs;
@@ -57,12 +58,7 @@ class QuestionViewServerTest {
 
         qvs = new QuestionViewServer(connection);
 
-        Mockito.when(connection.createStatement()).thenReturn(statement);
 
-        Mockito.when(statement.executeUpdate(anyString())).thenReturn(1);
-        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
-        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
-        Mockito.when(resultSet.getInt("question_id")).thenReturn(1);
     }
 
     @AfterEach
@@ -71,17 +67,44 @@ class QuestionViewServerTest {
 
 
     @Test
-    void getQuestionItems() {
+    void getQuestionItems() throws Exception{
+
+        ArrayList<QuestionItem> questions = new ArrayList<>();
+        Mockito.when(connection.createStatement()).thenReturn(statement);
+        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
+
+       /* Date date = question.getQuestionLastUsed();
+        Mockito.when(resultSet.getString("question_type")).thenReturn(question.getQuestionType());
+        Mockito.when(resultSet.getInt("question_id")).thenReturn(question.getQuestionId());
+        Mockito.when(resultSet.getString("lecturer_id")).thenReturn(question.getLecturerId());
+        Mockito.when(resultSet.getInt("course_id")).thenReturn(question.getCourseId());
+        Mockito.when(resultSet.getString("question_body")).thenReturn(question.getQuestionBody());
+        Mockito.when(resultSet.getString("question_ans")).thenReturn(question.getQuestionAns());
+        Mockito.when(resultSet.getInt("question_difficulty")).thenReturn(question.getQuestionDifficulty());
+       // Mockito.when(resultSet.getDate("question_date")).thenReturn(date);
+       // Mockito.when(resultSet.getDate("question_last_used")).thenReturn(question.getQuestionLastUsed());
+        Mockito.when(resultSet.getInt("question_variance")).thenReturn(2);
+        Mockito.when(resultSet.getInt("question_mark")).thenReturn(question.getQuestionMark());*/
+        Assert.assertNotNull(questions);
     }
 
     @Test
     void postToQuestionTable() throws Exception{
+
+        Mockito.when(connection.createStatement()).thenReturn(statement);
+        Mockito.when(statement.executeUpdate(anyString())).thenReturn(1);
+        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
+        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSet.getInt("question_id")).thenReturn(1);
         Assert.assertNotEquals(0,qvs.postToQuestionTable(question));
     }
 
     @Test
     void updateQuestionItem() throws Exception{
 
+        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        Assert.assertTrue(qvs.updateQuestionItem(question));
     }
 
 }
