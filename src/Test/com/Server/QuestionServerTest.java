@@ -30,12 +30,7 @@ class QuestionServerTest {
 
     @Test
     void Testpost() {
-<<<<<<< HEAD
-
-        /*
-=======
 /*
->>>>>>> 1f9408fc89786999317382d18dd118c8adb5f8f1
         QuestionServer.Written q = (QuestionServer.Written) myQuestionServer.getWritten();
 
 
@@ -47,7 +42,7 @@ class QuestionServerTest {
       //  q.setQuestionDifficulty("easy");
         q.setQuestionType("written");
         q.setQuestion_line(1);
-        */
+
 
         //myQuestionServer.post(q);
         assertTrue(true);

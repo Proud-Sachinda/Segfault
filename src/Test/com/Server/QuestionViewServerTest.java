@@ -21,7 +21,7 @@ import static org.mockito.Matchers.anyString;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ QuestionViewServer.class, DriverManager.class })
+@PrepareForTest({ QuestionServer.class, DriverManager.class })
 class QuestionViewServerTest {
 
     QuestionItem question = new QuestionItem();
@@ -37,7 +37,7 @@ class QuestionViewServerTest {
     private PreparedStatement preparedStatement;
 
     @Mock
-    QuestionViewServer qvs;
+    QuestionServer qvs;
 
     @BeforeEach
     void setUp() throws Exception{
@@ -56,7 +56,7 @@ class QuestionViewServerTest {
         question.setQuestionType("written");
         question.setQuestionVariance(1);
 
-        qvs = new QuestionViewServer(connection);
+        qvs = new QuestionServer(connection);
 
 
     }
