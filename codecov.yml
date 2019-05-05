@@ -26,10 +26,11 @@ comment:
 require_changes: no
 
 ignore:
-  - "src/main/java/Components/**/*"
-  - "src/main/java/Client/.*"
-  - "src/main/java/Client/"
-  - "src/main/java/Components/*"
+  - "src/main/java/com/Components/**/*"
+  - "src/main/java/com/Client/.*"
+  - "src/main/java/com/Client/"
+  - "src/main/java/com/Components/*"
+  - "src/main/java/com/Client/**/*"
 #  - "path/to/folder"  # ignore folders and all its contents
 #  - "test_*.rb"       # wildcards accepted
 #  - "**/*.py"         # glob accepted
