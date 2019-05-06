@@ -1,14 +1,18 @@
 package com.Server;
 
+import com.Objects.TestItem;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class TestServer {
 
     // connection variable
     private Connection connection;
+
 
     public TestServer(Connection connection) {
 
@@ -50,4 +54,40 @@ public class TestServer {
 
         return testId;
     }
-}
+
+        public ArrayList getTestItems(){
+             ArrayList<TestItem> testItems = new ArrayList<TestItem>();
+
+            try {
+
+                // get database variables
+                Statement statement = connection.createStatement();
+
+                // query
+                String query = "SELECT * FROM public.test";
+
+                // execute statement
+                ResultSet set = statement.executeQuery(query);
+                while(set.next()) {
+                    // CourseItem class variable
+                    TestItem item = new TestItem();
+
+                    // set variables
+                    //item.setUpTestItem(set);
+
+                    // add to array list
+                    testItems.add(item);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return testItems;
+        }
+
+
+    }
+
+
+
