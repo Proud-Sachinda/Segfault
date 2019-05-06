@@ -203,7 +203,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mainQuestionFormArea.addComponent(courseAndMarks);
 
         // add course combo box drop down
-        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourses());
+        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourseItems());
         comboBox.setCaption(null);
         comboBox.addComboBoxValueChangeListener();
         comboBoxItem = new FormItemComponent("Subject", comboBox,

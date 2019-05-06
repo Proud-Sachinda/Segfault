@@ -426,7 +426,7 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setPlaceholder("Enter draft name");
 
             // course subjects
-            CourseComboBox comboBox = new CourseComboBox(courseServer.getCourses());
+            CourseComboBox comboBox = new CourseComboBox(courseServer.getCourseItems());
             comboBox.setWidth(100.0f, Unit.PERCENTAGE);
             comboBox.addComboBoxValueChangeListener();
 
