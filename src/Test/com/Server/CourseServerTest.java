@@ -57,7 +57,7 @@ class CourseServerTest {
     @Test
     void getCourses() throws Exception{
         cs = new CourseServer(connection);
-        ArrayList<CourseItem> courses = cs.getCourses();
+        ArrayList<CourseItem> courses = cs.getCourseItems();
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Assert.assertNotNull(courses);
