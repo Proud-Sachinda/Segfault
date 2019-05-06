@@ -32,7 +32,6 @@ ignore:
   - "src/main/java/com/Components/*"
   - "src/main/java/com/Client/**/*"
   - "src/main/java/com/Client/CourseView.java"
-  - "src/main/java/com/Client/ CreateCourseView.java"
   - "src/main/java/com/Client/CreateQuestionView.java"
   - "src/main/java/com/Client/ExportView.java"
   - "src/main/java/com/Components/*.java"

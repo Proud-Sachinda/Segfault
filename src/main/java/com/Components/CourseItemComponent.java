@@ -1,18 +1,12 @@
 package com.Components;
 
-import com.MyTheme;
-import com.Objects.CourseItem;
-import com.Server.CourseServer;
-import com.Server.CourseViewServer;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public class CourseItemComponent extends VerticalLayout {
 
@@ -37,13 +31,8 @@ public class CourseItemComponent extends VerticalLayout {
 
 
     // course view server
-    private CourseViewServer courseViewServer;
 
-    public CourseItemComponent(CourseViewServer courseViewServer, Connection connection){
-        //String courseN = "";
-
-        CourseViewServer server = new CourseViewServer(connection);
-        ArrayList<CourseItem> courses = server.getCourses();
+    public CourseItemComponent(Connection connection){
 
 
 
@@ -69,9 +58,6 @@ public class CourseItemComponent extends VerticalLayout {
             }
             //return courseN;
 
-        // initialise course view server
-        this.courseViewServer = courseViewServer;
-
         setSizeFull();
 
         seeMoreComponent.addStyleName("esmond");
@@ -88,16 +74,8 @@ public class CourseItemComponent extends VerticalLayout {
         return this.courseCode;
     }
 
-    public void setCourseCode(int courseCode) {
-        this.courseCode = courseViewServer.getCourseItemById(courseCode).getCourseCode();
-    }
-
     private String getCourseName() {
         return this.courseName;
-    }
-
-    public void setCourseName(int courseCode) {
-        this.courseName = courseViewServer.getCourseItemById(courseCode).getCourseName();
     }
 
 

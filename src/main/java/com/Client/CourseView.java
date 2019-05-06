@@ -1,23 +1,17 @@
 package com.Client;
 
-import com.Components.CourseItemComponent;
 import com.Dashboard;
+import com.MyTheme;
 import com.Objects.CourseItem;
-import com.Components.CourseItemComponent;
 import com.Server.CourseServer;
-import com.Server.CourseViewServer;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Sizeable;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.w3c.dom.Text;
 
-import javax.swing.*;
-import javax.validation.constraints.Null;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -31,12 +25,10 @@ public class CourseView extends HorizontalLayout implements View {
 
     String type = "";
 
-    private CourseViewServer courseServer;
-
     //Create a button
     private Button export1 = new Button("Export");
     private Button export2 = new Button("Export");
-    private Button createcourse1 =  new Button("CreateCourseView");
+    private Button createcourse1 =  new Button("Add Course");
     private Button wola = new Button("Add");
 
     private TextField sampleinput = new TextField("Add Course Name");
@@ -56,8 +48,12 @@ public class CourseView extends HorizontalLayout implements View {
 
     TextField text = new TextField();
 
+    CourseServer myCourseServer;
 
-
+    private final VerticalLayout paperExplorer = new VerticalLayout();
+    private final VerticalLayout courseList = new VerticalLayout();
+    private final Panel courseListPanel = new Panel();
+    private final VerticalLayout courseListVerticalLayoutRoot = new VerticalLayout();
 
 
     // navigation and content area
@@ -69,6 +65,9 @@ public class CourseView extends HorizontalLayout implements View {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // course server
+        this.myCourseServer = new CourseServer(connection);
 
         // set connection variable
         this.connection = connection;
@@ -82,8 +81,83 @@ public class CourseView extends HorizontalLayout implements View {
 
         // set content area
         content.setSizeFull();
+        content.addStyleName("paper-border");
         addComponentsAndExpand(content);
-        setUpPeople();
+        setUpCourseList();
+    }
+
+    private void setUpCourseList() {
+
+        content.addComponentsAndExpand(paperExplorer);
+        paperExplorer.setHeightUndefined();
+
+        sampleinput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
+        sampleoutput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
+
+        courseListVerticalLayoutRoot.setMargin(new MarginInfo(true, false));
+        courseListVerticalLayoutRoot.setWidth(300.0f,Unit.PIXELS);
+        //courseListVerticalLayoutRoot.addStyleName(MyTheme.MAIN_BLUE);
+        courseListPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
+        addComponent(courseListVerticalLayoutRoot);
+        courseListVerticalLayoutRoot.addComponents(createcourse1, courseListPanel);
+
+        courseListPanel.setContent(courseList);
+        courseListPanel.setHeight(100.0f, Unit.PERCENTAGE);
+
+        courseList.setWidth(100.0f, Unit.PERCENTAGE);
+
+        ArrayList<CourseItem> list = myCourseServer.getCourseItems();
+
+        for (CourseItem i : list) {
+
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+            Label label = new Label(i.getCourseFullName());
+            label.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
+            horizontalLayout.addComponent(label);
+            courseList.addComponent(horizontalLayout);
+        }
+
+        createcourse1.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                courseList.addComponent(sampleinput,0);
+                courseList.addComponent(sampleoutput, 1);
+                courseList.addComponent(wola, 2);
+            }
+        });
+
+        wola.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+               String input = sampleinput.getValue();
+               String  out =  sampleoutput.getValue();
+
+               sampleinput.setValue("");
+               sampleoutput.setValue("");
+
+               CourseItem courseItem =  new CourseItem();
+               courseItem.setCourseName(input);
+               courseItem.setCourseCode(out);
+
+               myCourseServer.PostCourse(courseItem);
+
+                courseList.removeComponent(sampleinput);
+                courseList.removeComponent(sampleoutput);
+                courseList.removeComponent(wola);
+
+                HorizontalLayout horizontal = new HorizontalLayout();
+                horizontal.setWidth(100.0f, Unit.PERCENTAGE);
+                Label lab = new Label();
+                lab.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
+                horizontal.addComponent(lab);
+                courseList.addComponent(horizontal);
+            }
+        });
+
+
     }
 
 
@@ -116,52 +190,6 @@ public class CourseView extends HorizontalLayout implements View {
         // filtering.addComponents(selectPeople);
         content.addComponent(filtering);
         filtering.addComponents(createcourse1);
-
-
-        createcourse1.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                CourseItemComponent blah = new CourseItemComponent(courseServer, connection);
-                blah.setUpSeeMoreComponent();
-                filtering.addComponent(blah);
-               navigator.navigateTo(createcourse);
-            }
-        });
-
-
-    }
-
-   /* public  void setUpCourse(){
-
-        // get questions
-        ArrayList<CourseItem> courseArrayList = courseServer.getCourses();
-
-        // set up root question layout
-        VerticalLayout verticalLayoutRoot = new VerticalLayout();
-        verticalLayoutRoot.setMargin(false);
-
-
-        // loop through questions and add to view
-        for (CourseItem q : courseArrayList) {
-
-            // declare new question item component
-            CourseItemComponent courseItemComponent = new CourseItemComponent(courseServer);
-            // set variables
-            courseItemComponent.setCourseId(q.getCourseId());
-            courseItemComponent.setCourseCode(q.getCourseId());
-            courseItemComponent.setCourseName(q.getCourseId());
-
-            // set up question item component
-            courseItemComponent.setUpCourseItemComponent();
-
-            // add to vertical layout root
-            verticalLayoutRoot.addComponent(courseItemComponent.getThisCourseItemComponent());
-        }
-
-    }*/
-
-
-    private void showButtonClickedMessage(Button.ClickEvent clickEvent) {
 
 
     }

@@ -68,7 +68,6 @@ public class MyUI extends UI {
             navigator.addView(course, new CourseView(navigator, connection));
             navigator.addView(export, new ExportView(navigator, connection));
             navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
-            navigator.addView(createcourse, new CreateCourseView(navigator, connection));
             // navigate to app for now
             navigator.navigateTo(question);
         }
