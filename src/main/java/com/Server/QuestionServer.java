@@ -21,38 +21,6 @@ public class QuestionServer {
     }
 
     // -------------------------------- GET METHODS (SELECT)
-    public ArrayList<CourseItem> getCourses() {
-
-        // course items
-        ArrayList<CourseItem> courseItems = new ArrayList<>();
-
-        try {
-
-            // get database variables
-            Statement statement = connection.createStatement();
-
-            // query
-            String query = "SELECT * FROM public.course";
-
-            // execute statement
-            ResultSet set = statement.executeQuery(query);
-            while(set.next()) {
-                // CourseItem class variable
-                CourseItem item = new CourseItem();
-
-                // set variables
-                item.setUpCourseItem(set);
-
-                // add to array list
-                courseItems.add(item);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return courseItems;
-    }
 
     public ArrayList<QuestionItem> getQuestionItems() {
 
@@ -109,34 +77,6 @@ public class QuestionServer {
 
                 // set variables
                 item.setUpQuestionItem(set);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return item;
-    }
-
-    public CourseItem getCourseItemById(int courseId) {
-
-        // create return course item
-        CourseItem item = new CourseItem();
-
-        try {
-
-            // get database variables
-            Statement statement = connection.createStatement();
-
-            // query
-            String query = "SELECT * FROM public.course WHERE course_id = " + courseId;
-
-            // execute statement
-            ResultSet set = statement.executeQuery(query);
-            while(set.next()) {
-
-                // set variables
-                item.setUpCourseItem(set);
             }
 
         } catch (SQLException e) {
@@ -427,6 +367,8 @@ public class QuestionServer {
                     " SET question_difficulty = ?, " +
                     "question_mark = ?, " +
                     "question_body = ?, " +
+                    "question_variance = ?, " +
+                    "question_is_variant = ?, " +
                     "question_ans = ? " +
                     " WHERE question_id = ?";
 
@@ -437,8 +379,10 @@ public class QuestionServer {
             preparedStatement.setInt(1, item.getQuestionDifficulty());
             preparedStatement.setInt(2, item.getQuestionMark());
             preparedStatement.setString(3, item.getQuestionBody());
-            preparedStatement.setString(4, item.getQuestionAns());
-            preparedStatement.setInt(5, item.getQuestionId());
+            preparedStatement.setInt(4, item.getQuestionVariance());
+            preparedStatement.setBoolean(5, item.getQuestionIsVariant());
+            preparedStatement.setString(6, item.getQuestionAns());
+            preparedStatement.setInt(7, item.getQuestionId());
 
             // execute statement
             if (preparedStatement.executeUpdate() > 0) success = true;

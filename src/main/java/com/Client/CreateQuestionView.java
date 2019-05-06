@@ -8,6 +8,7 @@ import com.Components.TagItemsComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
+import com.Server.CourseServer;
 import com.Server.QuestionServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.LayoutEvents;
@@ -37,7 +38,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     protected final String course = "course";
     protected final String export = "export";
 
-    // question server
+    // servers
+    private CourseServer courseServer;
     private QuestionServer questionServer;
 
     // layouts for split panel
@@ -89,6 +91,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         this.navigator = navigator;
 
         // set up question server
+        courseServer = new CourseServer(connection);
         questionServer = new QuestionServer(connection);
 
         // declare form item components array
@@ -139,6 +142,21 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // set page title
         UI.getCurrent().getPage().setTitle("Dashboard - Create question");
+
+        // check for existing question items
+        QuestionItem item = (QuestionItem) VaadinService.getCurrentRequest().getAttribute("question-create");
+        if (item != null) {
+
+            // set question item
+            questionItem = item;
+
+            // set variance to true
+            questionItem.setQuestionIsVariant(true);
+            questionItem.setQuestionVariance(item.getQuestionId());
+
+            // set up main form area components
+            setUpMainQuestionFormAreaWithQuestionItem();
+        }
     }
 
     private void setUpCreateQuestionHeader() {
@@ -182,7 +200,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mainQuestionFormArea.addComponent(courseAndMarks);
 
         // add course combo box drop down
-        CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
+        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourses());
         comboBox.setCaption(null);
         comboBox.addComboBoxValueChangeListener();
         comboBoxItem = new FormItemComponent("Subject", comboBox,
@@ -222,6 +240,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         // add everything to form area
         mainQuestionFormArea.addComponents(latexRoot, courseAndMarks,
                 questionBodyItem, questionDifficultyItem, tags);
+    }
+
+    private void setUpMainQuestionFormAreaWithQuestionItem() {
+
+
     }
 
     private void setUpOtherQuestionFormArea() {
