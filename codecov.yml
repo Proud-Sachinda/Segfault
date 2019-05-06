@@ -5,6 +5,7 @@ ignore:
   - "*.java"       # wildcards accepted
   - "**/*.java"         # glob accepted
   - "[a-z]+/_.*"  # regexp accepted
+  - "**/*View*/**/*"
 
 codecov:
   notify:
