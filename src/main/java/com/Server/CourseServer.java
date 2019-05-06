@@ -64,7 +64,6 @@ public class CourseServer {
 
             while(set.next()){
 
-                //NativeSelect<Course> courseNativeSelect = new NativeSelect<>("Course");
                 CourseItem course = new CourseItem();
 
 
