@@ -203,7 +203,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mainQuestionFormArea.addComponent(courseAndMarks);
 
         // add course combo box drop down
-        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourses());
+        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourseItems());
         comboBox.setCaption(null);
         comboBox.addComboBoxValueChangeListener();
         comboBoxItem = new FormItemComponent("Subject", comboBox,
@@ -247,7 +247,11 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
     private void setUpMainQuestionFormAreaWithQuestionItem() {
 
-
+        // for
+        for (FormItemComponent i : formItemComponents) {
+            System.out.println(i.getStringValueOfComponent());
+            System.out.println(i.getIntValueOfComponent());
+        }
     }
 
     private void setUpOtherQuestionFormArea() {
@@ -523,15 +527,15 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
                 // set up core variables
                 // questionItem.setCourseId(comboBoxItem.getValeOfComponent());
-                questionItem.setQuestionBody(questionBodyItem.getValueOfComponent());
-                questionItem.setQuestionMark(questionMarksItem.getValeOfComponent());
-                questionItem.setQuestionDifficulty(questionDifficultyItem.getValeOfComponent());
+                questionItem.setQuestionBody(questionBodyItem.getStringValueOfComponent());
+                questionItem.setQuestionMark(questionMarksItem.getIntValueOfComponent());
+                questionItem.setQuestionDifficulty(questionDifficultyItem.getIntValueOfComponent());
 
                 // set up specialised variables
                 switch (questionItem.getQuestionType()) {
                     case "written":
                         // get answer and number of lines
-                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
+                        questionItem.setQuestionAns(questionAnswerItem.getStringValueOfComponent());
                         break;
                     case "mcq":
                         // choices
@@ -551,9 +555,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                         break;
                     case "practical":
                         // get sample input/output and answer
-                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
-                        questionItem.setQuestionPracticalSampleInput(questionSampleInputItem.getValueOfComponent());
-                        questionItem.setQuestionPracticalSampleOutput(questionSampleOutputItem.getValueOfComponent());
+                        questionItem.setQuestionAns(questionAnswerItem.getStringValueOfComponent());
+                        questionItem.setQuestionPracticalSampleInput(questionSampleInputItem.getStringValueOfComponent());
+                        questionItem.setQuestionPracticalSampleOutput(questionSampleOutputItem.getStringValueOfComponent());
                         break;
                 }
 

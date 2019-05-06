@@ -13,7 +13,7 @@ public class CourseServer {
     CourseItem course = new CourseItem();
 
 
-    public ArrayList<CourseItem> getCourses() {
+    public ArrayList<CourseItem> getCourseItems() {
 
         // course items
         ArrayList<CourseItem> courseItems = new ArrayList<>();
