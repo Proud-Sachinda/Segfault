@@ -13,6 +13,39 @@ public class CourseServer {
     CourseItem course = new CourseItem();
 
 
+    public ArrayList<CourseItem> getCourses() {
+
+        // course items
+        ArrayList<CourseItem> courseItems = new ArrayList<>();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.course";
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+            while(set.next()) {
+                // CourseItem class variable
+                CourseItem item = new CourseItem();
+
+                // set variables
+                item.setUpCourseItem(set);
+
+                // add to array list
+                courseItems.add(item);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return courseItems;
+    }
+
     public CourseServer(Connection connection){
         this.connection = connection;
     }

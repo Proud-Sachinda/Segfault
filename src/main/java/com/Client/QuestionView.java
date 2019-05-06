@@ -24,7 +24,6 @@ import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -80,10 +79,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
     // empty component
     private EmptyQuestionsComponent emptyQuestionsComponent = new EmptyQuestionsComponent(basePath);
-
-    QuestionView() {
-        // for unit tests
-    }
 
     public QuestionView(Navigator navigator, Connection connection) {
 
@@ -166,7 +161,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
     }
 
-    @SuppressWarnings("Duplicates")
     private void setUpPapers() {
 
         // set up draft heading
@@ -319,11 +313,7 @@ public class QuestionView extends HorizontalLayout implements View {
             for (QuestionItem q : questionArrayList) {
 
                 // declare new question item component
-                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionServer, courseServer);
-                // set variables
-                // questionItemComponent.getCourseItem().setCourseId(q.getCourseId());
-                // questionItemComponent.getCourseItem().setCourseCode(q.getCourseId());
-                // questionItemComponent.getCourseItem().setCourseName(q.getCourseId());
+                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionServer, courseServer, navigator);
                 questionItemComponent.getQuestionItem().setQuestionId(q.getQuestionId());
                 questionItemComponent.getQuestionItem().setQuestionAns(q.getQuestionAns());
                 questionItemComponent.getQuestionItem().setQuestionBody(q.getQuestionBody());
@@ -432,7 +422,7 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setPlaceholder("Enter draft name");
 
             // course subjects
-            CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
+            CourseComboBox comboBox = new CourseComboBox(courseServer.getCourses());
             comboBox.setWidth(100.0f, Unit.PERCENTAGE);
             comboBox.addComboBoxValueChangeListener();
 
@@ -698,10 +688,5 @@ public class QuestionView extends HorizontalLayout implements View {
             }
             return index;
         }
-    }
-
-    public int myfunction(int num1,int num2){
-
-        return num1+num2;
     }
 }
