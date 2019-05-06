@@ -1,0 +1,10 @@
+drop table variant;
+drop table subject;
+drop table written;
+drop table written_question;
+drop table track;
+drop table test;
+drop table examiner;
+drop table question;
+drop table test;
+drop table course;
