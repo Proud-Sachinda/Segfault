@@ -1,8 +1,8 @@
 ignore:
   - "src/main/java/com"  # ignore folders and all its contents
   - "*.java"       # wildcards accepted
-  - "**/*.py"         # glob accepted
-  - "[a-z]+/test_.*"  # regexp accepted
+  - "**/*.java"         # glob accepted
+  - "[a-z]+/_.*"  # regexp accepted
 
 codecov:
   notify:
