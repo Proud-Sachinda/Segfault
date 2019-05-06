@@ -7,9 +7,7 @@ import com.Components.QuestionPaperItemComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
-import com.Server.CourseServer;
-import com.Server.QuestionServer;
-import com.Server.TagServer;
+import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
@@ -59,6 +57,8 @@ public class QuestionView extends HorizontalLayout implements View {
 
     // server
     private TagServer tagServer;
+    private TestServer testServer;
+    private TrackServer trackServer;
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
@@ -446,7 +446,7 @@ public class QuestionView extends HorizontalLayout implements View {
                     draftName = s.concat(textFieldValue.substring(1));
 
                     // take to database
-                    testId = questionServer.postToTestTable(true, draftName, comboBox.getCourseId());
+                    testId = testServer.postToTestTable(true, draftName, comboBox.getCourseId());
                     if (!(testId > 0))
                         Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
@@ -637,7 +637,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
                     // send to track table
                     int bulletIncrementValue = getQuestionPaperItemComponentValue(findIndexOfQuestionPaperItemComponent(qId));
-                    if (!questionServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
+                    if (!trackServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
                         Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
                 }
             });

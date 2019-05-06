@@ -1,9 +1,6 @@
 package com.Server;
 
-import com.Components.TagItemsComponent;
-import com.Objects.CourseItem;
 import com.Objects.QuestionItem;
-import com.Objects.TagItem;
 
 import javax.validation.constraints.NotNull;
 import java.sql.*;
@@ -209,66 +206,6 @@ public class QuestionServer {
         }
 
         return questionId;
-    }
-
-    public int postToTestTable(boolean testIsDraft, String testDraftName, int courseId) {
-
-        // return variable
-        int testId = 0;
-
-        try {
-
-            // query
-            String query = "INSERT INTO public.test" +
-                    "(test_is_draft, test_draft_name, course_id) VALUES" +
-                    "(" + testIsDraft + ", '" + testDraftName + "', " + courseId + ")";
-
-            // statement
-            Statement statement = connection.createStatement();
-
-            // execute statement
-            testId = statement.executeUpdate(query);
-
-            // get test id
-            query = "SELECT test_id FROM test ORDER BY test_id DESC LIMIT 1";
-
-            // execute statement
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                testId = resultSet.getInt("test_id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return testId;
-    }
-
-    public boolean postToTrackTable(int testId, int questionId, int questionNumber, int trackOrder) {
-
-        // return variable
-        boolean success = false;
-
-        try {
-
-            // query
-            String query = "INSERT INTO public.track" +
-                    "(test_id, question_id, question_number, track_order) VALUES" +
-                    "(" + testId + ", '" + questionId + "', " + questionNumber + ", " + trackOrder + ")";
-
-            // statement
-            Statement statement = connection.createStatement();
-
-            // execute statement
-            int set = statement.executeUpdate(query);
-
-            if (set > 0) success = true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return success;
     }
 
 

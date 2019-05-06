@@ -89,7 +89,7 @@ public class FormItemComponent extends VerticalLayout {
         }
     }
 
-    public String getValueOfComponent() {
+    public String getStringValueOfComponent() {
 
         // return String
         String ret = null;
@@ -114,7 +114,7 @@ public class FormItemComponent extends VerticalLayout {
         return ret;
     }
 
-    public int getValeOfComponent() {
+    public int getIntValueOfComponent() {
 
         // return int
         int ret = 0;
