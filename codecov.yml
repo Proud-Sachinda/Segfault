@@ -6,6 +6,7 @@ ignore:
   - "**/*.java"         # glob accepted
   - "[a-z]+/_.*"  # regexp accepted
   - "**/*View*/**/*"
+  - "**/*Component*"
 
 codecov:
   notify:
