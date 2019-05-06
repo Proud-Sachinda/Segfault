@@ -91,11 +91,10 @@ class QuestionServerTest {
     @Test
     void getQuestionItems() throws Exception{
 
-        ArrayList<QuestionItem> questions = new ArrayList<>();
-       /* Mockito.when(connection.createStatement()).thenReturn(statement);
-        Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);*/
-//        Mockito.verify(connection, Mockito.times(1)).createStatement();
-       // Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        qvs = new QuestionServer(connection);
+        ArrayList<QuestionItem> questions = qvs.getQuestionItems();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         //postToQuestionTable(question);
         qvs = new QuestionServer(connection);
         Assert.assertNotNull(questions);
