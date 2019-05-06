@@ -106,8 +106,9 @@ public class ExportView extends HorizontalLayout implements View {
                     Q.add(qbody);
                 System.out.println(qbody);
                 }
+
                 //CreatePDF(Q);
-                Notification.show(" File saved in C:// Users// Public");
+                //Notification.show(" File saved in C:// Users// Public");
 
 
             }
@@ -118,7 +119,16 @@ public class ExportView extends HorizontalLayout implements View {
 
         //add components under each respective layout
         coursecode.addComponents(lblcoursecode,txtcoursecode);
-
+        txtcoursecode.setRequiredIndicatorVisible(true);
+        txttopicname.setRequiredIndicatorVisible(true);
+        txtdate.setRequiredIndicatorVisible(true);
+        txtyos.setRequiredIndicatorVisible(true);
+        txtdegree.setRequiredIndicatorVisible(true);
+        txtfaculties.setRequiredIndicatorVisible(true);
+        txtinternalexaminer.setRequiredIndicatorVisible(true);
+        txtexternalexaminer.setRequiredIndicatorVisible(true);
+        txtmark.setRequiredIndicatorVisible(true);
+        txttime.setRequiredIndicatorVisible(true);
         topic.addComponents(lbltopicname,txttopicname);
         date.addComponents(lbldate,txtdate);
         yos.addComponents(lblyos,txtyos);
