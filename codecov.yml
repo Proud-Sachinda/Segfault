@@ -1,5 +1,6 @@
 ignore:
   - "src/main/java/com"  # ignore folders and all its contents
+  - "src/main/java/com/Client/*.java"
   - "*.java"       # wildcards accepted
   - "**/*.java"         # glob accepted
   - "[a-z]+/_.*"  # regexp accepted
