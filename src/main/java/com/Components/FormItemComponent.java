@@ -47,7 +47,49 @@ public class FormItemComponent extends VerticalLayout {
         setUpDifficultySlider();
     }
 
-    public String getValueOfComponent() {
+    public void setValueOfComponent(String value) {
+
+        //
+        if (this.componentType.matches(ComponentType.TEXT_AREA)) {
+
+            // set temporary variable
+            TextArea tmp = (TextArea) this.component;
+
+            // set value
+            tmp.setValue(value);
+        }
+        else if (this.componentType.matches(ComponentType.TEXT_FIELD)) {
+
+            // set temporary variable
+            TextField tmp = (TextField) this.component;
+
+            // set string
+            tmp.setValue(value);
+        }
+    }
+
+    public void setValueOfComponent(double value) {
+
+        //
+        if (this.componentType.matches(ComponentType.SLIDER)) {
+
+            // set temporary variable
+            Slider tmp = (Slider) this.component;
+
+            // set value
+            tmp.setValue(value);
+        }
+        else if (this.componentType.matches(ComponentType.NUMBER_FIELD)) {
+
+            // set temporary variable
+            NumberField tmp = (NumberField) this.component;
+
+            // set value
+            tmp.setValue(value);
+        }
+    }
+
+    public String getStringValueOfComponent() {
 
         // return String
         String ret = null;
@@ -72,7 +114,7 @@ public class FormItemComponent extends VerticalLayout {
         return ret;
     }
 
-    public int getValeOfComponent() {
+    public int getIntValueOfComponent() {
 
         // return int
         int ret = 0;

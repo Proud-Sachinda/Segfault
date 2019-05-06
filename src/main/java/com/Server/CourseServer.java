@@ -14,11 +14,11 @@ public class CourseServer {
     CourseItem course = new CourseItem();
 
 
-    public CourseServer(Connection connection){
-        this.connection = connection;
-    }
+    public ArrayList<CourseItem> getCourseItems() {
 
-    public ArrayList<CourseItem> get(){
+        // course items
+        ArrayList<CourseItem> courseItems = new ArrayList<>();
+
         try {
 
             // get database variables
@@ -29,30 +29,29 @@ public class CourseServer {
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
+            while(set.next()) {
+                // CourseItem class variable
+                CourseItem item = new CourseItem();
 
-            while(set.next()){
+                // set variables
+                item.setUpCourseItem(set);
 
-                //NativeSelect<Course> courseNativeSelect = new NativeSelect<>("Course");
-                CourseItem course = new CourseItem();
-
-
-                course.setCourseName(set.getString("course_name"));
-                course.setCourseCode(set.getString("course_code"));
-
-
-                courses.add(course);
-                //System.out.println(course.getCourseCode());
+                // add to array list
+                courseItems.add(item);
             }
 
-
-    }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-            return this.courses;
+        return courseItems;
+    }
 
-}
+    public CourseServer(Connection connection){
+        this.connection = connection;
+    }
+
+
 
 
     public boolean ShowCourse(CourseItem c){
@@ -148,25 +147,6 @@ public class CourseServer {
         return this.course;
     }
 
-    public static class Course{
-
-        public String CourseName;
-        public  String CourseCode;
-
-        public String getCourseName(){ return  CourseName;}
-        public  String getCourseCode(){ return  CourseCode;}
-
-        public void setCourseName(String CourseName){
-            this.CourseName = CourseName;
-        }
-
-        public void setCourseCode(String CourseCode){
-            this.CourseCode = CourseCode;
-        }
-
-
-
-    }
 }
 
 
