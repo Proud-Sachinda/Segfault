@@ -79,17 +79,13 @@ class CourseServerTest {
     }
 
     @Test
-    void PostCoursefalse() throws Exception{
-        CourseItem courseItem1 = new CourseItem();
-       // Assert.assertFalse(cs.PostCourse(courseItem1));
-    }
-    @Test
     void getCourseItemByQuestionId() throws Exception{
 
         cs = new CourseServer(connection);
-        cs.getCourseItemByQuestionId(courseItem.getCourseId());
+        CourseItem ci = cs.getCourseItemByQuestionId(courseItem.getCourseId());
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
+        Assert.assertNotNull(ci);
     }
 
     @Test
