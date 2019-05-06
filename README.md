@@ -11,7 +11,6 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=alert_status)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
 
 qbank
