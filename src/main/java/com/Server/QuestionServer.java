@@ -82,28 +82,6 @@ public class QuestionServer {
         return item;
     }
 
-    private String getLectureId() {
-
-        // return string
-        String query = "SELECT * FROM public.lecturer ORDER BY lecturer_id DESC LIMIT 1";
-
-        try {
-            // create statement
-            Statement statement = connection.createStatement();
-
-            // execute statement
-            ResultSet resultSet = statement.executeQuery(query);
-
-            while (resultSet.next()) {
-                query = resultSet.getString("lecturer_id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return query;
-    }
-
 
     // -------------------------------- POST METHODS (INSERT)
     public int postToQuestionTable(QuestionItem item) {
