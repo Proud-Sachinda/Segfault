@@ -10,6 +10,7 @@ import com.MyTheme;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
 import com.Server.QuestionServer;
+import com.Server.TagServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.MouseEvents;
@@ -39,6 +40,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     protected final String export = "export";
 
     // servers
+    private TagServer tagServer;
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
@@ -91,6 +93,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         this.navigator = navigator;
 
         // set up question server
+        tagServer = new TagServer(connection);
         courseServer = new CourseServer(connection);
         questionServer = new QuestionServer(connection);
 
@@ -558,7 +561,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 if (questionServer.postToQuestionTable(questionItem) > 0) {
 
                     // also post tags
-                    questionServer.postToTagTable(tags);
+                    tagServer.postToTagTable(tags);
 
                     // set variable for notification
                     VaadinService.getCurrentRequest().setAttribute("question-post", true);

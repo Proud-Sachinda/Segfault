@@ -6,6 +6,7 @@ import com.Objects.CourseItem;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
 import com.Server.QuestionServer;
+import com.Server.TagServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
@@ -63,10 +64,11 @@ public class QuestionItemComponent extends VerticalLayout {
     private Image trash = new Image(null, trashResource);
 
     // servers
+    private TagServer tagServer;
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
-    public QuestionItemComponent(QuestionServer questionServer, CourseServer courseServer, Navigator navigator) {
+    public QuestionItemComponent(QuestionServer questionServer, CourseServer courseServer, TagServer tagServer, Navigator navigator) {
 
         // initialise attributes
         this.questionItem = new QuestionItem();
@@ -75,6 +77,7 @@ public class QuestionItemComponent extends VerticalLayout {
         this.navigator = navigator;
 
         // initialise servers
+        this.tagServer = tagServer;
         this.courseServer = courseServer;
         this.questionServer = questionServer;
     }
@@ -168,7 +171,7 @@ public class QuestionItemComponent extends VerticalLayout {
         Label subject = new Label();
         subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
         shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
-        TagItemsComponent tags = new TagItemsComponent(questionServer, basePath, questionItem.getQuestionId());
+        TagItemsComponent tags = new TagItemsComponent(tagServer, basePath, questionItem.getQuestionId());
         thirdRow.addComponents(courseCode, subject, tags);
         thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
         setUpMarksLabel();

@@ -3,6 +3,7 @@ package com.Components;
 import com.MyTheme;
 import com.Objects.TagItem;
 import com.Server.QuestionServer;
+import com.Server.TagServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.FileResource;
@@ -17,9 +18,6 @@ public class TagItemsComponent extends HorizontalLayout {
     // attribute
     private int question_id;
 
-    // question server
-    private QuestionServer questionServer;
-
     // base path
     private String basePath;
 
@@ -33,7 +31,6 @@ public class TagItemsComponent extends HorizontalLayout {
 
         // set attribute
         this.basePath = basePath;
-        this.questionServer = questionServer;
 
         // tags label
         // components
@@ -75,14 +72,13 @@ public class TagItemsComponent extends HorizontalLayout {
         setComponentAlignment(root, Alignment.MIDDLE_LEFT);
     }
 
-    TagItemsComponent (QuestionServer questionServer, String basePath, int question_id) {
+    TagItemsComponent (TagServer tagServer, String basePath, int question_id) {
 
         // set attribute
         this.basePath = basePath;
-        this.questionServer = questionServer;
 
         // populate array
-        ArrayList<TagItem> tagItems = questionServer.getTags(question_id);
+        ArrayList<TagItem> tagItems = tagServer.getTags(question_id);
 
         // check for nullness
         if (tagItems != null) {
