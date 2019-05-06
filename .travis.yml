@@ -12,8 +12,6 @@ install: true
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
 
-sonar.coverage.exclusions = "src/main/java/Clients"
-sonar.coverage.exclusions = "src/main/java/Components"
 
 addons:
   sonarcloud:
@@ -36,5 +34,3 @@ cache:
 after_success:
   - "mvn cobertura:cobertura"
   - bash <(curl -s https://codecov.io/bash)
-
-
