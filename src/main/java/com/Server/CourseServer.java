@@ -1,19 +1,17 @@
 package com.Server;
 
+import com.Objects.CourseItem;
+
 import java.sql.*;
 import java.util.ArrayList;
-
-import com.Objects.CourseItem;
-import com.vaadin.ui.NativeSelect;
 
 public class CourseServer {
 
     private Connection connection;
-    private ArrayList<Course> courses = new ArrayList<>();
+    ArrayList<CourseItem> courses = new ArrayList<>();
 
-    private Course course = new Course();
+    CourseItem course = new CourseItem();
 
-    // -------------------------------- GET METHODS (SELECT)
 
     public ArrayList<CourseItem> getCourses() {
 
@@ -52,7 +50,7 @@ public class CourseServer {
         this.connection = connection;
     }
 
-    public ArrayList<Course> get(){
+    public ArrayList<CourseItem> get(){
         try {
 
             // get database variables
@@ -67,7 +65,7 @@ public class CourseServer {
             while(set.next()){
 
                 //NativeSelect<Course> courseNativeSelect = new NativeSelect<>("Course");
-                Course course = new Course();
+                CourseItem course = new CourseItem();
 
 
                 course.setCourseName(set.getString("course_name"));
@@ -88,7 +86,8 @@ public class CourseServer {
 
 }
 
-    public boolean ShowCourse(Course c){
+
+    public boolean ShowCourse(CourseItem c){
         String coursename = c.getCourseName();
         String coursecode = c.getCourseCode();
 
@@ -109,6 +108,7 @@ public class CourseServer {
 
     }
 
+    //public boolean PostCourse(CourseItem c){
     public CourseItem getCourseItemByQuestionId(int questionId) {
 
         // create return course item
@@ -152,7 +152,7 @@ public class CourseServer {
         return item;
     }
 
-    public boolean PostCourse(Course c){
+    public boolean PostCourse(CourseItem c){
         String coursename = c.getCourseName();
         String coursecode = c.getCourseCode();
 
@@ -174,52 +174,12 @@ public class CourseServer {
 
         }
 
-    public boolean PostCourse2(Course g){
-        String coursename1 = g.getCourseName();
-        String coursecode1 = g.getCourseCode();
 
-        try{
-            String query = "INSERT INTO public.course(course_name, course_code) VALUES (?,?)";
-
-            PreparedStatement ps = connection.prepareStatement(query);
-
-            ps.setString(1,coursename1);
-            ps.setString(2,coursecode1);
-
-            int set2 = ps.executeUpdate();
-
-            return set2 > 0;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-
-    }
-
-    public Course getCourse(){
+    public CourseItem getCourse(){
 
         return this.course;
     }
 
-    public static class Course{
-
-        public String CourseName;
-        public  String CourseCode;
-
-        public String getCourseName(){ return  CourseName;}
-        public  String getCourseCode(){ return  CourseCode;}
-
-        public void setCourseName(String CourseName){
-            this.CourseName = CourseName;
-        }
-
-        public void setCourseCode(String CourseCode){
-            this.CourseCode = CourseCode;
-        }
-
-
-
-    }
 }
 
 
