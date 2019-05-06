@@ -11,13 +11,7 @@ install: true
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
-ignore:
-  - "src/main/java/com"  # ignore folders and all its contents
-  - "src/main/java/com/Client/*.java"
-  - "src/main/java/com/Components/.*"
-  - "*.java"       # wildcards accepted
-  - "**/*.java"         # glob accepted
-  - "[a-z]+/_.*"  # regexp accepted
+
 
 addons:
   sonarcloud:
@@ -40,5 +34,3 @@ cache:
 after_success:
   - "mvn cobertura:cobertura"
   - bash <(curl -s https://codecov.io/bash)
-
-
