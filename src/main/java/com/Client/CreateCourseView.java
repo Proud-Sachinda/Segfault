@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static javax.print.attribute.standard.MediaSize.Engineering.C;
+import static org.postgresql.jdbc2.EscapedFunctions.INSERT;
 
 public class CreateCourseView extends HorizontalLayout implements View {
 
@@ -96,57 +97,24 @@ public class CreateCourseView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
 
-                CourseViewServer courseServer = new CourseViewServer(connection);
-                ArrayList<CourseItem> q = courseServer.getCourses();
+               //// CourseViewServer courseServer = new CourseViewServer(connection);
+               // ArrayList<CourseItem> q = courseServer.getCourses();
 
 
-                CourseItemComponent blah = new CourseItemComponent(courseServer, connection);
-                blah.setUpSeeMoreComponent();
-                V1.addComponent(blah);
+               // CourseItemComponent blah = new CourseItemComponent(courseServer, connection);
+              //  blah.setUpSeeMoreComponent();
+              //  V1.addComponent(blah);
 
+                CourseServer courseServer =  new CourseServer(connection);
+                CourseServer.Course q = (CourseServer.Course) courseServer.getCourse();
 
-                //public ArrayList<CourseItem> getCourses() {
-
-                    // course items
-                    ArrayList<CourseItem> courseItems = new ArrayList<>();
-
-                    try {
-
-                        // get database variables
-                        Statement statement = connection.createStatement();
-
-                        // query
-                        String query = "SELECT * FROM public.course";
-
-                        // execute statement
-                        ResultSet set = statement.executeQuery(query);
-                        while(set.next()) {
-                            // CourseItem class variable
-                            CourseItem item = new CourseItem();
-
-                            // set variables
-                           // item.setCourseId(set.getInt("course_id"));
-                            item.setCourseName(set.getString("course_name"));
-                            item.setCourseCode(set.getString("course_code"));
-
-                            // add to array list
-                            courseItems.add(item);
-
-                            for (int i =0; i<courseItems.size(); i++){
-                                //System.out.println(courseItems.get(i).getCourseName());
-
-                            }
-                        }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                    //return courseItems;
+                q.setCourseName(addcourse.getValue());
+                q.setCourseCode(coursecode.getValue());
 
 
 
-                if (courseServer.PostCourse(q.get(0))) {
+
+                if (courseServer.PostCourse(q)) {
                     Notification.show("Success");
                     navigator.navigateTo(course);
                 }

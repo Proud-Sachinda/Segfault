@@ -123,8 +123,7 @@ public class CourseItemComponent extends VerticalLayout {
         // third row ------------------------------------------------------
         // set up subject label, tags and question marks
         Label courseCode = new Label(getCourseCode());
-        courseCode.setValue(courseN);
-        courseCode.setValue(courseC);
+        courseCode.setValue(courseN + " " + courseC);
         Label subject = new Label(getCourseName());
         thirdRow.addComponents(courseCode, subject);
 
@@ -154,7 +153,8 @@ public class CourseItemComponent extends VerticalLayout {
         seeMoreComponent.addComponentsAndExpand(answerRow);
 
         //System.out.println(answerRow.getComponentCount());
-        System.out.println();
+        System.out.println(courseN);
+        System.out.println(courseC);
 
     }
 
