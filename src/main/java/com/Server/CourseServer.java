@@ -50,40 +50,7 @@ public class CourseServer {
         this.connection = connection;
     }
 
-    public ArrayList<CourseItem> get(){
-        try {
 
-            // get database variables
-            Statement statement = connection.createStatement();
-
-            // query
-            String query = "SELECT * FROM public.course";
-
-            // execute statement
-            ResultSet set = statement.executeQuery(query);
-
-            while(set.next()){
-
-                CourseItem course = new CourseItem();
-
-
-                course.setCourseName(set.getString("course_name"));
-                course.setCourseCode(set.getString("course_code"));
-
-
-                courses.add(course);
-                //System.out.println(course.getCourseCode());
-            }
-
-
-    }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-            return this.courses;
-
-}
 
 
     public boolean ShowCourse(CourseItem c){

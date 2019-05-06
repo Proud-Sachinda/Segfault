@@ -119,7 +119,7 @@ class QuestionServerTest {
         qvs = new QuestionServer(connection);
         qvs.updateQuestionItem(question);
         Mockito.verify(connection, Mockito.times(1)).prepareStatement(anyString());
-        Mockito.verify(preparedStatement, Mockito.times(3)).setInt(anyInt(), anyInt());
+        Mockito.verify(preparedStatement, Mockito.times(4)).setInt(anyInt(), anyInt());
         Mockito.verify(preparedStatement, Mockito.times(2)).setString(anyInt(), anyString());
         Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
         Assert.assertTrue(qvs.updateQuestionItem(question));

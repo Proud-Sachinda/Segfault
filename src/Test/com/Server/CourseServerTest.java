@@ -1,7 +1,6 @@
 package com.Server;
 
 import com.Objects.CourseItem;
-import com.Objects.QuestionItem;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,9 +55,11 @@ class CourseServerTest {
     }
 
     @Test
-    void get() throws Exception{
+    void getCourses() throws Exception{
         cs = new CourseServer(connection);
-        ArrayList<QuestionItem> courses = new ArrayList<>();
+        ArrayList<CourseItem> courses = cs.getCourses();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Assert.assertNotNull(courses);
     }
 
@@ -69,6 +70,7 @@ class CourseServerTest {
         Mockito.verify(connection, Mockito.times(1)).prepareStatement(anyString());
         Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
     }
+
 
     @Test
     void postCourse() throws Exception{
