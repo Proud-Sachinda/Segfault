@@ -64,55 +64,5 @@ public class ExportServer {
     }
 
 
-   /* public class Track{
-        private int track_id;
-        private int question_id;
-        private int test_id;
-        private int question_number;
-        private int track_order;
-        //private String question_description;
 
-        Track() {
-
-        }
-
-        public int getTrackId() {
-            return track_id;
-        }
-
-        public int getQuestionId() {
-            return question_id;
-        }
-
-        public int getTestId() {
-            return test_id;
-        }
-
-        public int getQuestionNumber() {
-            return question_number;
-        }
-
-        public int getTrackOrder() {
-            return track_order;
-        }
-
-
-
-        public void setTrack_id(int trackid) {
-            this.track_id = trackid;
-        }
-        public void setQuestion_id(int questionId) {
-            this.question_id = questionId;
-        }
-        public void setTest_id(int testid) {
-            this.test_id = testid;
-        }
-        public void setQuestion_number(int questionnum) {
-            this.question_number = questionnum;
-        }
-        public void setTrack_order(int trackorder) {
-            this.track_order = trackorder;
-        }
-
-    }*/
 }
