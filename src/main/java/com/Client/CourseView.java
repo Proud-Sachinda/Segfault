@@ -96,7 +96,7 @@ public class CourseView extends HorizontalLayout implements View {
         for(TestItem i : Items) {
             Label labela = new Label(i.getTestDraftName());
             paperExplorer.addComponent(labela);
-            
+
         }
 
 
