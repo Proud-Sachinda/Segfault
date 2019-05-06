@@ -7,8 +7,7 @@ import com.Components.QuestionPaperItemComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
-import com.Server.CourseServer;
-import com.Server.QuestionServer;
+import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
@@ -24,7 +23,6 @@ import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -58,6 +56,9 @@ public class QuestionView extends HorizontalLayout implements View {
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     // server
+    private TagServer tagServer;
+    private TestServer testServer;
+    private TrackServer trackServer;
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
@@ -81,10 +82,6 @@ public class QuestionView extends HorizontalLayout implements View {
     // empty component
     private EmptyQuestionsComponent emptyQuestionsComponent = new EmptyQuestionsComponent(basePath);
 
-    QuestionView() {
-        // for unit tests
-    }
-
     public QuestionView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
@@ -94,6 +91,7 @@ public class QuestionView extends HorizontalLayout implements View {
         this.connection = connection;
 
         // set up servers
+        tagServer = new TagServer(this.connection);
         courseServer = new CourseServer(this.connection);
         questionServer = new QuestionServer(this.connection);
 
@@ -166,7 +164,6 @@ public class QuestionView extends HorizontalLayout implements View {
 
     }
 
-    @SuppressWarnings("Duplicates")
     private void setUpPapers() {
 
         // set up draft heading
@@ -319,11 +316,8 @@ public class QuestionView extends HorizontalLayout implements View {
             for (QuestionItem q : questionArrayList) {
 
                 // declare new question item component
-                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionServer, courseServer);
-                // set variables
-                // questionItemComponent.getCourseItem().setCourseId(q.getCourseId());
-                // questionItemComponent.getCourseItem().setCourseCode(q.getCourseId());
-                // questionItemComponent.getCourseItem().setCourseName(q.getCourseId());
+                QuestionItemComponent questionItemComponent =
+                        new QuestionItemComponent(questionServer, courseServer, tagServer, navigator);
                 questionItemComponent.getQuestionItem().setQuestionId(q.getQuestionId());
                 questionItemComponent.getQuestionItem().setQuestionAns(q.getQuestionAns());
                 questionItemComponent.getQuestionItem().setQuestionBody(q.getQuestionBody());
@@ -432,7 +426,7 @@ public class QuestionView extends HorizontalLayout implements View {
             textField.setPlaceholder("Enter draft name");
 
             // course subjects
-            CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
+            CourseComboBox comboBox = new CourseComboBox(courseServer.getCourseItems());
             comboBox.setWidth(100.0f, Unit.PERCENTAGE);
             comboBox.addComboBoxValueChangeListener();
 
@@ -452,7 +446,7 @@ public class QuestionView extends HorizontalLayout implements View {
                     draftName = s.concat(textFieldValue.substring(1));
 
                     // take to database
-                    testId = questionServer.postToTestTable(true, draftName, comboBox.getCourseId());
+                    testId = testServer.postToTestTable(true, draftName, comboBox.getCourseId());
                     if (!(testId > 0))
                         Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
@@ -643,7 +637,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
                     // send to track table
                     int bulletIncrementValue = getQuestionPaperItemComponentValue(findIndexOfQuestionPaperItemComponent(qId));
-                    if (!questionServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
+                    if (!trackServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
                         Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
                 }
             });
@@ -698,10 +692,5 @@ public class QuestionView extends HorizontalLayout implements View {
             }
             return index;
         }
-    }
-
-    public int myfunction(int num1,int num2){
-
-        return num1+num2;
     }
 }

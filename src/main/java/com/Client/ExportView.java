@@ -2,26 +2,15 @@ package com.Client;
 
 import com.Dashboard;
 import com.Objects.QuestionItem;
+import com.Objects.TrackItem;
+import com.Server.ExportServer;
 import com.Server.QuestionServer;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.property.TextAlignment;
-
-import com.itextpdf.layout.property.VerticalAlignment;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.*;
 import com.vaadin.data.Binder;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
-import com.Server.ExportServer;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -109,7 +98,7 @@ public class ExportView extends HorizontalLayout implements View {
                // ExportServer trackServer = new ExportServer(connection);
                 System.out.println("are you coming");
                 ArrayList<String> Q = new ArrayList<String>();
-                ArrayList<ExportServer.Track> tracks= retreivetracks();
+                ArrayList<TrackItem> tracks= retreivetracks();
                 for(int i=0;i<tracks.size();i++){
 
                 QuestionItem q = retreivequestion(tracks.get(i));
@@ -117,8 +106,9 @@ public class ExportView extends HorizontalLayout implements View {
                     Q.add(qbody);
                 System.out.println(qbody);
                 }
+
                 //CreatePDF(Q);
-                Notification.show(" File saved in C:// Users// Public");
+                //Notification.show(" File saved in C:// Users// Public");
 
 
             }
@@ -129,7 +119,16 @@ public class ExportView extends HorizontalLayout implements View {
 
         //add components under each respective layout
         coursecode.addComponents(lblcoursecode,txtcoursecode);
-
+        txtcoursecode.setRequiredIndicatorVisible(true);
+        txttopicname.setRequiredIndicatorVisible(true);
+        txtdate.setRequiredIndicatorVisible(true);
+        txtyos.setRequiredIndicatorVisible(true);
+        txtdegree.setRequiredIndicatorVisible(true);
+        txtfaculties.setRequiredIndicatorVisible(true);
+        txtinternalexaminer.setRequiredIndicatorVisible(true);
+        txtexternalexaminer.setRequiredIndicatorVisible(true);
+        txtmark.setRequiredIndicatorVisible(true);
+        txttime.setRequiredIndicatorVisible(true);
         topic.addComponents(lbltopicname,txttopicname);
         date.addComponents(lbldate,txtdate);
         yos.addComponents(lblyos,txtyos);
@@ -150,15 +149,15 @@ public class ExportView extends HorizontalLayout implements View {
     }
 
     //methodfor retrieving question
-    public QuestionItem retreivequestion(ExportServer.Track t){
+    public QuestionItem retreivequestion(TrackItem t){
         int id=t.getQuestionId();
         QuestionServer questionServer = new QuestionServer(connection);
         return questionServer.getQuestionItemById(id);
     }
     //method for retreiving tracks
-    public ArrayList<ExportServer.Track> retreivetracks(){
+    public ArrayList<TrackItem> retreivetracks(){
         ExportServer exportServer = new ExportServer(connection);
-        ArrayList<ExportServer.Track> tracks=exportServer.get(29);
+        ArrayList<TrackItem> tracks=exportServer.get(29);
         System.out.println(tracks);
         System.out.println("im here");
         return tracks;

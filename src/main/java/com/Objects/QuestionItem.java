@@ -17,7 +17,7 @@ public class QuestionItem {
     private int question_variance;
     private int question_difficulty;
     private Date question_last_used;
-    private String question_body_full;
+    private boolean question_is_variant;
     private String question_mcq_choices;
     private int question_written_no_of_lines;
     private String question_practical_sample_input;
@@ -38,6 +38,7 @@ public class QuestionItem {
             this.question_ans = set.getString("question_ans");
             this.question_difficulty = set.getInt("question_difficulty");
             this.question_date = set.getDate("question_date");
+            this.question_is_variant = set.getBoolean("question_is_variant");
             this.question_last_used = set.getDate("question_last_used");
             this.question_variance = set.getInt("question_variance");
             this.question_mark = set.getInt("question_mark");
@@ -83,12 +84,16 @@ public class QuestionItem {
         return question_last_used;
     }
 
-    int getQuestionVariance() {
+    public int getQuestionVariance() {
         return question_variance;
     }
 
     public int getQuestionMark() {
         return question_mark;
+    }
+
+    public boolean getQuestionIsVariant() {
+        return question_is_variant;
     }
 
     public void setLecturerId(String lecture_id) {
@@ -100,18 +105,13 @@ public class QuestionItem {
     }
 
     public void setQuestionBody(String question_body) {
-        if (question_body.length() > 170) this.question_body = question_body.substring(0, 170) + " ...";
-        else this.question_body = question_body;
-
-        setQuestionBodyFull(question_body);
+        this.question_body = question_body;
     }
 
-    public String getQuestionBodyFull() {
-        return this.question_body_full;
-    }
+    public String getShortQuestionBody() {
 
-    public void setQuestionBodyFull(String question_body_full) {
-        this.question_body_full = question_body_full;
+        if (question_body.length() > 170) return question_body.substring(0, 170) + " ...";
+        else return question_body;
     }
 
     public void setQuestionAns(String question_ans) {
@@ -132,6 +132,10 @@ public class QuestionItem {
 
     public void setQuestionVariance(int question_variance) {
         this.question_variance = question_variance;
+    }
+
+    public void setQuestionIsVariant(boolean question_is_variant) {
+        this.question_is_variant = question_is_variant;
     }
 
     public void setQuestionMark(int question_mark) {

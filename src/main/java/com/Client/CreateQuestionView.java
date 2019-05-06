@@ -8,7 +8,9 @@ import com.Components.TagItemsComponent;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.QuestionItem;
+import com.Server.CourseServer;
 import com.Server.QuestionServer;
+import com.Server.TagServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.MouseEvents;
@@ -37,7 +39,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     protected final String course = "course";
     protected final String export = "export";
 
-    // question server
+    // servers
+    private TagServer tagServer;
+    private CourseServer courseServer;
     private QuestionServer questionServer;
 
     // layouts for split panel
@@ -89,6 +93,8 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         this.navigator = navigator;
 
         // set up question server
+        tagServer = new TagServer(connection);
+        courseServer = new CourseServer(connection);
         questionServer = new QuestionServer(connection);
 
         // declare form item components array
@@ -139,6 +145,21 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // set page title
         UI.getCurrent().getPage().setTitle("Dashboard - Create question");
+
+        // check for existing question items
+        QuestionItem item = (QuestionItem) VaadinService.getCurrentRequest().getAttribute("question-create");
+        if (item != null) {
+
+            // set question item
+            questionItem = item;
+
+            // set variance to true
+            questionItem.setQuestionIsVariant(true);
+            questionItem.setQuestionVariance(item.getQuestionId());
+
+            // set up main form area components
+            setUpMainQuestionFormAreaWithQuestionItem();
+        }
     }
 
     private void setUpCreateQuestionHeader() {
@@ -182,7 +203,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         mainQuestionFormArea.addComponent(courseAndMarks);
 
         // add course combo box drop down
-        CourseComboBox comboBox = new CourseComboBox(questionServer.getCourses());
+        CourseComboBox comboBox = new CourseComboBox(courseServer.getCourseItems());
         comboBox.setCaption(null);
         comboBox.addComboBoxValueChangeListener();
         comboBoxItem = new FormItemComponent("Subject", comboBox,
@@ -222,6 +243,15 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         // add everything to form area
         mainQuestionFormArea.addComponents(latexRoot, courseAndMarks,
                 questionBodyItem, questionDifficultyItem, tags);
+    }
+
+    private void setUpMainQuestionFormAreaWithQuestionItem() {
+
+        // for
+        for (FormItemComponent i : formItemComponents) {
+            System.out.println(i.getStringValueOfComponent());
+            System.out.println(i.getIntValueOfComponent());
+        }
     }
 
     private void setUpOtherQuestionFormArea() {
@@ -497,15 +527,15 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
                 // set up core variables
                 // questionItem.setCourseId(comboBoxItem.getValeOfComponent());
-                questionItem.setQuestionBody(questionBodyItem.getValueOfComponent());
-                questionItem.setQuestionMark(questionMarksItem.getValeOfComponent());
-                questionItem.setQuestionDifficulty(questionDifficultyItem.getValeOfComponent());
+                questionItem.setQuestionBody(questionBodyItem.getStringValueOfComponent());
+                questionItem.setQuestionMark(questionMarksItem.getIntValueOfComponent());
+                questionItem.setQuestionDifficulty(questionDifficultyItem.getIntValueOfComponent());
 
                 // set up specialised variables
                 switch (questionItem.getQuestionType()) {
                     case "written":
                         // get answer and number of lines
-                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
+                        questionItem.setQuestionAns(questionAnswerItem.getStringValueOfComponent());
                         break;
                     case "mcq":
                         // choices
@@ -525,9 +555,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                         break;
                     case "practical":
                         // get sample input/output and answer
-                        questionItem.setQuestionAns(questionAnswerItem.getValueOfComponent());
-                        questionItem.setQuestionPracticalSampleInput(questionSampleInputItem.getValueOfComponent());
-                        questionItem.setQuestionPracticalSampleOutput(questionSampleOutputItem.getValueOfComponent());
+                        questionItem.setQuestionAns(questionAnswerItem.getStringValueOfComponent());
+                        questionItem.setQuestionPracticalSampleInput(questionSampleInputItem.getStringValueOfComponent());
+                        questionItem.setQuestionPracticalSampleOutput(questionSampleOutputItem.getStringValueOfComponent());
                         break;
                 }
 
@@ -535,7 +565,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 if (questionServer.postToQuestionTable(questionItem) > 0) {
 
                     // also post tags
-                    questionServer.postToTagTable(tags);
+                    tagServer.postToTagTable(tags);
 
                     // set variable for notification
                     VaadinService.getCurrentRequest().setAttribute("question-post", true);
