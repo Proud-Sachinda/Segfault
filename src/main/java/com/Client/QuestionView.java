@@ -9,6 +9,7 @@ import com.MyTheme;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
 import com.Server.QuestionServer;
+import com.Server.TagServer;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
@@ -57,6 +58,7 @@ public class QuestionView extends HorizontalLayout implements View {
     private final ArrayList<Button> buttons = new ArrayList<>();
 
     // server
+    private TagServer tagServer;
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
@@ -89,6 +91,7 @@ public class QuestionView extends HorizontalLayout implements View {
         this.connection = connection;
 
         // set up servers
+        tagServer = new TagServer(this.connection);
         courseServer = new CourseServer(this.connection);
         questionServer = new QuestionServer(this.connection);
 
@@ -313,7 +316,8 @@ public class QuestionView extends HorizontalLayout implements View {
             for (QuestionItem q : questionArrayList) {
 
                 // declare new question item component
-                QuestionItemComponent questionItemComponent = new QuestionItemComponent(questionServer, courseServer, navigator);
+                QuestionItemComponent questionItemComponent =
+                        new QuestionItemComponent(questionServer, courseServer, tagServer, navigator);
                 questionItemComponent.getQuestionItem().setQuestionId(q.getQuestionId());
                 questionItemComponent.getQuestionItem().setQuestionAns(q.getQuestionAns());
                 questionItemComponent.getQuestionItem().setQuestionBody(q.getQuestionBody());
