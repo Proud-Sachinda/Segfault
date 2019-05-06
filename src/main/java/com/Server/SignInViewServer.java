@@ -1,7 +1,5 @@
 package com.Server;
 
-import com.Client.SignInView;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +33,8 @@ public class SignInViewServer {
 
               while(set.next()){
                 //  username.setLecturerId(set.getString("lecturer_id"));
-                  sign = username.equals(set.getString("lecturer_id"));
+                  String lid = set.getString("lecturer_id");
+                  sign = username.equals(lid);
 
               }
 
