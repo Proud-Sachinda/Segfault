@@ -1,6 +1,6 @@
 ignore:
-  - "src/main/java/com/Components"  # ignore folders and all its contents
-  - "src/main/java/com/Client/*.java"
+  - "src/main/java/com/Components/*Component*.java"  # ignore folders and all its contents
+  - "src/main/java/com/Client/*View*.java"
   - "src/main/java/com/Components/.*"
   - "*.java"       # wildcards accepted
   - "**/*.java"         # glob accepted
