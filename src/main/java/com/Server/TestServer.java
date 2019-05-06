@@ -56,7 +56,7 @@ public class TestServer {
     }
 
         public ArrayList getTestItems(){
-             ArrayList<TestItem> testItems = new ArrayList<TestItem>();
+             ArrayList<TestItem> testItems = new ArrayList<>();
 
             try {
 
@@ -73,7 +73,7 @@ public class TestServer {
                     TestItem item = new TestItem();
 
                     // set variables
-                    //item.setUpTestItem(set);
+                    item.setUpTestItem(set);
 
                     // add to array list
                     testItems.add(item);

@@ -1,5 +1,8 @@
 package com.Objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class TestItem {
 
     // attributes
@@ -9,6 +12,23 @@ public class TestItem {
     private String test_draft_name;
     private int course_id;
     private int lecture_id;
+
+    public void setUpTestItem(ResultSet set) {
+
+        try {
+
+            // set up variables
+            this.test_id = set.getInt("test_id");
+            this.test_is_exam = set.getBoolean("test_is_exam");
+            this.test_is_draft= set.getBoolean("test_is_draft");
+            this.test_draft_name = set.getString("test_draft_name");
+            this.course_id = set.getInt("course_id");
+            this.lecture_id = set.getInt("lecture_id");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getTestId() {
         return test_id;

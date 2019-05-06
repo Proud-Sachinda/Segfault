@@ -90,7 +90,14 @@ public class CourseView extends HorizontalLayout implements View {
 
     private void setUpCourseList() {
 
-      //  ArrayList<TestItem> testItem = new TestServer(connection);
+        TestServer testServer = new TestServer(connection);
+        ArrayList<TestItem> Items = testServer.getTestItems();
+
+        for(TestItem i : Items) {
+            Label labela = new Label(i.getTestDraftName());
+            paperExplorer.addComponent(labela);
+            
+        }
 
 
         content.addComponentsAndExpand(paperExplorer);
