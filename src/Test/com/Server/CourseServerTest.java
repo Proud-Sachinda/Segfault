@@ -55,7 +55,7 @@ class CourseServerTest {
     }
 
     @Test
-    void getCourses() throws Exception{
+    void getCourseItems() throws Exception{
         cs = new CourseServer(connection);
         ArrayList<CourseItem> courses = cs.getCourseItems();
         Mockito.verify(connection, Mockito.times(1)).createStatement();
