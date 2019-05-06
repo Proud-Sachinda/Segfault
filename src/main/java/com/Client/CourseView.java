@@ -3,7 +3,9 @@ package com.Client;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.CourseItem;
+import com.Objects.TestItem;
 import com.Server.CourseServer;
+import com.Server.TestServer;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -88,8 +90,13 @@ public class CourseView extends HorizontalLayout implements View {
 
     private void setUpCourseList() {
 
+      //  ArrayList<TestItem> testItem = new TestServer(connection);
+
+
         content.addComponentsAndExpand(paperExplorer);
         paperExplorer.setHeightUndefined();
+
+
 
         sampleinput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
         sampleoutput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
@@ -150,7 +157,7 @@ public class CourseView extends HorizontalLayout implements View {
 
                 HorizontalLayout horizontal = new HorizontalLayout();
                 horizontal.setWidth(100.0f, Unit.PERCENTAGE);
-                Label lab = new Label();
+                Label lab = new Label(courseItem.getCourseFullName());
                 lab.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
                 horizontal.addComponent(lab);
                 courseList.addComponent(horizontal);
