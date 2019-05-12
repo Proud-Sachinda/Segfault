@@ -55,6 +55,7 @@ public class CourseView extends HorizontalLayout implements View {
     private final VerticalLayout paperExplorer = new VerticalLayout();
     private final VerticalLayout courseList = new VerticalLayout();
     private final Panel courseListPanel = new Panel();
+    private final Panel testPanel =  new Panel();
     private final VerticalLayout courseListVerticalLayoutRoot = new VerticalLayout();
 
 
@@ -94,13 +95,19 @@ public class CourseView extends HorizontalLayout implements View {
         ArrayList<TestItem> Items = testServer.getTestItems();
 
         for(TestItem i : Items) {
+            VerticalLayout vet =  new VerticalLayout();
             Label labela = new Label(i.getTestDraftName());
-            paperExplorer.addComponent(labela);
-            labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-            paperExplorer.addStyleName(ValoTheme.LAYOUT_CARD);
+            vet.addComponent(labela);
+            vet.addStyleName("lol");
+            vet.setSizeFull();
+            paperExplorer.setSizeFull();
+            paperExplorer.addComponent(vet);
+           // labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
+            //labela.addStyleName("lol");
+           // paperExplorer.addStyleName("lol");
         }
 
-
+        testPanel.setContent(paperExplorer);
         content.addComponentsAndExpand(paperExplorer);
         paperExplorer.setHeightUndefined();
 
@@ -132,6 +139,7 @@ public class CourseView extends HorizontalLayout implements View {
             horizontalLayout.addComponent(label);
             courseList.addComponent(horizontalLayout);
         }
+        createcourse1.addStyleName("lizo");
 
         createcourse1.addClickListener(new Button.ClickListener() {
             @Override
@@ -142,7 +150,7 @@ public class CourseView extends HorizontalLayout implements View {
                 courseList.addComponent(wola, 2);
             }
         });
-
+        wola.addStyleName("lizo");
         wola.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
