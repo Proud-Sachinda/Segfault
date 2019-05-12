@@ -1,5 +1,18 @@
+ignore:
+  - "src/main/java/com/Components/*Component*.java"  # ignore folders and all its contents
+  - "src/main/java/com/Client/*View*.java"
+  - "src/main/java/com/Components/*.java"
+  - "*.java"       # wildcards accepted
+  - "**/*.java"         # glob accepted
+  - "[a-z]+/_.*"  # regexp accepted
+  - "**/*View*/**/*"
+  - "**/*Dashboard*"
+  - "**/*Authentication*"
+  - "**/*ComboBox*"
+  - "**/*Component*"
+
 codecov:
-  notify:
+  notify:`
     require_ci_to_pass: yes
 
 coverage:
@@ -23,20 +36,3 @@ parsers:
 comment:
   layout: "reach, diff, flags, files, footer"
   behavior: default
-require_changes: no
-
-ignore:
-  - "src/main/java/com/Components/**/*"
-  - "src/main/java/com/Client/.*"
-  - "src/main/java/com/Client/Authentication.java"
-  - "src/main/java/com/Components/*"
-  - "src/main/java/com/Client/**/*"
-  - "src/main/java/com/Client/CourseView.java"
-  - "src/main/java/com/Client/ CreateCourseView.java"
-  - "src/main/java/com/Client/CreateQuestionView.java"
-  - "src/main/java/com/Client/ExportView.java"
-  - "src/main/java/com/Components/*.java"
-#  - "path/to/folder"  # ignore folders and all its contents
-#  - "test_*.rb"       # wildcards accepted
-#  - "**/*.py"         # glob accepted
-#  - "[a-z]+/test_.*"  # regexp accepted

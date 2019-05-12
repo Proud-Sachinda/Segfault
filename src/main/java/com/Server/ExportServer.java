@@ -1,5 +1,7 @@
 package com.Server;
 
+import com.Objects.TrackItem;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -7,7 +9,7 @@ public class ExportServer {
     // connection variable
     private Connection connection;
 
-    Track tracky = new Track();
+    TrackItem tracky = new TrackItem();
 
     public ExportServer(Connection connection) {
 
@@ -15,13 +17,13 @@ public class ExportServer {
         this.connection = connection;
     }
 
-    public Track getTrack(){
+    public TrackItem getTrack(){
         return this.tracky;
     }
 
-    public ArrayList<Track> get(int testid) {
+    public ArrayList<TrackItem> get(int testid) {
         //arraylist to store  tracks
-        ArrayList<Track> tracks = new ArrayList<>();
+        ArrayList<TrackItem> tracks = new ArrayList<>();
         try{
             //int testid=0;
             // get database variables
@@ -37,14 +39,14 @@ public class ExportServer {
             while(set.next()) {
 
                 // Question class variable
-                Track track = new Track();
+                TrackItem track = new TrackItem();
 
                 // set variables
-                track.setTrack_id(set.getInt("track_id"));
-                track.setQuestion_id(set.getInt("question_id"));
-                track.setTest_id(set.getInt("test_id"));
-                track.setQuestion_number(set.getInt("question_number"));
-                track.setTrack_order(set.getInt("track_order"));
+                track.setTrackId(set.getInt("track_id"));
+                track.setQuestionId(set.getInt("question_id"));
+                track.setTestId(set.getInt("test_id"));
+                track.setQuestionNumber(set.getInt("question_number"));
+                track.setTrackOrder(set.getInt("track_order"));
 
 
                 // add to array list
@@ -62,55 +64,5 @@ public class ExportServer {
     }
 
 
-    public class Track{
-        private int track_id;
-        private int question_id;
-        private int test_id;
-        private int question_number;
-        private int track_order;
-        //private String question_description;
 
-        Track() {
-
-        }
-
-        public int getTrackId() {
-            return track_id;
-        }
-
-        public int getQuestionId() {
-            return question_id;
-        }
-
-        public int getTestId() {
-            return test_id;
-        }
-
-        public int getQuestionNumber() {
-            return question_number;
-        }
-
-        public int getTrackOrder() {
-            return track_order;
-        }
-
-
-
-        public void setTrack_id(int trackid) {
-            this.track_id = trackid;
-        }
-        public void setQuestion_id(int questionId) {
-            this.question_id = questionId;
-        }
-        public void setTest_id(int testid) {
-            this.test_id = testid;
-        }
-        public void setQuestion_number(int questionnum) {
-            this.question_number = questionnum;
-        }
-        public void setTrack_order(int trackorder) {
-            this.track_order = trackorder;
-        }
-
-    }
 }

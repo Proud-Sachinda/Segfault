@@ -216,6 +216,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // add marks number field
         NumberField questionMarksNumberField = new NumberField();
+        questionMarksNumberField.setRequiredIndicatorVisible(true);
         questionMarksItem = new FormItemComponent("Marks",
                 questionMarksNumberField, FormItemComponent.ComponentType.NUMBER_FIELD);
         questionMarksItem.setComponentWidth(196.0f, Unit.PIXELS);
@@ -227,12 +228,14 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // add question body
         TextArea questionBodyTextArea = new TextArea();
+        questionBodyTextArea.setRequiredIndicatorVisible(true);
         questionBodyItem = new FormItemComponent("Question",
                 questionBodyTextArea, FormItemComponent.ComponentType.TEXT_AREA);
         formItemComponents.add(questionBodyItem);
 
         // add question difficulty
         Slider questionDifficultySlider = new Slider();
+        questionDifficultySlider.setRequiredIndicatorVisible(true);
         questionDifficultySlider.setMin(1);
         questionDifficultySlider.setMax(5);
         questionDifficultySlider.setValue((double) 1);
@@ -284,12 +287,14 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // default question
         TextArea questionAnswerTextArea = new TextArea();
+        questionAnswerTextArea.setRequiredIndicatorVisible(true);
         questionAnswerItem = new FormItemComponent("Answer",
                 questionAnswerTextArea, FormItemComponent.ComponentType.TEXT_AREA);
         formItemComponents.add(questionAnswerItem);
 
         // add marks number field
         NumberField questionNumberOfLinesNumberField = new NumberField();
+        questionNumberOfLinesNumberField.setRequiredIndicatorVisible(true);
         questionNumberOfLinesItem = new FormItemComponent("Number of lines",
                 questionNumberOfLinesNumberField, FormItemComponent.ComponentType.NUMBER_FIELD);
         questionNumberOfLinesItem.setComponentWidth(196.0f, Unit.PIXELS);
@@ -303,6 +308,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // default question
         TextArea questionSampleInputTextArea = new TextArea();
+        questionSampleInputTextArea.setRequiredIndicatorVisible(true);
         questionSampleInputTextArea.setHeight(64.0f, Unit.PIXELS);
         questionSampleInputItem = new FormItemComponent("Sample Input",
                 questionSampleInputTextArea, FormItemComponent.ComponentType.TEXT_AREA);
