@@ -68,7 +68,8 @@ public class QuestionItemComponent extends VerticalLayout {
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
-    public QuestionItemComponent(QuestionServer questionServer, CourseServer courseServer, TagServer tagServer, Navigator navigator) {
+    public QuestionItemComponent(QuestionServer questionServer,
+                                 CourseServer courseServer, TagServer tagServer, Navigator navigator) {
 
         // initialise attributes
         this.questionItem = new QuestionItem();
@@ -101,6 +102,10 @@ public class QuestionItemComponent extends VerticalLayout {
     public CourseItem getCourseItem() { return this.courseItem; }
     public QuestionItem getQuestionItem() {
         return this.questionItem;
+    }
+
+    public void setQuestionItem(QuestionItem questionItem) {
+        this.questionItem = questionItem;
     }
 
     public QuestionItemComponent getThisQuestionItemComponent() {
