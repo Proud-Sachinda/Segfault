@@ -92,6 +92,8 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up servers
         tagServer = new TagServer(this.connection);
+        testServer = new TestServer(this.connection);
+        trackServer = new TrackServer(this.connection);
         courseServer = new CourseServer(this.connection);
         questionServer = new QuestionServer(this.connection);
 
