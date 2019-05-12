@@ -7,6 +7,7 @@ import com.Components.MultipleChoiceItemComponent;
 import com.Components.TagItemsComponent;
 import com.Dashboard;
 import com.MyTheme;
+import com.Objects.CourseItem;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
 import com.Server.QuestionServer;
@@ -64,6 +65,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private Image cancel;
     private Label mcqHeader;
     private Label mcqAnswer;
+    private MenuBar menuBar;
     private Label createQuestionLabel;
     private HorizontalLayout headerLayout;
     private HorizontalLayout footerFinish;
@@ -82,6 +84,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     private VerticalLayout replacementLayout;
 
     // question item for form submission
+    private QuestionItem update;
     private QuestionItem questionItem = new QuestionItem();
 
     // tags item component
@@ -151,6 +154,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         if (item != null) {
 
             // set question item
+            update = item;
             questionItem = item;
 
             // set variance to true
@@ -250,11 +254,15 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
     private void setUpMainQuestionFormAreaWithQuestionItem() {
 
-        // for
-        for (FormItemComponent i : formItemComponents) {
-            System.out.println(i.getStringValueOfComponent());
-            System.out.println(i.getIntValueOfComponent());
-        }
+        // course combo box
+        CourseItem courseItem = courseServer.getCourseItemByQuestionId(questionItem.getQuestionId());
+        formItemComponents.get(0).setValueOfComponent(courseItem);
+
+        // question body
+        formItemComponents.get(2).setValueOfComponent(questionItem.getShortQuestionBody());
+
+        // question difficulty
+        formItemComponents.get(3).setValueOfComponent(questionItem.getQuestionDifficulty());
     }
 
     private void setUpOtherQuestionFormArea() {
@@ -434,7 +442,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         };
 
         // create menu bar and add items
-        MenuBar menuBar = new MenuBar();
+        menuBar = new MenuBar();
         menuBar.addItem("Written", writtenQuestionCommand);
         menuBar.addItem("Multiple Choice", multipleChoiceQuestionCommand);
         menuBar.addItem("Practical", practicalQuestionCommand);
@@ -576,8 +584,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     // set variable for notification
                     VaadinService.getCurrentRequest().setAttribute("question-post", true);
 
-                    // navigate to question view
-                    navigator.navigateTo(question);
+                    if (update != null && questionServer.incrementQuestionItemVariance(update.getQuestionVariance()))
+                        // navigate to question view
+                        navigator.navigateTo(question);
+                    else {
+                        Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
+                    }
                 }
                 else {
                     Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);

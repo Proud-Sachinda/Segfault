@@ -92,6 +92,8 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up servers
         tagServer = new TagServer(this.connection);
+        testServer = new TestServer(this.connection);
+        trackServer = new TrackServer(this.connection);
         courseServer = new CourseServer(this.connection);
         questionServer = new QuestionServer(this.connection);
 
@@ -318,13 +320,7 @@ public class QuestionView extends HorizontalLayout implements View {
                 // declare new question item component
                 QuestionItemComponent questionItemComponent =
                         new QuestionItemComponent(questionServer, courseServer, tagServer, navigator);
-                questionItemComponent.getQuestionItem().setQuestionId(q.getQuestionId());
-                questionItemComponent.getQuestionItem().setQuestionAns(q.getQuestionAns());
-                questionItemComponent.getQuestionItem().setQuestionBody(q.getQuestionBody());
-                questionItemComponent.getQuestionItem().setQuestionMark(q.getQuestionMark());
-                questionItemComponent.getQuestionItem().setQuestionDate(q.getQuestionDate());
-                questionItemComponent.getQuestionItem().setQuestionLastUsed(q.getQuestionLastUsed());
-                questionItemComponent.getQuestionItem().setQuestionDifficulty(q.getQuestionDifficulty());
+                questionItemComponent.setQuestionItem(q);
 
                 // set up question item component
                 questionItemComponent.setUpQuestionItemComponent();

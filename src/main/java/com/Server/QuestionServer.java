@@ -94,11 +94,11 @@ public class QuestionServer {
             // insert into core table
             String query = "INSERT INTO public.question" +
                     "(lecturer_id, question_type, question_body, question_ans, question_date, " +
-                    "question_mark, question_difficulty, course_id)" +
+                    "question_mark, question_difficulty, course_id, question_is_variant, question_variance)" +
                     "VALUES" +
                     "('" + item.getLecturerId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
                     item.getQuestionAns() + "', now(), " + item.getQuestionMark() + ", " + item.getQuestionDifficulty() +
-                    ", " + /*item.getCourseId()*/ 1 + ")";
+                    ", " + /*item.getCourseId()*/ 1 + ", " + item.getQuestionIsVariant() + ", " + item.getQuestionVariance() + ")";
 
             // statement
             Statement statement = connection.createStatement();
@@ -219,6 +219,31 @@ public class QuestionServer {
 
             // execute statement
             if (preparedStatement.executeUpdate() > 0) success = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        }
+
+        return success;
+    }
+
+    public boolean incrementQuestionItemVariance(int question_id) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query = "UPDATE public.question" +
+                    " SET question_variance = question_variance + 1 " +
+                    "WHERE question_id = " + question_id;
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // execute statement
+            if (statement.executeUpdate(query) > 0) success = true;
         } catch (SQLException e) {
             e.printStackTrace();
             success = false;

@@ -1,6 +1,7 @@
 package com.Components;
 
 import com.MyTheme;
+import com.Objects.CourseItem;
 import com.vaadin.data.HasValue;
 import com.vaadin.ui.*;
 import org.vaadin.ui.NumberField;
@@ -68,9 +69,22 @@ public class FormItemComponent extends VerticalLayout {
         }
     }
 
-    public void setValueOfComponent(double value) {
+    public void setValueOfComponent(CourseItem courseItem) {
 
-        //
+        if (this.componentType.matches(ComponentType.COURSE_COMBO_BOX)) {
+
+            // set temporary variable
+            CourseComboBox tmp = (CourseComboBox) this.component;
+
+            // set string
+            tmp.setValue(courseItem);
+        }
+    }
+
+    public void setValueOfComponent(int d) {
+
+        double value = Double.parseDouble(d + "");
+
         if (this.componentType.matches(ComponentType.SLIDER)) {
 
             // set temporary variable
@@ -85,7 +99,7 @@ public class FormItemComponent extends VerticalLayout {
             NumberField tmp = (NumberField) this.component;
 
             // set value
-            tmp.setValue(value);
+            tmp.setValue(value + "");
         }
     }
 
@@ -145,6 +159,10 @@ public class FormItemComponent extends VerticalLayout {
         }
 
         return ret;
+    }
+
+    public String getComponentType() {
+        return this.componentType;
     }
 
     private void setUpDifficultySlider() {
