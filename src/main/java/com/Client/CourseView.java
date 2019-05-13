@@ -94,20 +94,42 @@ public class CourseView extends HorizontalLayout implements View {
         TestServer testServer = new TestServer(connection);
         ArrayList<TestItem> Items = testServer.getTestItems();
 
-        for(TestItem i : Items) {
+        ArrayList<HorizontalLayout> layouts = new ArrayList<>();
+        double num = Items.size()/3f;
+        num = Math.ceil(num);
+        int x = (int) num;
+        for (int i = 0; i < x; i++) {
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+            layouts.add(horizontalLayout);
+
+        }
+        System.out.println(layouts.size());
+
+        for (HorizontalLayout l : layouts) paperExplorer.addComponent(l);
+
+        int indice = 0;
+
+        for(int i = 0; i < Items.size(); i++) {
+
+            TestItem myItem = Items.get(i);
+
+            HorizontalLayout het = new HorizontalLayout();
             VerticalLayout vet =  new VerticalLayout();
-            Label labela = new Label(i.getTestDraftName());
+            Label labela = new Label(Items.get(i).getTestDraftName());
             vet.addComponent(labela);
             vet.addStyleName("lol");
-            vet.setSizeFull();
-            paperExplorer.setSizeFull();
-            paperExplorer.addComponent(vet);
+            het.addComponent(vet);
+            layouts.get(indice).addComponent(het);
            // labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
             //labela.addStyleName("lol");
            // paperExplorer.addStyleName("lol");
+            if (i % 3 == 0) indice++;
         }
 
         testPanel.setContent(paperExplorer);
+        testPanel.setHeightUndefined();
+        testPanel.setHeight(100.0f,Unit.PERCENTAGE);
         content.addComponentsAndExpand(paperExplorer);
         paperExplorer.setHeightUndefined();
 
