@@ -17,6 +17,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.event.DragEndListener;
 import com.vaadin.ui.dnd.event.DragStartListener;
+import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.ui.NumberField;
 
 import java.io.File;
@@ -117,6 +118,9 @@ public class QuestionItemComponent extends VerticalLayout {
         // set margin to false
         setMargin(false);
 
+        // make card
+        addStyleName(MyTheme.CARD_BORDER);
+
         // set up course code
         courseItem = courseServer.getCourseItemByQuestionId(questionItem.getQuestionId());
 
@@ -175,8 +179,9 @@ public class QuestionItemComponent extends VerticalLayout {
         courseCode.addStyleName(MyTheme.MAIN_GREY_LABEL);
         Label subject = new Label();
         subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-        shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
         TagItemsComponent tags = new TagItemsComponent(tagServer, basePath, questionItem.getQuestionId());
+        if (!tags.isEmpty()) shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
+        else subject.setValue(courseItem.getCourseName());
         thirdRow.addComponents(courseCode, subject, tags);
         thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
         setUpMarksLabel();
@@ -403,7 +408,7 @@ public class QuestionItemComponent extends VerticalLayout {
                 // redirect to create question
                 if (questionServer.updateQuestionItem(questionItem)) {
                     VaadinService.getCurrentRequest().setAttribute("question-create", questionItem);
-                    navigator.navigateTo("createquestion");
+                    navigator.navigateTo("create");
                 }
                 else Notification.show("ERROR", "Something went wrong", Notification.Type.ERROR_MESSAGE);
             }

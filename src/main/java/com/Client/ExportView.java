@@ -1,22 +1,26 @@
 package com.Client;
 
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
-import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 import com.Server.ExportServer;
+import com.Server.LecturerServer;
 import com.Server.QuestionServer;
 import com.vaadin.data.Binder;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.*;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
@@ -29,11 +33,6 @@ public class ExportView extends HorizontalLayout implements View {
 
     // connection for database
     private Connection connection;
-
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
 
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
@@ -84,6 +83,12 @@ public class ExportView extends HorizontalLayout implements View {
     final Button exe = new Button("export");
     final Binder<ExportView> binder = new Binder<>();
 
+    // lecturer
+    private LecturerItem lecturerItem;
+    private LecturerServer lecturerServer;
+
+    // dashboard
+    private Dashboard dashboard;
 
     public ExportView(Navigator navigator, Connection connection) {
 
@@ -92,6 +97,9 @@ public class ExportView extends HorizontalLayout implements View {
 
         // set connection variable
         this.connection = connection;
+
+        // server
+        this.lecturerServer = new LecturerServer(connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -121,7 +129,7 @@ public class ExportView extends HorizontalLayout implements View {
             }
         });
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator);
         addComponent(dashboard);
 
         //add components under each respective layout
@@ -173,7 +181,27 @@ public class ExportView extends HorizontalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Export View");
+
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Export Questions");
+
+        // set active item
+        dashboard.setActiveLink("export");
+
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "export", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
     }
 
     public PdfPCell getCell(String text, int alignment) {

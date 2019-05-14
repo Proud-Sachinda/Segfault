@@ -1,15 +1,20 @@
 package com.Client;
 
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 import com.Server.CourseServer;
+import com.Server.LecturerServer;
 import com.Server.TestServer;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -17,7 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public class CourseView extends HorizontalLayout implements View {
+public class LibraryView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -37,18 +42,14 @@ public class CourseView extends HorizontalLayout implements View {
     private TextField sampleoutput = new TextField("Add Course Id");
 
 
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
-    protected final String createcourse = "createcourse";
-
-
     HorizontalLayout choice = new HorizontalLayout();
     HorizontalLayout lay = new HorizontalLayout();
 
 
     TextField text = new TextField();
+
+    // lecturer item
+    private LecturerItem lecturerItem;
 
     CourseServer myCourseServer;
 
@@ -63,14 +64,20 @@ public class CourseView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
+    // lecturer server
+    private LecturerServer lecturerServer;
 
-    public CourseView(Navigator navigator, Connection connection) {
+    // dashboard
+    private Dashboard dashboard;
+
+    public LibraryView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
         // course server
         this.myCourseServer = new CourseServer(connection);
+        this.lecturerServer = new LecturerServer(connection);
 
         // set connection variable
         this.connection = connection;
@@ -79,7 +86,7 @@ public class CourseView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator);
         addComponent(dashboard);
 
         // set content area
@@ -242,9 +249,26 @@ public class CourseView extends HorizontalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Library");
 
-        //panel.addComponentDetachListener(export);
-        // Notification.show("Course");
+        // set active item
+        dashboard.setActiveLink("library");
+
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "library", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
     }
 
     private class CourseComponent extends VerticalLayout {
