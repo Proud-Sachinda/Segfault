@@ -60,7 +60,6 @@ public class CreateView extends HorizontalLayout implements View {
     private Image cancel;
     private Label mcqHeader;
     private Label mcqAnswer;
-    private MenuBar menuBar;
     private Label createQuestionLabel;
     private HorizontalLayout headerLayout;
     private HorizontalLayout footerFinish;
@@ -449,7 +448,7 @@ public class CreateView extends HorizontalLayout implements View {
         };
 
         // create menu bar and add items
-        menuBar = new MenuBar();
+        MenuBar menuBar = new MenuBar();
         menuBar.addItem("Written", writtenQuestionCommand);
         menuBar.addItem("Multiple Choice", multipleChoiceQuestionCommand);
         menuBar.addItem("Practical", practicalQuestionCommand);
