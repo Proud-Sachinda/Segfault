@@ -93,7 +93,7 @@ public class LibraryView extends HorizontalLayout implements View {
         content.setSizeFull();
         content.addStyleName("paper-border");
         addComponentsAndExpand(content);
-        setUpCourseList();
+       // setUpCourseList();
     }
 
     private void setUpCourseList() {

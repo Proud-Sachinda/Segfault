@@ -1,4 +1,25 @@
 -------------------------------------------------------------------------------
 Test set: com.Server.QuestionServerTest
 -------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s - in com.Server.QuestionServerTest
+Tests run: 4, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.18 s <<< FAILURE! - in com.Server.QuestionServerTest
+postToQuestionTable  Time elapsed: 0.095 s  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+connection.createStatement();
+-> at com.Server.QuestionServerTest.postToQuestionTable(QuestionServerTest.java:108)
+Actually, there were zero interactions with this mock.
+
+	at com.Server.QuestionServerTest.postToQuestionTable(QuestionServerTest.java:108)
+
+getQuestionItemById  Time elapsed: 0.026 s  <<< FAILURE!
+org.mockito.exceptions.verification.TooLittleActualInvocations: 
+
+connection.createStatement();
+Wanted 2 times:
+-> at com.Server.QuestionServerTest.getQuestionItemById(QuestionServerTest.java:84)
+But was 1 time:
+-> at com.Server.QuestionServer.getQuestionItemById(QuestionServer.java:65)
+
+	at com.Server.QuestionServerTest.getQuestionItemById(QuestionServerTest.java:84)
+
