@@ -1,5 +1,6 @@
 package com.Server;
 
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 
 import javax.validation.constraints.NotNull;
@@ -84,7 +85,7 @@ public class QuestionServer {
 
 
     // -------------------------------- POST METHODS (INSERT)
-    public int postToQuestionTable(QuestionItem item) {
+    public int postToQuestionTable(QuestionItem questionItem, LecturerItem lecturerItem, int course_id) {
 
         // return variable
         int questionId = 0;
@@ -96,9 +97,11 @@ public class QuestionServer {
                     "(lecturer_id, question_type, question_body, question_ans, question_date, " +
                     "question_mark, question_difficulty, course_id, question_is_variant, question_variance)" +
                     "VALUES" +
-                    "('" + item.getLecturerId() + "', '" + item.getQuestionType() + "', '" + item.getQuestionBody() + "', '" +
-                    item.getQuestionAns() + "', now(), " + item.getQuestionMark() + ", " + item.getQuestionDifficulty() +
-                    ", " + /*item.getCourseId()*/ 1 + ", " + item.getQuestionIsVariant() + ", " + item.getQuestionVariance() + ")";
+                    "('" + lecturerItem.getLecturerId() + "', '" + questionItem.getQuestionType() + "', '"
+                    + questionItem.getQuestionBody() + "', '" + questionItem.getQuestionAns() + "', now(), "
+                    + questionItem.getQuestionMark() + ", " + questionItem.getQuestionDifficulty() +
+                    ", " + course_id + ", " + questionItem.getQuestionIsVariant() + ", " +
+                    questionItem.getQuestionVariance() + ")";
 
             // statement
             Statement statement = connection.createStatement();
@@ -114,13 +117,12 @@ public class QuestionServer {
 
             while (resultSet.next()) {
                 questionId = resultSet.getInt("question_id");
-                System.out.println("reached result set");
             }
 
             if (questionId > 0) {
 
                 // post to other question tables
-                if (item.getQuestionType().equals("written")) {
+                if (questionItem.getQuestionType().equals("written")) {
 
                     // query for written table
                     query = "INSERT INTO public.written_question" +
@@ -133,9 +135,8 @@ public class QuestionServer {
 
                     // execute statement
                     statement.executeUpdate(query);
-                    System.out.println("reached if");
                 }
-                else if (item.getQuestionType().equals("mcq")) {
+                else if (questionItem.getQuestionType().equals("mcq")) {
 
                     // query for mcq table
                     query = "INSERT INTO public.mcq_question" +
@@ -150,7 +151,7 @@ public class QuestionServer {
 
                     // set mcq choices
                     query = "UPDATE public.mcq_question " +
-                            "SET mcq_choices = " + item.getQuestionMcqChoices() + " " +
+                            "SET mcq_choices = " + questionItem.getQuestionMcqChoices() + " " +
                             "WHERE question_id = " + questionId;
 
                     // execute statement
@@ -171,13 +172,22 @@ public class QuestionServer {
 
                     // set mcq choices
                     query = "UPDATE public.practical_question " +
-                            "SET sample_input = '" + item.getQuestionPracticalSampleInput() + "', " +
-                            "sample_output = '" + item.getQuestionPracticalSampleOutput() + "' " +
+                            "SET sample_input = '" + questionItem.getQuestionPracticalSampleInput() + "', " +
+                            "sample_output = '" + questionItem.getQuestionPracticalSampleOutput() + "' " +
                             "WHERE question_id = " + questionId;
 
                     // execute statement
                     statement.executeUpdate(query);
                 }
+
+                // set mcq choices
+                query = "UPDATE public.question " +
+                        "SET question_is_variant = " + questionItem.getQuestionIsVariant() + ", " +
+                        "question_variance = " + questionItem.getQuestionVariance() + " " +
+                        "WHERE question_id = " + questionId;
+
+                // execute statement
+                statement.executeUpdate(query);
             }
         } catch (SQLException e) {
             e.printStackTrace();

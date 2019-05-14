@@ -23,7 +23,7 @@ public class TestItem {
             this.test_is_draft= set.getBoolean("test_is_draft");
             this.test_draft_name = set.getString("test_draft_name");
             this.course_id = set.getInt("course_id");
-            this.lecture_id = set.getInt("lecture_id");
+            this.lecture_id = set.getInt("lecturer_id");
 
         } catch (SQLException e) {
             e.printStackTrace();

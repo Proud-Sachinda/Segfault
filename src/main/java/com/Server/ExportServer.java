@@ -34,7 +34,6 @@ public class ExportServer {
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
-            System.out.println(query);
 
             while(set.next()) {
 

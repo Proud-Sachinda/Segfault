@@ -1,13 +1,15 @@
 package com.Client;
 
-import com.Dashboard;
-import com.Server.SignInViewServer;
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
+import com.Server.LecturerServer;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
+import javax.servlet.http.Cookie;
 import java.sql.Connection;
 
 /**
@@ -27,19 +29,16 @@ public class SignInView extends VerticalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
-    // connection used for database
-    private Connection connection;
-
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
+    // server
+    private LecturerServer lecturerServer;
 
     public SignInView(Navigator navigator, Connection connection) {
 
         // we get the apps Navigator object
         this.navigator = navigator;
 
-        // connector object for database
-        this.connection = connection;
+        // initiate server
+        this.lecturerServer = new LecturerServer(connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -47,22 +46,20 @@ public class SignInView extends VerticalLayout implements View {
         // set wallpaper
         addStyleName("main-sign-in-page-background");
 
-        Dashboard dashboard = new Dashboard(navigator);
-
         // create login form
         LoginForm component = new LoginForm();
-        component.addLoginListener(e -> {
-            boolean Authentication = true;
-            if (Authentication) {
 
-                // set username
-                VaadinService.getCurrentRequest().setAttribute("username", e.getLoginParameter("username"));
+        // component listener
+        component.addLoginListener((LoginForm.LoginListener) event -> {
+
+            // authentication variable
+            boolean auth = lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
+
+            if (auth) {
                 // navigate to page
-                navigator.navigateTo(question);
-            } else {
-                Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
-            }
+                navigator.navigateTo("editor");
 
+            } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
         });
 
         // add button component
@@ -70,18 +67,30 @@ public class SignInView extends VerticalLayout implements View {
         setComponentAlignment(component, Alignment.MIDDLE_CENTER);
     }
 
-    private boolean Authentication(LoginForm.LoginEvent e) {
-        SignInViewServer signInViewServer = new SignInViewServer(connection);
-        String username = e.getLoginParameter("username");
-        String password = e.getLoginParameter("password");
-
-        signInViewServer.setUsername(username);
-        signInViewServer.setPassword(password);
-        return signInViewServer.authenticate();
-    }
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Welcome to Qbank");
+
+        // set page title
+        UI.getCurrent().getPage().setTitle("Welcome, Question Bank");
+
+        // check if there is a message
+        String message = (String) VaadinService.getCurrentRequest().getAttribute("message");
+        VaadinService.getCurrentRequest().removeAttribute("message");
+
+        // if message is not null
+        if (message != null) Notification.show(message, Notification.Type.ERROR_MESSAGE);
+
+        // if lecturer has been signed in navigate
+        Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
+
+        if (auth != null) {
+
+            // check if nav cookie exists
+            Cookie nav = CookieHandling.getCookieByName("nav");
+
+            // navigate to question page by default or nav
+            if (nav != null) navigator.navigateTo(nav.getValue());
+            else navigator.navigateTo("editor");
+        }
     }
 }

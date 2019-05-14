@@ -5,11 +5,15 @@ import com.Components.CourseComboBox;
 import com.Components.FormItemComponent;
 import com.Components.MultipleChoiceItemComponent;
 import com.Components.TagItemsComponent;
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
+import com.Server.LecturerServer;
 import com.Server.QuestionServer;
 import com.Server.TagServer;
 import com.vaadin.data.HasValue;
@@ -30,19 +34,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class CreateQuestionView extends HorizontalLayout implements View {
+public class CreateView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
 
-    // route strings
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
-
     // servers
     private TagServer tagServer;
     private CourseServer courseServer;
+    private LecturerServer lecturerServer;
     private QuestionServer questionServer;
 
     // layouts for split panel
@@ -52,11 +52,6 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
-
-    // latex things
-    private HorizontalLayout latexRoot = new HorizontalLayout();
-    private FileResource sRootResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/latex/root.svg"));
-    private Image sRoot = new Image(null, sRootResource);
 
     // array of form item components
     private ArrayList<FormItemComponent> formItemComponents;
@@ -83,6 +78,9 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     // vertical layout to replace question content
     private VerticalLayout replacementLayout;
 
+    // lecturer
+    private LecturerItem lecturerItem;
+
     // question item for form submission
     private QuestionItem update;
     private QuestionItem questionItem = new QuestionItem();
@@ -90,15 +88,16 @@ public class CreateQuestionView extends HorizontalLayout implements View {
     // tags item component
     private TagItemsComponent tags;
 
-    public CreateQuestionView(Navigator navigator, Connection connection) {
+    public CreateView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
-        // set up question server
-        tagServer = new TagServer(connection);
-        courseServer = new CourseServer(connection);
-        questionServer = new QuestionServer(connection);
+        // set up servers
+        this.tagServer = new TagServer(connection);
+        this.courseServer = new CourseServer(connection);
+        this.lecturerServer = new LecturerServer(connection);
+        this.questionServer = new QuestionServer(connection);
 
         // declare form item components array
         formItemComponents = new ArrayList<>();
@@ -149,6 +148,21 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         // set page title
         UI.getCurrent().getPage().setTitle("Dashboard - Create question");
 
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "create", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
+
         // check for existing question items
         QuestionItem item = (QuestionItem) VaadinService.getCurrentRequest().getAttribute("question-create");
         if (item != null) {
@@ -177,7 +191,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         cancel.setWidth(48.0f, Unit.PIXELS);
         cancel.setHeight(48.0f, Unit.PIXELS);
         cancel.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE);
-        cancel.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(question));
+        cancel.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo("editor"));
 
         // set up create question label
         createQuestionLabel = new Label("Create Question");
@@ -193,13 +207,6 @@ public class CreateQuestionView extends HorizontalLayout implements View {
 
         // set border
         mainQuestionFormArea.addStyleName(ValoTheme.LAYOUT_CARD);
-
-        // set up latex items
-        sRoot.setWidth(64.0f, Unit.PIXELS);
-        sRoot.setHeight(64.0f, Unit.PIXELS);
-
-        // add to latex root
-        latexRoot.addComponent(sRoot);
 
         // horizontal layout for course combo box and number field marks
         HorizontalLayout courseAndMarks = new HorizontalLayout();
@@ -248,7 +255,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         tags = new TagItemsComponent(questionServer, basePath);
 
         // add everything to form area
-        mainQuestionFormArea.addComponents(latexRoot, courseAndMarks,
+        mainQuestionFormArea.addComponents(courseAndMarks,
                 questionBodyItem, questionDifficultyItem, tags);
     }
 
@@ -362,7 +369,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
         MenuBar.Command writtenQuestionCommand = (MenuBar.Command) selectedItem -> {
 
             // if question type is not written replace content
-            if (!questionItem.getQuestionType().equals("written")) {
+            if (!questionItem.getQuestionType().toLowerCase().equals("written")) {
 
                 // remove replacement components
                 replacementLayout.removeAllComponents();
@@ -540,7 +547,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     mcqHeader.removeStyleName(MyTheme.MAIN_TEXT_WARNING);
 
                 // set up core variables
-                // questionItem.setCourseId(comboBoxItem.getValeOfComponent());
+                int course_id = comboBoxItem.getIntValueOfComponent();
                 questionItem.setQuestionBody(questionBodyItem.getStringValueOfComponent());
                 questionItem.setQuestionMark(questionMarksItem.getIntValueOfComponent());
                 questionItem.setQuestionDifficulty(questionDifficultyItem.getIntValueOfComponent());
@@ -576,7 +583,7 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                 }
 
                 // post
-                if (questionServer.postToQuestionTable(questionItem) > 0) {
+                if (questionServer.postToQuestionTable(questionItem, lecturerItem, course_id) > 0) {
 
                     // also post tags
                     tagServer.postToTagTable(tags);
@@ -584,12 +591,12 @@ public class CreateQuestionView extends HorizontalLayout implements View {
                     // set variable for notification
                     VaadinService.getCurrentRequest().setAttribute("question-post", true);
 
-                    if (update != null && questionServer.incrementQuestionItemVariance(update.getQuestionVariance()))
-                        // navigate to question view
-                        navigator.navigateTo(question);
-                    else {
-                        Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
-                    }
+                    if (update != null)
+                        if (!questionServer.incrementQuestionItemVariance(update.getQuestionVariance()))
+                            Notification.show("ERROR", "Could not increment question", Notification.Type.ERROR_MESSAGE);
+
+                    // navigate to question view
+                    navigator.navigateTo("editor");
                 }
                 else {
                     Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);

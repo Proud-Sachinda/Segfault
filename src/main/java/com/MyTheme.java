@@ -8,6 +8,7 @@ public class MyTheme {
     public static final String MAIN_CHARCOAL = "main-charcoal";
 
     // text colors
+    public static final String MAIN_TEXT_WHITE = "main-text-white";
     public static final String MAIN_TEXT_GREEN = "main-text-green";
     public static final String MAIN_TEXT_WARNING = "main-text-warning";
     public static final String MAIN_TEXT_CHARCOAL = "main-text-charcoal";
@@ -38,6 +39,7 @@ public class MyTheme {
     public static final String MAIN_OPACITY_80 = "main-opacity-80";
 
     // components
+    public static final String CARD_BORDER = "card-border";
     public static final String MAIN_FLAT_BORDER = "main-flat-border";
     public static final String MAIN_GREY_LABEL = "main-flat-grey-label";
     public static final String MAIN_FLAT_TAG_LABEL = "main-flat-tag-label";

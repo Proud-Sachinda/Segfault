@@ -7,7 +7,6 @@ ignore:
   - "[a-z]+/_.*"  # regexp accepted
   - "**/*View*/**/*"
   - "**/*Dashboard*"
-  - "**/*Authentication*"
   - "**/*ComboBox*"
   - "**/*Component*"
 

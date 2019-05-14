@@ -33,47 +33,16 @@ public class MyUI extends UI {
         // create a navigator to control the views
         Navigator navigator = new Navigator(this, this);
 
-        // create connection variable and pass to views
-        //Using a connecion string, this is the most important connection to the database
-        Connection connection = null;
-        try {
-            connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
-                            "postgres", "postgres");
+        // create and register the views
+        Connection connection = ConnectToDatabase.getConnection();
+        navigator.addView("", new SignInView(navigator, connection));
+        navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection));
+        navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection));
+        navigator.addView(NavigationStates.EXPORT, new ExportView(navigator, connection));
+        navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection));
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/postgres",
-                            "postgres", "postgres");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // route strings - nothing special just things like qbank_exploded_war/#!route_name
-        String question = "question";
-        String course = "course";
-        String export = "export";
-        String createquestion = "createquestion";
-        String createcourse = "createcourse";
-
-        if (connection != null) {
-            // create and register the views
-            navigator.addView("", new SignInView(navigator, connection));
-            navigator.addView(question, new QuestionView(navigator, connection));
-            navigator.addView(course, new CourseView(navigator, connection));
-            navigator.addView(export, new ExportView(navigator, connection));
-            navigator.addView(createquestion, new CreateQuestionView(navigator, connection));
-            // navigate to app for now
-            navigator.navigateTo(question);
-        }
-        else {
-            Notification.show("Reload Page");
-        }
+        // navigate to home
+        navigator.navigateTo(NavigationStates.HOME);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
