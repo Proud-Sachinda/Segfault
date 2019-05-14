@@ -269,9 +269,6 @@ public class LibraryView extends HorizontalLayout implements View {
             // navigate
             navigator.navigateTo("");
         }
-        else {
-            System.out.println(lecturerItem.getLecturerId());
-        }
     }
 
     private class CourseComponent extends VerticalLayout {
