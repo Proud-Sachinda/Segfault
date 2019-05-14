@@ -56,6 +56,7 @@ public class LibraryView extends HorizontalLayout implements View {
     private final VerticalLayout paperExplorer = new VerticalLayout();
     private final VerticalLayout courseList = new VerticalLayout();
     private final Panel courseListPanel = new Panel();
+    private final Panel testPanel =  new Panel();
     private final VerticalLayout courseListVerticalLayoutRoot = new VerticalLayout();
 
 
@@ -100,14 +101,42 @@ public class LibraryView extends HorizontalLayout implements View {
         TestServer testServer = new TestServer(connection);
         ArrayList<TestItem> Items = testServer.getTestItems();
 
-        for(TestItem i : Items) {
-            Label labela = new Label(i.getTestDraftName());
-            paperExplorer.addComponent(labela);
-            labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-            paperExplorer.addStyleName(ValoTheme.LAYOUT_CARD);
+        ArrayList<HorizontalLayout> layouts = new ArrayList<>();
+        double num = Items.size()/3f;
+        num = Math.ceil(num);
+        int x = (int) num;
+        for (int i = 0; i < x; i++) {
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+            layouts.add(horizontalLayout);
+
+        }
+        System.out.println(layouts.size());
+
+        for (HorizontalLayout l : layouts) paperExplorer.addComponent(l);
+
+        int indice = 0;
+
+        for(int i = 0; i < Items.size(); i++) {
+
+            TestItem myItem = Items.get(i);
+
+            HorizontalLayout het = new HorizontalLayout();
+            VerticalLayout vet =  new VerticalLayout();
+            Label labela = new Label(Items.get(i).getTestDraftName());
+            vet.addComponent(labela);
+            vet.addStyleName("lol");
+            het.addComponent(vet);
+            layouts.get(indice).addComponent(het);
+           // labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
+            //labela.addStyleName("lol");
+           // paperExplorer.addStyleName("lol");
+            if (i % 3 == 0) indice++;
         }
 
-
+        testPanel.setContent(paperExplorer);
+        testPanel.setHeightUndefined();
+        testPanel.setHeight(100.0f,Unit.PERCENTAGE);
         content.addComponentsAndExpand(paperExplorer);
         paperExplorer.setHeightUndefined();
 
@@ -139,6 +168,7 @@ public class LibraryView extends HorizontalLayout implements View {
             horizontalLayout.addComponent(label);
             courseList.addComponent(horizontalLayout);
         }
+        createcourse1.addStyleName("lizo");
 
         createcourse1.addClickListener(new Button.ClickListener() {
             @Override
@@ -149,7 +179,7 @@ public class LibraryView extends HorizontalLayout implements View {
                 courseList.addComponent(wola, 2);
             }
         });
-
+        wola.addStyleName("lizo");
         wola.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
