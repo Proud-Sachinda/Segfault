@@ -317,7 +317,7 @@
 					<region>South Africa North</region>
 
 					<!-- Java Runtime Stack for Web App on Linux-->
-					<linuxRuntime>wildfly 14-jre8</linuxRuntime>
+					
 
 				</configuration>
 			</plugin>
