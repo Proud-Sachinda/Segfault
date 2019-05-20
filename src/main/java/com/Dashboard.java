@@ -14,6 +14,7 @@ public class Dashboard extends VerticalLayout {
     private final String editorNavigation = "editor";
     private final String libraryNavigation = "library";
     private final String exportNavigation = "export";
+    private  final String testNavigation = "test";
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -27,6 +28,7 @@ public class Dashboard extends VerticalLayout {
     private final VerticalLayout editorLayout = new VerticalLayout();
     private final VerticalLayout libraryLayout = new VerticalLayout();
     private final VerticalLayout exportLayout = new VerticalLayout();
+    private final VerticalLayout testLayout = new VerticalLayout();
 
     // navigation variable
     private Navigator navigator;

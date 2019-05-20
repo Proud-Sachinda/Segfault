@@ -13,20 +13,20 @@ public class ConnectToDatabase {
         // first attempt
         try {
             connection = DriverManager
-                    .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank","postgres@qbanksd," ,"Bullsh1t");
+                    .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank?sslmode=require","postgres@qbanksd," ,"Bullsh1t");
 
         } catch (SQLException e) {
 
             // second attempt
             try {
                 connection = DriverManager
-                        .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank","postgres@qbanksd," ,"Bullsh1t");
+                        .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank?sslmode=require","postgres@qbanksd," ,"Bullsh1t");
             } catch (SQLException ex) {
 
                 // third attempt
                 try {
                     connection = DriverManager
-                            .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank","postgres@qbanksd," ,"Bullsh1t");
+                            .getConnection("jdbc:postgresql://qbanksd.postgres.database.azure.com:5432/qbank?sslmode=require","postgres@qbanksd," ,"Bullsh1t");
                 } catch (SQLException exc) {
                     exc.printStackTrace();
                 }

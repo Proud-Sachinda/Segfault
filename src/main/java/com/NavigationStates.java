@@ -16,4 +16,7 @@ public class NavigationStates {
 
     // create questions
     public static final String CREATE = "create";
+
+    //create tests
+    public static final String TEST = "test";
 }

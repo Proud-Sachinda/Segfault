@@ -38,8 +38,11 @@ public class MyUI extends UI {
         navigator.addView("", new SignInView(navigator, connection));
         navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection));
         navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection));
-        navigator.addView(NavigationStates.EXPORT, new ExportView(navigator, connection));
+        navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection));
         navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection));
+        navigator.addView(NavigationStates.TEST, new TestView(navigator, connection));
+
+
 
         // navigate to home
         navigator.navigateTo(NavigationStates.HOME);

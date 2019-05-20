@@ -20,13 +20,14 @@ import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public class ExportView extends HorizontalLayout implements View {
+public class ExamView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -81,7 +82,7 @@ public class ExportView extends HorizontalLayout implements View {
     final TextField txtmark = new TextField();
     final TextArea txtinstructions = new TextArea();
     final Button exe = new Button("export");
-    final Binder<ExportView> binder = new Binder<>();
+    final Binder<ExamView> binder = new Binder<>();
 
     // lecturer
     private LecturerItem lecturerItem;
@@ -90,7 +91,7 @@ public class ExportView extends HorizontalLayout implements View {
     // dashboard
     private Dashboard dashboard;
 
-    public ExportView(Navigator navigator, Connection connection) {
+    public ExamView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
@@ -132,18 +133,9 @@ public class ExportView extends HorizontalLayout implements View {
         dashboard = new Dashboard(navigator);
         addComponent(dashboard);
 
+
         //add components under each respective layout
         coursecode.addComponents(lblcoursecode, txtcoursecode);
-        txtcoursecode.setRequiredIndicatorVisible(true);
-        txttopicname.setRequiredIndicatorVisible(true);
-        txtdate.setRequiredIndicatorVisible(true);
-        txtyos.setRequiredIndicatorVisible(true);
-        txtdegree.setRequiredIndicatorVisible(true);
-        txtfaculties.setRequiredIndicatorVisible(true);
-        txtinternalexaminer.setRequiredIndicatorVisible(true);
-        txtexternalexaminer.setRequiredIndicatorVisible(true);
-        txtmark.setRequiredIndicatorVisible(true);
-        txttime.setRequiredIndicatorVisible(true);
         topic.addComponents(lbltopicname, txttopicname);
         date.addComponents(lbldate, txtdate);
         yos.addComponents(lblyos, txtyos);
@@ -155,12 +147,31 @@ public class ExportView extends HorizontalLayout implements View {
         time.addComponents(lbltime, txttime);
         mark.addComponents(lblmark, txtmark);
         instructions.addComponents(lblinstructions, txtinstructions);
-        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions);
+        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
+
+// Alignment of components
+
+        content.setComponentAlignment(coursecode, Alignment.TOP_CENTER);
+        content.setComponentAlignment(mark,Alignment.MIDDLE_CENTER);
+        content.setComponentAlignment(time, Alignment.TOP_CENTER);
+        content.setComponentAlignment(faculties, Alignment.TOP_CENTER);
+        content.setComponentAlignment(degree, Alignment.TOP_CENTER);
+        content.setComponentAlignment(instructions, Alignment.TOP_CENTER);
+        content.setComponentAlignment(internalexaminer, Alignment.TOP_CENTER);
+        content.setComponentAlignment(externalexaminer, Alignment.TOP_CENTER);
+        content.setComponentAlignment(material, Alignment.TOP_CENTER);
+        content.setComponentAlignment(yos, Alignment.TOP_CENTER);
+        content.setComponentAlignment(topic, Alignment.TOP_CENTER);
+        content.setComponentAlignment(date, Alignment.TOP_CENTER);
+        content.setComponentAlignment(exe, Alignment.BOTTOM_RIGHT);
+
 
         // set content area
-        //content.addComponent(exe);
         content.setSizeFull();
-        addComponentsAndExpand(content, exe);
+        addComponentsAndExpand(content);
+        exe.setWidth(100.0f, Unit.PIXELS);
+
+
     }
 
     //methodfor retrieving question
