@@ -1,24 +1,30 @@
 package com.Client;
 
+import com.Components.CourseComboBox;
+import com.Components.CreateCourseComponent;
+import com.Components.EmptyComponent;
+import com.Components.TestItemComponent;
+import com.CookieHandling.CookieAge;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
+import com.NavigationStates;
 import com.Objects.CourseItem;
 import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 import com.Server.CourseServer;
 import com.Server.LecturerServer;
 import com.Server.TestServer;
-import com.vaadin.icons.VaadinIcons;
+import com.vaadin.data.HasValue;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinService;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.servlet.http.Cookie;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -27,45 +33,37 @@ public class LibraryView extends HorizontalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
-    // connection for database
-    private Connection connection;
-
-    String type = "";
-
-    //Create a button
-    private Button export1 = new Button("Export");
-    private Button export2 = new Button("Export");
-    private Button createcourse1 =  new Button("Add Course");
-    private Button wola = new Button("Add");
-
-    private TextField sampleinput = new TextField("Add Course Name");
-    private TextField sampleoutput = new TextField("Add Course Id");
-
-
-    HorizontalLayout choice = new HorizontalLayout();
-    HorizontalLayout lay = new HorizontalLayout();
-
-
-    TextField text = new TextField();
-
-    // lecturer item
+    // items
+    private CourseItem courseItem;
     private LecturerItem lecturerItem;
 
-    CourseServer myCourseServer;
+    // server
+    private TestServer testServer;
+    private CourseServer courseServer;
+    private LecturerServer lecturerServer;
 
-    private final VerticalLayout paperExplorer = new VerticalLayout();
-    private final VerticalLayout courseList = new VerticalLayout();
-    private final Panel courseListPanel = new Panel();
-    private final Panel testPanel =  new Panel();
-    private final VerticalLayout courseListVerticalLayoutRoot = new VerticalLayout();
+    // array lists
+    private ArrayList<TestItem> testItems = new ArrayList<>();
+    private ArrayList<CourseItem> courseItems = new ArrayList<>();
 
+    // base path
+    private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+
+    // components
+    private CourseComboBox courseComboBox;
+    private final Label headerTitle = new Label();
+    private final Panel libraryPanel = new Panel();
+    private CreateCourseComponent createCourseComponent;
+    private final Button addTest = new Button("+");
+    private final Button addCourse = new Button("+");
+    private final VerticalLayout library = new VerticalLayout();
+    private final HorizontalLayout header = new HorizontalLayout();
+    private final HorizontalLayout footer = new HorizontalLayout();
+    private final HorizontalLayout addCourseHorizontalLayout = new HorizontalLayout();
+    private final EmptyComponent emptyComponent = new EmptyComponent(basePath);
 
     // navigation and content area
-    final VerticalLayout navigation = new VerticalLayout();
-    final VerticalLayout content = new VerticalLayout();
-
-    // lecturer server
-    private LecturerServer lecturerServer;
+    private final VerticalLayout content = new VerticalLayout();
 
     // dashboard
     private Dashboard dashboard;
@@ -76,11 +74,9 @@ public class LibraryView extends HorizontalLayout implements View {
         this.navigator = navigator;
 
         // course server
-        this.myCourseServer = new CourseServer(connection);
+        this.testServer = new TestServer(connection);
+        this.courseServer = new CourseServer(connection);
         this.lecturerServer = new LecturerServer(connection);
-
-        // set connection variable
-        this.connection = connection;
 
         // set to fill browser screen
         setSizeFull();
@@ -93,157 +89,12 @@ public class LibraryView extends HorizontalLayout implements View {
         content.setSizeFull();
         content.addStyleName("paper-border");
         addComponentsAndExpand(content);
-       // setUpCourseList();
-    }
 
-    private void setUpCourseList() {
+        // create course component
+        createCourseComponent = new CreateCourseComponent();
 
-        TestServer testServer = new TestServer(connection);
-        ArrayList<TestItem> Items = testServer.getTestItems();
-
-        ArrayList<HorizontalLayout> layouts = new ArrayList<>();
-        double num = Items.size()/3f;
-        num = Math.ceil(num);
-        int x = (int) num;
-        for (int i = 0; i < x; i++) {
-            HorizontalLayout horizontalLayout = new HorizontalLayout();
-            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
-            layouts.add(horizontalLayout);
-
-        }
-        System.out.println(layouts.size());
-
-        for (HorizontalLayout l : layouts) paperExplorer.addComponent(l);
-
-        int indice = 0;
-
-        for(int i = 0; i < Items.size(); i++) {
-
-            TestItem myItem = Items.get(i);
-
-            HorizontalLayout het = new HorizontalLayout();
-            VerticalLayout vet =  new VerticalLayout();
-            Label labela = new Label(Items.get(i).getTestDraftName());
-            vet.addComponent(labela);
-            vet.addStyleName("lol");
-            het.addComponent(vet);
-            layouts.get(indice).addComponent(het);
-           // labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
-            //labela.addStyleName("lol");
-           // paperExplorer.addStyleName("lol");
-            if (i % 3 == 0) indice++;
-        }
-
-        testPanel.setContent(paperExplorer);
-        testPanel.setHeightUndefined();
-        testPanel.setHeight(100.0f,Unit.PERCENTAGE);
-        content.addComponentsAndExpand(paperExplorer);
-        paperExplorer.setHeightUndefined();
-
-
-
-        sampleinput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-        sampleoutput.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-
-        courseListVerticalLayoutRoot.setMargin(new MarginInfo(true, false));
-        courseListVerticalLayoutRoot.setWidth(300.0f,Unit.PIXELS);
-        //courseListVerticalLayoutRoot.addStyleName(MyTheme.MAIN_BLUE);
-        courseListPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
-        addComponent(courseListVerticalLayoutRoot);
-        courseListVerticalLayoutRoot.addComponents(createcourse1, courseListPanel);
-
-        courseListPanel.setContent(courseList);
-        courseListPanel.setHeight(100.0f, Unit.PERCENTAGE);
-
-        courseList.setWidth(100.0f, Unit.PERCENTAGE);
-
-        ArrayList<CourseItem> list = myCourseServer.getCourseItems();
-
-        for (CourseItem i : list) {
-
-            HorizontalLayout horizontalLayout = new HorizontalLayout();
-            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
-            Label label = new Label(i.getCourseFullName());
-            label.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-            horizontalLayout.addComponent(label);
-            courseList.addComponent(horizontalLayout);
-        }
-        createcourse1.addStyleName("lizo");
-
-        createcourse1.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-
-                courseList.addComponent(sampleinput,0);
-                courseList.addComponent(sampleoutput, 1);
-                courseList.addComponent(wola, 2);
-            }
-        });
-        wola.addStyleName("lizo");
-        wola.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-
-               String input = sampleinput.getValue();
-               String  out =  sampleoutput.getValue();
-
-               sampleinput.setValue("");
-               sampleoutput.setValue("");
-
-               CourseItem courseItem =  new CourseItem();
-               courseItem.setCourseName(input);
-               courseItem.setCourseCode(out);
-
-               myCourseServer.PostCourse(courseItem);
-
-                courseList.removeComponent(sampleinput);
-                courseList.removeComponent(sampleoutput);
-                courseList.removeComponent(wola);
-
-                HorizontalLayout horizontal = new HorizontalLayout();
-                horizontal.setWidth(100.0f, Unit.PERCENTAGE);
-                Label lab = new Label(courseItem.getCourseFullName());
-                lab.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-                horizontal.addComponent(lab);
-                courseList.addComponent(horizontal);
-            }
-        });
-
-
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////
-    private void setUpPeople() {
-        NativeSelect<String> selectPeople = new NativeSelect<>();
-        // selectPeople.setItems(personService.findAll().toString());
-        //selectPeople.setSelectedItem();
-
-
-        HorizontalLayout filtering = new HorizontalLayout();
-
-        VerticalLayout panelContent = new VerticalLayout();
-
-        VerticalLayout verticalLayout = new VerticalLayout();
-        panelContent.setSizeFull();
-        verticalLayout.setSizeFull();
-        verticalLayout.addComponents(export1);
-        verticalLayout.addComponents(new Button(((VaadinIcons.SHARE))));
-
-        VerticalLayout vertical = new VerticalLayout();
-        vertical.setMargin(false);
-        verticalLayout.addStyleName("lizo");
-        vertical.addStyleName("lizo");
-        verticalLayout.addComponents(new Panel("Muntu"));
-        vertical.addComponents(new TextArea("Hello"));
-
-
-
-        // filtering.addComponents(selectPeople);
-        content.addComponent(filtering);
-        filtering.addComponents(createcourse1);
-
-
+        // set up library explorer
+        setUpLibraryExplorer();
     }
 
     @Override
@@ -256,7 +107,7 @@ public class LibraryView extends HorizontalLayout implements View {
         dashboard.setActiveLink("library");
 
         // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "library", -1);
+        CookieHandling.addCookie(CookieName.NAV, "library", CookieAge.DAY);
 
         // if not signed in kick out
         lecturerItem =  lecturerServer.getCurrentLecturerItem();
@@ -269,26 +120,231 @@ public class LibraryView extends HorizontalLayout implements View {
             // navigate
             navigator.navigateTo("");
         }
+
+        // set up page
+        setUpLibrary();
     }
 
-    private class CourseComponent extends VerticalLayout {
+    private void setUpLibrary() {
 
-        private String CourseName;
-        private  String CourseCode;
+        // check cookies
 
-        private String getCourseName(){ return  CourseName;}
-        private  String getCourseCode(){ return  CourseCode;}
+        Cookie cookie = CookieHandling.getCookieByName(CookieName.LIB);
 
-        private void setCourseName( String CourseName){
-            this.CourseName = CourseName;
+        if (cookie == null) {
+
+            // set course item
+            courseItem = courseItems.get(0);
+
+            // set combo box item
+            courseComboBox.setValue(courseItem);
+
+            // change view
+            changeCurrentLibraryView(courseItem);
         }
+        else {
 
-        private void setCourseCode(String CourseCode){
-            this.CourseCode = CourseCode;
+            // int of cookie
+            int current = Integer.parseInt(cookie.getValue());
+
+            // find course item
+            for (CourseItem i : courseItems) {
+                if (current == i.getCourseId()) {
+                    courseItem = i;
+                    break;
+                }
+            }
+
+            // set item
+            courseComboBox.setValue(courseItem);
+
+            // change view
+            changeCurrentLibraryView(courseItem);
         }
-
     }
 
+    private void setUpLibraryItems() {
+
+        // remove current items
+        library.removeAllComponents();
+
+        // set test items
+        testItems = testServer.getTestItemsByCourseId(
+                courseItem.getCourseId(), lecturerItem.getLecturerId());
+
+        if (testItems.isEmpty()) {
+
+            // remove all components of explorer
+            library.removeAllComponents();
+            library.setSizeFull();
+
+            // add empty component
+            emptyComponent.setType(EmptyComponent.CREATE_A_TEST);
+            library.addComponent(emptyComponent);
+            library.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
+        }
+        else {
+
+            // remove all components of explorer
+            library.removeAllComponents();
+            library.setHeightUndefined();
+
+            //library.addComponent(item);
+            int size = testItems.size();
+
+            // horizontal layout for adding
+            HorizontalLayout addHorizontal = null;
+
+            // add test items to library
+            for (int i = 0; i < size; i++) {
+
+                // create test item component
+                TestItemComponent item = new TestItemComponent(testItems.get(i), basePath, testServer,
+                        library, navigator);
+
+                if (i % 4 == 0) {
+
+                    // add row
+                    addHorizontal = new HorizontalLayout();
+                    addHorizontal.setWidth(100f, Unit.PERCENTAGE);
+                    item.setUpHorizontalLayout(addHorizontal);
+                    library.addComponentsAndExpand(addHorizontal);
+                    library.setHeightUndefined();
+                    library.setComponentAlignment(addHorizontal, Alignment.MIDDLE_CENTER);
+                    addHorizontal.addComponent(item);
+                }
+                else {
+                    item.setUpHorizontalLayout(addHorizontal);
+                    addHorizontal.addComponent(item);
+                }
+
+            }
+        }
+    }
+
+    private void setUpLibraryExplorer() {
+
+        // header title
+        headerTitle.addStyleName(MyTheme.MAIN_TEXT_SIZE_EXTRA_LARGE);
+        header.addComponent(headerTitle);
+
+        // header course combo box
+        courseItems = courseServer.getCourseItems();
+        courseComboBox = new CourseComboBox(courseItems);
+        courseComboBox.setCaption(null);
+        courseComboBox.addValueChangeListener((HasValue.ValueChangeListener<CourseItem>)
+                event -> changeCurrentLibraryView(event.getValue()));
+
+        // add course button
+        setUpAddCourseButton();
+        addCourse.addStyleName(MyTheme.MAIN_FLAT_COURSE_ADD_BUTTON);
+
+        // add and combo box
+        addCourseHorizontalLayout.addComponents(courseComboBox, addCourse);
+        addCourseHorizontalLayout.setComponentAlignment(addCourse, Alignment.MIDDLE_CENTER);
+        addCourseHorizontalLayout.setComponentAlignment(courseComboBox, Alignment.MIDDLE_CENTER);
+        header.addComponent(addCourseHorizontalLayout);
+
+        // header
+        header.addStyleName(MyTheme.DASHED_BOTTOM);
+        header.setWidth(100f, Unit.PERCENTAGE);
+        header.setComponentAlignment(addCourseHorizontalLayout, Alignment.MIDDLE_RIGHT);
+        content.addComponent(header);
+
+        // explorer
+        libraryPanel.setSizeFull();
+        libraryPanel.setContent(library);
+        libraryPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
+        content.addComponentsAndExpand(libraryPanel);
+
+        // footer
+        footer.setWidth(100f, Unit.PERCENTAGE);
+        content.addComponent(footer);
+
+        // add test
+        setUpAddTestButton();
+        addTest.addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON);
+        footer.addComponent(addTest);
+        footer.setComponentAlignment(addTest, Alignment.MIDDLE_RIGHT);
+    }
+
+    private void setUpAddTestButton() {
+
+        // delete cookie
+        CookieHandling.removeCookie(CookieName.EDIT);
+
+        // navigate
+        navigator.navigateTo(NavigationStates.EDITOR);
+    }
+
+    private void setUpAddCourseButton() {
+
+        addCourse.addClickListener((Button.ClickListener) event -> {
+
+            // check if there are more than two components
+            if (addCourseHorizontalLayout.getComponentCount() > 2) {
+
+                // course item component
+                courseItem = createCourseComponent.getCourseItemFromComponent();
+
+                if (courseItem.isEmpty()) {
+
+                    Notification.show("ERROR",
+                            "Fill in all fields", Notification.Type.WARNING_MESSAGE);
+                }
+                else {
+
+                    // show notification
+                    int courseId = courseServer.postToCourseTable(courseItem);
+
+                    if (courseId > 0) {
+
+                        // empty form
+                        createCourseComponent.emptyCreateCourseComponent();
+
+                        // set course id
+                        courseItem.setCourseId(courseId);
+                        changeCurrentLibraryView(courseItem);
+
+                        // remove create course component
+                        addCourseHorizontalLayout.removeComponent(createCourseComponent);
+
+                        // add to array and set items
+                        courseItems.add(courseItem);
+                        courseComboBox.setItems(courseItems);
+                        courseComboBox.setValue(courseItem);
+
+                        // show notification
+                        Notification.show("SUCCESS",
+                                "Course added", Notification.Type.TRAY_NOTIFICATION);
+                    }
+                    else Notification.show("ERROR",
+                            "Could not add course", Notification.Type.ERROR_MESSAGE);
+                }
+            }
+            else {
+
+                // add to view
+                addCourseHorizontalLayout.addComponent(createCourseComponent, 1);
+                addCourseHorizontalLayout.setComponentAlignment(createCourseComponent, Alignment.MIDDLE_CENTER);
+            }
+        });
+    }
+
+    private void changeCurrentLibraryView(CourseItem item) {
+
+        // set course item
+        courseItem = item;
+
+        // set header title
+        CourseItem.shortenCourseNameIfTooLong(courseItem, headerTitle);
+
+        // set cookie
+        // current library
+        String lib = Integer.toString(courseItem.getCourseId());
+        CookieHandling.addCookie(CookieName.LIB, lib, CookieAge.DAY);
+
+        // set up library items
+        setUpLibraryItems();
+    }
 }
-
-

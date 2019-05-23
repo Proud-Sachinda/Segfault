@@ -40,16 +40,19 @@ public class MyTheme {
 
     // components
     public static final String CARD_BORDER = "card-border";
+    public static final String DASHED_BOTTOM = "dashed-bottom";
     public static final String MAIN_FLAT_BORDER = "main-flat-border";
     public static final String MAIN_GREY_LABEL = "main-flat-grey-label";
     public static final String MAIN_FLAT_TAG_LABEL = "main-flat-tag-label";
     public static final String MAIN_FLAT_NEW_BADGE = "main-flat-new-badge";
     public static final String MAIN_FLAT_BADGE_ICON = "main-flat-badge-icon";
+    public static final String MAIN_FLAT_ROUND_BUTTON = "main-flat-round-button";
     public static final String MAIN_FLAT_FLOATING_BOX = "main-flat-floating-box";
     public static final String MAIN_FLAT_FINISH_BUTTON = "main-flat-finish-button";
     public static final String MAIN_FLAT_TAG_TEXT_FIELD = "main-flat-tag-text-field";
     public static final String MAIN_FLAT_TAG_EDIT_LAYOUT = "main-flat-tag-edit-layout";
     public static final String MAIN_FLAT_ROUND_BUTTON_MINI = "main-flat-round-button-mini";
+    public static final String MAIN_FLAT_COURSE_ADD_BUTTON = "main-flat-course-add-button";
     public static final String MAIN_FLAT_DIFFICULTY_BADGE_1 = "main-flat-difficulty-badge-1";
     public static final String MAIN_FLAT_DIFFICULTY_BADGE_2 = "main-flat-difficulty-badge-2";
     public static final String MAIN_FLAT_DIFFICULTY_BADGE_3 = "main-flat-difficulty-badge-3";
