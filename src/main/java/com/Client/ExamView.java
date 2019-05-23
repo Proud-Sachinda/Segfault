@@ -153,7 +153,7 @@ public class ExamView extends HorizontalLayout implements View {
         mark.addComponents( txtmark);
         instructions.addComponents( txtinstructions);
         labels.addComponents(lblVenue,lblcoursecode,lbltopicname,lbldate,lblyos,lbldegree,lblfaculties,lblinternalexaminer,lblexternalexaminer,lblmaterial,lbltime,lblmark,lblinstructions);
-        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
+        content.addComponents(venue,coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
 
 // Alignment of components
 
@@ -178,6 +178,15 @@ public class ExamView extends HorizontalLayout implements View {
         content.setSizeFull();
         addComponentsAndExpand(labels,content);
         exe.setWidth(100.0f, Unit.PIXELS);
+        txttopicname.setWidth(300.0f, Unit.PIXELS);
+        txtVenue.setWidth(300.0f, Unit.PIXELS);
+        txtcoursecode.setWidth(300.0f, Unit.PIXELS);
+        txtdate.setWidth(300.0f, Unit.PIXELS);
+        txtdegree.setWidth(300.0f, Unit.PIXELS);
+        txtexternalexaminer.setWidth(300.0f, Unit.PIXELS);
+        txtfaculties.setWidth(300.0f, Unit.PIXELS);
+        txtinstructions.setWidth(300.0f, Unit.PIXELS);
+
 
 
     }
