@@ -87,7 +87,7 @@ public class SignUpView extends VerticalLayout implements View {
                         navigator.navigateTo("editor");
                     }
                     else {
-                    Notification.show("area Field", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("ground Field", Notification.Type.ERROR_MESSAGE);
                 }
 
 
