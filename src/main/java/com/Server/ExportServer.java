@@ -43,8 +43,8 @@ public class ExportServer {
         String lq = "\\question{Short Questions}\n" +
                 "\n" +
                 "\\begin{enumerate}\n";
-        System.out.println(lq);
-        System.out.println(trackzy.size());
+        //System.out.println(lq);
+        //System.out.println(trackzy.size());
         for(int i = 0;i<trackzy.size();i++){
             TrackItem ti = trackzy.get(i);
             QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
@@ -55,13 +55,31 @@ public class ExportServer {
                     lines = lines+" \\ansline";
                 }
                 lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+lines+"\n\n";
-                System.out.println("ifffffS");
+                //System.out.println("ifffffS");
+            }
+            else if(s.getQuestionType().equals("practical")){
+                String Input = qs.getInputById(s.getQuestionId());
+                String Output = qs.getOutputById(s.getQuestionId());
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"\\begin{enumerate}\n"+"Sample Input"+
+                        "\\item \\texttt{"+Input+"}\n"+ "Sample Output"+"\\item \\texttt{"+ Output+"}"+"\\end{enumerate}";
+
+            }
+            else if(s.getQuestionType().equals("mcq")){
+                String choice = qs.getMCQchoiceById(s.getQuestionId());
+                System.out.println(choice+"choices  "+s.getQuestionId());
+                String[] ch = choice.split(";");
+                String choices = "\\item \\texttt{"+ch[0]+"}";
+                for(int x=1;x<ch.length;x++){
+                    choices = "\n"+choices+"\\item \\texttt{"+ch[x]+"}";
+                }
+
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"\\begin{enumerate}"+choices+"\n"+"\\end{enumerate}";
             }
 
         }
 
         lq=lq+"\\end{enumerate}\n";
-        System.out.println(lq);
+        //System.out.println(lq);
         return lq;
     }
 
@@ -99,7 +117,7 @@ public class ExportServer {
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
                 String str = GenerateLatex(ex)+latexQuestion(get(25))+"\\end{document}";
                 System.out.println(latexQuestion(get(25)));
-                System.out.println(str);
+                //System.out.println(str);
                 writer.write(str);
                // writer.write(latexQuestion(get(28)));
                // writer.write("\\end{document}");
