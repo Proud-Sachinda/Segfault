@@ -29,7 +29,7 @@ public class CourseServer {
             // get database variables
 
 
-            // query
+            // quer
             String query = "SELECT DISTINCT * FROM public.course";
             PreparedStatement statement = connection.prepareStatement(query);
 

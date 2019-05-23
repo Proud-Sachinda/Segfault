@@ -106,7 +106,7 @@ public class SignInView extends VerticalLayout implements View {
         // if lecturer has been signed in navigate
         Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
 
-        if (auth != null) {
+        if (auth == null) {
 
             // check if nav cookie exists
             Cookie nav = CookieHandling.getCookieByName("nav");
