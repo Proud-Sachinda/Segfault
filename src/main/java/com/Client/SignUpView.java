@@ -4,6 +4,7 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Dashboard;
+import com.Server.LecturerServer;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
@@ -57,6 +58,9 @@ public class SignUpView extends VerticalLayout implements View {
 
                 boolean success = false;
 
+                LecturerServer lecturerServer = new LecturerServer(connection);
+                lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue());
+
                     //Check if the fields are empty or not
                     if (tex1.getValue().isEmpty()) {
                         success = false;
@@ -83,6 +87,11 @@ public class SignUpView extends VerticalLayout implements View {
                     else {
                     Notification.show("Required Field", Notification.Type.ERROR_MESSAGE);
                 }
+                    System.out.println(tex1.getValue());
+                    System.out.println(tex2.getValue());
+                    System.out.println(tex3.getValue());
+                    System.out.println(tex4.getValue());
+
 
 
 
