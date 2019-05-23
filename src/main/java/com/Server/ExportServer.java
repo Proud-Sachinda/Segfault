@@ -1,6 +1,7 @@
 package com.Server;
 
 import com.Objects.ExportItem;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 public class ExportServer {
     // connection variable
@@ -183,6 +185,34 @@ public class ExportServer {
         return tracks;
     }
 
+    public int getTestITemQuestionCount(int testId) {
 
+        // return variable
+        int count = 0;
 
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT DISTINCT * FROM public.track WHERE test_id = " + testId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            LinkedHashSet<Integer> counter = new LinkedHashSet<>();
+
+            while(set.next()) {
+                counter.add(set.getInt("question_number"));
+            }
+
+            count = counter.size();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
 }
