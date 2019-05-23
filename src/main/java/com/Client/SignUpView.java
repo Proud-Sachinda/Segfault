@@ -57,6 +57,8 @@ public class SignUpView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 boolean success = false;
+                boolean valid = true;
+                String password;
 
                 LecturerServer lecturerServer = new LecturerServer(connection);
                 lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue());
@@ -85,13 +87,8 @@ public class SignUpView extends VerticalLayout implements View {
                         navigator.navigateTo("editor");
                     }
                     else {
-                    Notification.show("Required Field", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Requied Field", Notification.Type.ERROR_MESSAGE);
                 }
-                    System.out.println(tex1.getValue());
-                    System.out.println(tex2.getValue());
-                    System.out.println(tex3.getValue());
-                    System.out.println(tex4.getValue());
-
 
 
 
