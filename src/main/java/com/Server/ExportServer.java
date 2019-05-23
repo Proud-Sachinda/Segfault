@@ -1,6 +1,7 @@
 package com.Server;
 
 import com.Objects.ExportItem;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 public class ExportServer {
     // connection variable
@@ -34,13 +36,25 @@ public class ExportServer {
 
     public String latexQuestion(ArrayList<TrackItem> trackzy){
         qs  = new QuestionServer(connection);
-        String lq = "";
+        String lq = "\\question{Short Questions}\n" +
+                "\n" +
+                "\\begin{enumerate}\n";
         for(int i = 0;i<trackzy.size();i++){
             TrackItem ti = trackzy.get(i);
             QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
+            String lines = "\\ansline";
+            for(int x=0;x<=s.getQuestionWrittenNoOfLines();i++){
+                lines = lines+" \\ansline";
+
+            }
+            if(s.getQuestionType() == "written"){
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+lines+"\n\n";
+
+            }
         }
 
-        return "";
+        lq=lq+"\\end{enumerate}\n";
+        return lq;
     }
 
     public void method(ExportItem ex) {
@@ -75,6 +89,8 @@ public class ExportServer {
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
                 writer.write(GenerateLatex(ex));
+                //writer.write(latexQuestion());
+                writer.write("\\end{document}");
                 writer.close();
                 writer.close();
             } else {
@@ -183,6 +199,34 @@ public class ExportServer {
         return tracks;
     }
 
+    public int getTestITemQuestionCount(int testId) {
 
+        // return variable
+        int count = 0;
 
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT DISTINCT * FROM public.track WHERE test_id = " + testId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            LinkedHashSet<Integer> counter = new LinkedHashSet<>();
+
+            while(set.next()) {
+                counter.add(set.getInt("question_number"));
+            }
+
+            count = counter.size();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
 }
