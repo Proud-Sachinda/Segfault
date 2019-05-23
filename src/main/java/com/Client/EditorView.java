@@ -26,6 +26,7 @@ import com.vaadin.ui.dnd.DropTargetExtension;
 import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -315,7 +316,9 @@ public class EditorView extends HorizontalLayout implements View {
         // set up root question layout
         verticalLayoutRoot.setMargin(false);
 
-        if (questionArrayList.isEmpty()) {
+        Cookie cookie = CookieHandling.getCookieByName(CookieName.EDIT);
+
+        if (cookie == null || questionArrayList.isEmpty()) {
 
             // show user that they dont have questions in database create question
             verticalLayoutRoot.setSizeFull();
@@ -326,6 +329,7 @@ public class EditorView extends HorizontalLayout implements View {
             // add to root
             verticalLayoutRoot.addComponent(emptyComponent);
             verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
+
         }
         else {
 
