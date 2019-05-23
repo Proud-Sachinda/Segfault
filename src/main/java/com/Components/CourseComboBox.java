@@ -29,6 +29,10 @@ public class CourseComboBox extends ComboBox<CourseItem> {
         return courseId;
     }
 
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
     public void addComboBoxValueChangeListener() {
 
         // add listener

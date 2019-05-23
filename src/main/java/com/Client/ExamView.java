@@ -39,6 +39,8 @@ public class ExamView extends HorizontalLayout implements View {
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
+    final VerticalLayout labels = new VerticalLayout();
+    final HorizontalLayout venue = new HorizontalLayout();
     final HorizontalLayout coursecode = new HorizontalLayout();
     final HorizontalLayout topicname = new HorizontalLayout();
     final HorizontalLayout date = new HorizontalLayout();
@@ -81,6 +83,8 @@ public class ExamView extends HorizontalLayout implements View {
     final TextField txtmaterial = new TextField();
     final TextField txttime = new TextField();
     final TextField txtmark = new TextField();
+    final TextField txtVenue = new TextField();
+    final Label lblVenue = new Label("Venue");
     final TextArea txtinstructions = new TextArea();
     final Button exe = new Button("export");
     final Binder<ExamView> binder = new Binder<>();
@@ -129,41 +133,54 @@ public class ExamView extends HorizontalLayout implements View {
 
 
         //add components under each respective layout
-        coursecode.addComponents(lblcoursecode, txtcoursecode);
-        topic.addComponents(lbltopicname, txttopicname);
-        date.addComponents(lbldate, txtdate);
-        yos.addComponents(lblyos, txtyos);
-        degree.addComponents(lbldegree, txtdegree);
-        faculties.addComponents(lblfaculties, txtfaculties);
-        internalexaminer.addComponents(lblinternalexaminer, txtinternalexaminer);
-        externalexaminer.addComponents(lblexternalexaminer, txtexternalexaminer);
-        material.addComponents(lblmaterial, txtmaterial);
-        time.addComponents(lbltime, txttime);
-        mark.addComponents(lblmark, txtmark);
-        instructions.addComponents(lblinstructions, txtinstructions);
-        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
+        venue.addComponent(txtVenue);
+        coursecode.addComponents(txtcoursecode);
+        topic.addComponents( txttopicname);
+        date.addComponents( txtdate);
+        yos.addComponents( txtyos);
+        degree.addComponents( txtdegree);
+        faculties.addComponents( txtfaculties);
+        internalexaminer.addComponents( txtinternalexaminer);
+        externalexaminer.addComponents( txtexternalexaminer);
+        material.addComponents( txtmaterial);
+        time.addComponents( txttime);
+        mark.addComponents( txtmark);
+        instructions.addComponents( txtinstructions);
+        labels.addComponents(lblVenue,lblcoursecode,lbltopicname,lbldate,lblyos,lbldegree,lblfaculties,lblinternalexaminer,lblexternalexaminer,lblmaterial,lbltime,lblmark,lblinstructions);
+        content.addComponents(venue,coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
 
 // Alignment of components
 
-        content.setComponentAlignment(coursecode, Alignment.TOP_CENTER);
-        content.setComponentAlignment(mark,Alignment.MIDDLE_CENTER);
-        content.setComponentAlignment(time, Alignment.TOP_CENTER);
-        content.setComponentAlignment(faculties, Alignment.TOP_CENTER);
-        content.setComponentAlignment(degree, Alignment.TOP_CENTER);
-        content.setComponentAlignment(instructions, Alignment.TOP_CENTER);
-        content.setComponentAlignment(internalexaminer, Alignment.TOP_CENTER);
-        content.setComponentAlignment(externalexaminer, Alignment.TOP_CENTER);
-        content.setComponentAlignment(material, Alignment.TOP_CENTER);
-        content.setComponentAlignment(yos, Alignment.TOP_CENTER);
-        content.setComponentAlignment(topic, Alignment.TOP_CENTER);
-        content.setComponentAlignment(date, Alignment.TOP_CENTER);
+        content.setComponentAlignment(coursecode, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(mark,Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(time, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(faculties, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(degree, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(instructions, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(internalexaminer, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(externalexaminer, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(material, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(yos, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(topic, Alignment.MIDDLE_LEFT);
+        content.setComponentAlignment(date, Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(exe, Alignment.BOTTOM_RIGHT);
 
 
         // set content area
+        labels.setSizeFull();
+        //addComponentsAndExpand(labels);
         content.setSizeFull();
-        addComponentsAndExpand(content);
+        addComponentsAndExpand(labels,content);
         exe.setWidth(100.0f, Unit.PIXELS);
+        txttopicname.setWidth(300.0f, Unit.PIXELS);
+        txtVenue.setWidth(300.0f, Unit.PIXELS);
+        txtcoursecode.setWidth(300.0f, Unit.PIXELS);
+        txtdate.setWidth(300.0f, Unit.PIXELS);
+        txtdegree.setWidth(300.0f, Unit.PIXELS);
+        txtexternalexaminer.setWidth(300.0f, Unit.PIXELS);
+        txtfaculties.setWidth(300.0f, Unit.PIXELS);
+        txtinstructions.setWidth(300.0f, Unit.PIXELS);
+
 
 
     }

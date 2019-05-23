@@ -30,6 +30,7 @@ public class CookieHandling {
         // get cookie
         Cookie cookie = getCookieByName(name);
 
+        if (cookie != null)
         // delete
         cookie.setMaxAge(0);
     }
