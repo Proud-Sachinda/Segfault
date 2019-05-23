@@ -82,7 +82,7 @@ public class LibraryView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
         // set content area
