@@ -17,12 +17,6 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -40,6 +34,7 @@ public class ExamView extends HorizontalLayout implements View {
     protected final String export = "export";
 
     ExportItem ex = new ExportItem();
+    ExportServer es ;
 
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
@@ -99,6 +94,7 @@ public class ExamView extends HorizontalLayout implements View {
 
     public ExamView(Navigator navigator, Connection connection) {
 
+        es = new ExportServer(connection);
         // we get the Apps Navigator object
         this.navigator = navigator;
 
@@ -117,7 +113,9 @@ public class ExamView extends HorizontalLayout implements View {
         exe.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                method();
+                ex = getExport();
+                es.method(ex);
+                //cs.method(ex);
 
 
             }
@@ -177,7 +175,7 @@ public class ExamView extends HorizontalLayout implements View {
         return questionServer.getQuestionItemById(id);
     }
 
-    public void getExport(){
+    public ExportItem getExport(){
       ex.setCoursecode(txtcoursecode.getValue());
       ex.setDate(txtdate.getValue());
       ex.setDegree(txtdegree.getValue());
@@ -191,10 +189,11 @@ public class ExamView extends HorizontalLayout implements View {
       ex.setTopicname(txttopicname.getValue());
       ex.setYos(txtyos.getValue());
 
+      return  ex;
+
     }
 
-    public void method() {
-        String str = "Hello";
+   /* public void method(ExportItem ex) {
 
         File f = new File("C:\\Users\\User\\Desktop\\aaa");
        // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
@@ -225,7 +224,7 @@ public class ExamView extends HorizontalLayout implements View {
 
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
-                writer.write(GenerateLatex());
+                writer.write(GenerateLatex(ex));
                 writer.close();
                 writer.close();
             } else {
@@ -234,11 +233,10 @@ public class ExamView extends HorizontalLayout implements View {
         } catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public String GenerateLatex(){
+   /* public String GenerateLatex(ExportItem ex){
 
-        getExport();
         String Venue = "Old Mutual Sports Hall";
         String setup = "\\documentclass[a4paper,11pt]{article}\n" +
                 "\\usepackage{xcolor}\n" +
@@ -291,7 +289,7 @@ public class ExamView extends HorizontalLayout implements View {
 
 
         return setup+"\n"+FrontPage;
-    }
+    }*/
 
     //method for retreiving tracks
     public ArrayList<TrackItem> retreivetracks() {
