@@ -28,10 +28,11 @@ public class CourseServer {
         try {
 
             // get database variables
-            Statement statement = connection.createStatement();
+
 
             // query
             String query = "SELECT DISTINCT * FROM public.course";
+            PreparedStatement statement = connection.prepareStatement(query);
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
