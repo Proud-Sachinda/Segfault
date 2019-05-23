@@ -34,13 +34,25 @@ public class ExportServer {
 
     public String latexQuestion(ArrayList<TrackItem> trackzy){
         qs  = new QuestionServer(connection);
-        String lq = "";
+        String lq = "\\question{Short Questions}\n" +
+                "\n" +
+                "\\begin{enumerate}\n";
         for(int i = 0;i<trackzy.size();i++){
             TrackItem ti = trackzy.get(i);
             QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
+            String lines = "\\ansline";
+            for(int x=0;x<=s.getQuestionWrittenNoOfLines();i++){
+                lines = lines+" \\ansline";
+
+            }
+            if(s.getQuestionType() == "written"){
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+lines+"\n\n";
+
+            }
         }
 
-        return "";
+        lq=lq+"\\end{enumerate}\n";
+        return lq;
     }
 
     public void method(ExportItem ex) {
@@ -75,6 +87,8 @@ public class ExportServer {
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
                 writer.write(GenerateLatex(ex));
+                //writer.write(latexQuestion());
+                writer.write("\\end{document}");
                 writer.close();
                 writer.close();
             } else {
