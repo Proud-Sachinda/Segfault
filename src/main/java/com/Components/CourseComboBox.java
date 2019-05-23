@@ -12,17 +12,19 @@ public class CourseComboBox extends ComboBox<CourseItem> {
 
     public CourseComboBox(ArrayList<CourseItem> items) {
 
-        // set items
-        setItems(items);
+        if (!items.isEmpty()) {
+            // set items
+            setItems(items);
 
-        // set item caption generator
-        setItemCaptionGenerator(CourseItem::getCourseFullName);
+            // set item caption generator
+            setItemCaptionGenerator(CourseItem::getCourseFullName);
 
-        // set place holder
-        setPlaceholder("e.g: MATH1036 or Algebra");
+            // set place holder
+            setPlaceholder("e.g: MATH1036 or Algebra");
 
-        // caption
-        setCaption("Subject");
+            // caption
+            setCaption("Subject");
+        }
     }
 
     public int getCourseId() {
