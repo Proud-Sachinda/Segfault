@@ -223,12 +223,20 @@
     border-right-color: #323232;
   }
 
+  .dashed-bottom {
+    border-bottom: dashed 1px #323232;
+  }
+
   .card-border {
     padding: 8px;
     background: white;
     border-radius: 8px;
     border: 1px solid #e1e1e1;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-border:hover {
+    background: linen;
   }
 
   .main-flat-difficulty-badge-1 {
@@ -257,6 +265,24 @@
     font-weight: 500;
     border-radius: 8px;
     background: #43b05c;
+  }
+
+  .main-flat-course-add-button {
+    color: white;
+    width: 40px;
+    height: 40px;
+    outline: none;
+    font-weight: 900;
+    border-radius: 50%;
+    border-style: none;
+    text-align: center;
+    background-image: none;
+    background-color: #2c5aa0;
+    box-shadow: 1px 1px 3px rgba(71, 71, 71, 0.87)
+  }
+
+  .main-flat-course-add-button:hover {
+    opacity: 0.85;
   }
 
   .main-flat-finish-button:hover {

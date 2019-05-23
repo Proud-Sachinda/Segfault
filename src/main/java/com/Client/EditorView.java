@@ -1,7 +1,7 @@
 package com.Client;
 
 import com.Components.CourseComboBox;
-import com.Components.EmptyQuestionsComponent;
+import com.Components.EmptyComponent;
 import com.Components.QuestionItemComponent;
 import com.Components.QuestionPaperItemComponent;
 import com.CookieHandling.CookieHandling;
@@ -10,6 +10,7 @@ import com.Dashboard;
 import com.MyTheme;
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
+import com.Objects.TestItem;
 import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
@@ -25,6 +26,7 @@ import com.vaadin.ui.dnd.DropTargetExtension;
 import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public class EditorView extends HorizontalLayout implements View {
     private ArrayList<QuestionItemComponent> questionItemComponents = new ArrayList<>();
 
     // empty component
-    private EmptyQuestionsComponent emptyQuestionsComponent = new EmptyQuestionsComponent(basePath);
+    private EmptyComponent emptyComponent = new EmptyComponent(basePath);
 
     // dashboard
     private Dashboard dashboard;
@@ -159,10 +161,6 @@ public class EditorView extends HorizontalLayout implements View {
             if (success) Notification.show("SUCCESS", "Question added", Notification.Type.TRAY_NOTIFICATION);
             VaadinService.getCurrentRequest().setAttribute("question-post", false);
         }
-    }
-
-    public EmptyQuestionsComponent getEmptyQuestionsComponent() {
-        return this.emptyQuestionsComponent;
     }
 
     private void setUpPaperExplorer() {
@@ -318,23 +316,26 @@ public class EditorView extends HorizontalLayout implements View {
         // set up root question layout
         verticalLayoutRoot.setMargin(false);
 
-        if (questionArrayList.isEmpty()) {
+        Cookie cookie = CookieHandling.getCookieByName(CookieName.EDIT);
+
+        if (cookie == null || questionArrayList.isEmpty()) {
 
             // show user that they dont have questions in database create question
             verticalLayoutRoot.setSizeFull();
 
             // no questions found
-            emptyQuestionsComponent.setQuestionType(EmptyQuestionsComponent.FIRST);
+            emptyComponent.setType(EmptyComponent.FIRST);
 
             // add to root
-            verticalLayoutRoot.addComponent(emptyQuestionsComponent);
-            verticalLayoutRoot.setComponentAlignment(emptyQuestionsComponent, Alignment.MIDDLE_CENTER);
+            verticalLayoutRoot.addComponent(emptyComponent);
+            verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
+
         }
         else {
 
             // remove empty question component
             verticalLayoutRoot.setHeightUndefined();
-            verticalLayoutRoot.removeComponent(emptyQuestionsComponent);
+            verticalLayoutRoot.removeComponent(emptyComponent);
 
             // remove all
             verticalLayoutRoot.removeAllComponents();
@@ -437,12 +438,25 @@ public class EditorView extends HorizontalLayout implements View {
             empty.addStyleName(MyTheme.MAIN_OPACITY_60);
 
             // create draft label
+            HorizontalLayout header = new HorizontalLayout();
+            header.setWidth(100f, Unit.PERCENTAGE);
             Label label = new Label("New draft");
+            header.addComponent(label);
             label.addStyleName(MyTheme.MAIN_TEXT_WARNING);
             label.addStyleName(MyTheme.MAIN_TEXT_SIZE_LARGE);
 
+            // check box for test/exam
+            CheckBox isTest = new CheckBox("Test");
+            isTest.addStyleName(ValoTheme.LAYOUT_CARD);
+            header.addComponent(isTest);
+
+            // align header items
+            header.setComponentAlignment(label, Alignment.MIDDLE_LEFT);
+            header.setComponentAlignment(isTest, Alignment.MIDDLE_RIGHT);
+
             // create draft input field
             TextField textField = new TextField();
+            textField.setMaxLength(25);
             textField.setWidth(100.0f, Unit.PERCENTAGE);
             textField.setPlaceholder("Enter draft name");
 
@@ -466,8 +480,11 @@ public class EditorView extends HorizontalLayout implements View {
                     String s = (Character.toString(textFieldValue.charAt(0))).toUpperCase();
                     draftName = s.concat(textFieldValue.substring(1));
 
+                    // create test item
+                    TestItem testItem = new TestItem(true, !isTest.getValue(), draftName);
+
                     // take to database
-                    testId = testServer.postToTestTable(true, draftName, comboBox.getCourseId());
+                    testId = testServer.postToTestTable(testItem, comboBox.getCourseId(), lecturerItem.getLecturerId());
                     if (!(testId > 0))
                         Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
@@ -487,7 +504,7 @@ public class EditorView extends HorizontalLayout implements View {
             });
 
             // add components
-            addComponents(empty, label, textField, comboBox, submit);
+            addComponents(empty, header, textField, comboBox, submit);
 
             // align in middle
             setComponentAlignment(empty, Alignment.MIDDLE_CENTER);
@@ -635,9 +652,9 @@ public class EditorView extends HorizontalLayout implements View {
 
                     // remove component from vertical layout root
                     if (verticalLayoutRoot.getComponentCount() == 1) {
-                        emptyQuestionsComponent.setQuestionType(EmptyQuestionsComponent.NO_MORE_QUESTIONS);
-                        verticalLayoutRoot.addComponent(emptyQuestionsComponent);
-                        verticalLayoutRoot.setComponentAlignment(emptyQuestionsComponent, Alignment.TOP_CENTER);
+                        emptyComponent.setType(EmptyComponent.NO_MORE_QUESTIONS);
+                        verticalLayoutRoot.addComponent(emptyComponent);
+                        verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.TOP_CENTER);
                     }
                     else verticalLayoutRoot.removeComponent(findQuestionItemComponent(qId));
 
@@ -645,7 +662,7 @@ public class EditorView extends HorizontalLayout implements View {
                     QuestionPaperItemComponent itemComponent =
                             new QuestionPaperItemComponent(bulletIncrement, qId, questionServer, basePath,
                                     paperItemComponentArrayList, dropArea, questionItemComponents, verticalLayoutRoot,
-                                    emptyQuestionsComponent);
+                                    emptyComponent);
                     paperItemComponentArrayList.add(itemComponent);
                     dropArea.addComponent(itemComponent);
 

@@ -1,4 +1,14 @@
 -------------------------------------------------------------------------------
 Test set: com.Server.TestServerTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in com.Server.TestServerTest
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.035 s <<< FAILURE! - in com.Server.TestServerTest
+postToTestTable  Time elapsed: 0.035 s  <<< FAILURE!
+org.mockito.exceptions.verification.WantedButNotInvoked: 
+
+Wanted but not invoked:
+connection.createStatement();
+-> at com.Server.TestServerTest.postToTestTable(TestServerTest.java:56)
+Actually, there were zero interactions with this mock.
+
+	at com.Server.TestServerTest.postToTestTable(TestServerTest.java:56)
+

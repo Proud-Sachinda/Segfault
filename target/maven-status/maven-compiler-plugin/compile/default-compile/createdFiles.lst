@@ -1,12 +1,13 @@
+com\Client\SignInView$1.class
+com\Client\SignUpView$1.class
 com\Server\CourseServer.class
+com\Objects\ExportItem.class
 com\Client\LibraryView.class
 com\Components\TagItemsComponent$1.class
 com\Client\CreateView.class
 com\Components\QuestionItemComponent.class
-com\Client\LibraryView$CourseComponent.class
 com\Client\EditorView$CreateDraftComponent.class
-com\Client\LibraryView$1.class
 com\Client\EditorView.class
 com\Client\EditorView$QuestionPaginationComponent.class
 com\Client\EditorView$1.class
-com\Client\LibraryView$2.class
+com\Client\SignUpView.class

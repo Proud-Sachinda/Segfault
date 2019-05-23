@@ -3,6 +3,7 @@ package com.Server;
 import com.Objects.CourseItem;
 import com.vaadin.ui.NativeSelect;
 
+import javax.validation.constraints.NotNull;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -13,6 +14,11 @@ public class CourseServer {
 
     CourseItem course = new CourseItem();
 
+    public CourseServer(Connection connection){
+
+        // initialise connection variable
+        this.connection = connection;
+    }
 
     public ArrayList<CourseItem> getCourseItems() {
 
@@ -22,13 +28,15 @@ public class CourseServer {
         try {
 
             // get database variables
-            Statement statement = connection.createStatement();
+
 
             // query
-            String query = "SELECT * FROM public.course";
+            String query = "SELECT DISTINCT * FROM public.course";
+            PreparedStatement statement = connection.prepareStatement(query);
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
+
             while(set.next()) {
                 // CourseItem class variable
                 CourseItem item = new CourseItem();
@@ -47,13 +55,7 @@ public class CourseServer {
         return courseItems;
     }
 
-    public CourseServer(Connection connection){
-        this.connection = connection;
-    }
-
-
-
-
+    // -------------------------------- GET METHODS (SELECT)
     public boolean ShowCourse(CourseItem c){
         String coursename = c.getCourseName();
         String coursecode = c.getCourseCode();
@@ -119,27 +121,74 @@ public class CourseServer {
         return item;
     }
 
+    // -------------------------------- POST METHODS (INSERT)
     public boolean PostCourse(CourseItem c){
-        String coursename = c.getCourseName();
-        String coursecode = c.getCourseCode();
 
-        try{
+        // course variables
+        String courseName = c.getCourseName();
+        String courseCode = c.getCourseCode();
+
+        try {
+
+            // query
             String query = "INSERT INTO public.course(course_name, course_code) VALUES (?,?)";
 
+            // statement
             PreparedStatement ps = connection.prepareStatement(query);
 
-            ps.setString(1,coursename);
-            ps.setString(2,coursecode);
+            // set statement strings
+            ps.setString(1,courseName);
+            ps.setString(2,courseCode);
 
-            int set2 = ps.executeUpdate();
+            // execute
+            int set = ps.executeUpdate();
 
-            return set2 > 0;
+            return set > 0;
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
+    }
 
+    public int postToCourseTable(CourseItem item) {
+
+        //
+        // return variable
+        int courseId = 0;
+
+        try {
+
+            // query
+            String query = "INSERT INTO public.course(course_name, course_code) VALUES " +
+                    "('" + item.getCourseName() + "', '" + item.getCourseCode() + "')";
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // execute statement
+            courseId = statement.executeUpdate(query);
+
+            // get test id
+            if (courseId > 0) {
+
+                query = "SELECT course_id FROM course ORDER BY course_id DESC LIMIT 1";
+
+                // execute statement
+                ResultSet resultSet = statement.executeQuery(query);
+
+                while (resultSet.next()) {
+                    courseId = resultSet.getInt("course_id");
+                }
+            }
+            else courseId = 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        return courseId;
+    }
 
 
     public CourseItem getCourse(){

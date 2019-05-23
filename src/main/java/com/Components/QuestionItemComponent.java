@@ -180,7 +180,7 @@ public class QuestionItemComponent extends VerticalLayout {
         Label subject = new Label();
         subject.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
         TagItemsComponent tags = new TagItemsComponent(tagServer, basePath, questionItem.getQuestionId());
-        if (!tags.isEmpty()) shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
+        if (!tags.isEmpty()) CourseItem.shortenCourseNameIfTooLong(courseItem.getCourseName(), subject);
         else subject.setValue(courseItem.getCourseName());
         thirdRow.addComponents(courseCode, subject, tags);
         thirdRow.setComponentAlignment(tags, Alignment.MIDDLE_LEFT);
@@ -226,27 +226,6 @@ public class QuestionItemComponent extends VerticalLayout {
                 removeAllComponents();
             }
         });
-    }
-
-   private void shortenCourseNameIfTooLong(String string, Label label) {
-
-        // if shorter than 20 characters send back string
-        if (string.length() < 20) label.setValue(string);
-        else {
-            // get acronym
-            String [] acronym = string.split(" ");
-
-            // null string
-            StringBuilder tmp = new StringBuilder();
-
-            for (String s : acronym)
-                if (!s.toLowerCase().equals("to") && !s.toLowerCase().equals("and"))
-                    tmp.append(s.charAt(0));
-
-            // set label
-            label.setValue(tmp.toString().toUpperCase().trim());
-            label.setDescription(string);
-        }
     }
 
     private void setUpMarksLabel() {
