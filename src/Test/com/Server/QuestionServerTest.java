@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import javax.validation.constraints.AssertTrue;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ class QuestionServerTest {
         Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
         Mockito.when(resultSet.getInt("question_id")).thenReturn(10);
 
+
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
 
@@ -110,6 +112,24 @@ class QuestionServerTest {
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Mockito.verify(resultSet, Mockito.times(1)).getInt("question_id");
         //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
+    }
+
+
+    @Test
+    void incrementQuestionItemVariance()  throws Exception{
+
+
+
+
+
+        qvs = new QuestionServer(connection);
+        qvs.incrementQuestionItemVariance(5);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+       // Mockito.verify(preparedStatement, Mockito.times(1)).setInt(anyInt(), anyInt());
+        //Mockito.verify(preparedStatement, Mockito.times(1)).setString(anyInt(), anyString());
+       // Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
+
+        Assert.assertTrue(qvs.incrementQuestionItemVariance(5));
     }
 
     @Test

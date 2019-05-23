@@ -47,6 +47,7 @@ class CourseServerTest {
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
 
     }
 
