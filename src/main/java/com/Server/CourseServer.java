@@ -1,7 +1,6 @@
 package com.Server;
 
 import com.Objects.CourseItem;
-import com.vaadin.ui.NativeSelect;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +12,11 @@ public class CourseServer {
 
     CourseItem course = new CourseItem();
 
+    public CourseServer(Connection connection){
+
+        // initialise connection variable
+        this.connection = connection;
+    }
 
     public ArrayList<CourseItem> getCourseItems() {
 
@@ -46,12 +50,6 @@ public class CourseServer {
         }
 
         return courseItems;
-    }
-
-    public CourseServer(Connection connection){
-
-        // initialise connection variable
-        this.connection = connection;
     }
 
     // -------------------------------- GET METHODS (SELECT)

@@ -3,7 +3,6 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Server.LecturerServer;
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -54,17 +53,17 @@ public class SignInView extends VerticalLayout implements View {
         LoginForm component = new LoginForm();
 
         // component listener
-//        component.addLoginListener((LoginForm.LoginListener) event -> {
-//
-//            // authentication variable
-//            boolean auth =  false; //lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
-//
-//            if (auth) {
-//                // navigate to page
-//                navigator.navigateTo("editor");
-//
-//            } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
-//        });
+        component.addLoginListener((LoginForm.LoginListener) event -> {
+
+            // authentication variable
+            boolean auth =  lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
+
+            if (auth) {
+                // navigate to page
+                navigator.navigateTo("editor");
+
+            } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
+        });
 
         // add button component
         HorizontalLayout layout =  new HorizontalLayout();
@@ -105,7 +104,7 @@ public class SignInView extends VerticalLayout implements View {
         if (message != null) Notification.show(message, Notification.Type.ERROR_MESSAGE);
 
         // if lecturer has been signed in navigate
-        Cookie auth = null; // CookieHandling.getCookieByName(CookieName.AUTH);
+        Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
 
         if (auth != null) {
 

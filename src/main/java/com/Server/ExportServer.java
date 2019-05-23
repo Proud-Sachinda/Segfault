@@ -1,7 +1,6 @@
 package com.Server;
 
 import com.Objects.ExportItem;
-import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 
@@ -11,7 +10,10 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
@@ -21,6 +23,7 @@ public class ExportServer {
 
     TrackItem tracky = new TrackItem();
     QuestionServer qs ;
+    ExportServer es;
 
     public ExportServer(Connection connection) {
 
@@ -36,28 +39,36 @@ public class ExportServer {
 
     public String latexQuestion(ArrayList<TrackItem> trackzy){
         qs  = new QuestionServer(connection);
+        System.out.println("latex");
         String lq = "\\question{Short Questions}\n" +
                 "\n" +
                 "\\begin{enumerate}\n";
+        System.out.println(lq);
+        System.out.println(trackzy.size());
         for(int i = 0;i<trackzy.size();i++){
             TrackItem ti = trackzy.get(i);
             QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
             String lines = "\\ansline";
-            for(int x=0;x<=s.getQuestionWrittenNoOfLines();i++){
+            for(int x=0;x<=s.getQuestionWrittenNoOfLines();x++){
                 lines = lines+" \\ansline";
+                System.out.println(s.getQuestionBody());
 
             }
-            if(s.getQuestionType() == "written"){
+           // if(s.getQuestionType() == "written"){
                 lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+lines+"\n\n";
+                System.out.println(s.getQuestionBody());
 
-            }
+
+           // }
         }
 
         lq=lq+"\\end{enumerate}\n";
+        System.out.println(lq);
         return lq;
     }
 
     public void method(ExportItem ex) {
+        es = new ExportServer(connection);
 
         File f = new File("C:\\Users\\User\\Desktop\\aaa");
         // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
@@ -88,9 +99,12 @@ public class ExportServer {
 
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
-                writer.write(GenerateLatex(ex));
-                //writer.write(latexQuestion());
-                writer.write("\\end{document}");
+                String str = GenerateLatex(ex)+latexQuestion(get(25))+"\\end{document}";
+                System.out.println(latexQuestion(get(25)));
+                System.out.println(str);
+                writer.write(str);
+               // writer.write(latexQuestion(get(28)));
+               // writer.write("\\end{document}");
                 writer.close();
                 writer.close();
             } else {
@@ -103,7 +117,9 @@ public class ExportServer {
 
     public String GenerateLatex(ExportItem exp){
         ExportItem ex = exp;
+        //System.out.println("generate");
         String Venue = "Old Mutual Sports Hall";
+        //System.out.println(Venue);
         String setup = "\\documentclass[a4paper,11pt]{article}\n" +
                 "\\usepackage{xcolor}\n" +
                 "\\usepackage{wits_code}\n" +
@@ -131,6 +147,8 @@ public class ExportServer {
                 "  linkcolor    = blue,              %Colour of internal links\n" +
                 "  citecolor    = darkgreen                %Colour of citations\n" +
                 "}";
+        //System.out.println(Venue);
+        //System.out.println(setup);
         String FrontPage ="\\newcommand{\\todo}{\\textbf{TODO}}\n" +
                 "\\titleHeadTime{" + ex.getTime() + "}\n"+
                 "\\titleHeadDay{"+ ex.getDate()+"}\n"+
@@ -153,8 +171,13 @@ public class ExportServer {
                 "\\begin{document}\n" +
                 "\\makeexamcover";
 
+       // System.out.println(Venue);
 
-        return setup+"\n"+FrontPage;
+        String s = setup+"\n"+FrontPage;
+        //System.out.println(s);
+
+
+        return s;
     }
 
     public ArrayList<TrackItem> get(int testid) {
