@@ -3,6 +3,7 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Server.LecturerServer;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -11,6 +12,8 @@ import com.vaadin.ui.*;
 
 import javax.servlet.http.Cookie;
 import java.sql.Connection;
+
+//import static org.graalvm.compiler.loop.InductionVariable.Direction.Up;
 
 /**
  * This is the first page the app shows
@@ -31,6 +34,7 @@ public class SignInView extends VerticalLayout implements View {
 
     // server
     private LecturerServer lecturerServer;
+    private final Button sign = new Button("Sign Up");
 
     public SignInView(Navigator navigator, Connection connection) {
 
@@ -50,21 +54,41 @@ public class SignInView extends VerticalLayout implements View {
         LoginForm component = new LoginForm();
 
         // component listener
-        component.addLoginListener((LoginForm.LoginListener) event -> {
-
-            // authentication variable
-            boolean auth = lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
-
-            if (auth) {
-                // navigate to page
-                navigator.navigateTo("editor");
-
-            } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
-        });
+//        component.addLoginListener((LoginForm.LoginListener) event -> {
+//
+//            // authentication variable
+//            boolean auth =  false; //lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
+//
+//            if (auth) {
+//                // navigate to page
+//                navigator.navigateTo("editor");
+//
+//            } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
+//        });
 
         // add button component
-        addComponents(component);
-        setComponentAlignment(component, Alignment.MIDDLE_CENTER);
+        HorizontalLayout layout =  new HorizontalLayout();
+        VerticalLayout vert =  new VerticalLayout();
+        vert.addComponents(component,sign);
+        vert.setComponentAlignment(component,Alignment.MIDDLE_LEFT);
+        vert.setComponentAlignment(sign,Alignment.MIDDLE_LEFT);
+        layout.addComponent(vert);
+        addComponents(layout);
+        setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
+
+        // register
+        sign.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+               navigator.navigateTo("signup");
+
+            }
+        });
+
+        //addComponent(sign);
+       // setComponentAlignment(sign,Alignment.MIDDLE_CENTER);
+
     }
 
     @Override
@@ -81,7 +105,7 @@ public class SignInView extends VerticalLayout implements View {
         if (message != null) Notification.show(message, Notification.Type.ERROR_MESSAGE);
 
         // if lecturer has been signed in navigate
-        Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
+        Cookie auth = null; // CookieHandling.getCookieByName(CookieName.AUTH);
 
         if (auth != null) {
 
@@ -93,4 +117,6 @@ public class SignInView extends VerticalLayout implements View {
             else navigator.navigateTo("editor");
         }
     }
+
+
 }

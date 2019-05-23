@@ -19,4 +19,7 @@ public class NavigationStates {
 
     //create tests
     public static final String TEST = "test";
+
+    //Sing Up
+    public static final String SIGNUP =  "signup";
 }

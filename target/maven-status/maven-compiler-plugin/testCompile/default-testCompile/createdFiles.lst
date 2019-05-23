@@ -1,6 +1,6 @@
+com\Server\CourseServerTest.class
+com\Objects\QuestionItemTest.class
 com\Server\ExportServerTest.class
 com\Server\QuestionServerTest.class
-com\Server\CourseServerTest.class
 com\Objects\CourseItemTest.class
 com\Objects\TagItemTest.class
-com\Objects\QuestionItemTest.class
