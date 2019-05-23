@@ -48,18 +48,16 @@ public class ExportServer {
         for(int i = 0;i<trackzy.size();i++){
             TrackItem ti = trackzy.get(i);
             QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
-            String lines = "\\ansline";
-            for(int x=0;x<=s.getQuestionWrittenNoOfLines();x++){
-                lines = lines+" \\ansline";
-                System.out.println(s.getQuestionBody());
-
-            }
-           // if(s.getQuestionType() == "written"){
+            //written question
+            if(s.getQuestionType().equals("written")){
+                String lines = "\\ansline";
+                for(int x=0;x<=s.getQuestionWrittenNoOfLines();x++){
+                    lines = lines+" \\ansline";
+                }
                 lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+lines+"\n\n";
-                System.out.println(s.getQuestionBody());
+                System.out.println("ifffffS");
+            }
 
-
-           // }
         }
 
         lq=lq+"\\end{enumerate}\n";
