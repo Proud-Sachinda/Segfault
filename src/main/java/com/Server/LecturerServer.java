@@ -125,4 +125,29 @@ public class LecturerServer {
 
         return success;
     }
+
+    //--------------------Post Sign Up Methods------------//
+    public boolean authenticationSignUp(String lecturer_id, String lecturer_fname, String lecturer_lname) {
+
+        boolean success = false;
+
+
+        try {
+
+            // insert into core table
+            String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname + "' )";
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            success = statement.execute(query);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
 }

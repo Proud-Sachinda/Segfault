@@ -3,7 +3,6 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Server.LecturerServer;
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -57,7 +56,7 @@ public class SignInView extends VerticalLayout implements View {
         component.addLoginListener((LoginForm.LoginListener) event -> {
 
             // authentication variable
-            boolean auth = lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
+            boolean auth =  lecturerServer.authenticateLecturer(event.getLoginParameter("username").trim());
 
             if (auth) {
                 // navigate to page
@@ -107,19 +106,14 @@ public class SignInView extends VerticalLayout implements View {
         // if lecturer has been signed in navigate
         Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
 
-        if (auth != null) {
-            System.out.println(auth.getValue());
+        if (auth == null) {
+
             // check if nav cookie exists
             Cookie nav = CookieHandling.getCookieByName("nav");
 
-            // check if cookie exists in database
-            if (lecturerServer.authenticateLecturer(auth.getValue())) {
-
-                // navigate to question page by default or nav
-                if (nav != null) navigator.navigateTo(nav.getValue());
-                else navigator.navigateTo("editor");
-            }
-            else CookieHandling.removeCookie(CookieName.AUTH);
+            // navigate to question page by default or nav
+            if (nav != null) navigator.navigateTo(nav.getValue());
+            else navigator.navigateTo("editor");
         }
     }
 

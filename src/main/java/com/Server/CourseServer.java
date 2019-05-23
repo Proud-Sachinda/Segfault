@@ -1,7 +1,6 @@
 package com.Server;
 
 import com.Objects.CourseItem;
-import com.vaadin.ui.NativeSelect;
 
 import javax.validation.constraints.NotNull;
 import java.sql.*;
@@ -27,7 +26,7 @@ public class CourseServer {
             // get database variables
 
 
-            // query
+            // quer
             String query = "SELECT DISTINCT * FROM public.course";
 
             // statement

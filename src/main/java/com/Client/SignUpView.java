@@ -4,6 +4,7 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Dashboard;
+import com.Server.LecturerServer;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
@@ -22,9 +23,10 @@ public class SignUpView extends VerticalLayout implements View {
     //Creating TextField
     private final Button create = new Button("Create Account");
     private final TextField tex1 = new TextField("Lecture Id");
-    private final TextField tex2 =  new TextField("Username");
-    private final TextField tex3 =  new TextField("Password");
-    private final TextField tex4 =  new TextField("Confirm Password");
+    private final TextField tex2 =  new TextField("Lecture First Name");
+    private final TextField tex3 =  new TextField("Lecture Last Name");
+    private final TextField tex4 =  new TextField("Password");
+    private final TextField tex5 =  new TextField("Confirm Password");
 
     public SignUpView(Navigator navigator, Connection connection) {
 
@@ -42,11 +44,12 @@ public class SignUpView extends VerticalLayout implements View {
 
         //Creating Layouts
         VerticalLayout verticalLayout =  new VerticalLayout();
-        verticalLayout.addComponents(tex1,tex2,tex3,tex4,create);
+        verticalLayout.addComponents(tex1,tex2,tex3,tex4,tex5,create);
         verticalLayout.setComponentAlignment(tex1, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(tex2, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(tex3, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(tex4, Alignment.MIDDLE_CENTER);
+        verticalLayout.setComponentAlignment(tex5, Alignment.MIDDLE_CENTER);
         verticalLayout.setComponentAlignment(create, Alignment.MIDDLE_CENTER);
 
         addComponent(verticalLayout);
@@ -56,6 +59,11 @@ public class SignUpView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 boolean success = false;
+                boolean valid = true;
+                String password;
+
+                LecturerServer lecturerServer = new LecturerServer(connection);
+                lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue());
 
                     //Check if the fields are empty or not
                     if (tex1.getValue().isEmpty()) {
@@ -72,6 +80,10 @@ public class SignUpView extends VerticalLayout implements View {
                     }
                     else success = true;
                     if (tex4.getValue().isEmpty()) {
+                        success = false;
+                    }
+                    else success = true;
+                    if (tex5.getValue().isEmpty()) {
                         success = false;
                     }
                     else success = true;

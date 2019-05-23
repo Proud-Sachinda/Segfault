@@ -83,6 +83,96 @@ public class QuestionServer {
         return item;
     }
 
+    public String getMCQchoiceById(int questionId) {
+
+        // create return question item
+        String choices = "";
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "select mcq_choices from mcq_question where question_id =" + questionId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // set variables
+                choices = set.getString("mcq_choices");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return choices;
+    }
+
+    public String getInputById(int questionId) {
+
+        // create return question item
+        String Input = "";
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "select sample_input from practical_question where question_id =" + questionId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // set variables
+                Input = set.getString("sample_input");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Input;
+    }
+
+    public String getOutputById(int questionId) {
+
+        // create return question item
+        String Output = "";
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "select sample_output from practical_question where question_id =" + questionId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // set variables
+                Output = set.getString("sample_output");
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Output;
+    }
+
 
     // -------------------------------- POST METHODS (INSERT)
     public int postToQuestionTable(QuestionItem questionItem, LecturerItem lecturerItem, int course_id) {

@@ -1,5 +1,6 @@
 package com.Server;
 
+import com.Objects.TestItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Matchers.anyString;
 
 class TestServerTest {
-   // TestItem test = new TestItem();
 
     @Mock
     Connection connection;
@@ -51,13 +51,14 @@ class TestServerTest {
 
     @Test
     void postToTestTable() throws Exception{
+        TestItem testitem = new TestItem();
         ts = new TestServer(connection);
-        // int s = ts.postToTestTable(true,"hell",1);
+        int s = (int) ts.postToTestTable(testitem,1,"1");
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
-        //assertNotEquals(0,s);
+        assertNotEquals(0,s);
 
 
     }
