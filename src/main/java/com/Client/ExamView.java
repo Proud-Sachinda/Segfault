@@ -3,6 +3,7 @@ package com.Client;
 import com.CookieHandling.CookieHandling;
 import com.CookieHandling.CookieName;
 import com.Dashboard;
+import com.Objects.ExportItem;
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
@@ -15,15 +16,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.vaadin.ui.themes.ValoTheme;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -34,6 +27,14 @@ public class ExamView extends HorizontalLayout implements View {
 
     // connection for database
     private Connection connection;
+
+    // route strings - nothing special just things like qbank_exploded_war/route_name
+    protected final String question = "question";
+    protected final String course = "course";
+    protected final String export = "export";
+
+    ExportItem ex = new ExportItem();
+    ExportServer es ;
 
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
@@ -97,6 +98,7 @@ public class ExamView extends HorizontalLayout implements View {
 
     public ExamView(Navigator navigator, Connection connection) {
 
+        es = new ExportServer(connection);
         // we get the Apps Navigator object
         this.navigator = navigator;
 
@@ -115,24 +117,16 @@ public class ExamView extends HorizontalLayout implements View {
         exe.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                // ExportServer trackServer = new ExportServer(connection);
-                System.out.println("are you coming");
-                ArrayList<String> Q = new ArrayList<String>();
-                ArrayList<TrackItem> tracks = retreivetracks();
-                for (int i = 0; i < tracks.size(); i++) {
-
-                    QuestionItem q = retreivequestion(tracks.get(i));
-                    String qbody = q.getQuestionBody();
-                    Q.add(qbody);
-                    System.out.println(qbody);
-                }
-
-                CreatePDF(Q);
-                Notification.show(" File saved in C:// Users// Public");
+                ex = getExport();
+                es.method(ex);
+                //cs.method(ex);
 
 
             }
         });
+
+
+
         // set up dashboard
         dashboard = new Dashboard(navigator);
         addComponent(dashboard);
@@ -198,6 +192,122 @@ public class ExamView extends HorizontalLayout implements View {
         return questionServer.getQuestionItemById(id);
     }
 
+    public ExportItem getExport(){
+      ex.setCoursecode(txtcoursecode.getValue());
+      ex.setDate(txtdate.getValue());
+      ex.setDegree(txtdegree.getValue());
+      ex.setExternalexaminer(txtexternalexaminer.getValue());
+      ex.setFaculties(txtfaculties.getValue());
+      ex.setInstructions(txtinstructions.getValue());
+      ex.setInternalexaminer(txtinternalexaminer.getValue());
+      ex.setMark(txtmark.getValue());
+      ex.setMaterial(txtmaterial.getValue());
+      ex.setTime(txttime.getValue());
+      ex.setTopicname(txttopicname.getValue());
+      ex.setYos(txtyos.getValue());
+
+      return  ex;
+
+    }
+
+   /* public void method(ExportItem ex) {
+
+        File f = new File("C:\\Users\\User\\Desktop\\aaa");
+       // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
+        //Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\");
+
+        //copy source to target using Files Class
+        //Files.copy(sourceDirectory, targetDirectory);
+        try{
+            if(f.mkdir()) {
+                System.out.println("Directory Created");
+                Path sourceDirectory = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_code.sty");
+                Path sourceDirectory1 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_exam.sty");
+                Path sourceDirectory2 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_question.sty");
+                Path sourceDirectory3 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_flowchart.sty");
+                Path sourceDirectory4 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_pseudocode.sty");
+
+                Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_code.sty");
+                Path targetDirectory1 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_exam.sty");
+                Path targetDirectory2 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_question.sty");
+                Path targetDirectory3 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_flowchart.sty");
+                Path targetDirectory4 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_pseudocode.sty");
+
+                Files.copy(sourceDirectory, targetDirectory);
+                Files.copy(sourceDirectory1, targetDirectory1);
+                Files.copy(sourceDirectory2, targetDirectory2);
+                Files.copy(sourceDirectory3, targetDirectory3);
+                Files.copy(sourceDirectory4, targetDirectory4);
+
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
+                writer.write(GenerateLatex(ex));
+                writer.close();
+                writer.close();
+            } else {
+                System.out.println("Directory is not created");
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }*/
+
+   /* public String GenerateLatex(ExportItem ex){
+
+        String Venue = "Old Mutual Sports Hall";
+        String setup = "\\documentclass[a4paper,11pt]{article}\n" +
+                "\\usepackage{xcolor}\n" +
+                "\\usepackage{wits_code}\n" +
+                "\\usepackage{wits_exam}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{graphicx}\n" +
+                "\\usepackage{array}\n" +
+                "%\\usepackage{wits_flowchart}\n" +
+                "%\\usepackage{wits_pseudocode}\n" +
+                "\\usepackage{amsmath}\n" +
+                "\\usepackage{charter}\n" +
+                "\\usepackage{algpseudocode}\n" +
+                "\n" +
+                "\\usepackage[]{color}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{subcaption}\n" +
+                "\\usepackage{varioref}\n" +
+                "\\usepackage{hyperref}\n" +
+                "\\usepackage{cleveref}\n" +
+                "\n" +
+                "\\definecolor{darkgreen}{rgb}{0.0,0.7,0.0}\n" +
+                "\\hypersetup{\n" +
+                "  colorlinks   = true,              %Colours links instead of ugly boxes\n" +
+                "  urlcolor     = blue,              %Colour for external hyperlinks\n" +
+                "  linkcolor    = blue,              %Colour of internal links\n" +
+                "  citecolor    = darkgreen                %Colour of citations\n" +
+                "}";
+        String FrontPage ="\\newcommand{\\todo}{\\textbf{TODO}}\n" +
+                "\\titleHeadTime{" + ex.getTime() + "}\n"+
+                "\\titleHeadDay{"+ ex.getDate()+"}\n"+
+                "\\titleHeadMonth{"+ex.getDate()+"}\n"+
+                "\\titleHeadYear{"+ex.getDate()+"}\n"+
+                "\\titleHeadVenue{"+Venue+"}\n"+
+                "\\courseno{"+ex.getCoursecode()+"}\n"+
+                "\\papertitle{"+ex.getTopicname()+"}\n"+
+                "\\testmonth{"+ex.getDate()+"}\n"+
+                "\\degrees{"+ex.getDegree()+"}\n"+
+                "\\faculties{"+ex.getFaculties()+"}\n"+
+                "\\internalexaminer{"+ex.getInternalexaminer()+ "}\n"+
+                "\\externalexaminer{"+ex.getInternalexaminer()+"}\n"+
+                "\\specialmaterial{"+ex.getMaterial()+"}\n"+
+                "\\hoursallowance{"+ex.getTime()+"}\n"+
+                "\\instructions{"+ex.getInstructions()+"}\n"+
+                "\\usepackage{titling}\n" +
+                "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
+                "\n" +
+                "\\begin{document}\n" +
+                "\\makeexamcover";
+
+
+        return setup+"\n"+FrontPage;
+    }*/
+
     //method for retreiving tracks
     public ArrayList<TrackItem> retreivetracks() {
         ExportServer exportServer = new ExportServer(connection);
@@ -232,174 +342,5 @@ public class ExamView extends HorizontalLayout implements View {
         }
     }
 
-    public PdfPCell getCell(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorder(PdfPCell.NO_BORDER);
-        return cell;
-    }
-
-    public PdfPCell getCell2(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell3(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell4(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell5(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell6(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell7(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell8(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell9(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell10(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell11(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell12(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public PdfPCell getCell13(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text));
-
-        cell.setPadding(0);
-        cell.setHorizontalAlignment(alignment);
-        cell.setBorderColor(BaseColor.BLACK);
-        return cell;
-    }
-
-    public void CreatePDF(ArrayList<String> questions) {
-
-
-        Document document = new Document();
-        PdfName pdfName = new PdfName(txttopicname.getValue() + txtdate.getValue());
-        document.addTitle(pdfName.toString());
-        try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Public\\" + pdfName + ".pdf"));
-            document.open();
-            PdfPTable table = new PdfPTable(2);
-
-            table.setWidthPercentage(50);
-            table.setPaddingTop(100);
-            table.setTotalWidth(100);
-
-
-            //code for creating exam page
-            table.addCell(getCell(lblcoursecode.getValue() + ": ", PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell(txtcoursecode.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell2(lbltopicname.getValue() + ": ", PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell2(txttopicname.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell3(lbldate.getValue() + ": ", PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell3(txtdate.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell4(lblyos.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell4(txtyos.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell5(lbldegree.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell5(txtdegree.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell6(lblfaculties.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell6(txtfaculties.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell7(lblinternalexaminer.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell7(txtinternalexaminer.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell8(lblexternalexaminer.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell8(txtexternalexaminer.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell10(lblmaterial.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell10(txtmaterial.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell11(lbltime.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell11(txttime.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell12(lblmark.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell12(txtmark.getValue(), PdfPCell.ALIGN_MIDDLE));
-            table.addCell(getCell13(lblinstructions.getValue(), PdfPCell.ALIGN_LEFT));
-            table.addCell(getCell13(txtinstructions.getValue(), PdfPCell.ALIGN_MIDDLE));
-            document.add(table);
-
-
-            //adds questions to paper
-            for (int i = 0; i < questions.size(); i++) {
-
-                document.newPage();
-                document.add(new Paragraph(questions.get(i) + " "));
-
-            }
-
-
-            document.close();
-            writer.close();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.out.println(e.toString());
-            e.printStackTrace();
-
-
-        }
-    }
 }
 
