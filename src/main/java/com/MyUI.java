@@ -41,6 +41,7 @@ public class MyUI extends UI {
         navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection));
         navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection));
         navigator.addView(NavigationStates.TEST, new TestView(navigator, connection));
+        navigator.addView(NavigationStates.SIGNUP, new SignUpView(navigator,connection));
 
 
 
