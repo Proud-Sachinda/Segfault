@@ -14,6 +14,9 @@ import com.vaadin.ui.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -150,9 +153,33 @@ public class ExportView extends HorizontalLayout implements View {
         String str = "Hello";
 
         File f = new File("C:\\Users\\User\\Desktop\\aaa");
+       // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
+        //Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\");
+
+        //copy source to target using Files Class
+        //Files.copy(sourceDirectory, targetDirectory);
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
+                Path sourceDirectory = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_code.sty");
+                Path sourceDirectory1 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_exam.sty");
+                Path sourceDirectory2 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_question.sty");
+                Path sourceDirectory3 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_flowchart.sty");
+                Path sourceDirectory4 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_pseudocode.sty");
+
+                Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_code.sty");
+                Path targetDirectory1 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_exam.sty");
+                Path targetDirectory2 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_question.sty");
+                Path targetDirectory3 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_flowchart.sty");
+                Path targetDirectory4 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_pseudocode.sty");
+
+                Files.copy(sourceDirectory, targetDirectory);
+                Files.copy(sourceDirectory1, targetDirectory1);
+                Files.copy(sourceDirectory2, targetDirectory2);
+                Files.copy(sourceDirectory3, targetDirectory3);
+                Files.copy(sourceDirectory4, targetDirectory4);
+
+
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
                 writer.write(str);
                 writer.close();
