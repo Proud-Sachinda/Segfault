@@ -35,7 +35,7 @@ public class CourseServer {
             PreparedStatement statement = connection.prepareStatement(query);
 
             // execute statement
-            ResultSet set = statement.executeQuery(query);
+            ResultSet set = statement.executeQuery();
 
             while(set.next()) {
                 // CourseItem class variable

@@ -116,7 +116,7 @@ public class EmptyComponent extends VerticalLayout {
         horizontalLayout.addComponents(description, icon, word);
 
         // align
-        ComponentToolkit.setMultipleComponentAlignment(this, Alignment.MIDDLE_LEFT, description, icon, word);
+        ComponentToolkit.setMultipleComponentAlignment(horizontalLayout, Alignment.MIDDLE_LEFT, description, icon, word);
 
         // add
         addComponents(create, horizontalLayout);
