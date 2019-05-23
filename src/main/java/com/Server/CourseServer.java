@@ -1,7 +1,6 @@
 package com.Server;
 
 import com.Objects.CourseItem;
-import com.vaadin.ui.NativeSelect;
 
 import javax.validation.constraints.NotNull;
 import java.sql.*;
