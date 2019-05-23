@@ -127,7 +127,7 @@ public class ExamView extends HorizontalLayout implements View {
 
 
         // set up dashboard
-        dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
 

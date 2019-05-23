@@ -30,9 +30,13 @@ public class CookieHandling {
         // get cookie
         Cookie cookie = getCookieByName(name);
 
-        if (cookie != null)
-        // delete
-        cookie.setMaxAge(0);
+        if (cookie != null) {
+            // remove
+            cookie.setValue("");
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            VaadinService.getCurrentResponse().addCookie(cookie);
+        }
     }
 
     public static Cookie getCookieByName(String name) {

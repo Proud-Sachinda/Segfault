@@ -108,7 +108,7 @@ public class CreateView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        Dashboard dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
         // set up root layout

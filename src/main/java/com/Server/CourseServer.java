@@ -9,9 +9,6 @@ import java.util.ArrayList;
 public class CourseServer {
 
     private Connection connection;
-    ArrayList<CourseItem> courses = new ArrayList<>();
-
-    CourseItem course = new CourseItem();
 
     public CourseServer(Connection connection){
 
@@ -31,10 +28,12 @@ public class CourseServer {
 
             // quer
             String query = "SELECT DISTINCT * FROM public.course";
-            PreparedStatement statement = connection.prepareStatement(query);
+
+            // statement
+            Statement statement = connection.createStatement();
 
             // execute statement
-            ResultSet set = statement.executeQuery();
+            ResultSet set = statement.executeQuery(query);
 
             while(set.next()) {
                 // CourseItem class variable
@@ -188,13 +187,6 @@ public class CourseServer {
 
         return courseId;
     }
-
-
-    public CourseItem getCourse(){
-
-        return this.course;
-    }
-
 }
 
 
