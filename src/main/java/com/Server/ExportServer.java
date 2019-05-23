@@ -60,7 +60,7 @@ public class ExportServer {
             else if(s.getQuestionType().equals("practical")){
                 String Input = qs.getInputById(s.getQuestionId());
                 String Output = qs.getOutputById(s.getQuestionId());
-                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"Sample Input\n"+"\\begin{enumerate}\n"+
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"\nSample Input\n"+"\\begin{enumerate}\n"+
                         "\\item \\texttt{"+Input+"}\n"+"\\end{enumerate}"+ "Sample Output\n"+"\\begin{enumerate}\n"+"\\item \\texttt{"+ Output+"}"+"\\end{enumerate}";
 
             }
@@ -115,8 +115,13 @@ public class ExportServer {
 
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
-                String str = GenerateLatex(ex)+latexQuestion(get(25))+"\\end{document}";
-                System.out.println(latexQuestion(get(25)));
+                String str = GenerateLatex(ex);
+                int questionNoCount = getTestITemQuestionCount(25);
+                for(int y=1;y<questionNoCount;y++){
+                    str = str+ latexQuestion(get1(25,y));
+                }
+                str = str + "\\end{document}";
+                //System.out.println(latexQuestion(get(25)));
                 //System.out.println(str);
                 writer.write(str);
                // writer.write(latexQuestion(get(28)));
@@ -205,7 +210,49 @@ public class ExportServer {
             Statement statement = connection.createStatement();
 
             // query
-            String query = "SELECT * FROM public.track where test_id =" +testid;
+            String query = "SELECT * FROM public.track where test_id =" +testid ;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // Question class variable
+                TrackItem track = new TrackItem();
+
+                // set variables
+                track.setTrackId(set.getInt("track_id"));
+                track.setQuestionId(set.getInt("question_id"));
+                track.setTestId(set.getInt("test_id"));
+                track.setQuestionNumber(set.getInt("question_number"));
+                track.setTrackOrder(set.getInt("track_order"));
+
+
+                // add to array list
+                tracks.add(track);
+                System.out.println("i am");
+            }
+            for(int i=0;i<tracks.size();i++){
+                System.out.println(tracks.get(i).getTrackId());
+            }
+
+        }catch (SQLException e){
+
+            System.out.println(e.getMessage());
+        }
+        return tracks;
+    }
+
+    public ArrayList<TrackItem> get1(int testid, int qnum) {
+        //arraylist to store  tracks
+        ArrayList<TrackItem> tracks = new ArrayList<>();
+        try{
+            //int testid=0;
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.track where test_id =" +testid +"and question_number = "+qnum;
 
             // execute statement
             ResultSet set = statement.executeQuery(query);

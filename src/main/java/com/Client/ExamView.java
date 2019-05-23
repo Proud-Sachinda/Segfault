@@ -18,7 +18,6 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 
 public class ExamView extends HorizontalLayout implements View {
 
@@ -309,13 +308,13 @@ public class ExamView extends HorizontalLayout implements View {
     }*/
 
     //method for retreiving tracks
-    public ArrayList<TrackItem> retreivetracks() {
+   /* public ArrayList<TrackItem> retreivetracks() {
         ExportServer exportServer = new ExportServer(connection);
         ArrayList<TrackItem> tracks = exportServer.get(29);
         System.out.println(tracks);
         System.out.println("im here");
         return tracks;
-    }
+    }*/
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
