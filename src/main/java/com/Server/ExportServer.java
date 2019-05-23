@@ -1,6 +1,7 @@
 package com.Server;
 
 import com.Objects.ExportItem;
+import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 
 import java.io.BufferedWriter;
@@ -17,6 +18,7 @@ public class ExportServer {
     private Connection connection;
 
     TrackItem tracky = new TrackItem();
+    QuestionServer qs ;
 
     public ExportServer(Connection connection) {
 
@@ -28,6 +30,17 @@ public class ExportServer {
 
     public TrackItem getTrack(){
         return this.tracky;
+    }
+
+    public String latexQuestion(ArrayList<TrackItem> trackzy){
+        qs  = new QuestionServer(connection);
+        String lq = "";
+        for(int i = 0;i<trackzy.size();i++){
+            TrackItem ti = trackzy.get(i);
+            QuestionItem s = qs.getQuestionItemById(ti.getQuestionId());
+        }
+
+        return "";
     }
 
     public void method(ExportItem ex) {
