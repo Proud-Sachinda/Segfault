@@ -1,15 +1,20 @@
 package com.Client;
 
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 import com.Server.CourseServer;
+import com.Server.LecturerServer;
 import com.Server.TestServer;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -17,7 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public class CourseView extends HorizontalLayout implements View {
+public class LibraryView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -37,24 +42,21 @@ public class CourseView extends HorizontalLayout implements View {
     private TextField sampleoutput = new TextField("Add Course Id");
 
 
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
-    protected final String createcourse = "createcourse";
-
-
     HorizontalLayout choice = new HorizontalLayout();
     HorizontalLayout lay = new HorizontalLayout();
 
 
     TextField text = new TextField();
 
+    // lecturer item
+    private LecturerItem lecturerItem;
+
     CourseServer myCourseServer;
 
     private final VerticalLayout paperExplorer = new VerticalLayout();
     private final VerticalLayout courseList = new VerticalLayout();
     private final Panel courseListPanel = new Panel();
+    private final Panel testPanel =  new Panel();
     private final VerticalLayout courseListVerticalLayoutRoot = new VerticalLayout();
 
 
@@ -62,14 +64,20 @@ public class CourseView extends HorizontalLayout implements View {
     final VerticalLayout navigation = new VerticalLayout();
     final VerticalLayout content = new VerticalLayout();
 
+    // lecturer server
+    private LecturerServer lecturerServer;
 
-    public CourseView(Navigator navigator, Connection connection) {
+    // dashboard
+    private Dashboard dashboard;
+
+    public LibraryView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
         // course server
         this.myCourseServer = new CourseServer(connection);
+        this.lecturerServer = new LecturerServer(connection);
 
         // set connection variable
         this.connection = connection;
@@ -78,14 +86,14 @@ public class CourseView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator);
         addComponent(dashboard);
 
         // set content area
         content.setSizeFull();
         content.addStyleName("paper-border");
         addComponentsAndExpand(content);
-        setUpCourseList();
+       // setUpCourseList();
     }
 
     private void setUpCourseList() {
@@ -93,14 +101,42 @@ public class CourseView extends HorizontalLayout implements View {
         TestServer testServer = new TestServer(connection);
         ArrayList<TestItem> Items = testServer.getTestItems();
 
-        for(TestItem i : Items) {
-            Label labela = new Label(i.getTestDraftName());
-            paperExplorer.addComponent(labela);
-            labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_900);
-            paperExplorer.addStyleName(ValoTheme.LAYOUT_CARD);
+        ArrayList<HorizontalLayout> layouts = new ArrayList<>();
+        double num = Items.size()/3f;
+        num = Math.ceil(num);
+        int x = (int) num;
+        for (int i = 0; i < x; i++) {
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            horizontalLayout.setWidth(100.0f, Unit.PERCENTAGE);
+            layouts.add(horizontalLayout);
+
+        }
+        System.out.println(layouts.size());
+
+        for (HorizontalLayout l : layouts) paperExplorer.addComponent(l);
+
+        int indice = 0;
+
+        for(int i = 0; i < Items.size(); i++) {
+
+            TestItem myItem = Items.get(i);
+
+            HorizontalLayout het = new HorizontalLayout();
+            VerticalLayout vet =  new VerticalLayout();
+            Label labela = new Label(Items.get(i).getTestDraftName());
+            vet.addComponent(labela);
+            vet.addStyleName("lol");
+            het.addComponent(vet);
+            layouts.get(indice).addComponent(het);
+           // labela.addStyleName(MyTheme.MAIN_TEXT_WEIGHT_500);
+            //labela.addStyleName("lol");
+           // paperExplorer.addStyleName("lol");
+            if (i % 3 == 0) indice++;
         }
 
-
+        testPanel.setContent(paperExplorer);
+        testPanel.setHeightUndefined();
+        testPanel.setHeight(100.0f,Unit.PERCENTAGE);
         content.addComponentsAndExpand(paperExplorer);
         paperExplorer.setHeightUndefined();
 
@@ -132,6 +168,7 @@ public class CourseView extends HorizontalLayout implements View {
             horizontalLayout.addComponent(label);
             courseList.addComponent(horizontalLayout);
         }
+        createcourse1.addStyleName("lizo");
 
         createcourse1.addClickListener(new Button.ClickListener() {
             @Override
@@ -142,7 +179,7 @@ public class CourseView extends HorizontalLayout implements View {
                 courseList.addComponent(wola, 2);
             }
         });
-
+        wola.addStyleName("lizo");
         wola.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -212,9 +249,26 @@ public class CourseView extends HorizontalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
 
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Library");
 
-        //panel.addComponentDetachListener(export);
-        // Notification.show("Course");
+        // set active item
+        dashboard.setActiveLink("library");
+
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "library", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
     }
 
     private class CourseComponent extends VerticalLayout {

@@ -48,86 +48,6 @@ public class FormItemComponent extends VerticalLayout {
         setUpDifficultySlider();
     }
 
-    public void setValueOfComponent(String value) {
-
-        //
-        if (this.componentType.matches(ComponentType.TEXT_AREA)) {
-
-            // set temporary variable
-            TextArea tmp = (TextArea) this.component;
-
-            // set value
-            tmp.setValue(value);
-        }
-        else if (this.componentType.matches(ComponentType.TEXT_FIELD)) {
-
-            // set temporary variable
-            TextField tmp = (TextField) this.component;
-
-            // set string
-            tmp.setValue(value);
-        }
-    }
-
-    public void setValueOfComponent(CourseItem courseItem) {
-
-        if (this.componentType.matches(ComponentType.COURSE_COMBO_BOX)) {
-
-            // set temporary variable
-            CourseComboBox tmp = (CourseComboBox) this.component;
-
-            // set string
-            tmp.setValue(courseItem);
-        }
-    }
-
-    public void setValueOfComponent(int d) {
-
-        double value = Double.parseDouble(d + "");
-
-        if (this.componentType.matches(ComponentType.SLIDER)) {
-
-            // set temporary variable
-            Slider tmp = (Slider) this.component;
-
-            // set value
-            tmp.setValue(value);
-        }
-        else if (this.componentType.matches(ComponentType.NUMBER_FIELD)) {
-
-            // set temporary variable
-            NumberField tmp = (NumberField) this.component;
-
-            // set value
-            tmp.setValue(value + "");
-        }
-    }
-
-    public String getStringValueOfComponent() {
-
-        // return String
-        String ret = null;
-
-        if (this.componentType.matches(ComponentType.TEXT_AREA)) {
-
-            // set temporary variable
-            TextArea tmp = (TextArea) this.component;
-
-            // set string
-            ret = tmp.getValue().trim();
-        }
-        else if (this.componentType.matches(ComponentType.TEXT_FIELD)) {
-
-            // set temporary variable
-            TextField tmp = (TextField) this.component;
-
-            // set string
-            ret = tmp.getValue().trim();
-        }
-
-        return ret;
-    }
-
     public int getIntValueOfComponent() {
 
         // return int
@@ -159,6 +79,86 @@ public class FormItemComponent extends VerticalLayout {
         }
 
         return ret;
+    }
+
+    public String getStringValueOfComponent() {
+
+        // return String
+        String ret = null;
+
+        if (this.componentType.matches(ComponentType.TEXT_AREA)) {
+
+            // set temporary variable
+            TextArea tmp = (TextArea) this.component;
+
+            // set string
+            ret = tmp.getValue().trim();
+        }
+        else if (this.componentType.matches(ComponentType.TEXT_FIELD)) {
+
+            // set temporary variable
+            TextField tmp = (TextField) this.component;
+
+            // set string
+            ret = tmp.getValue().trim();
+        }
+
+        return ret;
+    }
+
+    public void setValueOfComponent(int d) {
+
+        double value = Double.parseDouble(d + "");
+
+        if (this.componentType.matches(ComponentType.SLIDER)) {
+
+            // set temporary variable
+            Slider tmp = (Slider) this.component;
+
+            // set value
+            tmp.setValue(value);
+        }
+        else if (this.componentType.matches(ComponentType.NUMBER_FIELD)) {
+
+            // set temporary variable
+            NumberField tmp = (NumberField) this.component;
+
+            // set value
+            tmp.setValue(value + "");
+        }
+    }
+
+    public void setValueOfComponent(String value) {
+
+        //
+        if (this.componentType.matches(ComponentType.TEXT_AREA)) {
+
+            // set temporary variable
+            TextArea tmp = (TextArea) this.component;
+
+            // set value
+            tmp.setValue(value);
+        }
+        else if (this.componentType.matches(ComponentType.TEXT_FIELD)) {
+
+            // set temporary variable
+            TextField tmp = (TextField) this.component;
+
+            // set string
+            tmp.setValue(value);
+        }
+    }
+
+    public void setValueOfComponent(CourseItem courseItem) {
+
+        if (this.componentType.matches(ComponentType.COURSE_COMBO_BOX)) {
+
+            // set temporary variable
+            CourseComboBox tmp = (CourseComboBox) this.component;
+
+            // set string
+            tmp.setValue(courseItem);
+        }
     }
 
     public String getComponentType() {

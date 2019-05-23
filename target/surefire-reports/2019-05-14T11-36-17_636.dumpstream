@@ -1,0 +1,15 @@
+# Created at 2019-05-14T11:36:24.203
+WARNING: An illegal reflective access operation has occurred
+
+# Created at 2019-05-14T11:36:24.207
+WARNING: Illegal reflective access by org.mockito.cglib.core.ReflectUtils$2 (file:/C:/Users/Shivesh%20Lappie/AppData/Local/Temp/surefire8807276494154984956/..%5C..%5C..%5C..%5C..%5CShivesh%20Lappie%5C.m2%5Crepository%5Corg%5Cmockito%5Cmockito-all%5C1.9.5%5Cmockito-all-1.9.5.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+
+# Created at 2019-05-14T11:36:24.214
+WARNING: Please consider reporting this to the maintainers of org.mockito.cglib.core.ReflectUtils$2
+
+# Created at 2019-05-14T11:36:24.219
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+
+# Created at 2019-05-14T11:36:24.225
+WARNING: All illegal access operations will be denied in a future release
+

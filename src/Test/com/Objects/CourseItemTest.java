@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.ResultSet;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CourseItemTest {
@@ -21,9 +23,17 @@ class CourseItemTest {
     }
 
     @Test
+    void setUpCourseItem(){
+        //courseItem.setCourseId();
+
+        //courseItem.setUpCourseItem();
+    }
+
+    @Test
     void getCourseId() {
         courseItem.setCourseId(5);
         assertEquals(5,courseItem.getCourseId());
+
     }
 
     @Test

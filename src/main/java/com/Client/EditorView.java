@@ -4,8 +4,11 @@ import com.Components.CourseComboBox;
 import com.Components.EmptyQuestionsComponent;
 import com.Components.QuestionItemComponent;
 import com.Components.QuestionPaperItemComponent;
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
@@ -28,18 +31,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @DesignRoot
-public class QuestionView extends HorizontalLayout implements View {
+public class EditorView extends HorizontalLayout implements View {
 
     // navigator used to change pages
     private Navigator navigator;
-
-    // connection for database
-    private Connection connection;
-
-    // route strings - nothing special just things like qbank_exploded_war/route_name
-    protected final String question = "question";
-    protected final String course = "course";
-    protected final String export = "export";
 
     // layouts for split panel
     private Panel questionArea = new Panel();
@@ -60,7 +55,11 @@ public class QuestionView extends HorizontalLayout implements View {
     private TestServer testServer;
     private TrackServer trackServer;
     private CourseServer courseServer;
+    private LecturerServer lecturerServer;
     private QuestionServer questionServer;
+
+    // lecturer
+    private LecturerItem lecturerItem;
 
     // base path
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
@@ -82,26 +81,27 @@ public class QuestionView extends HorizontalLayout implements View {
     // empty component
     private EmptyQuestionsComponent emptyQuestionsComponent = new EmptyQuestionsComponent(basePath);
 
-    public QuestionView(Navigator navigator, Connection connection) {
+    // dashboard
+    private Dashboard dashboard;
+
+    public EditorView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
-        // set connection variable
-        this.connection = connection;
-
         // set up servers
-        tagServer = new TagServer(this.connection);
-        testServer = new TestServer(this.connection);
-        trackServer = new TrackServer(this.connection);
-        courseServer = new CourseServer(this.connection);
-        questionServer = new QuestionServer(this.connection);
+        tagServer = new TagServer(connection);
+        testServer = new TestServer(connection);
+        trackServer = new TrackServer(connection);
+        courseServer = new CourseServer(connection);
+        lecturerServer = new LecturerServer(connection);
+        questionServer = new QuestionServer(connection);
 
         // set to fill browser screen
         setSizeFull();
 
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator);
         addComponent(dashboard);
 
         // set content area
@@ -128,6 +128,24 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set page title
         UI.getCurrent().getPage().setTitle("Dashboard - Question Editor");
+
+        // set active item
+        dashboard.setActiveLink("editor");
+
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "editor", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
 
         // set up questions
         setUpQuestions();
@@ -163,7 +181,6 @@ public class QuestionView extends HorizontalLayout implements View {
             // add labels to paper
             paper.addComponent(label);
         }
-
     }
 
     private void setUpPapers() {
@@ -272,7 +289,7 @@ public class QuestionView extends HorizontalLayout implements View {
 
         // set up add button
         add.addStyleNames("main-flat-round-button", "main-flat-round-button-position");
-        add.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo("createquestion"));
+        add.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo("create"));
         explore.addComponent(add);
 
         // set up filtering
@@ -314,6 +331,14 @@ public class QuestionView extends HorizontalLayout implements View {
             verticalLayoutRoot.setComponentAlignment(emptyQuestionsComponent, Alignment.MIDDLE_CENTER);
         }
         else {
+
+            // remove empty question component
+            verticalLayoutRoot.setHeightUndefined();
+            verticalLayoutRoot.removeComponent(emptyQuestionsComponent);
+
+            // remove all
+            verticalLayoutRoot.removeAllComponents();
+
             // add questions loop through questions and add to view
             for (QuestionItem q : questionArrayList) {
 
@@ -606,7 +631,6 @@ public class QuestionView extends HorizontalLayout implements View {
                     int qId = 1;
                     if (event.getDataTransferData("id").isPresent()) {
                         qId = Integer.parseInt(event.getDataTransferData("id").get());
-                        System.out.println(qId);
                     }
 
                     // remove component from vertical layout root

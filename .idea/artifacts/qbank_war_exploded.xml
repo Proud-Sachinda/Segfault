@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="qbank:war exploded">
+  <artifact type="exploded-war" build-on-make="true" name="qbank:war exploded">
     <output-path>$PROJECT_DIR$/target/qbank-0.1</output-path>
     <properties id="maven-jee-properties">
       <options>

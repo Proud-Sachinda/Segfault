@@ -1,14 +1,20 @@
 package com.Client;
 
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
+import com.Objects.ExportItem;
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TrackItem;
 import com.Server.ExportServer;
+import com.Server.LecturerServer;
 import com.Server.QuestionServer;
 import com.vaadin.data.Binder;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
 import java.io.BufferedWriter;
@@ -20,7 +26,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-public class ExportView extends HorizontalLayout implements View {
+public class ExamView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
@@ -32,6 +38,8 @@ public class ExportView extends HorizontalLayout implements View {
     protected final String question = "question";
     protected final String course = "course";
     protected final String export = "export";
+
+    ExportItem ex = new ExportItem();
 
     // navigation and content area
     final VerticalLayout navigation = new VerticalLayout();
@@ -80,16 +88,25 @@ public class ExportView extends HorizontalLayout implements View {
     final TextField txtmark = new TextField();
     final TextArea txtinstructions = new TextArea();
     final Button exe = new Button("export");
-    final Binder<ExportView> binder = new Binder<>();
+    final Binder<ExamView> binder = new Binder<>();
 
+    // lecturer
+    private LecturerItem lecturerItem;
+    private LecturerServer lecturerServer;
 
-    public ExportView(Navigator navigator, Connection connection) {
+    // dashboard
+    private Dashboard dashboard;
+
+    public ExamView(Navigator navigator, Connection connection) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
         // set connection variable
         this.connection = connection;
+
+        // server
+        this.lecturerServer = new LecturerServer(connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -109,21 +126,12 @@ public class ExportView extends HorizontalLayout implements View {
 
 
         // set up dashboard
-        Dashboard dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator);
         addComponent(dashboard);
+
 
         //add components under each respective layout
         coursecode.addComponents(lblcoursecode, txtcoursecode);
-        txtcoursecode.setRequiredIndicatorVisible(true);
-        txttopicname.setRequiredIndicatorVisible(true);
-        txtdate.setRequiredIndicatorVisible(true);
-        txtyos.setRequiredIndicatorVisible(true);
-        txtdegree.setRequiredIndicatorVisible(true);
-        txtfaculties.setRequiredIndicatorVisible(true);
-        txtinternalexaminer.setRequiredIndicatorVisible(true);
-        txtexternalexaminer.setRequiredIndicatorVisible(true);
-        txtmark.setRequiredIndicatorVisible(true);
-        txttime.setRequiredIndicatorVisible(true);
         topic.addComponents(lbltopicname, txttopicname);
         date.addComponents(lbldate, txtdate);
         yos.addComponents(lblyos, txtyos);
@@ -135,12 +143,31 @@ public class ExportView extends HorizontalLayout implements View {
         time.addComponents(lbltime, txttime);
         mark.addComponents(lblmark, txtmark);
         instructions.addComponents(lblinstructions, txtinstructions);
-        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions);
+        content.addComponents(coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
+
+// Alignment of components
+
+        content.setComponentAlignment(coursecode, Alignment.TOP_CENTER);
+        content.setComponentAlignment(mark,Alignment.MIDDLE_CENTER);
+        content.setComponentAlignment(time, Alignment.TOP_CENTER);
+        content.setComponentAlignment(faculties, Alignment.TOP_CENTER);
+        content.setComponentAlignment(degree, Alignment.TOP_CENTER);
+        content.setComponentAlignment(instructions, Alignment.TOP_CENTER);
+        content.setComponentAlignment(internalexaminer, Alignment.TOP_CENTER);
+        content.setComponentAlignment(externalexaminer, Alignment.TOP_CENTER);
+        content.setComponentAlignment(material, Alignment.TOP_CENTER);
+        content.setComponentAlignment(yos, Alignment.TOP_CENTER);
+        content.setComponentAlignment(topic, Alignment.TOP_CENTER);
+        content.setComponentAlignment(date, Alignment.TOP_CENTER);
+        content.setComponentAlignment(exe, Alignment.BOTTOM_RIGHT);
+
 
         // set content area
-        //content.addComponent(exe);
         content.setSizeFull();
-        addComponentsAndExpand(content, exe);
+        addComponentsAndExpand(content);
+        exe.setWidth(100.0f, Unit.PIXELS);
+
+
     }
 
     //methodfor retrieving question
@@ -149,6 +176,23 @@ public class ExportView extends HorizontalLayout implements View {
         QuestionServer questionServer = new QuestionServer(connection);
         return questionServer.getQuestionItemById(id);
     }
+
+    public void getExport(){
+      ex.setCoursecode(txtcoursecode.getValue());
+      ex.setDate(txtdate.getValue());
+      ex.setDegree(txtdegree.getValue());
+      ex.setExternalexaminer(txtexternalexaminer.getValue());
+      ex.setFaculties(txtfaculties.getValue());
+      ex.setInstructions(txtinstructions.getValue());
+      ex.setInternalexaminer(txtinternalexaminer.getValue());
+      ex.setMark(txtmark.getValue());
+      ex.setMaterial(txtmaterial.getValue());
+      ex.setTime(txttime.getValue());
+      ex.setTopicname(txttopicname.getValue());
+      ex.setYos(txtyos.getValue());
+
+    }
+
     public void method() {
         String str = "Hello";
 
@@ -181,7 +225,7 @@ public class ExportView extends HorizontalLayout implements View {
 
 
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
-                writer.write(str);
+                writer.write(GenerateLatex());
                 writer.close();
                 writer.close();
             } else {
@@ -192,19 +236,96 @@ public class ExportView extends HorizontalLayout implements View {
         }
     }
 
+    public String GenerateLatex(){
+
+        getExport();
+        String Venue = "Old Mutual Sports Hall";
+        String setup = "\\documentclass[a4paper,11pt]{article}\n" +
+                "\\usepackage{xcolor}\n" +
+                "\\usepackage{wits_code}\n" +
+                "\\usepackage{wits_exam}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{graphicx}\n" +
+                "\\usepackage{array}\n" +
+                "%\\usepackage{wits_flowchart}\n" +
+                "%\\usepackage{wits_pseudocode}\n" +
+                "\\usepackage{amsmath}\n" +
+                "\\usepackage{charter}\n" +
+                "\\usepackage{algpseudocode}\n" +
+                "\n" +
+                "\\usepackage[]{color}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{subcaption}\n" +
+                "\\usepackage{varioref}\n" +
+                "\\usepackage{hyperref}\n" +
+                "\\usepackage{cleveref}\n" +
+                "\n" +
+                "\\definecolor{darkgreen}{rgb}{0.0,0.7,0.0}\n" +
+                "\\hypersetup{\n" +
+                "  colorlinks   = true,              %Colours links instead of ugly boxes\n" +
+                "  urlcolor     = blue,              %Colour for external hyperlinks\n" +
+                "  linkcolor    = blue,              %Colour of internal links\n" +
+                "  citecolor    = darkgreen                %Colour of citations\n" +
+                "}";
+        String FrontPage ="\\newcommand{\\todo}{\\textbf{TODO}}\n" +
+                "\\titleHeadTime{" + ex.getTime() + "}\n"+
+                "\\titleHeadDay{"+ ex.getDate()+"}\n"+
+                "\\titleHeadMonth{"+ex.getDate()+"}\n"+
+                "\\titleHeadYear{"+ex.getDate()+"}\n"+
+                "\\titleHeadVenue{"+Venue+"}\n"+
+                "\\courseno{"+ex.getCoursecode()+"}\n"+
+                "\\papertitle{"+ex.getTopicname()+"}\n"+
+                "\\testmonth{"+ex.getDate()+"}\n"+
+                "\\degrees{"+ex.getDegree()+"}\n"+
+                "\\faculties{"+ex.getFaculties()+"}\n"+
+                "\\internalexaminer{"+ex.getInternalexaminer()+ "}\n"+
+                "\\externalexaminer{"+ex.getInternalexaminer()+"}\n"+
+                "\\specialmaterial{"+ex.getMaterial()+"}\n"+
+                "\\hoursallowance{"+ex.getTime()+"}\n"+
+                "\\instructions{"+ex.getInstructions()+"}\n"+
+                "\\usepackage{titling}\n" +
+                "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
+                "\n" +
+                "\\begin{document}\n" +
+                "\\makeexamcover";
+
+
+        return setup+"\n"+FrontPage;
+    }
+
     //method for retreiving tracks
     public ArrayList<TrackItem> retreivetracks() {
         ExportServer exportServer = new ExportServer(connection);
         ArrayList<TrackItem> tracks = exportServer.get(29);
         System.out.println(tracks);
+        System.out.println("im here");
         return tracks;
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        // Notification.show("Export View");
-    }
 
+        // set page title
+        UI.getCurrent().getPage().setTitle("Dashboard - Export Questions");
+
+        // set active item
+        dashboard.setActiveLink("export");
+
+        // set nav cookie
+        CookieHandling.addCookie(CookieName.NAV, "export", -1);
+
+        // if not signed in kick out
+        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+
+        if (lecturerItem == null) {
+
+            // set message
+            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+
+            // navigate
+            navigator.navigateTo("");
+        }
+    }
 
 }
 

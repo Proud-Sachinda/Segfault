@@ -15245,6 +15245,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .lol {
+	border-color: #2c5aa0;
+	border-radius: 50px;
+	border-width: 3px;
+	border-style: solid;
 	font-size: 20px;
 	text-align: center;
 	font-weight: bold;
@@ -15253,8 +15257,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .lizo {
 	border-color: #2c5aa0;
 	border-radius: 30px;
-	width: 225px;
-	height: 200px;
+	border-style: solid;
 }
 
 .mytheme .esmond {
@@ -15311,6 +15314,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .main-charcoal {
 	background-color: #323232;
+}
+
+.mytheme .main-text-white {
+	color: white;
 }
 
 .mytheme .main-text-charcoal {
@@ -15397,6 +15404,14 @@ div.v-layout.v-horizontal.v-widget {
 	border-right-style: dashed;
 	border-right-width: 1px;
 	border-right-color: #323232;
+}
+
+.mytheme .card-border {
+	padding: 8px;
+	background: white;
+	border-radius: 8px;
+	border: 1px solid #e1e1e1;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
 .mytheme .main-flat-difficulty-badge-1 {

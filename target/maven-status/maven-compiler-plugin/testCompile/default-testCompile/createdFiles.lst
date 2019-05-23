@@ -1,8 +1,6 @@
-com/Objects/TagItemTest.class
-com/Server/SignInViewServerTest.class
-com/Server/CourseServerTest.class
-com/Server/QuestionServerTest.class
-com/Objects/CourseItemTest.class
-com/Server/PaperServerTest.class
-com/Objects/QuestionItemTest.class
-com/Server/ExportServerTest.class
+com\Server\ExportServerTest.class
+com\Server\QuestionServerTest.class
+com\Server\CourseServerTest.class
+com\Objects\CourseItemTest.class
+com\Objects\TagItemTest.class
+com\Objects\QuestionItemTest.class
