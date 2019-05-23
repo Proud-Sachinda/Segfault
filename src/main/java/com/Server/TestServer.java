@@ -1,7 +1,10 @@
 package com.Server;
 
+import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +22,45 @@ public class TestServer {
         this.connection = connection;
     }
 
+    // -------------------------------- GET METHODS (SELECT)
+    public ArrayList<TestItem> getTestItemsByCourseId(int courseId, String lecturerId) {
+
+        // test array
+        ArrayList<TestItem> items = new ArrayList<>();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT DISTINCT * FROM test WHERE course_id = " +
+                    courseId + " AND lecturer_id = '" + lecturerId + "'";
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // TestItem class variable
+                TestItem item = new TestItem();
+
+                // set variables
+                item.setUpTestItem(set);
+
+                // add to array list
+                items.add(item);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+
     // -------------------------------- POST METHODS (INSERT)
-    public int postToTestTable(boolean testIsDraft, String testDraftName, int courseId) {
+    public int postToTestTable(@NotNull TestItem testItem, int courseId, String lecturerId) {
 
         // return variable
         int testId = 0;
@@ -29,8 +69,9 @@ public class TestServer {
 
             // query
             String query = "INSERT INTO public.test" +
-                    "(test_is_draft, test_draft_name, course_id) VALUES" +
-                    "(" + testIsDraft + ", '" + testDraftName + "', " + courseId + ")";
+                    "(test_is_exam, test_is_draft, test_draft_name, course_id, lecturer_id) VALUES" +
+                    "(" + testItem.isTestIsExam() + ", " + testItem.isTestIsDraft() + ", '" +
+                    testItem.getTestDraftName() + "', " + courseId + ", '" + lecturerId + "')";
 
             // statement
             Statement statement = connection.createStatement();
@@ -54,39 +95,114 @@ public class TestServer {
         return testId;
     }
 
-        public ArrayList getTestItems(){
-             ArrayList<TestItem> testItems = new ArrayList<>();
 
-            try {
+    // -------------------------------- PUT METHODS (UPDATE)
+    public boolean updateTestItemTestIsExam(@NotNull TestItem testItem) {
 
-                // get database variables
-                Statement statement = connection.createStatement();
+        // return variable
+        boolean success = false;
 
-                // query
-                String query = "SELECT * FROM public.test";
+        try {
 
-                // execute statement
-                ResultSet set = statement.executeQuery(query);
-                while(set.next()) {
-                    // CourseItem class variable
-                    TestItem item = new TestItem();
+            // query
+            String query = "UPDATE test SET test_is_exam = " + testItem.isTestIsExam() +
+                    " WHERE test_id = " + testItem.getTestId();
 
-                    // set variables
-                    item.setUpTestItem(set);
+            // statement
+            Statement statement = connection.createStatement();
 
-                    // add to array list
-                    testItems.add(item);
-                }
+            // execute
+            if (statement.executeUpdate(query) > 0) success = true;
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            return testItems;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-
+        return success;
     }
+
+    public boolean updateTestItemTestIsDraft(@NotNull TestItem testItem) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query = "UPDATE test SET test_is_draft = " + testItem.isTestIsDraft() +
+                    " WHERE test_id = " + testItem.getTestId();
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // execute
+            if (statement.executeUpdate(query) > 0) success = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public boolean updateTestItemTestDraftName(@NotNull TestItem testItem) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query = "UPDATE test SET test_draft_name = '" + testItem.getTestDraftName() +
+                    "' WHERE test_id = " + testItem.getTestId();
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // execute
+            if (statement.executeUpdate(query) > 0) success = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+
+    // -------------------------------- DELETE METHODS (DELETE)
+    public boolean deleteTestItemFromTestTable(TestItem testItem) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query = "DELETE FROM track WHERE test_id = " + testItem.getTestId();
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // delete tracks first
+            int res = statement.executeUpdate(query);
+
+            if (res >= 0) {
+
+                query = "DELETE FROM test WHERE test_id = " + testItem.getTestId();
+
+                res = statement.executeUpdate(query);
+
+                if (res > 0) success = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+}
 
 
 

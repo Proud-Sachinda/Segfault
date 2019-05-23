@@ -29,7 +29,7 @@ public class QuestionPaperItemComponent extends VerticalLayout {
             String bullet, int questionId, QuestionServer questionServer, String basePath,
             ArrayList<QuestionPaperItemComponent> paperItemComponents, VerticalLayout questionPaperArea,
             ArrayList<QuestionItemComponent> questionItemComponents, VerticalLayout questionExplorerArea,
-            EmptyQuestionsComponent emptyQuestionsComponent) {
+            EmptyComponent emptyComponent) {
 
         // set up variables
         this.bullet = bullet;
@@ -72,7 +72,7 @@ public class QuestionPaperItemComponent extends VerticalLayout {
 
         // set up buttons
         setUpControlButtons(paperItemComponents, questionPaperArea,
-                questionItemComponents, questionExplorerArea, emptyQuestionsComponent);
+                questionItemComponents, questionExplorerArea, emptyComponent);
 
         // add to controls layout
         controlsLayout.addComponents(close, moveUp, moveDown);
@@ -83,7 +83,7 @@ public class QuestionPaperItemComponent extends VerticalLayout {
 
     private void setUpControlButtons(ArrayList<QuestionPaperItemComponent> paperItemComponents, VerticalLayout questionPaperArea,
                                      ArrayList<QuestionItemComponent> questionItemComponents, VerticalLayout questionExplorerArea,
-                                     EmptyQuestionsComponent emptyQuestionsComponent) {
+                                     EmptyComponent emptyComponent) {
 
         // styles
         close.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
@@ -103,7 +103,7 @@ public class QuestionPaperItemComponent extends VerticalLayout {
 
                 // remove in view
                 if (questionExplorerArea.getComponentCount() == 1)
-                    questionExplorerArea.removeComponent(emptyQuestionsComponent);
+                    questionExplorerArea.removeComponent(emptyComponent);
                 component.removeAllComponents();
                 component.getFirstRow().removeAllComponents();
                 component.getThirdRow().removeAllComponents();
