@@ -60,8 +60,8 @@ public class ExportServer {
             else if(s.getQuestionType().equals("practical")){
                 String Input = qs.getInputById(s.getQuestionId());
                 String Output = qs.getOutputById(s.getQuestionId());
-                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"\\begin{enumerate}\n"+"Sample Input"+
-                        "\\item \\texttt{"+Input+"}\n"+ "Sample Output"+"\\item \\texttt{"+ Output+"}"+"\\end{enumerate}";
+                lq = lq+"\\item "+ s.getQuestionBody()+ "\\mk{"+ s.getQuestionMark()+"}\n"+"Sample Input\n"+"\\begin{enumerate}\n"+
+                        "\\item \\texttt{"+Input+"}\n"+"\\end{enumerate}"+ "Sample Output\n"+"\\begin{enumerate}\n"+"\\item \\texttt{"+ Output+"}"+"\\end{enumerate}";
 
             }
             else if(s.getQuestionType().equals("mcq")){
