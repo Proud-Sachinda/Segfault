@@ -29,6 +29,7 @@ public class CourseServer {
 
             // execute statement
             ResultSet set = statement.executeQuery(query);
+
             while(set.next()) {
                 // CourseItem class variable
                 CourseItem item = new CourseItem();

@@ -12,7 +12,7 @@ public class CourseComboBox extends ComboBox<CourseItem> {
 
     public CourseComboBox(ArrayList<CourseItem> items) {
 
-        if (items != null) {
+        if (!items.isEmpty()) {
             // set items
             setItems(items);
 
