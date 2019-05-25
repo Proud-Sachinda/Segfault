@@ -135,10 +135,72 @@ public class ExportServer {
         }
     }
 
+    public String GenerateLatexTest(ExportItem exp){
+        ExportItem ex = exp;
+        String setup = "\\documentclass[a4paper,11pt]{article}\n" +
+                "\\usepackage{xcolor}\n" +
+                "\\usepackage{wits_code}\n" +
+                "\\usepackage{wits_exam}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{graphicx}\n" +
+                "\\usepackage{array}\n" +
+                "%\\usepackage{wits_flowchart}\n" +
+                "%\\usepackage{wits_pseudocode}\n" +
+                "\\usepackage{amsmath}\n" +
+                "\\usepackage{charter}\n" +
+                "\\usepackage{algpseudocode}\n" +
+                "\n" +
+                "\\usepackage[]{color}\n" +
+                "\\usepackage{float}\n" +
+                "\\usepackage{subcaption}\n" +
+                "\\usepackage{varioref}\n" +
+                "\\usepackage{hyperref}\n" +
+                "\\usepackage{cleveref}\n" +
+                "\n" +
+                "\\definecolor{darkgreen}{rgb}{0.0,0.7,0.0}\n" +
+                "\\hypersetup{\n" +
+                "  colorlinks   = true,              %Colours links instead of ugly boxes\n" +
+                "  urlcolor     = blue,              %Colour for external hyperlinks\n" +
+                "  linkcolor    = blue,              %Colour of internal links\n" +
+                "  citecolor    = darkgreen                %Colour of citations\n" +
+                "}";
+        String frontpage = "\\newcommand{\\todo}{\\textbf{TODO}}\n" +
+                "\\titleHeadTime{"+ex.getTime()+"}\n" +
+                "\\titleHeadDay{1}\n" +
+                "\\titleHeadMonth{Mar}\n" +
+                "\\titleHeadYear{2019}\n" +
+                "\\titleHeadVenue{"+ex.getVenue()+"}\n" +
+                "% First set up fieled that the exams office wants\n" +
+                "\\courseno{COMS1018A}\n" +
+                "\\papertitle{Introduction to Algorithms and Programming}\n" +
+                "\\testmonth{7 March}\n" +
+                "\\testyear{2019}\n" +
+                "%\\yearofstudy{1} % None for Arts and Science\n" +
+                "\\degrees{BSc, BSc (Applied Computing), BEconSci}\n" +
+                "\\faculties{Science}\n" +
+                "\\internalexaminer{Mr Steven James\\\\x-76157}\n" +
+                "\\externalexaminer{Prof. Stefan Gruner (UP)}\n" +
+                "\\specialmaterial{None}\n" +
+                "\\hoursallowance{2 Hours}\n" +
+                "\\instructions{\\thetotalmarks\\ Marks available. \\thetotalmarks\\ marks = 100\\%.\\\\ Answer all questions. This is a closed book exam. This exam consists of 11 pages.}\n" +
+                "%% Following field not needed for \\examcover but for \\simpleexamhead\n" +
+                "%\\department{Computer Science}\n" +
+                "%\\solutiontitle{Mark scheme}\n" +
+                "\n" +
+                "%\\newcommand{\\ansline}{\\\\[15pt]\\rule{\\linewidth}{0.1pt}}\n" +
+                "%\\newcommand{\\anslineL}{\\rule{\\linewidth}{0.1pt}}\n" +
+                "    \n" +
+                "\\usepackage{titling}\n" +
+                "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
+                "\\title{Introduction to Algorithms \\& Programming (COMS1018A) \\\\ Class Test 1}\n" +
+                "\\date{7 March 2019, 14h15--16h15, Flower Hall}";
+
+        return setup+"\n"+frontpage;
+    }
     public String GenerateLatex(ExportItem exp){
         ExportItem ex = exp;
         //System.out.println("generate");
-        String Venue = "Old Mutual Sports Hall";
+       // String Venue = "Old Mutual Sports Hall";
         //System.out.println(Venue);
         String setup = "\\documentclass[a4paper,11pt]{article}\n" +
                 "\\usepackage{xcolor}\n" +
