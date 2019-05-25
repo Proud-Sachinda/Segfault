@@ -204,7 +204,6 @@ public class Dashboard extends VerticalLayout {
 
         // sign out clickable
         signOut.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
-<<<<<<< HEAD
         signOut.addClickListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent clickEvent) {
@@ -216,7 +215,7 @@ public class Dashboard extends VerticalLayout {
         });
 
         System.out.println(signOut.getData());
-=======
+
         signOut.addClickListener((MouseEvents.ClickListener) event -> {
 
             CookieHandling.removeCookie(CookieName.AUTH);
@@ -226,7 +225,6 @@ public class Dashboard extends VerticalLayout {
 
             navigator.navigateTo("");
         });
->>>>>>> origin/master
     }
 
     public void setActiveLink(String link) {

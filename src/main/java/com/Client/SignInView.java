@@ -115,12 +115,12 @@ public class SignInView extends VerticalLayout implements View {
             // navigate to question page by default or nav
             if (nav != null) navigator.navigateTo(nav.getValue());
             else navigator.navigateTo("editor");
-<<<<<<< HEAD
+
         }
        // removeAllComponents();
-=======
+
         } */
->>>>>>> origin/master
+
     }
 
 

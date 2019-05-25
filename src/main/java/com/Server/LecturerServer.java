@@ -41,7 +41,7 @@ public class LecturerServer {
             // execute statement
             ResultSet set = statement.executeQuery(query);
 
-            while(set.next()) {
+            while (set.next()) {
 
                 // LecturerItem class variable
                 LecturerItem lecturerItem = new LecturerItem(set.getString("lecturer_id").trim());
@@ -84,7 +84,7 @@ public class LecturerServer {
                 // execute statement
                 ResultSet set = statement.executeQuery(query);
 
-                while(set.next()) {
+                while (set.next()) {
 
                     // create lecturer item
                     lecturerItem = new LecturerItem(cookie.getValue());
@@ -122,32 +122,32 @@ public class LecturerServer {
                 break;
             }
         }
-
         return success;
     }
 
-    //--------------------Post Sign Up Methods------------//
-    public boolean authenticationSignUp(String lecturer_id, String lecturer_fname, String lecturer_lname) {
+        //--------------------Post Sign Up Methods------------//
+        public boolean authenticationSignUp (String lecturer_id, String lecturer_fname, String lecturer_lname){
 
-        boolean success = false;
-
-
-        try {
-
-            // insert into core table
-            String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname + "' )";
-
-            // statement
-            Statement statement = connection.createStatement();
-
-            success = statement.execute(query);
+            boolean success = false;
 
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            try {
+
+                // insert into core table
+                String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname + "' )";
+
+                // statement
+                Statement statement = connection.createStatement();
+
+                success = statement.execute(query);
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return success;
         }
 
-        return success;
     }
 
-}
