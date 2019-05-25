@@ -135,7 +135,7 @@ public class EditorView extends HorizontalLayout implements View {
         dashboard.setActiveLink("editor");
 
         // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "editor", -1);
+       // CookieHandling.addCookie(CookieName.NAV, "editor", -1);
 
         // if not signed in kick out
         lecturerItem =  lecturerServer.getCurrentLecturerItem();
