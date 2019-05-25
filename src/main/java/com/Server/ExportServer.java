@@ -78,7 +78,7 @@ public class ExportServer {
 
         }
 
-        lq=lq+"\\end{enumerate}\n";
+        lq=lq+"\\end{enumerate}\n"+"\\newpage\n";
         //System.out.println(lq);
         return lq;
     }
