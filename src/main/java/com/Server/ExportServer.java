@@ -171,18 +171,18 @@ public class ExportServer {
                 "\\titleHeadYear{2019}\n" +
                 "\\titleHeadVenue{"+ex.getVenue()+"}\n" +
                 "% First set up fieled that the exams office wants\n" +
-                "\\courseno{COMS1018A}\n" +
-                "\\papertitle{Introduction to Algorithms and Programming}\n" +
+                "\\courseno{"+ex.getCoursecode()+"}\n" +
+                "\\papertitle{"+ex.getTopicname()+"}\n" +
                 "\\testmonth{7 March}\n" +
                 "\\testyear{2019}\n" +
-                "%\\yearofstudy{1} % None for Arts and Science\n" +
-                "\\degrees{BSc, BSc (Applied Computing), BEconSci}\n" +
-                "\\faculties{Science}\n" +
-                "\\internalexaminer{Mr Steven James\\\\x-76157}\n" +
-                "\\externalexaminer{Prof. Stefan Gruner (UP)}\n" +
-                "\\specialmaterial{None}\n" +
-                "\\hoursallowance{2 Hours}\n" +
-                "\\instructions{\\thetotalmarks\\ Marks available. \\thetotalmarks\\ marks = 100\\%.\\\\ Answer all questions. This is a closed book exam. This exam consists of 11 pages.}\n" +
+                "%\\yearofstudy{"+ex.getYos()+"} % None for Arts and Science\n" +
+                "\\degrees{"+ex.getDegree()+"}\n" +
+                "\\faculties{"+ex.getFaculties()+"}\n" +
+                "\\internalexaminer{"+ex.getInternalexaminer()+"}\n" +
+                "\\externalexaminer{"+ex.getExternalexaminer()+"}\n" +
+                "\\specialmaterial{"+ex.getMaterial()+"}\n" +
+                "\\hoursallowance{"+ex.getTime()+"}\n" +
+                "\\instructions{\\thetotalmarks\\ Marks available. \\thetotalmarks\\ marks = 100\\%.\\\\ "+ex.getInstructions()+"}\n" +
                 "%% Following field not needed for \\examcover but for \\simpleexamhead\n" +
                 "%\\department{Computer Science}\n" +
                 "%\\solutiontitle{Mark scheme}\n" +
@@ -192,8 +192,8 @@ public class ExportServer {
                 "    \n" +
                 "\\usepackage{titling}\n" +
                 "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
-                "\\title{Introduction to Algorithms \\& Programming (COMS1018A) \\\\ Class Test 1}\n" +
-                "\\date{7 March 2019, 14h15--16h15, Flower Hall}";
+                "\\title{"+ex.getTopicname()+"}\n" +
+                "\\date{"+ex.getDate()+"}";
 
         return setup+"\n"+frontpage;
     }
