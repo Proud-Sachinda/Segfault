@@ -105,7 +105,7 @@ public class SignInView extends VerticalLayout implements View {
         if (message != null) Notification.show(message, Notification.Type.ERROR_MESSAGE);
 
         // if lecturer has been signed in navigate
-        Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
+       /* Cookie auth = CookieHandling.getCookieByName(CookieName.AUTH);
 
         if (auth == null) {
 
@@ -115,8 +115,12 @@ public class SignInView extends VerticalLayout implements View {
             // navigate to question page by default or nav
             if (nav != null) navigator.navigateTo(nav.getValue());
             else navigator.navigateTo("editor");
+<<<<<<< HEAD
         }
        // removeAllComponents();
+=======
+        } */
+>>>>>>> origin/master
     }
 
 

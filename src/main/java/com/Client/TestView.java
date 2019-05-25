@@ -100,7 +100,7 @@ public class TestView extends HorizontalLayout implements View {
             }
         });
         // set up dashboard
-        dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
         coursecode.addComponents(lblcourse, txtcourse);
@@ -148,7 +148,7 @@ public class TestView extends HorizontalLayout implements View {
         dashboard.setActiveLink("export");
 
         // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "export", -1);
+        //CookieHandling.addCookie(CookieName.NAV, "export", -1);
 
         // if not signed in kick out
         lecturerItem = lecturerServer.getCurrentLecturerItem();

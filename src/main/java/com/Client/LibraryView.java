@@ -82,7 +82,7 @@ public class LibraryView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
         // set content area
@@ -107,7 +107,7 @@ public class LibraryView extends HorizontalLayout implements View {
         dashboard.setActiveLink("library");
 
         // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "library", CookieAge.DAY);
+        //CookieHandling.addCookie(CookieName.NAV, "library", CookieAge.DAY);
 
         // if not signed in kick out
         lecturerItem =  lecturerServer.getCurrentLecturerItem();
@@ -129,9 +129,9 @@ public class LibraryView extends HorizontalLayout implements View {
 
         // check cookies
 
-        Cookie cookie = CookieHandling.getCookieByName(CookieName.LIB);
+       // Cookie cookie = CookieHandling.getCookieByName(CookieName.LIB);
 
-        if (cookie == null) {
+        /*if (cookie == null) {
 
             // set course item
             courseItem = courseItems.get(0);
@@ -153,7 +153,7 @@ public class LibraryView extends HorizontalLayout implements View {
                     courseItem = i;
                     break;
                 }
-            }
+            } */
 
             // set item
             courseComboBox.setValue(courseItem);
@@ -161,7 +161,7 @@ public class LibraryView extends HorizontalLayout implements View {
             // change view
             changeCurrentLibraryView(courseItem);
         }
-    }
+
 
     private void setUpLibraryItems() {
 
@@ -271,7 +271,7 @@ public class LibraryView extends HorizontalLayout implements View {
     private void setUpAddTestButton() {
 
         // delete cookie
-        CookieHandling.removeCookie(CookieName.EDIT);
+        //CookieHandling.removeCookie(CookieName.EDIT);
 
         // navigate
         navigator.navigateTo(NavigationStates.EDITOR);
@@ -342,7 +342,7 @@ public class LibraryView extends HorizontalLayout implements View {
         // set cookie
         // current library
         String lib = Integer.toString(courseItem.getCourseId());
-        CookieHandling.addCookie(CookieName.LIB, lib, CookieAge.DAY);
+       // CookieHandling.addCookie(CookieName.LIB, lib, CookieAge.DAY);
 
         // set up library items
         setUpLibraryItems();

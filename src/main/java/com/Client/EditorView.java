@@ -103,7 +103,7 @@ public class EditorView extends HorizontalLayout implements View {
         setSizeFull();
 
         // set up dashboard
-        dashboard = new Dashboard(navigator);
+        dashboard = new Dashboard(navigator, connection);
         addComponent(dashboard);
 
         // set content area
@@ -135,7 +135,7 @@ public class EditorView extends HorizontalLayout implements View {
         dashboard.setActiveLink("editor");
 
         // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "editor", -1);
+       // CookieHandling.addCookie(CookieName.NAV, "editor", -1);
 
         // if not signed in kick out
         lecturerItem =  lecturerServer.getCurrentLecturerItem();
@@ -318,7 +318,7 @@ public class EditorView extends HorizontalLayout implements View {
 
         Cookie cookie = CookieHandling.getCookieByName(CookieName.EDIT);
 
-        if (cookie == null || questionArrayList.isEmpty()) {
+        if (questionArrayList.isEmpty()) {
 
             // show user that they dont have questions in database create question
             verticalLayoutRoot.setSizeFull();

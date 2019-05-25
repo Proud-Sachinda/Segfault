@@ -1,14 +1,21 @@
 package com;
 
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
+import javax.servlet.http.Cookie;
 import java.io.File;
+import java.sql.Connection;
 
 public class Dashboard extends VerticalLayout {
+
+    // connection
+    private Connection connection;
 
     // navigation links
     private final String editorNavigation = "editor";
@@ -49,10 +56,13 @@ public class Dashboard extends VerticalLayout {
     private final Image profile = new Image(null, profileResource);
     private final Image signOut = new Image(null, signOutResource);
 
-    public Dashboard(Navigator navigator) {
+    public Dashboard(Navigator navigator, Connection connection) {
 
         // we get the apps Navigator object
         this.navigator = navigator;
+
+        // connection
+        this.connection = connection;
 
         // set width and height
         setWidth(64.f, Sizeable.Unit.PIXELS);
@@ -66,11 +76,7 @@ public class Dashboard extends VerticalLayout {
 
         // set icons height and width
         setSize(logo, 54.0f);
-        setSize(editor, 48.0f);
-        setSize(library, 48.0f);
-        setSize(export, 48.f);
-        setSize(profile, 48.f);
-        setSize(signOut, 48.0f);
+        ComponentToolkit.setMultipleImage(48f, Unit.PIXELS, editor, library, export, profile, signOut);
 
         // set descriptions
         logo.setDescription("Home");
@@ -198,6 +204,7 @@ public class Dashboard extends VerticalLayout {
 
         // sign out clickable
         signOut.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
+<<<<<<< HEAD
         signOut.addClickListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent clickEvent) {
@@ -209,6 +216,17 @@ public class Dashboard extends VerticalLayout {
         });
 
         System.out.println(signOut.getData());
+=======
+        signOut.addClickListener((MouseEvents.ClickListener) event -> {
+
+            CookieHandling.removeCookie(CookieName.AUTH);
+            CookieHandling.removeCookie(CookieName.EDIT);
+            CookieHandling.removeCookie(CookieName.LIB);
+            CookieHandling.removeCookie(CookieName.NAV);
+
+            navigator.navigateTo("");
+        });
+>>>>>>> origin/master
     }
 
     public void setActiveLink(String link) {

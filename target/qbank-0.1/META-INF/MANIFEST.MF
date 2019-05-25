@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: lizoe
+=======
+Built-By: Shivesh Lappie
+>>>>>>> origin/master
 Created-By: IntelliJ IDEA
 Build-Jdk: 11.0.2
 
