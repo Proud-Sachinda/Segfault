@@ -210,6 +210,7 @@ public class ExamView extends HorizontalLayout implements View {
       ex.setTime(txttime.getValue());
       ex.setTopicname(txttopicname.getValue());
       ex.setYos(txtyos.getValue());
+      ex.setVenue(txtVenue.getValue());
 
       return  ex;
 

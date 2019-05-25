@@ -12,6 +12,7 @@ public class ExportItem {
     String material ;
     String time ;
     String mark ;
+    String venue ;
     String instructions ;
 
     public String getCoursecode() {
@@ -20,6 +21,12 @@ public class ExportItem {
 
     public void setCoursecode(String coursecode) {
         this.coursecode = coursecode;
+    }
+    public String getVenue() {
+        return venue;
+    }
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 
     public String getTopicname() {

@@ -174,7 +174,7 @@ public class ExportServer {
                 "\\titleHeadDay{"+ ex.getDate()+"}\n"+
                 "\\titleHeadMonth{"+ex.getDate()+"}\n"+
                 "\\titleHeadYear{"+ex.getDate()+"}\n"+
-                "\\titleHeadVenue{"+Venue+"}\n"+
+                "\\titleHeadVenue{"+ex.getVenue()+"}\n"+
                 "\\courseno{"+ex.getCoursecode()+"}\n"+
                 "\\papertitle{"+ex.getTopicname()+"}\n"+
                 "\\testmonth{"+ex.getDate()+"}\n"+
