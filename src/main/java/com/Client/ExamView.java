@@ -125,6 +125,7 @@ public class ExamView extends HorizontalLayout implements View {
                     System.out.println(tId+" hello");
                 }
                 es.method(ex, tId);
+                navigator.navigateTo("editor");
 
 
             }
