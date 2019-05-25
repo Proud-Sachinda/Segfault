@@ -37,11 +37,11 @@ public class MyUI extends UI {
         // create a navigator to control the views
         Navigator navigator = new Navigator(this, this);
 
-        Cookie cookie = CookieHandling.getCookieByName(CookieName.NAV);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        VaadinService.getCurrentResponse().addCookie(cookie);
-        System.out.println(cookie.getValue());
+  //      Cookie cookie = CookieHandling.getCookieByName(CookieName.NAV);
+//        cookie.setMaxAge(0);
+    //    cookie.setPath("/");
+      //  VaadinService.getCurrentResponse().addCookie(cookie);
+        //System.out.println(cookie.getValue());
 
         // create and register the views
         Connection connection = ConnectToDatabase.getConnection();
