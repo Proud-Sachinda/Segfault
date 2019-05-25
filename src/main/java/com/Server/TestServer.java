@@ -1,7 +1,5 @@
 package com.Server;
 
-import com.Objects.CourseItem;
-import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 
 import javax.validation.constraints.NotNull;
@@ -167,6 +165,35 @@ public class TestServer {
         }
 
         return success;
+    }
+
+    public TestItem getTestItemById(int testId) {
+
+        // create return question item
+        TestItem item = new TestItem();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.test WHERE question_id = " + testId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // set variables
+                item.setUpTestItem(set);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return item;
     }
 
 

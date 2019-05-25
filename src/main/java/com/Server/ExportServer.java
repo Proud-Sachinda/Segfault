@@ -2,6 +2,7 @@ package com.Server;
 
 import com.Objects.ExportItem;
 import com.Objects.QuestionItem;
+import com.Objects.TestItem;
 import com.Objects.TrackItem;
 
 import java.io.BufferedWriter;
@@ -22,8 +23,10 @@ public class ExportServer {
     private Connection connection;
 
     TrackItem tracky = new TrackItem();
+    TestItem ti = new TestItem();
     QuestionServer qs ;
     ExportServer es;
+    TestServer ts ;
 
     public ExportServer(Connection connection) {
 
@@ -86,7 +89,10 @@ public class ExportServer {
     public void method(ExportItem ex, int tId) {
         es = new ExportServer(connection);
 
-        File f = new File("C:\\Users\\User\\Desktop\\aaa");
+        ts = new TestServer(connection);
+        ti = ts.getTestItemById(tId);
+        String testname = ti.getTestDraftName();
+        File f = new File("C:\\+"+testname);
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
