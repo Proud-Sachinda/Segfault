@@ -64,6 +64,7 @@ public class SignInView extends VerticalLayout implements View {
 
             } else Notification.show("Incorrect Credentials", Notification.Type.ERROR_MESSAGE);
         });
+        removeAllComponents();
 
         // add button component
         HorizontalLayout layout =  new HorizontalLayout();
@@ -115,6 +116,7 @@ public class SignInView extends VerticalLayout implements View {
             if (nav != null) navigator.navigateTo(nav.getValue());
             else navigator.navigateTo("editor");
         }
+       // removeAllComponents();
     }
 
 

@@ -198,6 +198,17 @@ public class Dashboard extends VerticalLayout {
 
         // sign out clickable
         signOut.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
+        signOut.addClickListener(new MouseEvents.ClickListener() {
+            @Override
+            public void click(MouseEvents.ClickEvent clickEvent) {
+                    // VaadinSession.getCurrent().close();
+                    //SecurityContextHolder.clearContext();
+                    navigator.navigateTo("");
+
+            }
+        });
+
+        System.out.println(signOut.getData());
     }
 
     public void setActiveLink(String link) {
