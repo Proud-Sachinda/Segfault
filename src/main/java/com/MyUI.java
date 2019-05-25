@@ -1,20 +1,15 @@
 package com;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
+import com.Client.*;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.*;
-import com.Client.*;
+import com.vaadin.ui.UI;
 
-import java.sql.*;
+import javax.servlet.annotation.WebServlet;
+import java.sql.Connection;
 
 /**
  * This UI is the application entry point. QuestionItemComponent UI may either represent a browser window
@@ -36,12 +31,6 @@ public class MyUI extends UI {
 
         // create a navigator to control the views
         Navigator navigator = new Navigator(this, this);
-
-        Cookie cookie = CookieHandling.getCookieByName(CookieName.NAV);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        VaadinService.getCurrentResponse().addCookie(cookie);
-        System.out.println(cookie.getValue());
 
         // create and register the views
         Connection connection = ConnectToDatabase.getConnection();

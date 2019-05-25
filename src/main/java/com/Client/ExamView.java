@@ -17,6 +17,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 
+import javax.servlet.http.Cookie;
 import java.sql.Connection;
 
 public class ExamView extends HorizontalLayout implements View {
@@ -117,8 +118,13 @@ public class ExamView extends HorizontalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ex = getExport();
-                es.method(ex);
-                //cs.method(ex);
+                int tId = 0;
+                Cookie testcookie = CookieHandling.getCookieByName(CookieName.EDIT);
+                if(testcookie != null){
+                    tId = Integer.parseInt(testcookie.getValue());
+                    System.out.println(tId+" hello");
+                }
+                es.method(ex, tId);
 
 
             }

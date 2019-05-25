@@ -39,8 +39,8 @@ public class ExportServer {
 
     public String latexQuestion(ArrayList<TrackItem> trackzy){
         qs  = new QuestionServer(connection);
-        System.out.println("latex");
-        String lq = "\\question{Short Questions}\n" +
+       // System.out.println("latex");
+        String lq = "\\question{"+"}\n" +
                 "\n" +
                 "\\begin{enumerate}\n";
         //System.out.println(lq);
@@ -66,9 +66,9 @@ public class ExportServer {
             }
             else if(s.getQuestionType().equals("mcq")){
                 String choice = qs.getMCQchoiceById(s.getQuestionId());
-                System.out.println(choice+"choices  "+s.getQuestionId());
                 String[] ch = choice.split(";");
                 String choices = "\\item \\texttt{"+ch[0]+"}";
+                System.out.println(s.getQuestionId()+" qid " + ch[0]);
                 for(int x=1;x<ch.length;x++){
                     choices = "\n"+choices+"\\item \\texttt{"+ch[x]+"}";
                 }
@@ -83,15 +83,10 @@ public class ExportServer {
         return lq;
     }
 
-    public void method(ExportItem ex) {
+    public void method(ExportItem ex, int tId) {
         es = new ExportServer(connection);
 
         File f = new File("C:\\Users\\User\\Desktop\\aaa");
-        // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
-        //Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\");
-
-        //copy source to target using Files Class
-        //Files.copy(sourceDirectory, targetDirectory);
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
@@ -112,13 +107,11 @@ public class ExportServer {
                 Files.copy(sourceDirectory2, targetDirectory2);
                 Files.copy(sourceDirectory3, targetDirectory3);
                 Files.copy(sourceDirectory4, targetDirectory4);
-
-
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
                 String str = GenerateLatex(ex);
-                int questionNoCount = getTestITemQuestionCount(25);
-                for(int y=1;y<questionNoCount;y++){
-                    str = str+ latexQuestion(get1(25,y));
+                int questionNoCount = getTestITemQuestionCount(tId);
+                for(int y=1;y<questionNoCount+1;y++){
+                    str = str+ latexQuestion(get1(tId,y));
                 }
                 str = str + "\\end{document}";
                 //System.out.println(latexQuestion(get(25)));
