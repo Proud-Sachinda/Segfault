@@ -568,7 +568,7 @@ public class EditorView extends HorizontalLayout implements View {
             });
 
             FileResource removeResource = new FileResource(
-                    new File(basePath + "/WEB-INF/img/icons/close.svg"));
+                    new File(basePath + "/WEB-INF/images/close.svg"));
             System.out.println(basePath);
 
             // add header items to horizontal layout
