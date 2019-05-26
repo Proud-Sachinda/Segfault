@@ -186,6 +186,7 @@ public class CreateView extends HorizontalLayout implements View {
 
         // set up cancel button
         FileResource cancelResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/cancel.svg"));
+        System.out.println(basePath);
         cancel = new Image(null, cancelResource);
         cancel.setWidth(48.0f, Unit.PIXELS);
         cancel.setHeight(48.0f, Unit.PIXELS);
@@ -334,6 +335,7 @@ public class CreateView extends HorizontalLayout implements View {
 
         // set up finish button
         FileResource finishResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/finish.svg"));
+        System.out.println(basePath);
         Image finish = new Image(null, finishResource);
         finish.setWidth(40.0f, Unit.PIXELS);
         finish.setHeight(40.0f, Unit.PIXELS);
