@@ -55,11 +55,11 @@ public class QuestionPaperItemComponent extends VerticalLayout {
         VerticalLayout controlsLayout = new VerticalLayout();
         controlsLayout.setMargin(false);
         controlsLayout.setWidthUndefined();
-        FileResource closeResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/close.svg"));
+        FileResource closeResource = new FileResource(new File(basePath + "/WEB-INF/images/close.svg"));
         close = new Image(null, closeResource);
-        FileResource moveUpResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/move-up.svg"));
+        FileResource moveUpResource = new FileResource(new File(basePath + "/WEB-INF/images/move-up.svg"));
         moveUp = new Image(null, moveUpResource);
-        FileResource moveDownResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/move-down.svg"));
+        FileResource moveDownResource = new FileResource(new File(basePath + "/WEB-INF/images/move-down.svg"));
         moveDown = new Image(null, moveDownResource);
 
         // set width and height of controls

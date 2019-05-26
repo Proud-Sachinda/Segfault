@@ -38,7 +38,7 @@ public class TagItemsComponent extends HorizontalLayout {
         tags.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_500);
 
         // set add image button
-        FileResource addResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/tag-add.svg"));
+        FileResource addResource = new FileResource(new File(basePath + "/WEB-INF/images/tag-add.svg"));
         Image add = new Image(null, addResource);
         add.setWidth(24.0f, Unit.PIXELS);
         add.setHeight(24.0f, Unit.PIXELS);
@@ -154,7 +154,7 @@ public class TagItemsComponent extends HorizontalLayout {
             addStyleName(MyTheme.MAIN_FLAT_TAG_EDIT_LAYOUT);
 
             // set add image button
-            FileResource addResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/tag-delete.svg"));
+            FileResource addResource = new FileResource(new File(basePath + "/WEB-INF/images/tag-delete.svg"));
             Image delete = new Image(null, addResource);
             delete.setWidth(12.0f, Unit.PIXELS);
             delete.setHeight(12.0f, Unit.PIXELS);

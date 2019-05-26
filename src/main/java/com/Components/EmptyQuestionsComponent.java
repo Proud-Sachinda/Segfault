@@ -23,7 +23,7 @@ public class EmptyQuestionsComponent extends VerticalLayout {
         addStyleName(MyTheme.MAIN_FLAT_FLOATING_BOX);
 
         // create draft image
-        FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-questions.svg"));
+        FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-questions.svg"));
         empty = new Image(null, emptyResource);
         empty.setWidth(64.0f, Unit.PIXELS);
         empty.setHeight(64.0f, Unit.PIXELS);

@@ -53,10 +53,10 @@ public class QuestionItemComponent extends VerticalLayout {
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     // file resource for images
-    private FileResource copyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/copy.svg"));
-    private FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/save.svg"));
-    private FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/edit.svg"));
-    private FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/trash.svg"));
+    private FileResource copyResource = new FileResource(new File(basePath + "/WEB-INF/images/copy.svg"));
+    private FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/images/save.svg"));
+    private FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/images/edit.svg"));
+    private FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/images/trash.svg"));
 
     // edit trash copy trash
     private Image copy = new Image(null, copyResource);

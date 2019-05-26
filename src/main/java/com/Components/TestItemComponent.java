@@ -75,10 +75,10 @@ public class TestItemComponent extends VerticalLayout {
         setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
         // file resources
-        FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/edit.svg"));
-        FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/share.svg"));
-        FileResource deleteResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/trash.svg"));
-        FileResource renameResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/rename.svg"));
+        FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/images/edit.svg"));
+        FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/images/share.svg"));
+        FileResource deleteResource = new FileResource(new File(basePath + "/WEB-INF/images/trash.svg"));
+        FileResource renameResource = new FileResource(new File(basePath + "/WEB-INF/images/rename.svg"));
 
         // add layouts
         addComponent(draftOrFinalLayout);
