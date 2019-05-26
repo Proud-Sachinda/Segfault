@@ -431,7 +431,7 @@ public class EditorView extends HorizontalLayout implements View {
             setWidth(60.0f, Unit.PERCENTAGE);
 
             // create draft image
-            FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-papers.svg"));
+            FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/empty-papers.svg"));
             System.out.println(basePath);
             Image empty = new Image(null, emptyResource);
             empty.setWidth(64.0f, Unit.PIXELS);
@@ -568,7 +568,7 @@ public class EditorView extends HorizontalLayout implements View {
             });
 
             FileResource removeResource = new FileResource(
-                    new File(basePath + "/WEB-INF/img/icons/close.svg"));
+                    new File(basePath + "/WEB-INF/close.svg"));
             System.out.println(basePath);
 
             // add header items to horizontal layout

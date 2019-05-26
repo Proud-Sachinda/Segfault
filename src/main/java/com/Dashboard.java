@@ -41,12 +41,12 @@ public class Dashboard extends VerticalLayout {
     private Navigator navigator;
 
     // image resources
-    private FileResource logoResource = new FileResource(new File(basePath + "/WEB-INF/img/logo.svg"));
-    private FileResource editorResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/create.svg"));
-    private FileResource libraryResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/course.svg"));
-    private FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/export.svg"));
-    private FileResource profileResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/profile.svg"));
-    private FileResource signOutResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/sign-out.svg"));
+    private FileResource logoResource = new FileResource(new File(basePath + "/WEB-INF/logo.svg"));
+    private FileResource editorResource = new FileResource(new File(basePath + "/WEB-INF/create.svg"));
+    private FileResource libraryResource = new FileResource(new File(basePath + "/WEB-INF/course.svg"));
+    private FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/export.svg"));
+    private FileResource profileResource = new FileResource(new File(basePath + "/WEB-INF/profile.svg"));
+    private FileResource signOutResource = new FileResource(new File(basePath + "/WEB-INF/sign-out.svg"));
 
     // navigation icons
     private final Image logo = new Image(null, logoResource);
