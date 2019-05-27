@@ -16,7 +16,7 @@ public class EmptyComponent extends VerticalLayout {
     // empty type
     public static final String FIRST = "FIRST";
     public static final String CREATE_A_TEST = "CREATE_A_TEST";
-    public static final String NO_MORE_QUESTIONS = "NO_MORE_QUESTIONS";
+    static final String NO_MORE_QUESTIONS = "NO_MORE_QUESTIONS";
     public static final String NO_QUESTIONS_FOUND = "NO_QUESTIONS_FOUND";
 
     /**
@@ -30,13 +30,13 @@ public class EmptyComponent extends VerticalLayout {
         addStyleName(MyTheme.MAIN_FLAT_FLOATING_BOX);
 
         // create empty question image
-        FileResource emptyQuestionsResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-questions.svg"));
+        FileResource emptyQuestionsResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-questions.svg"));
         emptyQuestions = new Image(null, emptyQuestionsResource);
         emptyQuestions.setWidth(64.0f, Unit.PIXELS);
         emptyQuestions.setHeight(64.0f, Unit.PIXELS);
 
         // create empty library image
-        FileResource emptyLibraryResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-library.svg"));
+        FileResource emptyLibraryResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-library.svg"));
         emptyLibrary = new Image(null, emptyLibraryResource);
         emptyLibrary.setWidth(64.0f, Unit.PIXELS);
         emptyLibrary.setHeight(64.0f, Unit.PIXELS);
@@ -54,11 +54,11 @@ public class EmptyComponent extends VerticalLayout {
         addStyleName(MyTheme.MAIN_FLAT_FLOATING_BOX);
 
         // create empty question image
-        FileResource emptyQuestionsResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-questions.svg"));
+        FileResource emptyQuestionsResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-questions.svg"));
         emptyQuestions = new Image(null, emptyQuestionsResource);
 
         // create empty library image
-        FileResource emptyLibraryResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/empty-library.svg"));
+        FileResource emptyLibraryResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-library.svg"));
         emptyLibrary = new Image(null, emptyLibraryResource);
 
         // set up images

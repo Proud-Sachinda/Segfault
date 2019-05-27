@@ -15418,8 +15418,39 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
+.mytheme .main-sign-in-button {
+	border: none;
+	outline: none;
+	background: #323232 none;
+	color: white;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+}
+
+.mytheme .main-sign-up-button {
+	background: none;
+	outline: none;
+	border: 2px solid #323232;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+	-webkit-transition: all 0.21s cubic-bezier(0.685, 0.0473, 0.346, 1);
+	-moz-transition: all 0.21s cubic-bezier(0.685, 0.0473, 0.346, 1);
+	-o-transition: all 0.21s cubic-bezier(0.685, 0.0473, 0.346, 1);
+	transition: all 0.21s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+.mytheme .main-sign-up-button:hover {
+	font-weight: 900;
+	font-size: larger;
+}
+
 .mytheme .card-border:hover {
 	background: linen;
+}
+
+.mytheme .glass-border {
+	border-radius: 8px;
+	border: 1px solid #e1e1e1;
+	background: rgba(255, 255, 255, 0.2);
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
 .mytheme .main-flat-difficulty-badge-1 {
@@ -15448,6 +15479,12 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: 500;
 	border-radius: 8px;
 	background: #43b05c;
+}
+
+.mytheme .main-flat-sign-form {
+	border: 0.5px solid rgba(0, 0, 0, 0.3);
+	border-radius: 8px;
+	background: rgba(0, 0, 255, 0.05);
 }
 
 .mytheme .main-flat-course-add-button {

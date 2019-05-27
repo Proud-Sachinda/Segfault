@@ -1,12 +1,10 @@
 package com.Client;
 
+import com.AttributeHandling;
 import com.Components.CourseComboBox;
 import com.Components.CreateCourseComponent;
 import com.Components.EmptyComponent;
 import com.Components.TestItemComponent;
-import com.CookieHandling.CookieAge;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
 import com.NavigationStates;
@@ -14,7 +12,6 @@ import com.Objects.CourseItem;
 import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 import com.Server.CourseServer;
-import com.Server.LecturerServer;
 import com.Server.TestServer;
 import com.vaadin.data.HasValue;
 import com.vaadin.navigator.Navigator;
@@ -24,7 +21,6 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import javax.servlet.http.Cookie;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -33,6 +29,9 @@ public class LibraryView extends HorizontalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
 
+    // attributeHandling
+    private AttributeHandling attributeHandling;
+
     // items
     private CourseItem courseItem;
     private LecturerItem lecturerItem;
@@ -40,10 +39,8 @@ public class LibraryView extends HorizontalLayout implements View {
     // server
     private TestServer testServer;
     private CourseServer courseServer;
-    private LecturerServer lecturerServer;
 
-    // array lists
-    private ArrayList<TestItem> testItems = new ArrayList<>();
+    // course items
     private ArrayList<CourseItem> courseItems = new ArrayList<>();
 
     // base path
@@ -68,15 +65,17 @@ public class LibraryView extends HorizontalLayout implements View {
     // dashboard
     private Dashboard dashboard;
 
-    public LibraryView(Navigator navigator, Connection connection) {
+    public LibraryView(Navigator navigator, Connection connection, AttributeHandling attributeHandling) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
 
+        // attributeHandling
+        this.attributeHandling = attributeHandling;
+
         // course server
         this.testServer = new TestServer(connection);
         this.courseServer = new CourseServer(connection);
-        this.lecturerServer = new LecturerServer(connection);
 
         // set to fill browser screen
         setSizeFull();
@@ -106,16 +105,14 @@ public class LibraryView extends HorizontalLayout implements View {
         // set active item
         dashboard.setActiveLink("library");
 
-        // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "library", CookieAge.DAY);
-
         // if not signed in kick out
-        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+        lecturerItem =  attributeHandling.getLecturerItem();
+
 
         if (lecturerItem == null) {
 
             // set message
-            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+            attributeHandling.setMessage("Please Sign In");
 
             // navigate
             navigator.navigateTo("");
@@ -128,13 +125,13 @@ public class LibraryView extends HorizontalLayout implements View {
     private void setUpLibrary() {
 
         // check cookies
+        courseItem = attributeHandling.getCourseItem();
 
-        Cookie cookie = CookieHandling.getCookieByName(CookieName.LIB);
-
-        if (cookie == null) {
+        if (courseItem == null) {
 
             // set course item
             courseItem = courseItems.get(0);
+            attributeHandling.setCourseItem(courseItem);
 
             // set combo box item
             courseComboBox.setValue(courseItem);
@@ -145,12 +142,13 @@ public class LibraryView extends HorizontalLayout implements View {
         else {
 
             // int of cookie
-            int current = Integer.parseInt(cookie.getValue());
+            int current = attributeHandling.getCourseItem().getCourseId();
 
             // find course item
             for (CourseItem i : courseItems) {
                 if (current == i.getCourseId()) {
                     courseItem = i;
+                    attributeHandling.setCourseItem(i);
                     break;
                 }
             }
@@ -169,7 +167,7 @@ public class LibraryView extends HorizontalLayout implements View {
         library.removeAllComponents();
 
         // set test items
-        testItems = testServer.getTestItemsByCourseId(
+        ArrayList<TestItem> testItems = testServer.getTestItemsByCourseId(
                 courseItem.getCourseId(), lecturerItem.getLecturerId());
 
         if (testItems.isEmpty()) {
@@ -200,7 +198,7 @@ public class LibraryView extends HorizontalLayout implements View {
 
                 // create test item component
                 TestItemComponent item = new TestItemComponent(testItems.get(i), basePath, testServer,
-                        library, navigator);
+                        library, navigator, attributeHandling);
 
                 if (i % 4 == 0) {
 
@@ -264,14 +262,25 @@ public class LibraryView extends HorizontalLayout implements View {
         // add test
         setUpAddTestButton();
         addTest.addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON);
+
+        // add test
+        addTest.addClickListener((Button.ClickListener) event -> {
+
+            // set test item to null
+            attributeHandling.setTestItem(null);
+
+            // navigate
+            navigator.navigateTo(NavigationStates.EDITOR);
+        });
+
         footer.addComponent(addTest);
         footer.setComponentAlignment(addTest, Alignment.MIDDLE_RIGHT);
     }
 
     private void setUpAddTestButton() {
 
-        // delete cookie
-        CookieHandling.removeCookie(CookieName.EDIT);
+        // clear test
+        attributeHandling.setTestItem(null);
 
         // navigate
         navigator.navigateTo(NavigationStates.EDITOR);
@@ -295,6 +304,7 @@ public class LibraryView extends HorizontalLayout implements View {
                 else {
 
                     // show notification
+                    attributeHandling.setCourseItem(courseItem);
                     int courseId = courseServer.postToCourseTable(courseItem);
 
                     if (courseId > 0) {
@@ -339,10 +349,8 @@ public class LibraryView extends HorizontalLayout implements View {
         // set header title
         CourseItem.shortenCourseNameIfTooLong(courseItem, headerTitle);
 
-        // set cookie
         // current library
-        String lib = Integer.toString(courseItem.getCourseId());
-        CookieHandling.addCookie(CookieName.LIB, lib, CookieAge.DAY);
+        attributeHandling.setCourseItem(item);
 
         // set up library items
         setUpLibraryItems();

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="qbank@qbanksd.postgres.database.azure.com" uuid="92f5d28e-f0b8-4a2c-95ca-9ab6b9abd51a">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="AZURE" exact-version="0" />
-      <introspection-schemas>@:@</introspection-schemas>
+    <data-source name="postgres@localhost" uuid="97590940-4620-49dc-bef7-518391b34fe4">
+      <database-info product="PostgreSQL" version="11.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>postgres</user-name>
+      <introspection-schemas>@:@|postgres:*</introspection-schemas>
     </data-source>
   </component>
 </project>

@@ -1,14 +1,11 @@
 package com;
 
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
-import javax.servlet.http.Cookie;
 import java.io.File;
 import java.sql.Connection;
 
@@ -41,12 +38,12 @@ public class Dashboard extends VerticalLayout {
     private Navigator navigator;
 
     // image resources
-    private FileResource logoResource = new FileResource(new File(basePath + "/WEB-INF/img/logo.svg"));
-    private FileResource editorResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/create.svg"));
-    private FileResource libraryResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/course.svg"));
-    private FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/export.svg"));
-    private FileResource profileResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/profile.svg"));
-    private FileResource signOutResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/nav/sign-out.svg"));
+    private FileResource logoResource = new FileResource(new File(basePath + "/WEB-INF/images/logo.svg"));
+    private FileResource editorResource = new FileResource(new File(basePath + "/WEB-INF/images/create.svg"));
+    private FileResource libraryResource = new FileResource(new File(basePath + "/WEB-INF/images/course.svg"));
+    private FileResource exportResource = new FileResource(new File(basePath + "/WEB-INF/images/export.svg"));
+    private FileResource profileResource = new FileResource(new File(basePath + "/WEB-INF/images/profile.svg"));
+    private FileResource signOutResource = new FileResource(new File(basePath + "/WEB-INF/images/sign-out.svg"));
 
     // navigation icons
     private final Image logo = new Image(null, logoResource);
@@ -75,7 +72,8 @@ public class Dashboard extends VerticalLayout {
         setMargin(false);
 
         // set icons height and width
-        setSize(logo, 54.0f);
+        logo.setWidth(54f, Unit.PIXELS);
+        logo.setHeight(54f, Unit.PIXELS);
         ComponentToolkit.setMultipleImage(48f, Unit.PIXELS, editor, library, export, profile, signOut);
 
         // set descriptions
@@ -160,13 +158,6 @@ public class Dashboard extends VerticalLayout {
         addMouseListener();
     }
 
-    private void setSize(Image image, float f) {
-
-        // logo size
-        image.setWidth(f, Unit.PIXELS);
-        image.setHeight(f, Unit.PIXELS);
-    }
-
     private void alignComponents() {
 
         // logo component
@@ -204,13 +195,19 @@ public class Dashboard extends VerticalLayout {
 
         // sign out clickable
         signOut.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE, MyTheme.MAIN_NAVIGATION_LINK);
+        signOut.addClickListener(new MouseEvents.ClickListener() {
+            @Override
+            public void click(MouseEvents.ClickEvent clickEvent) {
+                    // VaadinSession.getCurrent().close();
+                    //SecurityContextHolder.clearContext();
+                    navigator.navigateTo("");
+
+            }
+        });
+
+        System.out.println(signOut.getData());
+
         signOut.addClickListener((MouseEvents.ClickListener) event -> {
-
-            CookieHandling.removeCookie(CookieName.AUTH);
-            CookieHandling.removeCookie(CookieName.EDIT);
-            CookieHandling.removeCookie(CookieName.LIB);
-            CookieHandling.removeCookie(CookieName.NAV);
-
             navigator.navigateTo("");
         });
     }

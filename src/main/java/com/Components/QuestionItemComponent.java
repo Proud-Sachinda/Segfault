@@ -2,14 +2,17 @@ package com.Components;
 
 import com.DateConvert;
 import com.MyTheme;
+import com.NavigationStates;
 import com.Objects.CourseItem;
 import com.Objects.QuestionItem;
 import com.Server.CourseServer;
 import com.Server.QuestionServer;
 import com.Server.TagServer;
+import com.VariancePopupUI;
 import com.vaadin.data.HasValue;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
@@ -17,11 +20,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.dnd.DragSourceExtension;
 import com.vaadin.ui.dnd.event.DragEndListener;
 import com.vaadin.ui.dnd.event.DragStartListener;
-import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.ui.NumberField;
 
 import java.io.File;
-import java.util.Date;
+import java.util.ArrayList;
 
 public class QuestionItemComponent extends VerticalLayout {
 
@@ -53,10 +55,10 @@ public class QuestionItemComponent extends VerticalLayout {
     private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     // file resource for images
-    private FileResource copyResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/copy.svg"));
-    private FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/save.svg"));
-    private FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/edit.svg"));
-    private FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/trash.svg"));
+    private FileResource copyResource = new FileResource(new File(basePath + "/WEB-INF/images/copy.svg"));
+    private FileResource saveResource = new FileResource(new File(basePath + "/WEB-INF/images/save.svg"));
+    private FileResource editResource = new FileResource(new File(basePath + "/WEB-INF/images/edit.svg"));
+    private FileResource trashResource = new FileResource(new File(basePath + "/WEB-INF/images/trash.svg"));
 
     // edit trash copy trash
     private Image copy = new Image(null, copyResource);
@@ -69,8 +71,14 @@ public class QuestionItemComponent extends VerticalLayout {
     private CourseServer courseServer;
     private QuestionServer questionServer;
 
-    public QuestionItemComponent(QuestionServer questionServer,
-                                 CourseServer courseServer, TagServer tagServer, Navigator navigator) {
+    // external
+    private EmptyComponent emptyComponent;
+    private VerticalLayout verticalLayoutRoot;
+    private ArrayList<QuestionItemComponent> questionItemComponents;
+
+    public QuestionItemComponent(QuestionServer questionServer, CourseServer courseServer, TagServer tagServer,
+                                 Navigator navigator, VerticalLayout verticalLayoutRoot,
+                                 ArrayList<QuestionItemComponent> questionItemComponents, EmptyComponent emptyComponent) {
 
         // initialise attributes
         this.questionItem = new QuestionItem();
@@ -82,6 +90,11 @@ public class QuestionItemComponent extends VerticalLayout {
         this.tagServer = tagServer;
         this.courseServer = courseServer;
         this.questionServer = questionServer;
+
+        // external
+        this.emptyComponent = emptyComponent;
+        this.verticalLayoutRoot = verticalLayoutRoot;
+        this.questionItemComponents = questionItemComponents;
     }
 
     HorizontalLayout getFirstRow() {
@@ -100,8 +113,7 @@ public class QuestionItemComponent extends VerticalLayout {
         return this.updateQuestionControls;
     }
 
-    public CourseItem getCourseItem() { return this.courseItem; }
-    public QuestionItem getQuestionItem() {
+    QuestionItem getQuestionItem() {
         return this.questionItem;
     }
 
@@ -141,9 +153,14 @@ public class QuestionItemComponent extends VerticalLayout {
         questionBodyLabel.setValue(questionItem.getShortQuestionBody());
         questionBodyLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_500);
         Label dateLabel = new Label();
-        if (questionItem.getQuestionLastUsed() != null)
+        if (questionItem.getQuestionLastUsed() != null) {
             dateLabel.setValue(DateConvert.
                     convertNumericDateToMinimumAlphabeticDate(questionItem.getQuestionLastUsed()));
+            Label lastUsed = new Label("Last Used");
+            lastUsed.addStyleNames(MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_OPACITY_40);
+            dateAndEdit.addComponent(lastUsed);
+            dateAndEdit.setComponentAlignment(lastUsed, Alignment.TOP_RIGHT);
+        }
         else {
             dateLabel.setValue("NEW");
             dateLabel.addStyleName(MyTheme.MAIN_FLAT_NEW_BADGE);
@@ -215,6 +232,7 @@ public class QuestionItemComponent extends VerticalLayout {
                 removeAllComponents();
                 firstRow.removeAllComponents();
                 thirdRow.removeAllComponents();
+                marksLayout.removeComponent(marksNumberField);
                 dateAndEdit.removeAllComponents();
                 updateQuestionControls.removeAllComponents();
                 setUpQuestionItemComponent();
@@ -274,7 +292,7 @@ public class QuestionItemComponent extends VerticalLayout {
                 // remove any instance of it if present
                 removeComponent(seeMoreComponent);
                 seeMoreSeeLess.setCaption("see more");
-                questionBodyLabel.setValue(questionItem.getQuestionBody());
+                questionBodyLabel.setValue(questionItem.getShortQuestionBody());
                 seeMoreComponent.removeAllComponents();
                 removeComponent(seeMoreComponent);
             }
@@ -376,26 +394,72 @@ public class QuestionItemComponent extends VerticalLayout {
         // copy button
         copy.addClickListener((MouseEvents.ClickListener) event -> {
 
+            QuestionItem item = questionServer.getQuestionItemById(questionItem.getQuestionId());
+
             // update question item
             if (questionItem.getQuestionIsVariant()) {
 
-                // get original question
-                QuestionItem item = questionServer.getQuestionItemById(questionItem.getQuestionVariance());
+                // ship as is
+                VaadinService.getCurrentRequest().setAttribute("question-create", item);
+                navigator.navigateTo("create");
             }
             else {
 
-                // redirect to create question
-                if (questionServer.updateQuestionItem(questionItem)) {
-                    VaadinService.getCurrentRequest().setAttribute("question-create", questionItem);
-                    navigator.navigateTo("create");
-                }
-                else Notification.show("ERROR", "Something went wrong", Notification.Type.ERROR_MESSAGE);
+                // set
+                item.setQuestionIsVariant(true);
+                item.setQuestionVariance(questionItem.getQuestionId());
+
+                // ship
+                VaadinService.getCurrentRequest().setAttribute("question-create", item);
+                navigator.navigateTo("create");
             }
         });
 
         // delete button
         trash.addClickListener((MouseEvents.ClickListener) event -> {
-            // delete question
+
+            // delete from data base
+            if (questionItem.getQuestionIsVariant()) {
+                if (!questionServer.deleteQuestionItem(questionItem))
+                    Notification.show("ERROR", "Something went wrong", Notification.Type.ERROR_MESSAGE);
+                else {
+
+                    // delete from view
+                    verticalLayoutRoot.removeComponent(getThisQuestionItemComponent());
+
+                    // delete from array
+                    questionItemComponents.remove(getThisQuestionItemComponent());
+
+                    // show notification
+                    Notification.show("SUCCESS", "Question variant deleted", Notification.Type.TRAY_NOTIFICATION);
+                }
+            }
+            else {
+                if (questionServer.deleteQuestionItem(questionItem)) {
+
+                    // delete from view
+                    verticalLayoutRoot.removeComponent(getThisQuestionItemComponent());
+
+                    // delete from array
+                    questionItemComponents.remove(getThisQuestionItemComponent());
+
+                    // show notification
+                    Notification.show("SUCCESS", "Question deleted", Notification.Type.TRAY_NOTIFICATION);
+                }
+                else Notification.show("ERROR", "Delete all variants before deleting original question",
+                        Notification.Type.ERROR_MESSAGE);
+            }
+
+            if (verticalLayoutRoot.getComponentCount() == 0) {
+
+                // set full
+                verticalLayoutRoot.setSizeFull();
+
+                // empty component
+                emptyComponent.setType(EmptyComponent.FIRST);
+                verticalLayoutRoot.addComponent(emptyComponent);
+                verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
+            }
         });
     }
 
@@ -458,17 +522,6 @@ public class QuestionItemComponent extends VerticalLayout {
         answerRow.addComponentsAndExpand(questionAnsLabel);
         seeMoreComponent.addComponentsAndExpand(answerRow);
 
-        // add variance row
-        HorizontalLayout usageStatisticsRow = new HorizontalLayout();
-        Label statistics = new Label("USAGE STATISTICS:");
-        statistics.addStyleNames(MyTheme.MAIN_OPACITY_60,
-                MyTheme.MAIN_TEXT_SIZE_SMALL, MyTheme.MAIN_TEXT_WEIGHT_900);
-        usageStatisticsRow.addComponent(statistics);
-        Label variantUsed = new Label("A variant of this was used");
-        variantUsed.addStyleName(MyTheme.MAIN_TEXT_SIZE_SMALL);
-        usageStatisticsRow.addComponent(variantUsed);
-        seeMoreComponent.addComponent(usageStatisticsRow);
-
         // other details
         HorizontalLayout otherRow = new HorizontalLayout();
         otherRow.setWidth(100.0f, Unit.PERCENTAGE);
@@ -481,7 +534,11 @@ public class QuestionItemComponent extends VerticalLayout {
 
         // other row -- number of times used
         Label usedXLabel = new Label("used");
-        Label usedXNumberLabel = new Label("10x");
+        int used = questionServer.getQuestionItemNumberOfTimesUsed(questionItem.getQuestionId());
+        String usedString;
+        if (used > 99) usedString = 99 + "+x";
+        else usedString = used + "x";
+        Label usedXNumberLabel = new Label(usedString);
         usedXLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
                 MyTheme.MAIN_TEXT_SIZE_LARGE, MyTheme.MAIN_OPACITY_40);
         usedXNumberLabel.addStyleNames(MyTheme.MAIN_TEXT_SIZE_EXTRA_LARGE,
@@ -492,7 +549,9 @@ public class QuestionItemComponent extends VerticalLayout {
         Label isVariantLabel = new Label();
         isVariantLabel.addStyleNames(MyTheme.MAIN_TEXT_WEIGHT_900,
                 MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_OPACITY_40);
+        HorizontalLayout variantLabelLayout = new HorizontalLayout();
         Label isVariantLabelGoto = new Label();
+        variantLabelLayout.addComponent(isVariantLabelGoto);
         isVariantLabelGoto.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM,
                 MyTheme.MAIN_TEXT_WEIGHT_900, MyTheme.MAIN_TEXT_GREEN, MyTheme.MAIN_CONTROL_CLICKABLE);
         if (questionItem.getQuestionIsVariant()) {
@@ -508,9 +567,15 @@ public class QuestionItemComponent extends VerticalLayout {
             if (questionItem.getQuestionVariance() == 0) isVariantLabelGoto.setValue("none");
             else isVariantLabelGoto.setValue(Integer.toString(questionItem.getQuestionVariance()));
         }
-        variance.addComponents(isVariantLabel, isVariantLabelGoto);
+        variance.addComponents(isVariantLabel, variantLabelLayout);
         variance.setMargin(false);
         variance.addStyleName(MyTheme.MAIN_FLAT_DARK_LEFT_RIGHT_BORDER);
+
+        // variance pop up
+        BrowserWindowOpener b = new BrowserWindowOpener(VariancePopupUI.class);
+        b.setFeatures("width=640,height=640");
+        b.setParameter("question_id", Integer.toString(questionItem.getQuestionId()));
+        b.extend(variantLabelLayout);
 
         // other row -- date published
         Label datePublishedLabel = new Label("date published");
@@ -528,7 +593,7 @@ public class QuestionItemComponent extends VerticalLayout {
         // align
         usedColumn.setComponentAlignment(usedXLabel, Alignment.MIDDLE_LEFT);
         variance.setComponentAlignment(isVariantLabel, Alignment.MIDDLE_CENTER);
-        variance.setComponentAlignment(isVariantLabelGoto, Alignment.MIDDLE_CENTER);
+        variance.setComponentAlignment(variantLabelLayout, Alignment.MIDDLE_CENTER);
         otherRow.setComponentAlignment(usedColumn, Alignment.MIDDLE_CENTER);
 
         // add other row

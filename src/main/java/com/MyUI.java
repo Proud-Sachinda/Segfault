@@ -1,15 +1,16 @@
 package com;
 
-import com.Client.*;
+import javax.servlet.annotation.WebServlet;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
+import com.Client.*;
 
-import javax.servlet.annotation.WebServlet;
-import java.sql.Connection;
+import java.sql.*;
 
 /**
  * This UI is the application entry point. QuestionItemComponent UI may either represent a browser window
@@ -32,20 +33,25 @@ public class MyUI extends UI {
         // create a navigator to control the views
         Navigator navigator = new Navigator(this, this);
 
-        // create and register the views
+        // create attributeHandling
+        AttributeHandling attributeHandling = new AttributeHandling();
+
+        // get database connection
         Connection connection = ConnectToDatabase.getConnection();
-        navigator.addView("", new SignInView(navigator, connection));
-        navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection));
-        navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection));
-        navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection));
-        navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection));
-        navigator.addView(NavigationStates.TEST, new TestView(navigator, connection));
-        navigator.addView(NavigationStates.SIGNUP, new SignUpView(navigator,connection));
 
+        // create and register the views
+        navigator.addView(NavigationStates.NO_CONNECTION, new NoConnectionView(navigator, null, attributeHandling));
+        navigator.addView("", new SignInUpView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.TEST, new TestView(navigator, connection, attributeHandling));
 
-
+        // navigate to no connection page
+        if (connection == null) navigator.navigateTo(NavigationStates.NO_CONNECTION);
         // navigate to home
-        navigator.navigateTo(NavigationStates.HOME);
+        else navigator.navigateTo(NavigationStates.HOME);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
