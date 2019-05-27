@@ -171,6 +171,10 @@ public class TestServer {
             // execute
             if (statement.executeUpdate(query) > 0) success = true;
 
+            if(statement.executeUpdate(query) == 0){
+                return success;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

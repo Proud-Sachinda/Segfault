@@ -4,6 +4,7 @@ import com.Objects.ExportItem;
 import com.Objects.QuestionItem;
 import com.Objects.TestItem;
 import com.Objects.TrackItem;
+import com.vaadin.server.VaadinService;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.util.LinkedHashSet;
 public class ExportServer {
     // connection variable
     private Connection connection;
+    private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     TrackItem tracky = new TrackItem();
     TestItem ti = new TestItem();
@@ -96,11 +98,11 @@ public class ExportServer {
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
-                Path sourceDirectory = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_code.sty");
-                Path sourceDirectory1 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_exam.sty");
-                Path sourceDirectory2 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_question.sty");
-                Path sourceDirectory3 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_flowchart.sty");
-                Path sourceDirectory4 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_pseudocode.sty");
+                Path sourceDirectory = Paths.get(basePath + "/WEB-INF/Wits packages/wits_code.sty");
+                Path sourceDirectory1 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_exam.sty");
+                Path sourceDirectory2 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_question.sty");
+                Path sourceDirectory3 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_flowchart.sty");
+                Path sourceDirectory4 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_pseudocode.sty");
 
                 Path targetDirectory = Paths.get("C:\\"+testname+"\\wits_code.sty");
                 Path targetDirectory1 = Paths.get("C:\\"+testname+"\\wits_exam.sty");
