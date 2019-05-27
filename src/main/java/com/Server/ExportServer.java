@@ -114,7 +114,14 @@ public class ExportServer {
                 Files.copy(sourceDirectory3, targetDirectory3);
                 Files.copy(sourceDirectory4, targetDirectory4);
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\"+testname+"\\"+testname+".tex"));
-                String str = GenerateLatex(ex);
+                String str = "not specifies whether is test of exam";
+                if(ti.isTestIsExam() == true){
+                     str = GenerateLatex(ex);
+                }
+                else if(ti.isTestIsExam() == false){
+                    str = GenerateLatexTest(ex);
+                }
+
                 int questionNoCount = getTestITemQuestionCount(tId);
                 for(int y=1;y<questionNoCount+1;y++){
                     str = str+ latexQuestion(get1(tId,y));
