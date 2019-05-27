@@ -123,7 +123,7 @@ public class QuestionPaginationComponent extends VerticalLayout {
         });
 
         FileResource removeResource = new FileResource(
-                new File(basePath + "/WEB-INF/img/icons/close.svg"));
+                new File(basePath + "/WEB-INF/images/close.svg"));
 
         // add header items to horizontal layout
         header.addComponents(number, marks);
@@ -439,7 +439,7 @@ public class QuestionPaginationComponent extends VerticalLayout {
             VerticalLayout controlsLayout = new VerticalLayout();
             controlsLayout.setMargin(false);
             controlsLayout.setWidthUndefined();
-            FileResource closeResource = new FileResource(new File(basePath + "/WEB-INF/img/icons/close.svg"));
+            FileResource closeResource = new FileResource(new File(basePath + "/WEB-INF/images/close.svg"));
             close = new Image(null, closeResource);
 
             // set width and height of controls
