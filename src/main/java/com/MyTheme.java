@@ -40,12 +40,16 @@ public class MyTheme {
 
     // components
     public static final String CARD_BORDER = "card-border";
+    public static final String GLASS_BORDER = "glass-border";
     public static final String DASHED_BOTTOM = "dashed-bottom";
     public static final String MAIN_FLAT_BORDER = "main-flat-border";
     public static final String MAIN_GREY_LABEL = "main-flat-grey-label";
     public static final String MAIN_FLAT_TAG_LABEL = "main-flat-tag-label";
     public static final String MAIN_FLAT_NEW_BADGE = "main-flat-new-badge";
+    public static final String MAIN_SIGN_IN_BUTTON = "main-sign-in-button";
+    public static final String MAIN_SIGN_UP_BUTTON = "main-sign-up-button";
     public static final String MAIN_FLAT_BADGE_ICON = "main-flat-badge-icon";
+    public static final String MAIN_FLAT_SIGN_IN_FORM = "main-flat-sign-form";
     public static final String MAIN_FLAT_ROUND_BUTTON = "main-flat-round-button";
     public static final String MAIN_FLAT_FLOATING_BOX = "main-flat-floating-box";
     public static final String MAIN_FLAT_FINISH_BUTTON = "main-flat-finish-button";

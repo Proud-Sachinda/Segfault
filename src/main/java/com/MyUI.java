@@ -1,15 +1,11 @@
 package com;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import com.Client.*;
@@ -37,26 +33,25 @@ public class MyUI extends UI {
         // create a navigator to control the views
         Navigator navigator = new Navigator(this, this);
 
-  //      Cookie cookie = CookieHandling.getCookieByName(CookieName.NAV);
-//        cookie.setMaxAge(0);
-    //    cookie.setPath("/");
-      //  VaadinService.getCurrentResponse().addCookie(cookie);
-        //System.out.println(cookie.getValue());
+        // create attributeHandling
+        AttributeHandling attributeHandling = new AttributeHandling();
+
+        // get database connection
+        Connection connection = ConnectToDatabase.getConnection();
 
         // create and register the views
-        Connection connection = ConnectToDatabase.getConnection();
-        navigator.addView("", new SignInView(navigator, connection));
-        navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection));
-        navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection));
-        navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection));
-        navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection));
-        navigator.addView(NavigationStates.TEST, new TestView(navigator, connection));
-        navigator.addView(NavigationStates.SIGNUP, new SignUpView(navigator,connection));
+        navigator.addView(NavigationStates.NO_CONNECTION, new NoConnectionView(navigator, null, attributeHandling));
+        navigator.addView("", new SignInUpView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.EDITOR, new EditorView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.LIBRARY, new LibraryView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.EXPORT, new ExamView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.CREATE, new CreateView(navigator, connection, attributeHandling));
+        navigator.addView(NavigationStates.TEST, new TestView(navigator, connection, attributeHandling));
 
-
-
+        // navigate to no connection page
+        if (connection == null) navigator.navigateTo(NavigationStates.NO_CONNECTION);
         // navigate to home
-        navigator.navigateTo(NavigationStates.HOME);
+        else navigator.navigateTo(NavigationStates.HOME);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

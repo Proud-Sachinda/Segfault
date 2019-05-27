@@ -16,7 +16,7 @@ public class EmptyComponent extends VerticalLayout {
     // empty type
     public static final String FIRST = "FIRST";
     public static final String CREATE_A_TEST = "CREATE_A_TEST";
-    public static final String NO_MORE_QUESTIONS = "NO_MORE_QUESTIONS";
+    static final String NO_MORE_QUESTIONS = "NO_MORE_QUESTIONS";
     public static final String NO_QUESTIONS_FOUND = "NO_QUESTIONS_FOUND";
 
     /**

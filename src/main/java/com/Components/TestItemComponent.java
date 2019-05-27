@@ -1,8 +1,6 @@
 package com.Components;
 
-import com.CookieHandling.CookieAge;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
+import com.AttributeHandling;
 import com.MyTheme;
 import com.NavigationStates;
 import com.Objects.TestItem;
@@ -23,6 +21,7 @@ public class TestItemComponent extends VerticalLayout {
     private boolean isRename;
     private TestItem testItem;
     private Navigator navigator;
+    private AttributeHandling attributeHandling;
 
     // servers
     private TestServer testServer;
@@ -54,13 +53,14 @@ public class TestItemComponent extends VerticalLayout {
      */
     @NotNull
     public TestItemComponent(TestItem testItem, String basePath, TestServer testServer,
-                             VerticalLayout verticalLayout, Navigator navigator) {
+                             VerticalLayout verticalLayout, Navigator navigator, AttributeHandling attributeHandling) {
 
         // set attributes
         this.isRename = false;
         this.basePath = basePath;
         this.testItem = testItem;
         this.navigator = navigator;
+        this.attributeHandling = attributeHandling;
 
         // set servers
         this.testServer = testServer;
@@ -169,6 +169,9 @@ public class TestItemComponent extends VerticalLayout {
 
                     // add export button
                     controlsLayout.addComponent(export);
+
+                    // set items to
+                    testServer.updateTestItemQuestionLastUsedDates(true, testItem.getTestId());
                 }
                 else {
 
@@ -178,6 +181,9 @@ public class TestItemComponent extends VerticalLayout {
                     // show notification
                     Notification.show("ERROR",
                             "Could not update", Notification.Type.WARNING_MESSAGE);
+
+                    // set items to
+                    testServer.updateTestItemQuestionLastUsedDates(false, testItem.getTestId());
                 }
             }
             else {
@@ -194,6 +200,9 @@ public class TestItemComponent extends VerticalLayout {
 
                     // remove export button
                     controlsLayout.removeComponent(export);
+
+                    // set items to
+                    testServer.updateTestItemQuestionLastUsedDates(false, testItem.getTestId());
                 }
                 else {
 
@@ -203,6 +212,9 @@ public class TestItemComponent extends VerticalLayout {
                     // show notification
                     Notification.show("ERROR",
                             "Could not update", Notification.Type.WARNING_MESSAGE);
+
+                    // set items to
+                    testServer.updateTestItemQuestionLastUsedDates(true, testItem.getTestId());
                 }
             }
         });
@@ -279,9 +291,8 @@ public class TestItemComponent extends VerticalLayout {
         edit.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
         edit.addClickListener((MouseEvents.ClickListener) event -> {
 
-            // add cookie
-            CookieHandling.addCookie(CookieName.EDIT,
-                    Integer.toString(testItem.getTestId()), CookieAge.WEEK);
+            // set test item
+            attributeHandling.setTestItem(testItem);
 
             // go to editor page
             navigator.navigateTo(NavigationStates.EDITOR);
@@ -334,9 +345,8 @@ public class TestItemComponent extends VerticalLayout {
         export.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
         export.addClickListener((MouseEvents.ClickListener)  event -> {
 
-            // add cookie
-            CookieHandling.addCookie(CookieName.EDIT,
-                    Integer.toString(testItem.getTestId()), CookieAge.WEEK);
+            // set test item
+            attributeHandling.setTestItem(testItem);
 
             // go to editor page
             navigator.navigateTo(NavigationStates.EXPORT);

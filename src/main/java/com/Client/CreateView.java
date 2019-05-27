@@ -1,12 +1,11 @@
 
 package com.Client;
 
+import com.AttributeHandling;
 import com.Components.CourseComboBox;
 import com.Components.FormItemComponent;
 import com.Components.MultipleChoiceItemComponent;
 import com.Components.TagItemsComponent;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.CourseItem;
@@ -38,6 +37,9 @@ public class CreateView extends HorizontalLayout implements View {
 
     // navigator used to redirect to another page
     private Navigator navigator;
+
+    // attributeHandling
+    private AttributeHandling attributeHandling;
 
     // servers
     private TagServer tagServer;
@@ -87,10 +89,13 @@ public class CreateView extends HorizontalLayout implements View {
     // tags item component
     private TagItemsComponent tags;
 
-    public CreateView(Navigator navigator, Connection connection) {
+    public CreateView(Navigator navigator, Connection connection, AttributeHandling attributeHandling) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // set attributeHandling
+        this.attributeHandling = attributeHandling;
 
         // set up servers
         this.tagServer = new TagServer(connection);
@@ -120,11 +125,30 @@ public class CreateView extends HorizontalLayout implements View {
 
         // set up split area
         HorizontalLayout splitAreaRoot = new HorizontalLayout();
-        HorizontalLayout mainQuestionFormAreaRoot = new HorizontalLayout();
-        HorizontalLayout otherQuestionFormAreaRoot = new HorizontalLayout();
+        splitAreaRoot.setWidth(100f, Unit.PERCENTAGE);
 
-        // add split areas to root
-        splitAreaRoot.addComponentsAndExpand(mainQuestionFormAreaRoot, otherQuestionFormAreaRoot);
+        // area roots
+        HorizontalLayout mainQuestionFormAreaRoot = new HorizontalLayout();
+        mainQuestionFormAreaRoot.setWidth(100f, Unit.PERCENTAGE);
+        HorizontalLayout otherQuestionFormAreaRoot = new HorizontalLayout();
+        otherQuestionFormAreaRoot.setWidth(100f, Unit.PERCENTAGE);
+
+        // panel main
+        Panel panelMain = new Panel();
+        panelMain.setSizeFull();
+        panelMain.addStyleName(ValoTheme.PANEL_BORDERLESS);
+
+        // panel other
+        Panel panelOther = new Panel();
+        panelOther.setSizeFull();
+        panelOther.addStyleName(ValoTheme.PANEL_BORDERLESS);
+
+        // add to split
+        splitAreaRoot.addComponentsAndExpand(panelMain, panelOther);
+
+        // set contents
+        panelMain.setContent(mainQuestionFormAreaRoot);
+        panelOther.setContent(otherQuestionFormAreaRoot);
         rootLayout.addComponentsAndExpand(splitAreaRoot);
 
         // add vertical split layouts to split areas
@@ -147,16 +171,14 @@ public class CreateView extends HorizontalLayout implements View {
         // set page title
         UI.getCurrent().getPage().setTitle("Dashboard - Create question");
 
-        // set nav cookie
-        CookieHandling.addCookie(CookieName.NAV, "create", -1);
-
         // if not signed in kick out
-        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+        lecturerItem =  attributeHandling.getLecturerItem();
+
 
         if (lecturerItem == null) {
 
             // set message
-            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+            attributeHandling.setMessage("Please Sign In");
 
             // navigate
             navigator.navigateTo("");
@@ -171,8 +193,8 @@ public class CreateView extends HorizontalLayout implements View {
             questionItem = item;
 
             // set variance to true
-            questionItem.setQuestionIsVariant(true);
-            questionItem.setQuestionVariance(item.getQuestionId());
+            questionItem.setQuestionIsVariant(item.getQuestionIsVariant());
+            questionItem.setQuestionVariance(item.getQuestionVariance());
 
             // set up main form area components
             setUpMainQuestionFormAreaWithQuestionItem();
@@ -186,7 +208,6 @@ public class CreateView extends HorizontalLayout implements View {
 
         // set up cancel button
         FileResource cancelResource = new FileResource(new File(basePath + "/WEB-INF/images/cancel.svg"));
-        System.out.println(basePath);
         cancel = new Image(null, cancelResource);
         cancel.setWidth(48.0f, Unit.PIXELS);
         cancel.setHeight(48.0f, Unit.PIXELS);
@@ -266,7 +287,7 @@ public class CreateView extends HorizontalLayout implements View {
         formItemComponents.get(0).setValueOfComponent(courseItem);
 
         // question body
-        formItemComponents.get(2).setValueOfComponent(questionItem.getShortQuestionBody());
+        formItemComponents.get(2).setValueOfComponent(questionItem.getQuestionBody());
 
         // question difficulty
         formItemComponents.get(3).setValueOfComponent(questionItem.getQuestionDifficulty());
@@ -335,7 +356,6 @@ public class CreateView extends HorizontalLayout implements View {
 
         // set up finish button
         FileResource finishResource = new FileResource(new File(basePath + "/WEB-INF/images/finish.svg"));
-        System.out.println(basePath);
         Image finish = new Image(null, finishResource);
         finish.setWidth(40.0f, Unit.PIXELS);
         finish.setHeight(40.0f, Unit.PIXELS);

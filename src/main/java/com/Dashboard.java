@@ -1,14 +1,11 @@
 package com;
 
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.*;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 
-import javax.servlet.http.Cookie;
 import java.io.File;
 import java.sql.Connection;
 
@@ -75,7 +72,8 @@ public class Dashboard extends VerticalLayout {
         setMargin(false);
 
         // set icons height and width
-        setSize(logo, 54.0f);
+        logo.setWidth(54f, Unit.PIXELS);
+        logo.setHeight(54f, Unit.PIXELS);
         ComponentToolkit.setMultipleImage(48f, Unit.PIXELS, editor, library, export, profile, signOut);
 
         // set descriptions
@@ -160,13 +158,6 @@ public class Dashboard extends VerticalLayout {
         addMouseListener();
     }
 
-    private void setSize(Image image, float f) {
-
-        // logo size
-        image.setWidth(f, Unit.PIXELS);
-        image.setHeight(f, Unit.PIXELS);
-    }
-
     private void alignComponents() {
 
         // logo component
@@ -217,12 +208,6 @@ public class Dashboard extends VerticalLayout {
         System.out.println(signOut.getData());
 
         signOut.addClickListener((MouseEvents.ClickListener) event -> {
-
-            CookieHandling.removeCookie(CookieName.AUTH);
-            CookieHandling.removeCookie(CookieName.EDIT);
-            CookieHandling.removeCookie(CookieName.LIB);
-            CookieHandling.removeCookie(CookieName.NAV);
-
             navigator.navigateTo("");
         });
     }

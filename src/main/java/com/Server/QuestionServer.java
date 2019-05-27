@@ -2,10 +2,12 @@ package com.Server;
 
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
+import com.Objects.TestItem;
 
 import javax.validation.constraints.NotNull;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 public class QuestionServer {
 
@@ -19,6 +21,30 @@ public class QuestionServer {
     }
 
     // -------------------------------- GET METHODS (SELECT)
+    public int getQuestionItemNumberOfTimesUsed(int question_id) {
+
+        int i = 0;
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.track WHERE question_id = " + question_id;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) i++;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return i;
+    }
+
     public ArrayList<QuestionItem> getQuestionItems() {
 
         // question array
@@ -45,6 +71,236 @@ public class QuestionServer {
 
                 // add to array list
                 questions.add(question);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public ArrayList<QuestionItem> getQuestionItemVariants(int question_id) {
+        // question array
+        ArrayList<QuestionItem> questions = new ArrayList<>();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT DISTINCT * FROM public.question WHERE question_variance = " +
+                    question_id + " AND question_is_variant = true";
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // QuestionItem class variable
+                QuestionItem question = new QuestionItem();
+
+                // set variables
+                question.setUpQuestionItem(set);
+
+                // add to array list
+                questions.add(question);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public ArrayList<QuestionItem> getQuestionItemsByTestId(int testId) {
+
+        // question array
+        ArrayList<QuestionItem> questions = new ArrayList<>();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT course_id FROM public.test WHERE test_id = " + testId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            // get course
+            int courseId = 0;
+
+            while(set.next()) courseId = set.getInt("course_id");
+
+            if (courseId > 0) {
+
+                // query
+                query = "SELECT DISTINCT * FROM public.question WHERE question_id " +
+                        "NOT IN (SELECT question_id FROM track WHERE " +
+                        "test_id = " + testId + ") AND course_id = " + courseId;
+
+                // execute statement
+                set = statement.executeQuery(query);
+
+                while(set.next()) {
+
+                    // QuestionItem class variable
+                    QuestionItem question = new QuestionItem();
+
+                    // set variables
+                    question.setUpQuestionItem(set);
+
+                    // add to array list
+                    questions.add(question);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return questions;
+    }
+
+    public ArrayList<QuestionItem> getQuestionItemsBySearch(String search, TestItem testItem) {
+
+        // question array
+        ArrayList<QuestionItem> questions = new ArrayList<>();
+
+        try {
+
+            // get statement
+            Statement statement = connection.createStatement();
+
+            // get query
+            if (testItem == null) {
+
+                // query
+                String query = "SELECT DISTINCT question.question_id FROM public.question LEFT JOIN tag " +
+                        "ON question.question_id = tag.question_id WHERE question_body LIKE '%" + search + "%' " +
+                        "OR question_ans LIKE '%" + search + "%' OR tag.tag_name LIKE '%" + search + "%'";
+
+                // execute statement
+                ResultSet set = statement.executeQuery(query);
+
+                // for uniqueness
+                LinkedHashSet<Integer> hashSet = new LinkedHashSet<>();
+
+                // populate hash set
+                while (set.next()) hashSet.add(set.getInt("question_id"));
+
+                query = getUniqueString(hashSet);
+
+                // execute
+                set = statement.executeQuery(query);
+
+                while(set.next()) {
+
+                    // QuestionItem class variable
+                    QuestionItem question = new QuestionItem();
+
+                    // set variables
+                    question.setUpQuestionItem(set);
+
+                    // add to array list
+                    questions.add(question);
+                }
+            }
+            else {
+
+                // query
+                String query = "SELECT course_id FROM public.test WHERE test_id = " + testItem.getTestId();
+
+                // execute statement
+                ResultSet set = statement.executeQuery(query);
+
+                // get course
+                int courseId = 0;
+
+                while(set.next()) courseId = set.getInt("course_id");
+
+                if (courseId > 0) {
+
+                    query = "SELECT DISTINCT question_id FROM public.question WHERE question_id NOT IN " +
+                            "(SELECT question_id FROM track WHERE test_id = " + testItem.getTestId() + ") AND " +
+                            "course_id = " + courseId;
+
+                    // execute statement
+                    set = statement.executeQuery(query);
+
+                    // get question items array
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    while (set.next()) {
+                        stringBuilder.append(set.getInt("question_id"));
+                        stringBuilder.append(",");
+                    }
+
+                    if (stringBuilder.toString().replaceAll(",", "").length() == 0) {
+                        // update
+                        query = "SELECT question.question_id FROM public.question LEFT JOIN tag " +
+                                "ON question.question_id = tag.question_id WHERE (question_body LIKE '%" + search + "%' " +
+                                "OR question_ans LIKE '%" + search + "%' OR tag.tag_name LIKE '%" + search + "%') AND " +
+                                "question.question_id IN (0)";
+                    }
+                    else {
+                        // remove trailing comma
+                        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
+                        // update query
+                        query = "SELECT question.question_id FROM public.question LEFT JOIN tag " +
+                                "ON question.question_id = tag.question_id WHERE (question_body LIKE '%" + search + "%' " +
+                                "OR question_ans LIKE '%" + search + "%' OR tag.tag_name LIKE '%" + search + "%') AND " +
+                                "question.question_id IN (" + stringBuilder.toString() + ")";
+                    }
+
+                    // execute
+                    set = statement.executeQuery(query);
+
+                    // for uniqueness
+                    LinkedHashSet<Integer> hashSet = new LinkedHashSet<>();
+
+                    // populate hash set
+                    while (set.next()) hashSet.add(set.getInt("question_id"));
+
+                    // empty string builder
+                    stringBuilder = new StringBuilder();
+
+                    for (Integer i : hashSet) {
+                        stringBuilder.append(i);
+                        stringBuilder.append(",");
+                    }
+
+                    // remove trailing comma
+                    if (hashSet.size() > 0) {
+                        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+                        // update query
+                        query = "SELECT DISTINCT * FROM public.question WHERE question_id " +
+                                "IN (" + stringBuilder.toString() + ")";
+                    }
+                    else {
+                        query = "SELECT DISTINCT * FROM public.question WHERE question_id " + "IN (0)";
+                    }
+
+                    // execute
+                    set = statement.executeQuery(query);
+
+                    while(set.next()) {
+
+                        // QuestionItem class variable
+                        QuestionItem question = new QuestionItem();
+
+                        // set variables
+                        question.setUpQuestionItem(set);
+
+                        // add to array list
+                        questions.add(question);
+                    }
+                }
             }
 
         } catch (SQLException e) {
@@ -241,7 +497,7 @@ public class QuestionServer {
 
                     // set mcq choices
                     query = "UPDATE public.mcq_question " +
-                            "SET mcq_choices = " + questionItem.getQuestionMcqChoices() + " " +
+                            "SET mcq_choices = '" + questionItem.getQuestionMcqChoices() + "' " +
                             "WHERE question_id = " + questionId;
 
                     // execute statement
@@ -350,5 +606,117 @@ public class QuestionServer {
         }
 
         return success;
+    }
+
+
+    // -------------------------------- DELETE METHODS (DELETE)
+public boolean deleteQuestionItem(QuestionItem questionItem) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query;
+
+            // res
+            int res;
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // if it is a variant delete
+            if (questionItem.getQuestionIsVariant()) {
+
+                // decrement
+                query = "UPDATE public.question SET question_variance = question_variance - 1" +
+                        " WHERE question_id = " + questionItem.getQuestionVariance();
+                statement.executeUpdate(query);
+
+                // delete from tag
+                deleteFromTables(questionItem.getQuestionId(), statement);
+
+                // delete from question
+                query = "DELETE FROM public.question WHERE question_id = " + questionItem.getQuestionId();
+                res = statement.executeUpdate(query);
+
+                if (res > 0) success = true;
+
+            }
+            else {
+
+                // check for variances
+                query = "SELECT DISTINCT * FROM question WHERE question_variance = " + questionItem.getQuestionId();
+
+                // execute query
+                ResultSet set = statement.executeQuery(query);
+
+                int count = 0;
+
+                while (set.next()) count++;
+
+                if (count == 0 || questionItem.getQuestionVariance() == 0) {
+
+                    // delete from tag
+                    deleteFromTables(questionItem.getQuestionId(), statement);
+
+                    // delete from question
+                    query = "DELETE FROM public.question WHERE question_id = " + questionItem.getQuestionId();
+                    res = statement.executeUpdate(query);
+
+                    if (res > 0) success = true;
+                }
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+
+    // --------------------------------------- OTHER METHODS
+    private String getUniqueString(LinkedHashSet<Integer> hashSet) {
+
+        // query
+        String query;
+
+        // empty string builder
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Integer i : hashSet) {
+            stringBuilder.append(i);
+            stringBuilder.append(",");
+        }
+
+        // remove trailing comma
+        if (hashSet.size() > 0) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            // update query
+            query = "SELECT DISTINCT * FROM public.question WHERE question_id " +
+                    "IN (" + stringBuilder.toString() + ")";
+        }
+        else {
+            query = "SELECT DISTINCT * FROM public.question WHERE question_id " + "IN (0)";
+        }
+
+        return query;
+    }
+
+    private void deleteFromTables(int qId, Statement statement) throws SQLException {
+
+        // query
+        String query;
+
+        // delete from tag
+        query = "DELETE FROM public.tag WHERE question_id = " + qId;
+        statement.executeUpdate(query);
+
+        // delete from track
+        query = "DELETE FROM public.track WHERE question_id = " + qId;
+        statement.executeUpdate(query);
     }
 }

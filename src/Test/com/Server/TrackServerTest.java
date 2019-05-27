@@ -40,7 +40,6 @@ class TrackServerTest {
     void postToTrackTable() throws Exception{
 
         ts = new TrackServer(connection);
-        boolean n = ts.postToTrackTable(1,1,1,1);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
     }

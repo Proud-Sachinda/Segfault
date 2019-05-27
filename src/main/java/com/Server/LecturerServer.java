@@ -1,11 +1,8 @@
 package com.Server;
 
-import com.CookieHandling.CookieAge;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
+import com.AttributeHandling;
 import com.Objects.LecturerItem;
 
-import javax.servlet.http.Cookie;
 import javax.validation.constraints.NotNull;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -61,50 +58,9 @@ public class LecturerServer {
         return lecturers;
     }
 
-    public LecturerItem getCurrentLecturerItem() {
-
-        // return variable
-        LecturerItem lecturerItem = null;
-
-        // get auth cookie
-        Cookie cookie = CookieHandling.getCookieByName("auth");
-
-        // if cookie exists
-        if (cookie != null) {
-
-            try {
-
-                // get database variables
-                Statement statement = connection.createStatement();
-
-                // query
-                String query = "SELECT DISTINCT * FROM public.lecturer " +
-                        "WHERE lecturer_id = '" + cookie.getValue() + "'";
-
-                // execute statement
-                ResultSet set = statement.executeQuery(query);
-
-                while (set.next()) {
-
-                    // create lecturer item
-                    lecturerItem = new LecturerItem(cookie.getValue());
-
-                    // set variables
-                    lecturerItem.setLecturerFname(set.getString("lecturer_fname").trim());
-                    lecturerItem.setLecturerLname(set.getString("lecturer_lname").trim());
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return lecturerItem;
-    }
-
 
     // -------------------------------- OTHER METHODS
-    public boolean authenticateLecturer(String lecturer_id) {
+    public boolean authenticateLecturer(String lecturer_id, AttributeHandling attributeHandling) {
 
         // return variable
         boolean success = false;
@@ -116,8 +72,7 @@ public class LecturerServer {
                 // make true
                 success = true;
 
-                // add cookie
-                CookieHandling.addCookie(CookieName.AUTH, lecturer_id, CookieAge.WEEK);
+                attributeHandling.setLecturerItem(i);
 
                 break;
             }

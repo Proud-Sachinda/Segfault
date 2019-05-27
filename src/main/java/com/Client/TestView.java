@@ -1,6 +1,5 @@
 package com.Client;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
+import com.AttributeHandling;
 import com.Dashboard;
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
@@ -9,15 +8,12 @@ import com.Server.ExportServer;
 import com.Server.LecturerServer;
 import com.Server.QuestionServer;
 import com.itextpdf.text.pdf.*;
-import com.vaadin.data.Binder;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.itextpdf.text.*;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,6 +24,9 @@ import java.util.ArrayList;
 public class TestView extends HorizontalLayout implements View {
     // navigator used to redirect to another page
     private Navigator navigator;
+
+    // attributeHandling
+    private AttributeHandling attributeHandling;
 
     // connection for database
     private Connection connection;
@@ -61,10 +60,13 @@ public class TestView extends HorizontalLayout implements View {
     // dashboard
     private Dashboard dashboard;
 
-    public TestView(Navigator navigator, Connection connection) {
+    public TestView(Navigator navigator, Connection connection, AttributeHandling attributeHandling) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // set attributeHandling
+        this.attributeHandling = attributeHandling;
 
         // set connection variable
         this.connection = connection;
@@ -133,8 +135,6 @@ public class TestView extends HorizontalLayout implements View {
     public ArrayList<TrackItem> retreivetracks() {
         ExportServer exportServer = new ExportServer(connection);
         ArrayList<TrackItem> tracks = exportServer.get(29);
-        System.out.println(tracks);
-        System.out.println("im here");
         return tracks;
     }
 
@@ -147,22 +147,17 @@ public class TestView extends HorizontalLayout implements View {
         // set active item
         dashboard.setActiveLink("export");
 
-        // set nav cookie
-        //CookieHandling.addCookie(CookieName.NAV, "export", -1);
-
         // if not signed in kick out
-        lecturerItem = lecturerServer.getCurrentLecturerItem();
+        lecturerItem =  attributeHandling.getLecturerItem();
 
         if (lecturerItem == null) {
 
             // set message
-            VaadinService.getCurrentRequest().setAttribute("message", "Please Sign In");
+            attributeHandling.setMessage("Please Sign In");
 
             // navigate
             navigator.navigateTo("");
         }
-
-
     }
 
 

@@ -9,17 +9,17 @@ public class NavigationStates {
     public static final String EDITOR = "editor";
 
     // view test papers
-    public static final String LIBRARY = "library";
+    static final String LIBRARY = "library";
 
     // export test papers
     public static final String EXPORT = "export";
 
     // create questions
-    public static final String CREATE = "create";
+    static final String CREATE = "create";
 
     //create tests
-    public static final String TEST = "test";
+    static final String TEST = "test";
 
-    //Sing Up
-    public static final String SIGNUP =  "signup";
+    // no connection
+    static final String NO_CONNECTION = "no-connection";
 }

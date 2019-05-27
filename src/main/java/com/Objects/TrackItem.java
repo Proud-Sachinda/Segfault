@@ -1,5 +1,8 @@
 package com.Objects;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class TrackItem {
 
     // attributes
@@ -8,6 +11,21 @@ public class TrackItem {
     private int test_id;
     private int question_number;
     private int track_order;
+
+    public void setUpTrackItem(ResultSet set) {
+
+        try {
+
+            // set up variables
+            this.track_id = set.getInt("track_id");
+            this.question_id = set.getInt("question_id");
+            this.test_id = set.getInt("test_id");
+            this.question_number = set.getInt("question_number");
+            this.track_order = set.getInt("track_order");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getTrackId() {
         return track_id;

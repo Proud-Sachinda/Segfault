@@ -1,42 +1,36 @@
 package com.Client;
 
-import com.Components.CourseComboBox;
-import com.Components.EmptyComponent;
-import com.Components.QuestionItemComponent;
-import com.Components.QuestionPaperItemComponent;
-import com.CookieHandling.CookieHandling;
-import com.CookieHandling.CookieName;
+import com.AttributeHandling;
+import com.Components.*;
 import com.Dashboard;
 import com.MyTheme;
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import com.Objects.TestItem;
+import com.Objects.TrackItem;
 import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
-import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
-import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.ui.*;
-import com.vaadin.ui.dnd.DropTargetExtension;
-import com.vaadin.ui.dnd.event.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import javax.servlet.http.Cookie;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @DesignRoot
 public class EditorView extends HorizontalLayout implements View {
 
     // navigator used to change pages
     private Navigator navigator;
+
+    // attributeHandling
+    private AttributeHandling attributeHandling;
 
     // layouts for split panel
     private Panel questionArea = new Panel();
@@ -48,16 +42,16 @@ public class EditorView extends HorizontalLayout implements View {
     private HorizontalLayout paginationCenter = new HorizontalLayout();
 
     // add button absolute
+    private TextField search;
     private final Button add = new Button("+");
-    private final Button addPage = new Button("+");
-    private final ArrayList<Button> buttons = new ArrayList<>();
+    private Button addPage = new Button("+");
+    private ArrayList<Button> buttons;
 
     // server
     private TagServer tagServer;
     private TestServer testServer;
     private TrackServer trackServer;
     private CourseServer courseServer;
-    private LecturerServer lecturerServer;
     private QuestionServer questionServer;
 
     // lecturer
@@ -69,9 +63,6 @@ public class EditorView extends HorizontalLayout implements View {
     // paper area variables
     private int testId;
     private String draftName;
-
-    // boolean to check if user has been on this page before
-    private boolean hasEnteredPageBefore = false;
 
     // pagination variables
     private int currentSelectedPaginationPage;
@@ -86,17 +77,23 @@ public class EditorView extends HorizontalLayout implements View {
     // dashboard
     private Dashboard dashboard;
 
-    public EditorView(Navigator navigator, Connection connection) {
+    public EditorView(Navigator navigator, Connection connection, AttributeHandling attributeHandling) {
 
         // we get the Apps Navigator object
         this.navigator = navigator;
+
+        // set attributeHandling
+        this.attributeHandling = attributeHandling;
+
+        // init arrays
+        buttons = new ArrayList<>();
+        questionPaginationComponents = new ArrayList<>();
 
         // set up servers
         tagServer = new TagServer(connection);
         testServer = new TestServer(connection);
         trackServer = new TrackServer(connection);
         courseServer = new CourseServer(connection);
-        lecturerServer = new LecturerServer(connection);
         questionServer = new QuestionServer(connection);
 
         // set to fill browser screen
@@ -118,9 +115,6 @@ public class EditorView extends HorizontalLayout implements View {
         // set up split
         content.addComponents(paper, explore);
 
-        // set up paper explorer
-        setUpPaperExplorer();
-
         // set up question explorer
         setUpQuestionExplorer();
     }
@@ -134,26 +128,24 @@ public class EditorView extends HorizontalLayout implements View {
         // set active item
         dashboard.setActiveLink("editor");
 
-        // set nav cookie
-       // CookieHandling.addCookie(CookieName.NAV, "editor", -1);
-
         // if not signed in kick out
-        lecturerItem =  lecturerServer.getCurrentLecturerItem();
+        lecturerItem =  attributeHandling.getLecturerItem();
+
 
         if (lecturerItem == null) {
 
             // set message
-            VaadinService.getCurrentRequest().setAttribute("message","Please Sign In");
+            attributeHandling.setMessage("Please Sign In");
 
             // navigate
             navigator.navigateTo("");
         }
 
+        // set up paper explorer
+        setUpPaperExplorer();
+
         // set up questions
         setUpQuestions();
-
-        // set page as entered
-        hasEnteredPageBefore = true;
 
         // show notification is from create question page
         if (VaadinService.getCurrentRequest().getAttribute("question-post") != null) {
@@ -165,28 +157,90 @@ public class EditorView extends HorizontalLayout implements View {
 
     private void setUpPaperExplorer() {
 
-        // if there are no papers in the database add a create paper button
-        if (true) {
+        // remove any existing elements
+        paper.removeAllComponents();
+        paperArea.removeAllComponents();
+        while (!questionPaginationComponents.isEmpty())
+            questionPaginationComponents.remove(0);
+
+        //get test item
+        TestItem testItem = attributeHandling.getTestItem();
+
+        if (testItem == null) {
+
+            // create a draft
             CreateDraftComponent draft = new CreateDraftComponent();
             paper.addComponent(draft);
             paper.setComponentAlignment(draft, Alignment.MIDDLE_CENTER);
         }
         else {
-            // show a list of drafts and finals
-            Label label = new Label("Recent");
-            label.addStyleNames(MyTheme.MAIN_TEXT_SIZE_LARGE, MyTheme.MAIN_OPACITY_60, MyTheme.MAIN_TEXT_WEIGHT_900);
 
-            // add labels to paper
-            paper.addComponent(label);
+            // set test id
+            testId = testItem.getTestId();
+
+            // set draft name
+            String s = (Character.toString(testItem.getTestDraftName().charAt(0))).toUpperCase();
+            draftName = s.concat(testItem.getTestDraftName().substring(1));
+
+            // populate question pagination components
+            int num = trackServer.getQuestionCount(testItem.getTestId());
+
+            if (num == 0) questionPaginationComponents
+                    .add(new QuestionPaginationComponent(1, testId, currentSelectedPaginationPage,
+                            basePath, courseServer, questionServer, tagServer, trackServer, emptyComponent, paginationCenter,
+                            verticalLayoutRoot, paperArea, buttons, questionPaginationComponents, questionItemComponents, navigator));
+            else {
+
+                // add pagination
+                for (int i = 0; i < num; i++) questionPaginationComponents
+                        .add(new QuestionPaginationComponent(i + 1, testId, currentSelectedPaginationPage,
+                                basePath, courseServer, questionServer, tagServer, trackServer, emptyComponent, paginationCenter,
+                                verticalLayoutRoot, paperArea, buttons, questionPaginationComponents, questionItemComponents, navigator));
+
+                // add tracks
+                ArrayList<TrackItem> items = trackServer.getTrackItemsByTestId(testId);
+
+                if (items.size() > 0) {
+
+                    for (QuestionPaginationComponent p : questionPaginationComponents) {
+
+                        for (TrackItem t : items) {
+
+                            if (t.getQuestionNumber() == p.getQuestionNumber()) {
+                                p.addQuestionPaperItemComponent(t);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            // set current pagination page
+            currentSelectedPaginationPage = questionPaginationComponents.size();
+
+            // papers
+            setUpPapers(testItem.isTestIsDraft());
         }
     }
 
-    private void setUpPapers() {
+    private void setUpPapers(boolean isDraft) {
+
+        // empty elements
+        while (!buttons.isEmpty()) buttons.remove(0);
+        addPage = new Button("+");
+        paginationCenter.removeAllComponents();
 
         // set up draft heading
-        Label label = new Label(draftName + " * Draft");
-        label.addStyleNames(MyTheme.MAIN_TEXT_WARNING, MyTheme.MAIN_OPACITY_60);
-        label.addStyleName(MyTheme.MAIN_TEXT_SIZE_LARGE);
+        Label label = new Label();
+        if (isDraft) {
+            label.setValue(draftName + " * Draft");
+            label.addStyleName(MyTheme.MAIN_TEXT_WARNING);
+        }
+        else {
+            label.setValue(draftName);
+            label.addStyleName(MyTheme.MAIN_TEXT_CHARCOAL);
+        }
+        label.addStyleNames(MyTheme.MAIN_OPACITY_60, MyTheme.MAIN_TEXT_SIZE_LARGE);
 
         // add components to paper section
         paper.addComponent(label);
@@ -234,6 +288,7 @@ public class EditorView extends HorizontalLayout implements View {
         // add a question pagination component
         addPage.addStyleNames(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_ADD, MyTheme.MAIN_BLUE);
         paginationCenter.addComponent(addPage);
+
         addPage.addClickListener((Button.ClickListener) event -> {
 
             if (buttons.size() == 12) {
@@ -242,7 +297,10 @@ public class EditorView extends HorizontalLayout implements View {
             }
             else {
                 // add question pagination component
-                QuestionPaginationComponent component = new QuestionPaginationComponent(buttons.size() + 1);
+                QuestionPaginationComponent component = new QuestionPaginationComponent(
+                        buttons.size() + 1, testId, currentSelectedPaginationPage,
+                        basePath, courseServer, questionServer, tagServer, trackServer, emptyComponent, paginationCenter,
+                        verticalLayoutRoot, paperArea, buttons, questionPaginationComponents, questionItemComponents, navigator);
                 questionPaginationComponents.add(component);
                 currentSelectedPaginationPage = buttons.size() + 1;
 
@@ -280,9 +338,10 @@ public class EditorView extends HorizontalLayout implements View {
     private void setUpQuestionExplorer() {
 
         // set up search bar and add
-        TextField search = new TextField();
+        search = new TextField();
         search.setPlaceholder("Search questions");
         search.addStyleName("main-flat-text-field");
+        addSearchBarListener();
         explore.addComponent(search);
 
         // set up add button
@@ -290,76 +349,98 @@ public class EditorView extends HorizontalLayout implements View {
         add.addClickListener((Button.ClickListener) clickEvent -> navigator.navigateTo("create"));
         explore.addComponent(add);
 
-        // set up filtering
-        NativeSelect<String> selectOrder = new NativeSelect<>();
-        selectOrder.setItems("Recent", "Difficulty", "Date used", "Date published");
-        selectOrder.setSelectedItem("Recent");
-        NativeSelect<String> selectFilter = new NativeSelect<>();
-        selectFilter.setItems("None", "Subject", "Tags");
-        selectFilter.setSelectedItem("None");
-        HorizontalLayout filtering = new HorizontalLayout();
-        Label order = new Label("Order by - ");
-        Label filter = new Label("Filter by - ");
-        filtering.addComponents(order, selectOrder, filter, selectFilter);
-        explore.addComponent(filtering);
-
         // set up question area panel
         explore.addComponentsAndExpand(questionArea);
     }
 
+    private void addSearchBarListener() {
+
+        search.addValueChangeListener((HasValue.ValueChangeListener<String>)
+                event -> setUpQuestions(event.getValue()));
+    }
+
     private void setUpQuestions() {
+
+        // remove all components
+        verticalLayoutRoot.removeAllComponents();
 
         // get questions
         questionItemComponents = new ArrayList<>();
-        ArrayList<QuestionItem> questionArrayList = questionServer.getQuestionItems();
+
+        //get test item
+        TestItem testItem = attributeHandling.getTestItem();
+
+        ArrayList<QuestionItem> questionArrayList;
+
+        if (testItem == null) questionArrayList = questionServer.getQuestionItems();
+        else questionArrayList = questionServer.getQuestionItemsByTestId(testItem.getTestId());
 
         // set up root question layout
         verticalLayoutRoot.setMargin(false);
 
-        Cookie cookie = CookieHandling.getCookieByName(CookieName.EDIT);
-
-        if (questionArrayList.isEmpty()) {
-
-            // show user that they dont have questions in database create question
-            verticalLayoutRoot.setSizeFull();
-
-            // no questions found
-            emptyComponent.setType(EmptyComponent.FIRST);
-
-            // add to root
-            verticalLayoutRoot.addComponent(emptyComponent);
-            verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
-
-        }
-        else {
-
-            // remove empty question component
-            verticalLayoutRoot.setHeightUndefined();
-            verticalLayoutRoot.removeComponent(emptyComponent);
-
-            // remove all
-            verticalLayoutRoot.removeAllComponents();
-
-            // add questions loop through questions and add to view
-            for (QuestionItem q : questionArrayList) {
-
-                // declare new question item component
-                QuestionItemComponent questionItemComponent =
-                        new QuestionItemComponent(questionServer, courseServer, tagServer, navigator);
-                questionItemComponent.setQuestionItem(q);
-
-                // set up question item component
-                questionItemComponent.setUpQuestionItemComponent();
-                questionItemComponents.add(questionItemComponent);
-
-                // add to vertical layout root
-                verticalLayoutRoot.addComponent(questionItemComponent.getThisQuestionItemComponent());
-            }
-        }
+        if (questionArrayList.isEmpty()) addEmptyComponent(EmptyComponent.FIRST);
+        else addQuestionItems(questionArrayList);
 
         // add root question layout
         questionArea.addStyleName(ValoTheme.PANEL_BORDERLESS);
         questionArea.setContent(verticalLayoutRoot);
+    }
+
+    private void setUpQuestions(String query) {
+
+        // remove all components
+        verticalLayoutRoot.removeAllComponents();
+
+        // get questions
+        questionItemComponents = new ArrayList<>();
+
+        //get test item
+        TestItem testItem = attributeHandling.getTestItem();
+
+        ArrayList<QuestionItem> questionArrayList = questionServer.getQuestionItemsBySearch(query, testItem);
+
+        // set up root question layout
+        verticalLayoutRoot.setMargin(false);
+
+        if (questionArrayList.isEmpty()) addEmptyComponent(EmptyComponent.NO_QUESTIONS_FOUND);
+        else addQuestionItems(questionArrayList);
+    }
+
+    private void addEmptyComponent(String type) {
+
+        // show user that they dont have questions in database create question
+        verticalLayoutRoot.setSizeFull();
+
+        // no questions found
+        emptyComponent.setType(type);
+
+        // add to root
+        verticalLayoutRoot.addComponent(emptyComponent);
+        verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.MIDDLE_CENTER);
+    }
+
+    private void addQuestionItems(ArrayList<QuestionItem> questionArrayList) {
+
+        // remove empty question component
+        verticalLayoutRoot.setHeightUndefined();
+        verticalLayoutRoot.removeComponent(emptyComponent);
+
+        // add questions loop through questions and add to view
+        for (QuestionItem q : questionArrayList) {
+
+            // declare new question item component
+            QuestionItemComponent questionItemComponent =
+                    new QuestionItemComponent(questionServer, courseServer, tagServer, navigator,
+                            verticalLayoutRoot, questionItemComponents, emptyComponent);
+            questionItemComponent.setQuestionItem(q);
+
+            // set up question item component
+            questionItemComponent.setUpQuestionItemComponent();
+            questionItemComponents.add(questionItemComponent);
+
+            // add to vertical layout root
+            verticalLayoutRoot.addComponent(questionItemComponent.getThisQuestionItemComponent());
+        }
     }
 
     private void setAsSelectedPaginationButton(Button button) {
@@ -370,7 +451,6 @@ public class EditorView extends HorizontalLayout implements View {
             p.addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
         }
 
-        // set current as selected
         // set current as selected
         button.removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
         button.addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
@@ -384,41 +464,6 @@ public class EditorView extends HorizontalLayout implements View {
         // add question item components
         paperArea.addComponent(
                 questionPaginationComponents.get(currentSelectedPaginationPage - 1));
-
-        // update global
-        VaadinService.getCurrentRequest().setAttribute(
-                "currentSelectedPaginationPage", currentSelectedPaginationPage);
-    }
-
-    private void reIncrementAllPaginationItems(int removeInt) {
-        // re-increment pagination questions
-        int length = questionPaginationComponents.size();
-        for (int i = 0; i < length; i++) {
-            // get component
-            questionPaginationComponents.get(i).updatePaginationComponent(i + 1);
-        }
-
-        // re-increment pagination buttons and rerender
-        length = buttons.size();
-        for (int i = 1; i <= length; i++) {
-            // get button
-            buttons.get(i - 1).setCaption(Integer.toString(i));
-        }
-
-        currentSelectedPaginationPage = removeInt;
-        changeQuestionPaginationComponent();
-    }
-
-    private QuestionItemComponent findQuestionItemComponent(int questionId) {
-
-        // index variable
-        QuestionItemComponent index = null;
-
-        for (QuestionItemComponent i : questionItemComponents) {
-            if (i.getQuestionItem().getQuestionId() == questionId) index = i;
-        }
-
-        return index;
     }
 
     // reusable components
@@ -432,7 +477,6 @@ public class EditorView extends HorizontalLayout implements View {
 
             // create draft image
             FileResource emptyResource = new FileResource(new File(basePath + "/WEB-INF/images/empty-papers.svg"));
-            System.out.println(basePath);
             Image empty = new Image(null, emptyResource);
             empty.setWidth(64.0f, Unit.PIXELS);
             empty.setHeight(64.0f, Unit.PIXELS);
@@ -490,14 +534,28 @@ public class EditorView extends HorizontalLayout implements View {
                         Notification.show("ERROR", "Could not create draft", Notification.Type.WARNING_MESSAGE);
 
                     // populate question pagination array list
-                    questionPaginationComponents = new ArrayList<>();
-                    questionPaginationComponents.add(new QuestionPaginationComponent(1));
+                    int length = questionPaginationComponents.size();
+                    for (int i = 0; i < length; i++) {
+                        QuestionPaginationComponent q = questionPaginationComponents.get(i);
+                        questionPaginationComponents.remove(q);
+                    }
+                    questionPaginationComponents.add(new QuestionPaginationComponent(
+                            1, testId, currentSelectedPaginationPage,
+                            basePath, courseServer, questionServer, tagServer, trackServer, emptyComponent, paginationCenter,
+                            verticalLayoutRoot, paperArea, buttons, questionPaginationComponents, questionItemComponents, navigator));
 
                     // set current pagination page
                     currentSelectedPaginationPage = 1;
 
                     // set up paper
-                    setUpPapers();
+                    setUpPapers(true);
+
+                    // get test item
+                    TestItem t = testServer.getTestItemById(testId);
+                    attributeHandling.setTestItem(t);
+
+                    // set up questions
+                    setUpQuestions();
 
                     // remove box
                     paper.removeComponent(this);
@@ -510,226 +568,6 @@ public class EditorView extends HorizontalLayout implements View {
             // align in middle
             setComponentAlignment(empty, Alignment.MIDDLE_CENTER);
             setComponentAlignment(submit, Alignment.MIDDLE_CENTER);
-        }
-    }
-
-    private class QuestionPaginationComponent extends VerticalLayout {
-
-        // attributes
-        private int questionMarks;
-        private int questionNumber;
-        private boolean useNumeric;
-        private boolean hasQuestions;
-
-        // components
-        private Label number;
-        private VerticalLayout dropArea = new VerticalLayout();
-
-        // array list of question paper item components
-        ArrayList<QuestionPaperItemComponent> paperItemComponentArrayList;
-
-        private QuestionPaginationComponent get() {
-            return this;
-        }
-
-        private QuestionPaginationComponent(int questionNumber) {
-
-            // set attributes
-            this.questionMarks = 0;
-            this.useNumeric = false;
-            this.hasQuestions = false;
-            this.questionNumber = questionNumber;
-
-            // declare
-            paperItemComponentArrayList = new ArrayList<>();
-
-            // set up component
-            setMargin(false);
-
-            // used for the header, i.e Question 1 - (20 marks)
-            HorizontalLayout header = new HorizontalLayout();
-            Label marks = new Label("(" + questionMarks + " marks)");
-            marks.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_900);
-            this.number = new Label("Question " + this.questionNumber + " - ");
-            this.number.addStyleNames(MyTheme.MAIN_TEXT_SIZE_MEDIUM, MyTheme.MAIN_TEXT_WEIGHT_900);
-
-            // add check box and checkbox listener
-            CheckBox numeric = new CheckBox("use numbers");
-            numeric.addValueChangeListener((HasValue.ValueChangeListener<Boolean>) event -> {
-
-                // set use numeric
-                useNumeric = event.getValue();
-
-                // change all question items
-                for (QuestionPaperItemComponent p : paperItemComponentArrayList) {
-                    p.setBullet(setQuestionPaperItemComponentValue(paperItemComponentArrayList.indexOf(p)));
-                    p.updateQuestionPaperItemComponentValue();
-                }
-            });
-
-            FileResource removeResource = new FileResource(
-                    new File(basePath + "/WEB-INF/images/close.svg"));
-            System.out.println(basePath);
-
-            // add header items to horizontal layout
-            header.addComponents(number, marks);
-
-            // close
-            if (questionNumber > 1) {
-                // remove question button
-                Image remove = new Image(null, removeResource);
-                remove.addStyleName(MyTheme.MAIN_CONTROL_CLICKABLE);
-                remove.setWidth(28.0f, Unit.PIXELS);
-                remove.setHeight(28.0f, Unit.PIXELS);
-                header.addComponent(remove);
-
-                remove.addClickListener((MouseEvents.ClickListener) event -> {
-
-                    // int used to remove component
-                    int removeInt = questionPaginationComponents.indexOf(get());
-
-                    // remove this component from array
-                    questionPaginationComponents.remove(removeInt);
-
-                    // remove button also
-                    buttons.get(removeInt - 1).removeStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION);
-                    buttons.get(removeInt - 1).addStyleName(MyTheme.MAIN_FLAT_ROUND_BUTTON_PAGINATION_SELECTED);
-                    paginationCenter.removeComponent(buttons.get(removeInt));
-                    buttons.remove(removeInt);
-
-                    reIncrementAllPaginationItems(removeInt);
-                });
-            }
-
-            // add header and use numeric numbering
-            addComponent(header);
-            addComponent(numeric);
-
-            // question items
-            Panel panel = new Panel();
-            panel.setSizeFull();
-            dropArea.setMargin(false);
-            panel.addStyleName(MyTheme.MAIN_FLAT_BORDER);
-            panel.setContent(dropArea);
-            addComponentsAndExpand(panel);
-            dropArea.setSizeFull();
-
-            // if panel is empty add label to show drop
-            if (dropArea.getComponentCount() == 0) {
-                Label dropQuestionItemHere = new Label("Drop question items here");
-                dropQuestionItemHere.addStyleName(MyTheme.MAIN_TEXT_SIZE_MEDIUM);
-                dropArea.addComponent(dropQuestionItemHere);
-                dropArea.setComponentAlignment(dropQuestionItemHere, Alignment.MIDDLE_CENTER);
-            }
-
-            // set drop area
-            DropTargetExtension<Panel> dropTargetExtension = new DropTargetExtension<>(panel);
-
-            // the drop effect must match the allowed effect in drag source for a successful drop
-            dropTargetExtension.setDropEffect(DropEffect.MOVE);
-
-            // catch drops
-            dropTargetExtension.addDropListener((DropListener<Panel>) event -> {
-
-                // if drag source is in the same ui as target
-                Optional<AbstractComponent> dragSource = event.getDragSourceComponent();
-
-                if (dragSource.isPresent()) {
-
-                    // remove dropQuestionItemHere label and set has questions to true
-                    if (!hasQuestions) dropArea.removeAllComponents();
-                    hasQuestions = true;
-
-                    // unset height
-                    dropArea.setHeightUndefined();
-
-                    // character incrementation
-                    String bulletIncrement = setQuestionPaperItemComponentValue(paperItemComponentArrayList.size());
-
-                    // add question item
-                    int qId = 1;
-                    if (event.getDataTransferData("id").isPresent()) {
-                        qId = Integer.parseInt(event.getDataTransferData("id").get());
-                    }
-
-                    // remove component from vertical layout root
-                    if (verticalLayoutRoot.getComponentCount() == 1) {
-                        emptyComponent.setType(EmptyComponent.NO_MORE_QUESTIONS);
-                        verticalLayoutRoot.addComponent(emptyComponent);
-                        verticalLayoutRoot.setComponentAlignment(emptyComponent, Alignment.TOP_CENTER);
-                    }
-                    else verticalLayoutRoot.removeComponent(findQuestionItemComponent(qId));
-
-                    // question paper item component
-                    QuestionPaperItemComponent itemComponent =
-                            new QuestionPaperItemComponent(bulletIncrement, qId, questionServer, basePath,
-                                    paperItemComponentArrayList, dropArea, questionItemComponents, verticalLayoutRoot,
-                                    emptyComponent);
-                    paperItemComponentArrayList.add(itemComponent);
-                    dropArea.addComponent(itemComponent);
-
-                    // add marks
-                    questionMarks += Integer.parseInt(event.getDataTransferText());
-                    if (questionMarks == 0) marks.setValue("(no marks)");
-                    else if (questionMarks == 1) marks.setValue("(" + questionMarks + " mark)");
-                    else marks.setValue("(" + questionMarks + " marks)");
-
-                    // send to track table
-                    int bulletIncrementValue = getQuestionPaperItemComponentValue(findIndexOfQuestionPaperItemComponent(qId));
-                    if (!trackServer.postToTrackTable(testId, qId, questionNumber, bulletIncrementValue))
-                        Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);
-                }
-            });
-        }
-
-        private void updatePaginationComponent(int questionNumber) {
-
-            // question number
-            this.questionNumber = questionNumber;
-
-            // set value
-            number.setValue("Question " + this.questionNumber + " - ");
-        }
-
-        private String setQuestionPaperItemComponentValue(int index) {
-            // character incrementation
-            String bulletIncrement;
-
-            if (useNumeric) bulletIncrement = questionNumber + "." + (index + 1);
-            else {
-                // it's alphabetic
-                char alpha = 'a';
-                alpha += index;
-                bulletIncrement = Character.toString(alpha);
-            }
-            return bulletIncrement.trim();
-        }
-
-        private int getQuestionPaperItemComponentValue(int index) {
-
-            // return variable
-            int bulletIncrementValue;
-
-            if (useNumeric) bulletIncrementValue = (index +  1);
-            else {
-                // it's alphabetic
-                char alpha = 'a';
-                alpha += index;
-                bulletIncrementValue = Character.getNumericValue(alpha);
-                bulletIncrementValue -= (bulletIncrementValue - index - 1);
-            }
-
-            return bulletIncrementValue;
-        }
-
-        private int findIndexOfQuestionPaperItemComponent(int qId) {
-
-            int index = 0;
-
-            for (QuestionPaperItemComponent i : paperItemComponentArrayList) {
-                if (i.getQuestionId() == qId) index = paperItemComponentArrayList.indexOf(i);
-            }
-            return index;
         }
     }
 }

@@ -23,6 +23,38 @@ public class TestServer {
     }
 
     // -------------------------------- GET METHODS (SELECT)
+    public TestItem getTestItemById(int testId) {
+
+        // create return question item
+        TestItem item = new TestItem();
+
+        try {
+
+            // get database variables
+            Statement statement = connection.createStatement();
+
+            // query
+            String query = "SELECT * FROM public.test WHERE test_id = " + testId;
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            while(set.next()) {
+
+                // set variables
+                item.setTestId(set.getInt("test_id"));
+                item.setTestIsDraft(set.getBoolean("test_is_draft"));
+                item.setTestIsExam(set.getBoolean("test_is_exam"));
+                item.setTestDraftName(set.getString("test_draft_name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return item;
+    }
+
     public ArrayList<TestItem> getTestItemsByCourseId(int courseId, String lecturerId) {
 
         // test array
@@ -97,6 +129,7 @@ public class TestServer {
 
 
     // -------------------------------- PUT METHODS (UPDATE)
+
     public boolean updateTestItemTestIsExam(@NotNull TestItem testItem) {
 
         // return variable
@@ -158,6 +191,50 @@ public class TestServer {
 
             // statement
             Statement statement = connection.createStatement();
+
+            // execute
+            if (statement.executeUpdate(query) > 0) success = true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return success;
+    }
+
+    public boolean updateTestItemQuestionLastUsedDates(@NotNull boolean isNow, int testId) {
+
+        // return variable
+        boolean success = false;
+
+        try {
+
+            // query
+            String query = "SELECT * FROM track WHERE test_id = " + testId;
+
+            // statement
+            Statement statement = connection.createStatement();
+
+            // execute statement
+            ResultSet set = statement.executeQuery(query);
+
+            // array of question id's
+            StringBuilder questions = new StringBuilder();
+
+            while(set.next()) {
+                // append
+                questions.append(set.getInt("question_id"));
+                questions.append(",");
+            }
+
+            // delete trailing comma
+            questions.deleteCharAt(questions.length() - 1);
+
+            // update query
+            if (isNow) query = "UPDATE public.question SET question_last_used = now() " +
+                    "WHERE question_id IN (" + questions.toString() + ")";
+            else query = "UPDATE public.question SET question_last_used = NULL " +
+                    "WHERE question_id IN (" + questions.toString() + ")";
 
             // execute
             if (statement.executeUpdate(query) > 0) success = true;

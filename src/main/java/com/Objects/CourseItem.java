@@ -37,11 +37,8 @@ public class CourseItem {
             this.course_id = set.getInt("course_id");
             this.course_code = set.getString("course_code");
             this.course_name = set.getString("course_name");
-            System.out.println("I am in the try");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println(e);
-            System.out.println("I am in catch");
         }
     }
 
