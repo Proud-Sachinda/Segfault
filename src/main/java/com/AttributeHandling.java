@@ -1,6 +1,7 @@
 package com;
 
 import com.Objects.CourseItem;
+import com.Objects.ExportItem;
 import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 
@@ -11,6 +12,7 @@ public class AttributeHandling {
     private TestItem testItem;
     private CourseItem courseItem;
     private LecturerItem lecturerItem;
+    private ExportItem exportItem;
 
     public String getMessage() {
 
@@ -33,6 +35,14 @@ public class AttributeHandling {
 
     public void setTestItem(TestItem testItem) {
         this.testItem = testItem;
+    }
+
+    public ExportItem getExportItem() {
+        return exportItem;
+    }
+
+    public void setExportItem(ExportItem exportItem) {
+        this.exportItem = exportItem;
     }
 
     public CourseItem getCourseItem() {
