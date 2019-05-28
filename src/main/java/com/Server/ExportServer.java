@@ -5,6 +5,7 @@ import com.Objects.QuestionItem;
 import com.Objects.TestItem;
 import com.Objects.TrackItem;
 import com.vaadin.server.VaadinService;
+import com.vaadin.ui.Notification;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -136,6 +137,7 @@ public class ExportServer {
                // writer.write("\\end{document}");
                 writer.close();
                 writer.close();
+                Notification.show("Test is saved in C drive");
             } else {
                 System.out.println("Directory is not created");
             }
