@@ -171,6 +171,10 @@ public class TestServer {
             // execute
             if (statement.executeUpdate(query) > 0) success = true;
 
+            if(statement.executeUpdate(query) == 0){
+                return success;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -228,7 +232,16 @@ public class TestServer {
             }
 
             // delete trailing comma
-            questions.deleteCharAt(questions.length() - 1);
+            try{
+                questions.deleteCharAt(questions.length() - 1);
+            }
+            catch (StringIndexOutOfBoundsException s){
+                System.out.println("Caught");
+            }
+            catch (Exception e){
+                System.out.println("String exception happened");
+            }
+
 
             // update query
             if (isNow) query = "UPDATE public.question SET question_last_used = now() " +

@@ -4,6 +4,8 @@ import com.Objects.ExportItem;
 import com.Objects.QuestionItem;
 import com.Objects.TestItem;
 import com.Objects.TrackItem;
+import com.vaadin.server.VaadinService;
+import com.vaadin.ui.Notification;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +23,7 @@ import java.util.LinkedHashSet;
 public class ExportServer {
     // connection variable
     private Connection connection;
+    private String basePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
 
     TrackItem tracky = new TrackItem();
     TestItem ti = new TestItem();
@@ -96,11 +99,11 @@ public class ExportServer {
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
-                Path sourceDirectory = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_code.sty");
-                Path sourceDirectory1 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_exam.sty");
-                Path sourceDirectory2 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_question.sty");
-                Path sourceDirectory3 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_flowchart.sty");
-                Path sourceDirectory4 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_pseudocode.sty");
+                Path sourceDirectory = Paths.get(basePath + "/WEB-INF/Wits packages/wits_code.sty");
+                Path sourceDirectory1 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_exam.sty");
+                Path sourceDirectory2 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_question.sty");
+                Path sourceDirectory3 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_flowchart.sty");
+                Path sourceDirectory4 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_pseudocode.sty");
 
                 Path targetDirectory = Paths.get("C:\\"+testname+"\\wits_code.sty");
                 Path targetDirectory1 = Paths.get("C:\\"+testname+"\\wits_exam.sty");
@@ -114,19 +117,26 @@ public class ExportServer {
                 Files.copy(sourceDirectory3, targetDirectory3);
                 Files.copy(sourceDirectory4, targetDirectory4);
                 BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\"+testname+"\\"+testname+".tex"));
-                String str = GenerateLatex(ex);
+                String str = "not specifies whether is test of exam";
+                if(ti.isTestIsExam() == true){
+                     str = GenerateLatex(ex);
+                }
+                else{
+                    str = GenerateLatexTest(ex,tId);
+                    //System.out.println("test if reached");
+
+                }
+
                 int questionNoCount = getTestITemQuestionCount(tId);
                 for(int y=1;y<questionNoCount+1;y++){
                     str = str+ latexQuestion(get1(tId,y));
                 }
                 str = str + "\\end{document}";
-                //System.out.println(latexQuestion(get(25)));
-                //System.out.println(str);
                 writer.write(str);
-               // writer.write(latexQuestion(get(28)));
-               // writer.write("\\end{document}");
                 writer.close();
                 writer.close();
+                Notification.show("Test is saved in C drive");
+                //System.out.println(str);
             } else {
                 System.out.println("Directory is not created");
             }
@@ -135,7 +145,7 @@ public class ExportServer {
         }
     }
 
-    public String GenerateLatexTest(ExportItem exp){
+    public String GenerateLatexTest(ExportItem exp, int tId){
         ExportItem ex = exp;
         String setup = "\\documentclass[a4paper,11pt]{article}\n" +
                 "\\usepackage{xcolor}\n" +
@@ -193,9 +203,43 @@ public class ExportServer {
                 "\\usepackage{titling}\n" +
                 "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
                 "\\title{"+ex.getTopicname()+"}\n" +
-                "\\date{"+ex.getDate()+"}";
+                "\\date{"+ex.getDate()+"}"+
+                "\\begin{document}"+
+                "\\maketitle"+
+                "\\begin{tabular}{lll}\n" +
+                "\n" +
+                "Name: \\makebox[2in]{\\hrulefill} & Row: \\makebox[0.5in]{\\hrulefill} ~~Seat: \\makebox[0.5in]{\\hrulefill} &  \\\\ \\\\\n" +
+                " Student Number: \\makebox[1.2in]{\\hrulefill} & ID Number: \\makebox[1.9in]{\\hrulefill} & \\\\ \\\\\n" +
+                " Signature: \\makebox[1.8in]{\\hrulefill}\\\\\n" +
+                "\n" +
+                "\\end{tabular}\n" +
+                "\n" +
+                "\\vspace*{10mm}";
+        int questionNoCount = getTestITemQuestionCount(tId);
+        String markingTable = "Question 1 & \\hspace*{10mm} \\\\  \\hline\n";
+        for(int i = 2;i<questionNoCount;i++){
+            markingTable = markingTable + "Question" +i+"& \\\\ \\hline\n";
+        }
+        markingTable = markingTable + "Total & \\\\ \\hline\n";
+        String rest = "\\centerline{\\textbf{For marking purposes only}}\n" +
+                "\\begin{center}\n" +
+                "{\\renewcommand{\\arraystretch}{1.4} %<- modify value to suit your needs\n" +
+                "\\begin{tabular}{|c|c|}\n" +
+                "\\hline \n" +
+                markingTable +
+                "\\end{tabular}\n" +
+                "}\n" +
+                "\\end{center}"+
+                "\\section*{Instructions}\n" +
+                "\n" +
+                "\\begin{itemize}\n" +
+                "\\item " + ex.getInstructions()+
+                "\\end{itemize}";
+        String r = setup+"\n"+frontpage+"\n"+rest;
 
-        return setup+"\n"+frontpage;
+
+
+        return r;
     }
     public String GenerateLatex(ExportItem exp){
         ExportItem ex = exp;
