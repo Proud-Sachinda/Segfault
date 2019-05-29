@@ -7,6 +7,7 @@ import com.Objects.TrackItem;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Notification;
 
+import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -95,6 +96,7 @@ public class ExportServer {
         ts = new TestServer(connection);
         ti = ts.getTestItemById(tId);
         String testname = ti.getTestDraftName();
+
         File f = new File("C:\\Users\\Public\\"+testname);
         try{
             if(f.mkdir()) {

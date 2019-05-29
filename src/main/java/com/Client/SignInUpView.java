@@ -192,7 +192,7 @@ public class SignInUpView extends VerticalLayout implements View {
                 else {
 
                     // authentication variable
-                    boolean auth =  lecturerServer.authenticateLecturer(username.getValue().trim(), attributeHandling);
+                    boolean auth =  lecturerServer.authenticateLecturer(username.getValue().trim(),password.getValue(), attributeHandling);
 
                     if (auth) {
 
@@ -274,7 +274,8 @@ public class SignInUpView extends VerticalLayout implements View {
                     Notification.show("Fill in all fields", Notification.Type.WARNING_MESSAGE);
                 }
                 else {
-                    boolean success = lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue());
+                    boolean success = lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue(), tex4.getValue());
+                   // System.out.println(success);
 
                     if (success) {
                         Notification.show("SUCCESS", "Welcome user", Notification.Type.TRAY_NOTIFICATION);
@@ -282,6 +283,7 @@ public class SignInUpView extends VerticalLayout implements View {
                     }
                     else {
                         Notification.show("Could not register", Notification.Type.WARNING_MESSAGE);
+
                     }
                 }
             });
