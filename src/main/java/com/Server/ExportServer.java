@@ -129,8 +129,6 @@ public class ExportServer {
                     str = str+ latexQuestion(get1(tId,y));
                 }
                 str = str + "\\end{document}";
-                //System.out.println(latexQuestion(get(25)));
-                //System.out.println(str);
                 writer.write(str);
             } else {
                 System.out.println("Directory is not created");
