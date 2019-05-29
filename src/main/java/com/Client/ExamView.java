@@ -2,10 +2,7 @@ package com.Client;
 
 import com.AttributeHandling;
 import com.Dashboard;
-import com.Objects.ExportItem;
-import com.Objects.LecturerItem;
-import com.Objects.QuestionItem;
-import com.Objects.TrackItem;
+import com.Objects.*;
 import com.Server.ExportServer;
 import com.Server.LecturerServer;
 import com.Server.QuestionServer;
@@ -114,6 +111,10 @@ public class ExamView extends HorizontalLayout implements View {
         // set to fill browser screen
         setSizeFull();
 
+        LecturerItem li = attributeHandling.getLecturerItem();
+        CourseItem ci = attributeHandling.getCourseItem();
+
+
 
         //click listener
 
@@ -150,15 +151,18 @@ public class ExamView extends HorizontalLayout implements View {
         externalexaminer.addComponents( txtexternalexaminer);
         material.addComponents( txtmaterial);
         time.addComponents( txttime);
-        mark.addComponents( txtmark);
+       // mark.addComponents( txtmark);
         instructions.addComponents( txtinstructions);
         labels.addComponents(lblVenue,lblcoursecode,lbltopicname,lbldate,lblyos,lbldegree,lblfaculties,lblinternalexaminer,lblexternalexaminer,lblmaterial,lbltime,lblmark,lblinstructions);
-        content.addComponents(venue,coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer, mark, material, time, instructions, exe);
+        content.addComponents(venue,coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer,  material, time, instructions, exe);
 
+        txtcoursecode.setValue(ci.getCourseCode());
+        txttopicname.setValue(ci.getCourseFullName());
+        txtinternalexaminer.setValue(li.getLecturerFname()+" "+li.getLecturerLname());
 // Alignment of components
 
         content.setComponentAlignment(coursecode, Alignment.MIDDLE_LEFT);
-        content.setComponentAlignment(mark,Alignment.MIDDLE_LEFT);
+       // content.setComponentAlignment(mark,Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(time, Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(faculties, Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(degree, Alignment.MIDDLE_LEFT);
@@ -170,6 +174,7 @@ public class ExamView extends HorizontalLayout implements View {
         content.setComponentAlignment(topic, Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(date, Alignment.MIDDLE_LEFT);
         content.setComponentAlignment(exe, Alignment.BOTTOM_RIGHT);
+
 
 
         // set content area
@@ -218,110 +223,7 @@ public class ExamView extends HorizontalLayout implements View {
 
     }
 
-   /* public void method(ExportItem ex) {
 
-        File f = new File("C:\\Users\\User\\Desktop\\aaa");
-       // Path sourceDirectory = Paths.get("/Users/umesh/personal/tutorials/source/Variation_Relations.csv");
-        //Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\");
-
-        //copy source to target using Files Class
-        //Files.copy(sourceDirectory, targetDirectory);
-        try{
-            if(f.mkdir()) {
-                System.out.println("Directory Created");
-                Path sourceDirectory = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_code.sty");
-                Path sourceDirectory1 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_exam.sty");
-                Path sourceDirectory2 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_question.sty");
-                Path sourceDirectory3 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_flowchart.sty");
-                Path sourceDirectory4 = Paths.get("C:\\Users\\User\\IdeaProjects\\Segfault\\Wits packages\\wits_pseudocode.sty");
-
-                Path targetDirectory = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_code.sty");
-                Path targetDirectory1 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_exam.sty");
-                Path targetDirectory2 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_question.sty");
-                Path targetDirectory3 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_flowchart.sty");
-                Path targetDirectory4 = Paths.get("C:\\Users\\User\\Desktop\\aaa\\wits_pseudocode.sty");
-
-                Files.copy(sourceDirectory, targetDirectory);
-                Files.copy(sourceDirectory1, targetDirectory1);
-                Files.copy(sourceDirectory2, targetDirectory2);
-                Files.copy(sourceDirectory3, targetDirectory3);
-                Files.copy(sourceDirectory4, targetDirectory4);
-
-
-                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\User\\Desktop\\aaa\\hi.tex"));
-                writer.write(GenerateLatex(ex));
-                writer.close();
-                writer.close();
-            } else {
-                System.out.println("Directory is not created");
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }*/
-
-   /* public String GenerateLatex(ExportItem ex){
-
-        String Venue = "Old Mutual Sports Hall";
-        String setup = "\\documentclass[a4paper,11pt]{article}\n" +
-                "\\usepackage{xcolor}\n" +
-                "\\usepackage{wits_code}\n" +
-                "\\usepackage{wits_exam}\n" +
-                "\\usepackage{float}\n" +
-                "\\usepackage{graphicx}\n" +
-                "\\usepackage{array}\n" +
-                "%\\usepackage{wits_flowchart}\n" +
-                "%\\usepackage{wits_pseudocode}\n" +
-                "\\usepackage{amsmath}\n" +
-                "\\usepackage{charter}\n" +
-                "\\usepackage{algpseudocode}\n" +
-                "\n" +
-                "\\usepackage[]{color}\n" +
-                "\\usepackage{float}\n" +
-                "\\usepackage{subcaption}\n" +
-                "\\usepackage{varioref}\n" +
-                "\\usepackage{hyperref}\n" +
-                "\\usepackage{cleveref}\n" +
-                "\n" +
-                "\\definecolor{darkgreen}{rgb}{0.0,0.7,0.0}\n" +
-                "\\hypersetup{\n" +
-                "  colorlinks   = true,              %Colours links instead of ugly boxes\n" +
-                "  urlcolor     = blue,              %Colour for external hyperlinks\n" +
-                "  linkcolor    = blue,              %Colour of internal links\n" +
-                "  citecolor    = darkgreen                %Colour of citations\n" +
-                "}";
-        String FrontPage ="\\newcommand{\\todo}{\\textbf{TODO}}\n" +
-                "\\titleHeadTime{" + ex.getTime() + "}\n"+
-                "\\titleHeadDay{"+ ex.getDate()+"}\n"+
-                "\\titleHeadMonth{"+ex.getDate()+"}\n"+
-                "\\titleHeadYear{"+ex.getDate()+"}\n"+
-                "\\titleHeadVenue{"+Venue+"}\n"+
-                "\\courseno{"+ex.getCoursecode()+"}\n"+
-                "\\papertitle{"+ex.getTopicname()+"}\n"+
-                "\\testmonth{"+ex.getDate()+"}\n"+
-                "\\degrees{"+ex.getDegree()+"}\n"+
-                "\\faculties{"+ex.getFaculties()+"}\n"+
-                "\\internalexaminer{"+ex.getInternalexaminer()+ "}\n"+
-                "\\externalexaminer{"+ex.getInternalexaminer()+"}\n"+
-                "\\specialmaterial{"+ex.getMaterial()+"}\n"+
-                "\\hoursallowance{"+ex.getTime()+"}\n"+
-                "\\instructions{"+ex.getInstructions()+"}\n"+
-                "\\usepackage{titling}\n" +
-                "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
-                "\n" +
-                "\\begin{document}\n" +
-                "\\makeexamcover";
-
-
-        return setup+"\n"+FrontPage;
-    }*/
-
-    //method for retreiving tracks
-   /* public ArrayList<TrackItem> retreivetracks() {
-        ExportServer exportServer = new ExportServer(connection);
-        ArrayList<TrackItem> tracks = exportServer.get(29);
-        return tracks;
-    }*/
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
