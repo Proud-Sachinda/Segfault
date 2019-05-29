@@ -1,6 +1,8 @@
 package com.Client;
 
 import com.AttributeHandling;
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.Objects.ExportItem;
 import com.Objects.LecturerItem;
