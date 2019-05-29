@@ -1,0 +1,100 @@
+% Richard Klein (2013)
+
+% Setup Variables
+\newcommand{\thecourseno}  {\hfill}
+\newcommand{\thepapertitle}{\hfill}
+\newcommand{\themonth}{\hfill}
+\newcommand{\theyear}{\hfill}
+\newcommand{\thedegrees}{\hfill}
+\newcommand{\thefaculties}{\hfill}
+\newcommand{\theinternalexaminer}{\hfill}
+\newcommand{\theexternalexaminer}{\hfill}
+\newcommand{\thespecialmaterial}{None}
+\newcommand{\thehoursallowance}{\hfill}
+\newcommand{\theinstructions}{\hfill}
+\newcommand{\thedepartment}{\hfill}
+\newcommand{\theyearofstudy}{\hfill}
+
+\newcommand{\theTitleHeadTime}{}
+\newcommand{\theTitleHeadDay}{}
+\newcommand{\theTitleHeadMonth}{}
+\newcommand{\theTitleHeadYear}{}
+\newcommand{\theTitleHeadVenue}{\hfill}
+
+% Variable Setters
+\newcommand{\courseno}[1]{\renewcommand{\thecourseno}{#1}}
+\newcommand{\papertitle}[1]{\renewcommand{\thepapertitle}{#1}}
+\newcommand{\testmonth}[1]{\renewcommand{\themonth}{#1}}
+\newcommand{\testyear}[1]{\renewcommand{\theyear}{#1}}
+\newcommand{\degrees}[1]{\renewcommand{\thedegrees}{#1}}
+\newcommand{\faculties}[1]{\renewcommand{\thefaculties}{#1}}
+\newcommand{\internalexaminer}[1]{\renewcommand{\theinternalexaminer}{#1}}
+\newcommand{\externalexaminer}[1]{\renewcommand{\theexternalexaminer}{#1}}
+\newcommand{\specialmaterial}[1]{\renewcommand{\thespecialmaterial}{#1}}
+\newcommand{\hoursallowance}[1]{\renewcommand{\thehoursallowance}{#1}}
+\newcommand{\instructions}[1]{\renewcommand{\theinstructions}{#1}}
+\newcommand{\department}[1]{\renewcommand{\thedepartment}{#1}}
+\newcommand{\yearofstudy}[1]{\renewcommand{\theyearofstudy}{#1}}
+
+\newcommand{\titleHeadTime}[1]{\renewcommand{\theTitleHeadTime}{#1}}
+\newcommand{\titleHeadDay}[1]{\renewcommand{\theTitleHeadDay}{#1}}
+\newcommand{\titleHeadMonth}[1]{\renewcommand{\theTitleHeadMonth}{#1}}
+\newcommand{\titleHeadYear}[1]{\renewcommand{\theTitleHeadYear}{#1}}
+\newcommand{\titleHeadVenue}[1]{\renewcommand{\theTitleHeadVenue}{#1}}
+
+% Wits Question Macros - These keep track of mark totals automatically and create a ``totalmarks'' counter
+\usepackage{wits_question}
+
+% Setup A4 Margins
+\usepackage[a4paper]{geometry}
+\setlength{\textheight}{23cm}
+
+
+\usepackage{float}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{dashrule}
+\usepackage{times}
+\usepackage{lastpage}
+%\usepackage{xifthen}
+
+
+% Header/Footer Definitions
+\pagestyle{fancy}
+\lhead{\thecourseno}
+\chead{\thepapertitle}
+\rhead{\themonth, \theyear}
+\lfoot{}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+\rfoot{}
+
+
+% Make Exam Cover Definition
+\newcommand{\makeexamcover}{
+\thispagestyle{empty}
+\vspace*{-1.5cm}
+\noindent
+\fbox{\parbox[t][1cm][c]{3cm}{\hfill\theTitleHeadTime\hfill hrs\phantom{ }}}\hfill
+\fbox{\parbox[t][1cm][c]{3cm}{\hfill\theTitleHeadDay\hfill/\hfill\theTitleHeadMonth\hfill/\hfill\theTitleHeadYear\hfill\phantomsection{ }}}\hfill
+\fbox{\parbox[t][1cm][c]{4cm}{\hfill\theTitleHeadVenue\hfill\phantom{ }}}\hfill
+\parbox[t][1cm][c]{3cm}{\centering EXAMS OFFICE USE ONLY }\\[10pt]
+\hdashrule{\linewidth}{1pt}{4pt}
+\noindent \Large University of the Witwatersrand, Johannesburg\\[15pt]
+
+\normalsize
+\noindent{\parbox[c][][c]{0.3\linewidth}{Course or topic No(s)}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thecourseno}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Course or topic name(s)\\Paper Number \& title}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thepapertitle}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Examination to be held during the month(s) of}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \themonth, \theyear}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Year of study}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \theyearofstudy}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Degrees/Diplomas for which this course is prescribed}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thedegrees}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Faculties presenting candidates}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thefaculties}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Internal examiner(s)}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \theinternalexaminer}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{External examiner(s)}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \theexternalexaminer}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Special materials}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thespecialmaterial}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Time allowance}}\hfill\fbox{\parbox[c][1cm][c]{0.6\linewidth}{\centering \thehoursallowance}}\\\vfill
+\noindent{\parbox[c][][c]{0.3\linewidth}{Instructions to candidates}}\hfill\fbox{\parbox[c][3cm][c]{0.6\linewidth}{\centering \theinstructions}}\\\vfill
+
+\newpage
+}

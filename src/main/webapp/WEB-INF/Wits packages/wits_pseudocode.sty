@@ -1,0 +1,53 @@
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\renewcommand{\algorithmicrequire}{\textbf{REQUIRE:}}
+\renewcommand{\algorithmicensure}{\textbf{ENSURE:}}
+\renewcommand{\algorithmicend}{\textbf{END}}
+\renewcommand{\algorithmicif}{\textbf{IF}}
+\renewcommand{\algorithmicthen}{\textbf{THEN}}
+\renewcommand{\algorithmicelse}{\textbf{ELSE}}
+\renewcommand{\algorithmicelsif}{\algorithmicelse \algorithmicif}
+\renewcommand{\algorithmicendif}{\algorithmicend \algorithmicif}
+\renewcommand{\algorithmicfor}{\textbf{FOR}}
+\renewcommand{\algorithmicforall}{\textbf{FOR ALL}}
+\renewcommand{\algorithmicdo}{\textbf{DO}}
+\renewcommand{\algorithmicendfor}{\algorithmicend \algorithmicfor}
+\renewcommand{\algorithmicwhile}{\textbf{WHILE}}
+\renewcommand{\algorithmicendwhile}{\algorithmicend \algorithmicwhile}
+\renewcommand{\algorithmicloop}{\textbf{LOOP}}
+\renewcommand{\algorithmicendloop}{\algorithmicend \algorithmicloop}
+\renewcommand{\algorithmicrepeat}{\textbf{REPEAT}}
+\renewcommand{\algorithmicuntil}{\textbf{UNTIL}}
+\renewcommand{\algorithmicprint}{\textbf{PRINT}}
+\renewcommand{\algorithmicreturn}{\textbf{RETURN}}
+\renewcommand{\algorithmictrue}{\textbf{TRUE}}
+\renewcommand{\algorithmicfalse}{\textbf{FALSE}}
+\newcommand{\START}{\STATE\textbf{START}}
+\newcommand{\STOP}{\STATE\textbf{STOP}}
+\newcommand{\INPUT}{\STATE\textbf{INPUT }}
+\newcommand{\OUTPUT}{\STATE\textbf{OUTPUT }}
+\newcommand{\GOTO}{\STATE\textbf{GOTO }}
+\algsetup{
+indent=4pt,
+linenosize=\tiny,
+linenodelimiter=:
+}
+
+\newcommand{\ifthendo}[3]{
+\begin{tabular}{@{\hspace{0pt}}p{196pt}}
+{\bf IF} {#1} {\bf THEN DO}\\
+\hspace{2pt} {#2} \\
+{\bf OTHERWISE DO} \\
+\hspace{2pt} {#3} \\
+{\bf ENDIF}
+\end{tabular}}
+
+\newcommand{\ifelse}[3]{
+\begin{tabular}{@{\hspace{0pt}}p{196pt}}
+{\bf IF} {#1}\\
+\hspace{2pt} {#2} \\
+{\bf ELSE} \\
+\hspace{2pt} {#3} \\
+{\bf ENDIF}
+\end{tabular}}

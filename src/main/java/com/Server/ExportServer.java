@@ -95,7 +95,7 @@ public class ExportServer {
         ts = new TestServer(connection);
         ti = ts.getTestItemById(tId);
         String testname = ti.getTestDraftName();
-        File f = new File("C:\\"+testname);
+        File f = new File("C:\\Users\\Public\\"+testname);
         try{
             if(f.mkdir()) {
                 System.out.println("Directory Created");
@@ -105,18 +105,18 @@ public class ExportServer {
                 Path sourceDirectory3 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_flowchart.sty");
                 Path sourceDirectory4 = Paths.get(basePath + "/WEB-INF/Wits packages/wits_pseudocode.sty");
 
-                Path targetDirectory = Paths.get("C:\\"+testname+"\\wits_code.sty");
-                Path targetDirectory1 = Paths.get("C:\\"+testname+"\\wits_exam.sty");
-                Path targetDirectory2 = Paths.get("C:\\"+testname+"\\wits_question.sty");
-                Path targetDirectory3 = Paths.get("C:\\"+testname+"\\wits_flowchart.sty");
-                Path targetDirectory4 = Paths.get("C:\\"+testname+"\\wits_pseudocode.sty");
+                Path targetDirectory = Paths.get("C:\\Users\\Public\\"+testname+"\\wits_code.sty");
+                Path targetDirectory1 = Paths.get("C:\\Users\\Public\\"+testname+"\\wits_exam.sty");
+                Path targetDirectory2 = Paths.get("C:\\Users\\Public\\"+testname+"\\wits_question.sty");
+                Path targetDirectory3 = Paths.get("C:\\Users\\Public\\"+testname+"\\wits_flowchart.sty");
+                Path targetDirectory4 = Paths.get("C:\\Users\\Public\\"+testname+"\\wits_pseudocode.sty");
 
                 Files.copy(sourceDirectory, targetDirectory);
                 Files.copy(sourceDirectory1, targetDirectory1);
                 Files.copy(sourceDirectory2, targetDirectory2);
                 Files.copy(sourceDirectory3, targetDirectory3);
                 Files.copy(sourceDirectory4, targetDirectory4);
-                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\"+testname+"\\"+testname+".tex"));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Public\\"+testname+"\\"+testname+".tex"));
                 String str = "not specifies whether is test of exam";
                 if(ti.isTestIsExam() == true){
                      str = GenerateLatex(ex);
@@ -135,7 +135,7 @@ public class ExportServer {
                 writer.write(str);
                 writer.close();
                 writer.close();
-                Notification.show("Test is saved in C drive");
+                Notification.show("Test is saved in C:\\Users\\Public");
                 //System.out.println(str);
             } else {
                 System.out.println("Directory is not created");
