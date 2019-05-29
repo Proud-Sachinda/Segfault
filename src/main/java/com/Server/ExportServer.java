@@ -209,6 +209,11 @@ public class ExportServer {
                 "\n" +
                 "\\vspace*{10mm}";
         int questionNoCount = getTestITemQuestionCount(tId);
+        String markingTable = "Question 1 & \\hspace*{10mm} \\\\  \\hline\n";
+        for(int i = 2;i<questionNoCount;i++){
+            markingTable = markingTable + "Question" +i+"& \\\\ \\hline\n";
+        }
+        markingTable = markingTable + "Total & \\\\ \\hline\n";
 
 
         return setup+"\n"+frontpage;
