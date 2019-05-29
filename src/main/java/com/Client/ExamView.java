@@ -156,9 +156,7 @@ public class ExamView extends HorizontalLayout implements View {
         labels.addComponents(lblVenue,lblcoursecode,lbltopicname,lbldate,lblyos,lbldegree,lblfaculties,lblinternalexaminer,lblexternalexaminer,lblmaterial,lbltime,lblmark,lblinstructions);
         content.addComponents(venue,coursecode, topic, date, yos, degree, faculties, internalexaminer, externalexaminer,  material, time, instructions, exe);
 
-        txtcoursecode.setValue(ci.getCourseCode());
-        txttopicname.setValue(ci.getCourseFullName());
-        txtinternalexaminer.setValue(li.getLecturerFname()+" "+li.getLecturerLname());
+
 // Alignment of components
 
         content.setComponentAlignment(coursecode, Alignment.MIDDLE_LEFT);
@@ -192,6 +190,9 @@ public class ExamView extends HorizontalLayout implements View {
         txtfaculties.setWidth(300.0f, Unit.PIXELS);
         txtinstructions.setWidth(300.0f, Unit.PIXELS);
 
+       /* txtcoursecode.setValue(ci.getCourseCode());
+        txttopicname.setValue(ci.getCourseFullName());
+        txtinternalexaminer.setValue(li.getLecturerFname()+" "+li.getLecturerLname());*/
 
 
     }
