@@ -202,7 +202,18 @@ public class ExportServer {
                 "\\usepackage{titling}\n" +
                 "\\setlength{\\droptitle}{-7em}   % This is your set screw\n" +
                 "\\title{"+ex.getTopicname()+"}\n" +
-                "\\date{"+ex.getDate()+"}";
+                "\\date{"+ex.getDate()+"}"+
+                "\\begin{document}"+
+                "\\maketitle"+
+                "\\begin{tabular}{lll}\n" +
+                "\n" +
+                "Name: \\makebox[2in]{\\hrulefill} & Row: \\makebox[0.5in]{\\hrulefill} ~~Seat: \\makebox[0.5in]{\\hrulefill} &  \\\\ \\\\\n" +
+                " Student Number: \\makebox[1.2in]{\\hrulefill} & ID Number: \\makebox[1.9in]{\\hrulefill} & \\\\ \\\\\n" +
+                " Signature: \\makebox[1.8in]{\\hrulefill}\\\\\n" +
+                "\n" +
+                "\\end{tabular}\n" +
+                "\n" +
+                "\\vspace*{10mm}";
 
         return setup+"\n"+frontpage;
     }
