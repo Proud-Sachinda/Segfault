@@ -13,6 +13,8 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
+https://img.shields.io/badge/Releases-Latest-blue.svg
+
 
 
 qbank
