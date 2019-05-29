@@ -3,18 +3,24 @@ package com.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.sql.ResultSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CourseItemTest {
 
-   CourseItem courseItem = new CourseItem();
+
+    @Mock
+    private ResultSet resultSet;
 
 
+    CourseItem courseItem = new CourseItem();
+    CourseItem courseItem1 = new CourseItem("COMS3007", "Machine Learning");
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception{
 
     }
 
@@ -24,9 +30,13 @@ class CourseItemTest {
 
     @Test
     void setUpCourseItem(){
-        //courseItem.setCourseId();
+   //     CourseItem courseItem2 = new CourseItem(2,"Advanced Analysis of Algorithms","COMS3005");
+       // Mockito.when(resultSet).thenReturn(resultSet);
+//       courseItem2.setUpCourseItem(resultSet);
+//        assertEquals(2,courseItem2.getCourseId());
+ //       assertEquals("COMS3005",courseItem2.getCourseCode());
+ //       assertEquals("Advanced Analysis of Algorithms",courseItem2.getCourseName());
 
-        //courseItem.setUpCourseItem();
     }
 
     @Test
@@ -72,5 +82,12 @@ class CourseItemTest {
         courseItem.setCourseCode("COMS 3007");
         assertEquals("COMS 3007" + " - " + "Machine Learning",courseItem.getCourseFullName());
 
+    }
+
+    @Test
+    void isEmpty(){
+        courseItem.setCourseName("Software Design");
+        courseItem.setCourseCode("COMS3009");
+        assertFalse(courseItem.isEmpty());
     }
 }
