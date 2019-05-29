@@ -5,6 +5,7 @@ import com.Objects.QuestionItem;
 import com.Objects.TestItem;
 import com.Objects.TrackItem;
 import com.vaadin.server.VaadinService;
+import com.vaadin.ui.Notification;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -120,8 +121,10 @@ public class ExportServer {
                 if(ti.isTestIsExam() == true){
                      str = GenerateLatex(ex);
                 }
-                else if(ti.isTestIsExam() == false){
+                else{
                     str = GenerateLatexTest(ex,tId);
+                    //System.out.println("test if reached");
+
                 }
 
                 int questionNoCount = getTestITemQuestionCount(tId);
@@ -130,6 +133,10 @@ public class ExportServer {
                 }
                 str = str + "\\end{document}";
                 writer.write(str);
+                writer.close();
+                writer.close();
+                Notification.show("Test is saved in C drive");
+                //System.out.println(str);
             } else {
                 System.out.println("Directory is not created");
             }
@@ -228,9 +235,11 @@ public class ExportServer {
                 "\\begin{itemize}\n" +
                 "\\item " + ex.getInstructions()+
                 "\\end{itemize}";
+        String r = setup+"\n"+frontpage+"\n"+rest;
 
 
-        return setup+"\n"+frontpage+"\n"+rest;
+
+        return r;
     }
     public String GenerateLatex(ExportItem exp){
         ExportItem ex = exp;
