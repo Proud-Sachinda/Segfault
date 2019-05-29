@@ -244,10 +244,8 @@ public class TestServer {
 
 
             // update query
-            if (isNow) query = "UPDATE public.question SET question_last_used = now() " +
-                    "WHERE question_id IN (" + questions.toString() + ")";
-            else query = "UPDATE public.question SET question_last_used = NULL " +
-                    "WHERE question_id IN (" + questions.toString() + ")";
+            if (isNow) query = "UPDATE public.question SET question_last_used = now() WHERE question_id IN  (questions.toString())";
+            else query = "UPDATE public.question SET question_last_used = NULL WHERE question_id IN  (questions.toString())";
 
             // execute
             if (statement.executeUpdate(query) > 0) success = true;
