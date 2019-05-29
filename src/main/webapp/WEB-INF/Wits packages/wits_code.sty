@@ -1,0 +1,12 @@
+\usepackage{listing}
+\usepackage{minted}
+
+\newcommand{\inputcode}[1]{\inputminted[bgcolor=white,linenos=false,fontfamily=courier,frame=single]{c}{#1}}
+\newcommand{\ccode}{\mint[mathescape,bgcolor=white,linenos=false,fontfamily=courier,frame=none]{c}}
+
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\newmintedfile[makecode]{make}{tabsize=4, fontsize=\small, frame=lines, linenos, framesep=\fboxsep, bgcolor=codebg, rulecolor=\color{gray!40},samepage=true}
+\newmintedfile[cppcode]{cpp}{tabsize=4, fontsize=\small, frame=lines, mathescape, linenos, mathescape, framesep=\fboxsep, bgcolor=codebg, rulecolor=\color{gray!40},samepage=false}
+\newminted[cpp]{cpp}{tabsize=4, fontsize=\small, frame=lines, linenos, mathescape, framesep=\fboxsep, bgcolor=codebg, rulecolor=\color{gray!40},samepage=false}
+\newminted[bash]{bash}{tabsize=4, fontsize=\small, frame=lines, linenos=false, mathescape, framesep=\fboxsep, bgcolor=codebg, rulecolor=\color{gray!40},samepage=true}
+

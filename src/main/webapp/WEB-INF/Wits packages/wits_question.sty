@@ -1,0 +1,93 @@
+% Richard Klein (2013)
+
+% File Manipulation Package
+\usepackage{newfile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% QUESTION COUNTER LOGIC %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% SetQuestionCounter[2]
+% if( #1 exists ){
+%       set value of the counter to #2
+%       add the value of #2 to the totalmarks counter
+% } else {
+%       create a counter called #1
+%       set value of the counter to #2
+%       add the value of #2 to the totalmarks counter
+% }
+\makeatletter
+\newcommand*{\SetQuestionCounter}[2]{%
+  \begingroup
+  \@ifundefined{c@#1}{\newcounter{#1}\setcounter{#1}{#2}\addtocounter{totalmarks}{#2}}{\setcounter{#1}{#2}\addtocounter{totalmarks}{#2}}%
+  \endgroup
+}
+\makeatother
+
+%%%% QuestionCounter[1]
+% if( #1 does not exist ){
+%       create a counter called #1
+% }
+\makeatletter
+\newcommand*{\QuestionCounter}[1]{%
+  \begingroup
+  \@ifundefined{c@#1}{\newcounter{#1}}{}%
+  \endgroup
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Create General Counters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcounter{totalmarks} % Total marks for this test
+\newcounter{questioni}  % Question Number
+
+\newcounter{question0}  % Number of marks in Question0 - ignored, but required.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Read the .marks file if it exists %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If the .marks file exists, include it. If it doesn't exist, \QuestionCounter will ensure that counters exist
+\IfFileExists{\jobname.marks}{\input{\jobname.marks}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Create .marks AUX File %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newoutputstream{marks}
+\openoutputfile{\jobname.marks}{marks}
+
+%%%%% WriteQuestion 
+% Add the following line to the .marks file: \SetQuestionCounter{question(i-1)}{totalmarks}
+%   Writes the total number of marks to the .marks for the current question. 
+\newcommand{\WriteQuestion}{\addtostream{marks}{\noexpand\SetQuestionCounter{question\thequestioni}{\arabic{question\thequestioni}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Question Formatting Macros %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% \question{Title}
+\newcommand{\question}[1]{
+    % Write the previous question marks to the .marks file
+    \WriteQuestion
+    % Increment the question number
+    \stepcounter{questioni}
+    % Ensure a counter exists for storing the question's marks. This should already exists in the .marks file, unless this is the first run.
+    \QuestionCounter{question\thequestioni} 
+    % Question <question_number>     Title      [question0 Marks]
+    \section*{Question \thequestioni\hfill#1\hfill[\arabic{question\thequestioni}~Marks]} 
+    % Set the mark counter back to 0 so that we can get fresh values
+    \setcounter{question\thequestioni}{0}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Format and Remember Marks  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mk}[1]{
+    % Add to the question mark counter
+    \addtocounter{question\thequestioni}{#1}
+    % Print after the current question
+    \hfill[#1]
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ansline}{\\[15pt]\rule{\linewidth}{0.1pt}}
+\newcommand{\anslineL}{\rule{\linewidth}{0.1pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Necessary exports  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The final question must be written to the .marks file when we encounter \end{document}
+\AtEndDocument{\WriteQuestion\closeoutputstream{marks}}

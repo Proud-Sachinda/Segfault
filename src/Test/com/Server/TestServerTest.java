@@ -37,7 +37,7 @@ class TestServerTest {
 
         /*test.setLectureId(1);
         test.setCourseId(1);
-        test.setTestDraftName("draft name");
+        test.setTes=tDraftName("draft name");
         test.setTestIsDraft(true);
         test.setTestId(2);
         test.setTestIsExam(true);*/
