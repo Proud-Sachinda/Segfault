@@ -13,6 +13,9 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+
 import java.io.File;
 import java.security.MessageDigest;
 import java.sql.Connection;
@@ -267,10 +270,21 @@ public class SignInUpView extends VerticalLayout implements View {
             signUp.addClickListener((Button.ClickListener) clickEvent -> {
 
                 boolean valid = true;
-                String password;
+                String password = tex4.getValue();
 
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                md.update(password.getBytes());
+               // MessageDigest md = null;
+                try {
+                    MessageDigest md = MessageDigest.getInstance("MD5");
+                    byte [] hashInBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                    StringBuilder sb = new StringBuilder();
+                    for (byte b: hashInBytes){
+                        sb.append(String.format("%02x",b));
+                    }
+                    System.out.println(sb.toString());
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
 
                 //Check if the fields are empty or not
                 if (tex1.getValue().trim().isEmpty() || tex2.getValue().trim().isEmpty() ||
