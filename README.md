@@ -15,7 +15,7 @@
 
 [![Releases](https://img.shields.io/badge/Releases-Latest-blue.svg)](https://github.com/Proud-Sachinda/Segfault/releases)
 
-
+[![contributors](https://img.shields.io/badge/Contributors-5-blueviolet.svg)](https://github.com/Proud-Sachinda/Segfault/graphs/contributors)
 
 qbank
 ==============
