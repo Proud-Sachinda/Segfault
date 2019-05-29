@@ -126,11 +126,15 @@ public class ExamView extends HorizontalLayout implements View {
                 //ookie testcookie = CookieHandling.getCookieByName(CookieName.EDIT);
 
                 es.method(ex, tId);
+                attributeHandling.setTestItem(null);
                 navigator.navigateTo("editor");
 
 
+
             }
+
         });
+
 
 
 
