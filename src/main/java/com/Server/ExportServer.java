@@ -214,9 +214,23 @@ public class ExportServer {
             markingTable = markingTable + "Question" +i+"& \\\\ \\hline\n";
         }
         markingTable = markingTable + "Total & \\\\ \\hline\n";
+        String rest = "\\centerline{\\textbf{For marking purposes only}}\n" +
+                "\\begin{center}\n" +
+                "{\\renewcommand{\\arraystretch}{1.4} %<- modify value to suit your needs\n" +
+                "\\begin{tabular}{|c|c|}\n" +
+                "\\hline \n" +
+                markingTable +
+                "\\end{tabular}\n" +
+                "}\n" +
+                "\\end{center}"+
+                "\\section*{Instructions}\n" +
+                "\n" +
+                "\\begin{itemize}\n" +
+                "\\item " + ex.getInstructions()+
+                "\\end{itemize}";
 
 
-        return setup+"\n"+frontpage;
+        return setup+"\n"+frontpage+"\n"+rest;
     }
     public String GenerateLatex(ExportItem exp){
         ExportItem ex = exp;
