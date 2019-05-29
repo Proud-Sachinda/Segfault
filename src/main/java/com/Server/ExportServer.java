@@ -132,10 +132,6 @@ public class ExportServer {
                 //System.out.println(latexQuestion(get(25)));
                 //System.out.println(str);
                 writer.write(str);
-               // writer.write(latexQuestion(get(28)));
-               // writer.write("\\end{document}");
-                writer.close();
-                writer.close();
             } else {
                 System.out.println("Directory is not created");
             }
@@ -214,6 +210,7 @@ public class ExportServer {
                 "\\end{tabular}\n" +
                 "\n" +
                 "\\vspace*{10mm}";
+
 
         return setup+"\n"+frontpage;
     }
