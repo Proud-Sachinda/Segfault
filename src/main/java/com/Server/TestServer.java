@@ -232,7 +232,16 @@ public class TestServer {
             }
 
             // delete trailing comma
-            questions.deleteCharAt(questions.length() - 1);
+            try{
+                questions.deleteCharAt(questions.length() - 1);
+            }
+            catch (StringIndexOutOfBoundsException s){
+                System.out.println("Caught");
+            }
+            catch (Exception e){
+                System.out.println("String exception happened");
+            }
+
 
             // update query
             if (isNow) query = "UPDATE public.question SET question_last_used = now() " +
