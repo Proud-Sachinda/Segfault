@@ -121,7 +121,7 @@ public class ExportServer {
                      str = GenerateLatex(ex);
                 }
                 else if(ti.isTestIsExam() == false){
-                    str = GenerateLatexTest(ex);
+                    str = GenerateLatexTest(ex,tId);
                 }
 
                 int questionNoCount = getTestITemQuestionCount(tId);
@@ -138,7 +138,7 @@ public class ExportServer {
         }
     }
 
-    public String GenerateLatexTest(ExportItem exp){
+    public String GenerateLatexTest(ExportItem exp, int tId){
         ExportItem ex = exp;
         String setup = "\\documentclass[a4paper,11pt]{article}\n" +
                 "\\usepackage{xcolor}\n" +
@@ -208,6 +208,7 @@ public class ExportServer {
                 "\\end{tabular}\n" +
                 "\n" +
                 "\\vspace*{10mm}";
+        int questionNoCount = getTestITemQuestionCount(tId);
 
 
         return setup+"\n"+frontpage;
