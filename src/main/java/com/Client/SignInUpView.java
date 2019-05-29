@@ -14,6 +14,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
+import java.security.MessageDigest;
 import java.sql.Connection;
 
 //import static org.graalvm.compiler.loop.InductionVariable.Direction.Up;
@@ -267,6 +268,9 @@ public class SignInUpView extends VerticalLayout implements View {
 
                 boolean valid = true;
                 String password;
+
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(password.getBytes());
 
                 //Check if the fields are empty or not
                 if (tex1.getValue().trim().isEmpty() || tex2.getValue().trim().isEmpty() ||
