@@ -11,6 +11,7 @@ import com.Objects.TrackItem;
 import com.Server.*;
 import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.HasValue;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -19,6 +20,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class EditorView extends HorizontalLayout implements View {
     // add button absolute
     private TextField search;
     private final Button add = new Button("+");
+    public final Button finish = new Button("Finish");
     private Button addPage = new Button("+");
     private ArrayList<Button> buttons;
 
@@ -546,16 +549,20 @@ public class EditorView extends HorizontalLayout implements View {
 
                     // set current pagination page
                     currentSelectedPaginationPage = 1;
+                   
+
+                    // add finish click listener
+                    setUpQuestions();
 
                     // set up paper
                     setUpPapers(true);
 
                     // get test item
                     TestItem t = testServer.getTestItemById(testId);
-                    attributeHandling.setTestItem(t);
+                    attributeHandling.setTestItem(null);
 
                     // set up questions
-                    setUpQuestions();
+
 
                     // remove box
                     paper.removeComponent(this);

@@ -182,6 +182,7 @@ public class Dashboard extends VerticalLayout {
         editor.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE);
         editor.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(editorNavigation));
 
+
         // course clickable
         library.addStyleNames(MyTheme.MAIN_CONTROL_CLICKABLE);
         library.addClickListener((MouseEvents.ClickListener) event -> navigator.navigateTo(libraryNavigation));
