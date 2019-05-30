@@ -291,7 +291,7 @@ public class SignInUpView extends VerticalLayout implements View {
                             sb.append(String.format("%02x",b));
                         }
                         // authoriseSignUp(tex4,sb.toString());
-                       // System.out.println(sb.toString());
+                        System.out.println(sb.toString());
                     } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     }
