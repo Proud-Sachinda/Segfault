@@ -549,7 +549,7 @@ public class EditorView extends HorizontalLayout implements View {
 
                     // set current pagination page
                     currentSelectedPaginationPage = 1;
-                   
+
 
                     // add finish click listener
                     setUpQuestions();
@@ -559,7 +559,7 @@ public class EditorView extends HorizontalLayout implements View {
 
                     // get test item
                     TestItem t = testServer.getTestItemById(testId);
-                    attributeHandling.setTestItem(null);
+                    attributeHandling.setTestItem(t);
 
                     // set up questions
 
