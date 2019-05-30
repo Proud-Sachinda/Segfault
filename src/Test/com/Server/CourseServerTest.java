@@ -97,6 +97,7 @@ class CourseServerTest {
     void getCourse() {
         //cs = new CourseServer(connection);
         //Assert.assertNotNull(cs.getCourse());
+        //I am not sure if getCourse exist in courseServer
     }
 
     @Test
