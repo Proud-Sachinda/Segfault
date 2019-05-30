@@ -618,6 +618,15 @@ public class CreateView extends HorizontalLayout implements View {
 
                     // navigate to question view
                     navigator.navigateTo("editor");
+                    questionAnswerItem.resetItem();
+                    questionBodyItem.resetItem();
+                    questionDifficultyItem.resetItem();
+                    questionMarksItem.resetItem();
+                    questionNumberOfLinesItem.resetItem();
+                    questionSampleInputItem.resetItem();
+                    questionSampleOutputItem.resetItem();
+
+
                 }
                 else {
                     Notification.show("ERROR", "Could not add question", Notification.Type.ERROR_MESSAGE);

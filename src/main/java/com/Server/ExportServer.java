@@ -14,10 +14,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
@@ -92,13 +89,14 @@ public class ExportServer {
 
     public void method(ExportItem ex, int tId) {
         es = new ExportServer(connection);
-
         ts = new TestServer(connection);
         ti = ts.getTestItemById(tId);
         String testname = ti.getTestDraftName();
 
         File f = new File("C:\\Users\\Public\\"+testname);
+
         try{
+
             if(f.mkdir()) {
                 System.out.println("Directory Created");
                 Path sourceDirectory = Paths.get(basePath + "/WEB-INF/Wits packages/wits_code.sty");
@@ -422,4 +420,5 @@ public class ExportServer {
 
         return count;
     }
+
 }

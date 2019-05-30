@@ -139,6 +139,19 @@ public class ExamView extends HorizontalLayout implements View {
                 es.method(ex, tId);
                 attributeHandling.setTestItem(null);
                 navigator.navigateTo("editor");
+                txtdate.clear();
+                txtcoursecode.clear();
+                txtdegree.clear();
+                txtexternalexaminer.clear();
+                txtfaculties.clear();
+                txtinstructions.clear();
+                txttopicname.clear();
+                txtVenue.clear();
+                txtinternalexaminer.clear();
+                txtmaterial.clear();
+                txtyos.clear();
+                txttime.clear();
+                txtmark.clear();
 
 
 
