@@ -1,6 +1,8 @@
 package com.Client;
 
 import com.AttributeHandling;
+import com.CookieHandling.CookieHandling;
+import com.CookieHandling.CookieName;
 import com.Dashboard;
 import com.Objects.*;
 import com.Server.ExportServer;
@@ -116,6 +118,15 @@ public class ExamView extends HorizontalLayout implements View {
 
 
 
+
+
+
+
+
+
+
+
+
         //click listener
 
         exe.addClickListener(new Button.ClickListener() {
@@ -126,8 +137,21 @@ public class ExamView extends HorizontalLayout implements View {
                 //ookie testcookie = CookieHandling.getCookieByName(CookieName.EDIT);
 
                 es.method(ex, tId);
-                //attributeHandling.setTestItem(null);
+                attributeHandling.setTestItem(null);
                 navigator.navigateTo("editor");
+                txtdate.clear();
+                txtcoursecode.clear();
+                txtdegree.clear();
+                txtexternalexaminer.clear();
+                txtfaculties.clear();
+                txtinstructions.clear();
+                txttopicname.clear();
+                txtVenue.clear();
+                txtinternalexaminer.clear();
+                txtmaterial.clear();
+                txtyos.clear();
+                txttime.clear();
+                txtmark.clear();
 
 
 

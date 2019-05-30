@@ -5,13 +5,17 @@
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
 [![codecov](https://codecov.io/gh/Proud-Sachinda/Segfault/branch/master/graph/badge.svg)](https://codecov.io/gh/Proud-Sachinda/Segfault)
 
+
+
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=coverage)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=ncloc)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
+[![Releases](https://img.shields.io/badge/Releases-Latest-blue.svg)](https://github.com/Proud-Sachinda/Segfault/releases)
 
+[![contributors](https://img.shields.io/badge/Contributors-5-blueviolet.svg)](https://github.com/Proud-Sachinda/Segfault/graphs/contributors)
 
 qbank
 ==============

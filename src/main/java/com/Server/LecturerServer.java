@@ -46,6 +46,7 @@ public class LecturerServer {
                 // set variables
                 lecturerItem.setLecturerLname(set.getString("lecturer_fname").trim());
                 lecturerItem.setLecturerFname(set.getString("lecturer_lname").trim());
+                lecturerItem.setLecturer_password(set.getString("lecturer_password"));
 
                 // add to array list
                 lecturers.add(lecturerItem);
@@ -60,14 +61,14 @@ public class LecturerServer {
 
 
     // -------------------------------- OTHER METHODS
-    public boolean authenticateLecturer(String lecturer_id, AttributeHandling attributeHandling) {
+    public boolean authenticateLecturer(String lecturer_id, String lecturer_password, AttributeHandling attributeHandling) {
 
         // return variable
         boolean success = false;
 
         for (LecturerItem i : getLecturerItems()) {
 
-            if (lecturer_id.equals(i.getLecturerId())) {
+            if (lecturer_id.equals(i.getLecturerId()) && lecturer_password.equals(i.getLecturer_password())) {
 
                 // make true
                 success = true;
@@ -81,7 +82,7 @@ public class LecturerServer {
     }
 
         //--------------------Post Sign Up Methods------------//
-        public boolean authenticationSignUp (String lecturer_id, String lecturer_fname, String lecturer_lname){
+        public boolean authenticationSignUp (String lecturer_id, String lecturer_fname, String lecturer_lname, String lecturer_password){
 
             boolean success = false;
 
@@ -89,17 +90,19 @@ public class LecturerServer {
             try {
 
                 // insert into core table
-                String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname + "' )";
+                String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname, lecturer_password) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname +"','" + lecturer_password +"' )";
 
                 // statement
                 Statement statement = connection.createStatement();
 
                 success = statement.execute(query);
+                System.out.println(success);
 
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            //System.out.println(success);
 
             return success;
         }

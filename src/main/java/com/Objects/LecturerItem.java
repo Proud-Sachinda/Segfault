@@ -8,6 +8,7 @@ public class LecturerItem {
     private String lecturer_id;
     private String lecturer_fname;
     private String lecturer_lname;
+    private String lecturer_password;
 
     public LecturerItem(String lecturer_id) {
 
@@ -37,5 +38,13 @@ public class LecturerItem {
 
     public void setLecturerLname(String lecturer_lname) {
         this.lecturer_lname = lecturer_lname;
+    }
+
+    public String getLecturer_password() {
+        return lecturer_password;
+    }
+
+    public void setLecturer_password(String lecturer_password) {
+        this.lecturer_password = lecturer_password;
     }
 }
