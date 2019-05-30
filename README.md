@@ -13,7 +13,9 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
+[![Releases](https://img.shields.io/badge/Releases-Latest-blue.svg)](https://github.com/Proud-Sachinda/Segfault/releases)
 
+[![contributors](https://img.shields.io/badge/Contributors-5-blueviolet.svg)](https://github.com/Proud-Sachinda/Segfault/graphs/contributors)
 
 qbank
 ==============

@@ -13,7 +13,11 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+
 import java.io.File;
+import java.security.MessageDigest;
 import java.sql.Connection;
 
 //import static org.graalvm.compiler.loop.InductionVariable.Direction.Up;
@@ -266,7 +270,10 @@ public class SignInUpView extends VerticalLayout implements View {
             signUp.addClickListener((Button.ClickListener) clickEvent -> {
 
                 boolean valid = true;
-                String password;
+                String password = tex4.getValue();
+
+               // MessageDigest md = null;
+
 
                 //Check if the fields are empty or not
                 if (tex1.getValue().trim().isEmpty() || tex2.getValue().trim().isEmpty() ||
@@ -275,7 +282,20 @@ public class SignInUpView extends VerticalLayout implements View {
                 }
                 else {
                     boolean success = lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue(), tex4.getValue());
-                   // System.out.println(success);
+                    try {
+                        MessageDigest md = MessageDigest.getInstance("MD5");
+                        byte [] hashInBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                        StringBuilder sb = new StringBuilder();
+                        for (byte b: hashInBytes){
+                            sb.append(String.format("%02x",b));
+                        }
+                        // authoriseSignUp(tex4,sb.toString());
+                       // System.out.println(sb.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(success);
 
                     if (success) {
                         Notification.show("SUCCESS", "Welcome user", Notification.Type.TRAY_NOTIFICATION);
