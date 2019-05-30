@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,28 +38,36 @@ class TestItemTest {
 
     @Test
     void setUpTestItem() throws SQLException {
-      //  resultSet.getInt("test_id");
-       // resultSet.getBoolean("test_is_exam");
-       // resultSet.getBoolean("test_is_draft");
-       // resultSet.getString("test_draft_name");
+        MockitoAnnotations.initMocks(this);
 
-       // Mockito.when(resultSet).thenReturn(resultSet);
-       // Mockito.when(resultSet.getInt("test_id")).thenReturn(1);
-       // Mockito.when(resultSet.getBoolean("test_is_exam")).thenReturn(true);
-       // Mockito.when(resultSet.getBoolean("test_is_draft")).thenReturn(true);
-       // Mockito.when(resultSet.getString("test_draft_name")).thenReturn("March_test");
-/*        test.setTestId(1);
-        test.setTestIsExam(true);
-        test.setTestIsDraft(true);
-        test.setTestDraftName("March_test");
+       // resultSet.getInt("test_id");
+        //resultSet.getBoolean("test_is_exam");
+       // resultSet.getBoolean("test_is_draft");
+        //resultSet.getString("test_draft_name");
+        resultSet.insertRow();
+
+       //Mockito.when(resultSet).thenReturn(resultSet.getInt("test_id"),resultSet.getBoolean("test_is_exam"),resultSet.getBoolean("test_is_draft"),resultSet.getString("test_draft_name"));
+        Mockito.when(resultSet.next()).thenReturn(true);
+        Mockito.when(resultSet.getInt("test_id")).thenReturn(1);
+        Mockito.when(resultSet.getBoolean("test_is_exam")).thenReturn(true);
+        Mockito.when(resultSet.getBoolean("test_is_draft")).thenReturn(true);
+        Mockito.when(resultSet.getString("test_draft_name")).thenReturn("March_test");
+
+        //Mockito.doReturn(resultSetMock).when(callableStatementMock).executeQuery();
+        //Mockito.doReturn(resultSet).when()
+       // test.setTestId(1);
+        //test.setTestIsExam(true);
+        //test.setTestIsDraft(true);
+        //test.setTestDraftName("March_test");
 
         test.setUpTestItem(resultSet);
 
-        Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1)).intValue();
-        Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1)).booleanValue();
-        Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1)).booleanValue();
-        Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1)).chars();
-*/
+        Mockito.verify(resultSet,Mockito.times(1));
+      //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
+       // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
+       // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
+       // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
+
     }
 
     @Test
@@ -127,7 +136,7 @@ class TestItemTest {
     void getLecturerItem() {
         LecturerItem lecturerItem = new LecturerItem("1");
         test.setLecturerItem(lecturerItem);
-        assertEquals(lecturerItem,test.getLecturerItem());
+       assertEquals(lecturerItem,test.getLecturerItem());
     }
 
     @Test
