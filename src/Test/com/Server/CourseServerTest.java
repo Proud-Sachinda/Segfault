@@ -50,6 +50,7 @@ class CourseServerTest {
         Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
         Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
 
+
     }
 
     @AfterEach
@@ -59,10 +60,9 @@ class CourseServerTest {
     @Test
     void getCourseItems() throws Exception{
         cs = new CourseServer(connection);
-       // ArrayList<CourseItem> courses = cs.getCourseItems();
-        //Mockito.verify(connection, Mockito.times(1)).createStatement();
-        //Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
-       // Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
+        ArrayList<CourseItem> courses = cs.getCourseItems();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+
         Assert.assertNotNull(cs);
     }
 
@@ -97,5 +97,13 @@ class CourseServerTest {
     void getCourse() {
         //cs = new CourseServer(connection);
         //Assert.assertNotNull(cs.getCourse());
+    }
+
+    @Test
+    void postToCourseTable(){
+        cs = new CourseServer(connection);
+        //CourseItem ci = cs.getCourseItemByQuestionId(courseItem.getCourseId());
+        CourseItem courseItem = new CourseItem();
+        int ci = cs.postToCourseTable(courseItem);
     }
 }

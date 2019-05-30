@@ -30,12 +30,12 @@ class CourseItemTest {
 
     @Test
     void setUpCourseItem(){
-   //     CourseItem courseItem2 = new CourseItem(2,"Advanced Analysis of Algorithms","COMS3005");
-       // Mockito.when(resultSet).thenReturn(resultSet);
-//       courseItem2.setUpCourseItem(resultSet);
-//        assertEquals(2,courseItem2.getCourseId());
- //       assertEquals("COMS3005",courseItem2.getCourseCode());
- //       assertEquals("Advanced Analysis of Algorithms",courseItem2.getCourseName());
+        //CourseItem courseItem2 = new CourseItem(2,"Advanced Analysis of Algorithms","COMS3005");
+        //Mockito.when(resultSet).thenReturn(resultSet);
+       //courseItem2.setUpCourseItem(resultSet);
+        //assertEquals(2,courseItem2.getCourseId());
+        //assertEquals("COMS3005",courseItem2.getCourseCode());
+        //assertEquals("Advanced Analysis of Algorithms",courseItem2.getCourseName());
 
     }
 
