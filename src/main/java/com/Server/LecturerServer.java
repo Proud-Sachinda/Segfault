@@ -94,8 +94,10 @@ public class LecturerServer {
 
                 // statement
                 Statement statement = connection.createStatement();
+                statement.executeUpdate(query);
 
                 success = statement.execute(query);
+                System.out.println(query);
                 System.out.println(success);
 
 
