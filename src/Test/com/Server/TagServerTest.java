@@ -49,21 +49,21 @@ class TagServerTest {
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
-      //  Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
 
     }
 
     @Test
     void getTags() throws Exception{
-        /*
+        resultSet.insertRow();
         ts = new TagServer(connection);
-        ArrayList<TagItem> tagItems = ts.getTags(2);
+        ArrayList<TagItem> tagItems = ts.getTags(1);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
-       // Mockito.verify(resultSet, Mockito.times(2)).getInt(anyString());
-       // Mockito.verify(resultSet, Mockito.times(1)).getString(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).getInt(anyString());
+        Mockito.verify(resultSet, Mockito.times(1)).getString(anyString());
         Assert.assertNotNull(tagItems);
-        */
+
     }
 
     @Test
