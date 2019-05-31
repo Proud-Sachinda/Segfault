@@ -273,20 +273,6 @@ public class SignInUpView extends VerticalLayout implements View {
                 String password = tex4.getValue();
 
                // MessageDigest md = null;
-                try {
-                    MessageDigest md = MessageDigest.getInstance("MD5");
-                    byte [] hashInBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-
-                    StringBuilder sb = new StringBuilder();
-                    for (byte b: hashInBytes){
-                        sb.append(String.format("%02x",b));
-                    }
-                    // authoriseSignUp(tex4,sb.toString());
-                    System.out.println(sb.toString());
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-
 
                 //Check if the fields are empty or not
                 if (tex1.getValue().trim().isEmpty() || tex2.getValue().trim().isEmpty() ||
@@ -295,16 +281,35 @@ public class SignInUpView extends VerticalLayout implements View {
                 }
                 else {
                     boolean success = lecturerServer.authenticationSignUp(tex1.getValue(),tex2.getValue(),tex3.getValue(), tex4.getValue());
+                    try {
+                        MessageDigest md = MessageDigest.getInstance("MD5");
+                        byte [] hashInBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                        StringBuilder sb = new StringBuilder();
+                        for (byte b: hashInBytes){
+                            sb.append(String.format("%02x",b));
+                        }
+                        // authoriseSignUp(tex4,sb.toString());
+                        System.out.println(sb.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
                     System.out.println(success);
 
                     if (success) {
                         Notification.show("SUCCESS", "Welcome user", Notification.Type.TRAY_NOTIFICATION);
                         navigator.navigateTo(NavigationStates.EDITOR);
+
                     }
                     else {
                         Notification.show("Could not register", Notification.Type.WARNING_MESSAGE);
 
                     }
+                    tex1.clear();
+                    tex2.clear();
+                    tex3.clear();
+                    tex4.clear();
+                    tex5.clear();
                 }
             });
             signIn.addClickListener((Button.ClickListener)
