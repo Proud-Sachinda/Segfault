@@ -60,7 +60,7 @@ class QuestionItemTest {
         QuestionItemObject.setUpQuestionItem(resultSet);
 
        // Mockito.verify(resultSet,Mockito.times(1));
-       
+
         Mockito.verify(resultSet,Mockito.times(4)).getString(anyString());
         Mockito.verify(resultSet,Mockito.times(4)).getInt(anyString());
         Mockito.verify(resultSet,Mockito.times(1)).getBoolean(anyString());

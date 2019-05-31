@@ -80,6 +80,7 @@ class TagServerTest {
         ArrayList<TagItem> tagItems = ts.getTags(1);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
         Mockito.verify(resultSet, Mockito.times(2)).getInt(anyString());
         Mockito.verify(resultSet, Mockito.times(1)).getString(anyString());
         Assert.assertNotNull(tagItems);
