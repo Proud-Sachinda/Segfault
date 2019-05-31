@@ -121,15 +121,16 @@ class TestServerTest {
     @Test
     void updateTestItemTestDraftName() throws Exception{
         ts = new TestServer(connection);
-        boolean draft = ts.updateTestItemTestIsDraft(test);
+        boolean draft = ts.updateTestItemTestDraftName(test);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
-        Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
+        Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
 
     }
 
     @Test
     void updateTestItemQuestionLastUsedDates() throws Exception{
         ts = new TestServer(connection);
+        boolean last= ts.updateTestItemQuestionLastUsedDates(true,1);
 
     }
 
