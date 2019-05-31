@@ -85,6 +85,11 @@ class QuestionServerTest {
     }
 
     @Test
+    void getQuestionItemNumberOfTimesUsed() throws  Exception{
+        qvs = new QuestionServer(connection);
+    }
+
+    @Test
     void getQuestionItemById() throws Exception{
         qvs = new QuestionServer(connection);
         QuestionItem item = qvs.getQuestionItemById(1);
