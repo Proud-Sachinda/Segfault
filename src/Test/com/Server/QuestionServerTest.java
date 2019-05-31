@@ -212,9 +212,23 @@ class QuestionServerTest {
     }
 
     @Test
-    void deleteQuestionItem() throws Exception{
+    void deleteQuestionItemVariant() throws Exception{
+        Mockito.when(qi.getQuestionIsVariant()).thenReturn(true);
         qvs = new QuestionServer(connection);
         boolean deleted = qvs.deleteQuestionItem(qi);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(4)).executeUpdate(anyString());
+
+    }
+
+    @Test
+    void deleteQuestionItem() throws Exception{
+        Mockito.when(qi.getQuestionIsVariant()).thenReturn(false);
+        qvs = new QuestionServer(connection);
+        boolean deleted = qvs.deleteQuestionItem(qi);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(3)).executeUpdate(anyString());
+
     }
 
     @Test
