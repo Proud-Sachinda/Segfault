@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 class LecturerServerTest {
 
@@ -45,6 +46,7 @@ class LecturerServerTest {
     @Test
     void getLecturerItems() throws Exception{
         lecturerServer = new LecturerServer(connection);
+        ArrayList<LecturerItem> lecturers = lecturerServer.getLecturerItems();
 
         LecturerItem lecturerItem;
        // lecturerItem = lecturerServer.getCurrentLecturerItem();

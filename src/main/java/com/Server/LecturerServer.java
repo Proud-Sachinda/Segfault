@@ -19,7 +19,7 @@ public class LecturerServer {
     }
 
     // -------------------------------- GET METHODS (SELECT)
-    private ArrayList<LecturerItem> getLecturerItems() {
+    public ArrayList<LecturerItem> getLecturerItems() {
 
         // question array
         ArrayList<LecturerItem> lecturers = new ArrayList<>();
