@@ -42,13 +42,14 @@ class CourseServerTest {
 
         courseItem.setCourseId(1);
         courseItem.setCourseCode("MATH1012");
-        courseItem.setCourseName("yona eo");
+        courseItem.setCourseName("math");
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
+        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        Mockito.when(preparedStatement.executeUpdate()).thenReturn(courseItem.getCourseId());
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
-        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        Mockito.when(statement.executeUpdate(anyString())).thenReturn(courseItem.getCourseId());
 
 
     }
@@ -101,10 +102,13 @@ class CourseServerTest {
     }
 
     @Test
-    void postToCourseTable(){
+    void postToCourseTable() throws Exception{
         cs = new CourseServer(connection);
         //CourseItem ci = cs.getCourseItemByQuestionId(courseItem.getCourseId());
         CourseItem courseItem = new CourseItem();
         int ci = cs.postToCourseTable(courseItem);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
     }
 }

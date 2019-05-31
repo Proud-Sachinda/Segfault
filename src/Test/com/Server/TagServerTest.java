@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 
 class TagServerTest {
 
@@ -38,10 +38,29 @@ class TagServerTest {
 
     @Mock
     TagServer ts;
+   // @Mock
+    ArrayList<TagItemsComponent.TagItemComponent> testitems = new ArrayList<>();
+
+    @Mock
+    TagItemsComponent component1;
+
+    TagItemsComponent component;
+    @Mock
+    TagItemsComponent.TagItemComponent comp;
+
+
+    ArrayList<TagItemsComponent.TagItemComponent> tagitems;
 
     @BeforeEach
     void setUp() throws  Exception{
         MockitoAnnotations.initMocks(this);
+
+        //component.setQuestionId(1);
+       // component.setId("1");
+        //comp.setName("name");
+        //comp.setTagId(2);
+        //comp.setTagName("just tag");
+        testitems.add(comp);
 
         tagItem.setTagName("hash");
         tagItem.setQuestionId(2);
@@ -50,6 +69,7 @@ class TagServerTest {
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
+        //Mockito.when(component.getTagItems()).thenReturn(tagitems);
 
     }
 
@@ -68,12 +88,18 @@ class TagServerTest {
 
     @Test
     void postToTagTable() throws Exception{
-       /* ts = new TagServer(connection);
-        ts.postToTagTable(tic);
+       // component.setQuestionId(1);
+       // component.setId("1");
+       // ArrayList<TagItemsComponent.TagItemComponent> newList = new ArrayList<>(anyCollection());
+        Mockito.when(component1.getTagItems()).thenReturn(testitems);
+       // Mockito.when(testitems.size()).thenReturn(1);
+        ts = new TagServer(connection);
+        ts.postToTagTable(component1);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        //Mockito.verify(resultSet, Mockito.times(1)).next();
         Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
-        Mockito.when(tic.getTagItems()).thenReturn(items);*/
+//        Mockito.when(component.getTagItems()).thenReturn(items);
 
     }
 }
