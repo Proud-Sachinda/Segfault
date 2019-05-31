@@ -214,6 +214,7 @@ class QuestionServerTest {
     @Test
     void deleteQuestionItem() throws Exception{
         qvs = new QuestionServer(connection);
+        boolean deleted = qvs.deleteQuestionItem(qi);
     }
 
     @Test
