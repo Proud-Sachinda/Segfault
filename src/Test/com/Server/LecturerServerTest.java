@@ -5,15 +5,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.anyString;
 
 class LecturerServerTest {
 
@@ -48,7 +43,7 @@ class LecturerServerTest {
     }
 
     @Test
-    void getCurrentLecturerItem() {
+    void getLecturerItems() throws Exception{
         lecturerServer = new LecturerServer(connection);
 
         LecturerItem lecturerItem;
@@ -58,10 +53,10 @@ class LecturerServerTest {
     }
 
     @Test
-    void authenticateLecturer() {
+    void authenticateLecturer() throws Exception{
     }
 
     @Test
-    void authenticationSignUp() {
+    void authenticationSignUp() throws Exception{
     }
 }
