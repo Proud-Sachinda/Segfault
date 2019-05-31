@@ -87,6 +87,12 @@ class QuestionServerTest {
     @Test
     void getQuestionItemNumberOfTimesUsed() throws  Exception{
         qvs = new QuestionServer(connection);
+        int var = qvs.getQuestionItemNumberOfTimesUsed(1);
+        QuestionItem item = qvs.getQuestionItemById(1);
+        Mockito.verify(connection, Mockito.times(2)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(3)).next();
+
     }
 
     @Test
