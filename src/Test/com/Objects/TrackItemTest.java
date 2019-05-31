@@ -1,10 +1,19 @@
 package com.Objects;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrackItemTest {
+
+    @Mock
+    private ResultSet resultSet;
 
     TrackItem track = new TrackItem();
     @Test
@@ -66,4 +75,29 @@ class TrackItemTest {
         track.setTrackOrder(3);
         assertEquals(3,track.getTrackOrder());
     }
+
+    @Test
+    void setUpTrackItem() throws SQLException {
+        MockitoAnnotations.initMocks(this);
+
+        resultSet.insertRow();
+
+        Mockito.when(resultSet.next()).thenReturn(true);
+        Mockito.when(resultSet.getInt("track_id")).thenReturn(1);
+        Mockito.when(resultSet.getInt("question_id")).thenReturn(1);
+        Mockito.when(resultSet.getInt("test_id")).thenReturn(1);
+        Mockito.when(resultSet.getInt("question_number")).thenReturn(1);
+        Mockito.when(resultSet.getInt("track_order")).thenReturn(1);
+
+
+
+        track.setUpTrackItem(resultSet);
+
+        //Mockito.verify(resultSet,Mockito.times(1));
+        //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
+        // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
+    }
+
 }
