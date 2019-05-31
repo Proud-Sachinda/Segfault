@@ -107,6 +107,15 @@ class QuestionServerTest {
     }
 
     @Test
+    void getQuestionItemVariants()throws Exception{
+        qvs = new QuestionServer(connection);
+        ArrayList<QuestionItem> it = qvs.getQuestionItemVariants(1);
+        Mockito.verify(connection, Mockito.times(2)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(3)).next();
+    }
+
+    @Test
     void getQuestionItems() throws Exception{
 
         qvs = new QuestionServer(connection);
