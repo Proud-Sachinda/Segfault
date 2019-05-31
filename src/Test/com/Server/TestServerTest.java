@@ -31,6 +31,8 @@ class TestServerTest {
     @Mock
     TestServer ts;
 
+    TestItem ti;
+
     @BeforeEach
     void setUp() throws  Exception{
         MockitoAnnotations.initMocks(this);
@@ -60,6 +62,51 @@ class TestServerTest {
         Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
         assertNotEquals(0,s);
 
+
+    }
+    @Test
+    void getTestItemById()throws Exception{
+
+        ts = new TestServer(connection);
+        TestItem t = ts.getTestItemById(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
+    }
+
+    @Test
+    void getTestItemsByCourseId(){
+        ts = new TestServer(connection);
+
+    }
+
+    @Test
+    void updateTestItemTestIsExam(){
+        ts = new TestServer(connection);
+
+    }
+
+    @Test
+    void updateTestItemTestIsDraft(){
+        ts = new TestServer(connection);
+
+    }
+
+    @Test
+    void updateTestItemTestDraftName(){
+        ts = new TestServer(connection);
+
+    }
+
+    @Test
+    void updateTestItemQuestionLastUsedDates(){
+        ts = new TestServer(connection);
+
+    }
+
+    @Test
+    void deleteTestItemFromTestTable(){
+        ts = new TestServer(connection);
 
     }
 }
