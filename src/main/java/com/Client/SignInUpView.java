@@ -305,11 +305,7 @@ public class SignInUpView extends VerticalLayout implements View {
                         Notification.show("Could not register", Notification.Type.WARNING_MESSAGE);
 
                     }
-                    tex1.clear();
-                    tex2.clear();
-                    tex3.clear();
-                    tex4.clear();
-                    tex5.clear();
+                   
                 }
             });
             signIn.addClickListener((Button.ClickListener)
