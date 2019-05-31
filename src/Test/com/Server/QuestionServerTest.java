@@ -123,18 +123,20 @@ class QuestionServerTest {
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Mockito.verify(resultSet, Mockito.times(2)).next();
+
         Assert.assertNotNull(questions);
     }
 
     @Test
     void getQuestionItemsByTestId() throws  Exception{
         Mockito.when(resultSet.getInt(anyString())).thenReturn(1);
-        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+        Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
         qvs = new QuestionServer(connection);
         ArrayList<QuestionItem> it = qvs.getQuestionItemsByTestId(1);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
-        Mockito.verify(resultSet, Mockito.times(5)).next();
+        Mockito.verify(resultSet, Mockito.times(3)).next();
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
     }
 
     @Test
