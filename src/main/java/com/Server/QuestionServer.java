@@ -679,7 +679,7 @@ public boolean deleteQuestionItem(QuestionItem questionItem) {
 
 
     // --------------------------------------- OTHER METHODS
-    private String getUniqueString(LinkedHashSet<Integer> hashSet) {
+    public String getUniqueString(LinkedHashSet<Integer> hashSet) {
 
         // query
         String query;

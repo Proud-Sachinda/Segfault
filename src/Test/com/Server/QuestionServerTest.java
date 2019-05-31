@@ -18,6 +18,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -40,6 +41,8 @@ class QuestionServerTest {
     private PreparedStatement preparedStatement;
     @Mock
     TestItem ti;
+   // @Mock
+    LinkedHashSet<Integer> hashSet = new LinkedHashSet<>();
 
     @Mock
     QuestionServer qvs;
@@ -54,9 +57,11 @@ class QuestionServerTest {
     void setUp() throws Exception{
 
         MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);
 
 
         items.add(qi);
+        hashSet.add(1);
         String sDate1="31/12/1998";
         Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
         question = new QuestionItem();
@@ -231,6 +236,15 @@ class QuestionServerTest {
 
     }
 
+    @Test
+    void getUniqueString()throws Exception{
+        //Mockito.when(hashSet.size()).thenReturn(0);
+        qvs = new QuestionServer(connection);
+        String q = qvs.getUniqueString(hashSet);
+       // Mockito.verify(hashSet, Mockito.times(1)).size();
+        Assert.assertNotNull(q);
+
+    }
     @Test
     void postToQuestionTablePractical() throws Exception{
         Mockito.when(qi.getQuestionType()).thenReturn("practical");
