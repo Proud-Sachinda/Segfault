@@ -61,7 +61,7 @@ class QuestionServerTest {
 
 
         items.add(qi);
-        hashSet.add(1);
+       // hashSet.add(1);
         String sDate1="31/12/1998";
         Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
         question = new QuestionItem();
@@ -242,6 +242,18 @@ class QuestionServerTest {
         qvs = new QuestionServer(connection);
         String q = qvs.getUniqueString(hashSet);
        // Mockito.verify(hashSet, Mockito.times(1)).size();
+        Assert.assertNotNull(q);
+
+    }
+
+    @Test
+    void getUniqueStringnot0()throws Exception{
+        //Mockito.when(hashSet.size()).thenReturn(0);
+        hashSet.add(2);
+        hashSet.add(3);
+        qvs = new QuestionServer(connection);
+        String q = qvs.getUniqueString(hashSet);
+        // Mockito.verify(hashSet, Mockito.times(1)).size();
         Assert.assertNotNull(q);
 
     }
