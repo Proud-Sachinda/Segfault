@@ -156,4 +156,14 @@ class ExportItemTest {
         exportItem.setInstructions("Please read through all questions carefully");
         assertEquals("Please read through all questions carefully",exportItem.getInstructions());
     }
+    @Test
+    void getVenue(){
+        exportItem.setVenue("Flower Hall");
+        assertEquals("Flower Hall", exportItem.getVenue());
+    }
+    @Test
+    void setVenue(){
+        exportItem.setVenue("Flower Hall");
+        assertEquals("Flower Hall", exportItem.getVenue());
+    }
 }

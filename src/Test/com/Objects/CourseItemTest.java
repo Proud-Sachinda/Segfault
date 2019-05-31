@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.awt.*;
 import java.sql.ResultSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,8 +20,12 @@ class CourseItemTest {
 
     CourseItem courseItem = new CourseItem();
     CourseItem courseItem1 = new CourseItem("COMS3007", "Machine Learning");
+    @Mock
+    CourseItem courseItem2 = new CourseItem(1, "Software Design", "COMS 3009");
+
+
     @BeforeEach
-    void setUp() throws Exception{
+    void setUp(){
 
     }
 
@@ -29,13 +34,15 @@ class CourseItemTest {
     }
 
     @Test
-    void setUpCourseItem(){
-   //     CourseItem courseItem2 = new CourseItem(2,"Advanced Analysis of Algorithms","COMS3005");
-       // Mockito.when(resultSet).thenReturn(resultSet);
-//       courseItem2.setUpCourseItem(resultSet);
-//        assertEquals(2,courseItem2.getCourseId());
- //       assertEquals("COMS3005",courseItem2.getCourseCode());
- //       assertEquals("Advanced Analysis of Algorithms",courseItem2.getCourseName());
+    void shortenCourseNameIfTooLong(){
+        //The method is a static method it probably needs a different approach
+        /*
+        String name = "Proud man";
+        Label mylabel;
+        mylabel = new Label(name);
+       // Mockito.when(CourseItem.shortenCourseNameIfTooLong(name,mylabel)).getMock();
+
+*/
 
     }
 

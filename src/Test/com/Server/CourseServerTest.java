@@ -42,13 +42,15 @@ class CourseServerTest {
 
         courseItem.setCourseId(1);
         courseItem.setCourseCode("MATH1012");
-        courseItem.setCourseName("yona eo");
+        courseItem.setCourseName("math");
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
+        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
+        Mockito.when(preparedStatement.executeUpdate()).thenReturn(courseItem.getCourseId());
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
-        Mockito.when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
-        Mockito.when(preparedStatement.executeUpdate()).thenReturn(1);
+        Mockito.when(statement.executeUpdate(anyString())).thenReturn(courseItem.getCourseId());
+
 
     }
 
@@ -59,10 +61,9 @@ class CourseServerTest {
     @Test
     void getCourseItems() throws Exception{
         cs = new CourseServer(connection);
-       // ArrayList<CourseItem> courses = cs.getCourseItems();
-        //Mockito.verify(connection, Mockito.times(1)).createStatement();
-        //Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
-       // Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
+        ArrayList<CourseItem> courses = cs.getCourseItems();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+
         Assert.assertNotNull(cs);
     }
 
@@ -97,5 +98,17 @@ class CourseServerTest {
     void getCourse() {
         //cs = new CourseServer(connection);
         //Assert.assertNotNull(cs.getCourse());
+        //I am not sure if getCourse exist in courseServer
+    }
+
+    @Test
+    void postToCourseTable() throws Exception{
+        cs = new CourseServer(connection);
+        //CourseItem ci = cs.getCourseItemByQuestionId(courseItem.getCourseId());
+        CourseItem courseItem = new CourseItem();
+        int ci = cs.postToCourseTable(courseItem);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
     }
 }
