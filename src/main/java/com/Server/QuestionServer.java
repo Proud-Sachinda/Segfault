@@ -706,7 +706,7 @@ public boolean deleteQuestionItem(QuestionItem questionItem) {
         return query;
     }
 
-    private void deleteFromTables(int qId, Statement statement) throws SQLException {
+    public void deleteFromTables(int qId, Statement statement) throws SQLException {
 
         // query
         String query;

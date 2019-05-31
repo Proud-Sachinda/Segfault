@@ -56,7 +56,7 @@ class QuestionServerTest {
     @BeforeEach
     void setUp() throws Exception{
 
-        MockitoAnnotations.initMocks(this);
+        //MockitoAnnotations.initMocks(this);
         MockitoAnnotations.initMocks(this);
 
 
@@ -243,6 +243,13 @@ class QuestionServerTest {
         String q = qvs.getUniqueString(hashSet);
        // Mockito.verify(hashSet, Mockito.times(1)).size();
         Assert.assertNotNull(q);
+
+    }
+    @Test
+    void deleteFromTables() throws Exception{
+        qvs = new QuestionServer(connection);
+        qvs.deleteFromTables(1,statement);
+        Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
 
     }
 
