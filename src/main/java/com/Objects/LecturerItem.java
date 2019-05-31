@@ -1,6 +1,5 @@
 package com.Objects;
 
-import java.sql.SQLException;
 
 public class LecturerItem {
 

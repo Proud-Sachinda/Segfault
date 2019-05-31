@@ -248,4 +248,8 @@ class QuestionItemTest {
         assertEquals("What is a test stub",QuestionItemObject.getShortQuestionBody());
     }
 
+    @Test
+    void setQuestionIsVariant(){
+        QuestionItemObject.setQuestionIsVariant(true);
+    }
 }
