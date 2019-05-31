@@ -15,6 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.mockito.Matchers.anyInt;
@@ -43,6 +44,8 @@ class QuestionServerTest {
     QuestionItem qi;
     @Mock
     LecturerItem li;
+    @Mock
+    ArrayList<QuestionItem> items = new ArrayList<>();
 
     @BeforeEach
     void setUp() throws Exception{
@@ -50,6 +53,7 @@ class QuestionServerTest {
         MockitoAnnotations.initMocks(this);
 
 
+        items.add(qi);
         String sDate1="31/12/1998";
         Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
         question = new QuestionItem();
@@ -82,13 +86,11 @@ class QuestionServerTest {
 
     @Test
     void getQuestionItemById() throws Exception{
-      /*  qvs = new QuestionServer(connection);
-        //qvs.postToQuestionTable(question);
-        int id = question.getQuestionId();
-        QuestionItem check = qvs.getQuestionItemById(id);
-//        Mockito.verify(connection, Mockito.times(2)).createStatement();
-        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
-        Assert.assertEquals(question.getQuestionId(),check.getQuestionId()); */
+        qvs = new QuestionServer(connection);
+        QuestionItem item = qvs.getQuestionItemById(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
 
 
     }
@@ -96,17 +98,16 @@ class QuestionServerTest {
     @Test
     void getQuestionItems() throws Exception{
 
-       /* qvs = new QuestionServer(connection);
+        qvs = new QuestionServer(connection);
         ArrayList<QuestionItem> questions = qvs.getQuestionItems();
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
-        //postToQuestionTable(question);
-        qvs = new QuestionServer(connection);
-        Assert.assertNotNull(questions); */
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+        Assert.assertNotNull(questions);
     }
 
     @Test
-    void postToQuestionTable() throws Exception{
+    void postToQuestionTableWritten() throws Exception{
         Mockito.when(qi.getQuestionType()).thenReturn("written");
         qvs = new QuestionServer(connection);
         qvs.postToQuestionTable(qi,li,1);
@@ -114,7 +115,33 @@ class QuestionServerTest {
         Mockito.verify(statement, Mockito.times(3)).executeUpdate(anyString());
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Mockito.verify(resultSet, Mockito.times(2)).next();
-        Mockito.verify(resultSet, Mockito.times(1)).getInt("question_id");
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
+        //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
+    }
+
+    @Test
+    void postToQuestionTableMCQ() throws Exception{
+        Mockito.when(qi.getQuestionType()).thenReturn("mcq");
+        qvs = new QuestionServer(connection);
+        qvs.postToQuestionTable(qi,li,1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(4)).executeUpdate(anyString());
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
+        //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
+    }
+
+    @Test
+    void postToQuestionTablePractical() throws Exception{
+        Mockito.when(qi.getQuestionType()).thenReturn("practical");
+        qvs = new QuestionServer(connection);
+        qvs.postToQuestionTable(qi,li,1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(4)).executeUpdate(anyString());
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
         //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
     }
 
