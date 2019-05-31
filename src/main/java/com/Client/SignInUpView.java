@@ -116,7 +116,7 @@ public class SignInUpView extends VerticalLayout implements View {
         private Image user;
         private Image pass;
         private final TextField username = new TextField();
-        private final TextField password = new TextField();
+        private final PasswordField password = new PasswordField();
         private final Button signIn = new Button("Sign in");
         private final Button signUp = new Button("Sign up");
 
