@@ -127,6 +127,15 @@ class QuestionServerTest {
     }
 
     @Test
+    void getQuestionItemsByTestId() throws  Exception{
+        qvs = new QuestionServer(connection);
+        ArrayList<QuestionItem> it = qvs.getQuestionItemsByTestId(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(3)).next();
+    }
+
+    @Test
     void postToQuestionTableWritten() throws Exception{
         Mockito.when(qi.getQuestionType()).thenReturn("written");
         qvs = new QuestionServer(connection);
