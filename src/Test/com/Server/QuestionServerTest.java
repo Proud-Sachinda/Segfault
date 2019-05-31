@@ -2,6 +2,7 @@ package com.Server;
 
 import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
+import com.Objects.TestItem;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,8 @@ class QuestionServerTest {
 
     @Mock
     private PreparedStatement preparedStatement;
+    @Mock
+    TestItem ti;
 
     @Mock
     QuestionServer qvs;
@@ -153,6 +156,29 @@ class QuestionServerTest {
     }
 
     @Test
+    void getQuestionItemsBySearch() throws Exception{
+        Mockito.when(resultSet.getInt(anyString())).thenReturn(1);
+        qvs = new QuestionServer(connection);
+        ArrayList<QuestionItem> it = qvs.getQuestionItemsBySearch("hello",ti);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(4)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(5)).next();
+        Mockito.verify(statement, Mockito.times(4)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(5)).next();
+
+    }
+
+    @Test
+    void getMCQchoiceById() throws Exception{
+        qvs = new QuestionServer(connection);
+        String choices = qvs.getMCQchoiceById(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+
+    }
+
+    @Test
     void postToQuestionTableMCQ() throws Exception{
         Mockito.when(qi.getQuestionType()).thenReturn("mcq");
         qvs = new QuestionServer(connection);
@@ -163,6 +189,31 @@ class QuestionServerTest {
         Mockito.verify(resultSet, Mockito.times(2)).next();
         Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
         //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
+    }
+
+    @Test
+    void getInputById() throws Exception{
+        qvs = new QuestionServer(connection);
+        String input = qvs.getInputById(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+
+    }
+
+    @Test
+    void getOutputById() throws Exception{
+        qvs = new QuestionServer(connection);
+        String output = qvs.getOutputById(1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
+
+    }
+
+    @Test
+    void deleteQuestionItem() throws Exception{
+        qvs = new QuestionServer(connection);
     }
 
     @Test
