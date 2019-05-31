@@ -1,6 +1,8 @@
 package com.Server;
 
+import com.AttributeHandling;
 import com.Objects.LecturerItem;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +28,13 @@ class LecturerServerTest {
     @Mock
     private ResultSet resultSet;
     @Mock
-            LecturerItem li;
+    LecturerItem li;
+
+    @Mock
+    AttributeHandling ah;
 
 
-
-
+    ArrayList<LecturerItem> items = new ArrayList<>();
     LecturerServer lecturerServer;
 
     @BeforeEach
@@ -44,6 +48,7 @@ class LecturerServerTest {
         lecturerItem.setLecturerFname("Steve");
 
 
+        items.add(li);
 
          Mockito.when(connection.createStatement()).thenReturn(statement);
          Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
@@ -71,11 +76,17 @@ class LecturerServerTest {
 
     @Test
     void authenticateLecturer() throws Exception{
+
         lecturerServer = new LecturerServer(connection);
+       /* Mockito.when(lecturerServer.getLecturerItems()).thenReturn(items);
+        boolean al = lecturerServer.authenticateLecturer("1","password",ah);
+        Assert.assertTrue(al);*/
     }
 
     @Test
     void authenticationSignUp() throws Exception{
         lecturerServer = new LecturerServer(connection);
+        boolean as = lecturerServer.authenticationSignUp("1","jj","jj","kk");
+        Assert.assertTrue(as);
     }
 }
