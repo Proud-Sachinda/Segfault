@@ -4,10 +4,7 @@ import com.AttributeHandling;
 import com.Objects.LecturerItem;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class LecturerServer {
@@ -93,16 +90,18 @@ public class LecturerServer {
                 String query = "INSERT INTO public.lecturer(lecturer_id, lecturer_fname,lecturer_lname, lecturer_password) VALUES" + "('" + lecturer_id + "', '" + lecturer_fname + "', '" + lecturer_lname +"','" + lecturer_password +"' )";
 
                 // statement
+
                 Statement statement = connection.createStatement();
 
-                success = statement.execute(query);
-                System.out.println(success);
+                statement.executeUpdate(query);
+                //System.out.println(statement.executeUpdate(query));
+                success = true;
 
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            //System.out.println(success);
+            System.out.println(success);
 
             return success;
         }

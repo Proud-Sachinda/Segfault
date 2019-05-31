@@ -19,8 +19,10 @@ class CourseItemTest {
 
     CourseItem courseItem = new CourseItem();
     CourseItem courseItem1 = new CourseItem("COMS3007", "Machine Learning");
+    CourseItem courseItem2 = new CourseItem(1, "Software Design", "COMS 3009");
+
     @BeforeEach
-    void setUp() throws Exception{
+    void setUp(){
 
     }
 

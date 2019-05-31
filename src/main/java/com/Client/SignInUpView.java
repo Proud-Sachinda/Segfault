@@ -297,7 +297,7 @@ public class SignInUpView extends VerticalLayout implements View {
                     }
                     System.out.println(success);
 
-                    if (success) {
+                    if (success = true) {
                         Notification.show("SUCCESS", "Welcome user", Notification.Type.TRAY_NOTIFICATION);
                         navigator.navigateTo(NavigationStates.EDITOR);
                     }
