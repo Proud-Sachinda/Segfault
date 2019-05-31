@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,6 +25,11 @@ class LecturerServerTest {
 
     @Mock
     private ResultSet resultSet;
+    @Mock
+            LecturerItem li;
+
+
+
 
     LecturerServer lecturerServer;
 
@@ -31,15 +37,18 @@ class LecturerServerTest {
     void setUp() throws Exception{
 
 
+        MockitoAnnotations.initMocks(this);
         LecturerItem lecturerItem = new LecturerItem("1");
         lecturerItem.setLecturerId("1");
         lecturerItem.setLecturerLname("James");
         lecturerItem.setLecturerFname("Steve");
 
 
+
          Mockito.when(connection.createStatement()).thenReturn(statement);
          Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
          Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
+
 
     }
 
@@ -49,20 +58,24 @@ class LecturerServerTest {
 
     @Test
     void getLecturerItems() throws Exception{
+
+         Mockito.when(resultSet.next()).thenReturn(false);
         lecturerServer = new LecturerServer(connection);
         ArrayList<LecturerItem> lecturers = lecturerServer.getLecturerItems();
 
-        LecturerItem lecturerItem;
-       // lecturerItem = lecturerServer.getCurrentLecturerItem();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(1)).next();
 
-        //assertNotNull(lecturerItem);
     }
 
     @Test
     void authenticateLecturer() throws Exception{
+        lecturerServer = new LecturerServer(connection);
     }
 
     @Test
     void authenticationSignUp() throws Exception{
+        lecturerServer = new LecturerServer(connection);
     }
 }
