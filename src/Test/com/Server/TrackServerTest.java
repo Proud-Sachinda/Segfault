@@ -46,7 +46,7 @@ class TrackServerTest {
         //Mockito.when(preparedStatement.executeUpdate()).thenReturn(trackServer.getCourseId());
         Mockito.when(statement.executeQuery(anyString())).thenReturn(resultSet);
         Mockito.when(resultSet.next()).thenReturn(true).thenReturn(false);
-        //Mockito.when(statement.executeUpdate(anyString())).thenReturn(trackServer.getCourseId());
+        Mockito.when(statement.executeUpdate(anyString())).thenReturn(2);
     }
 
     @AfterEach
