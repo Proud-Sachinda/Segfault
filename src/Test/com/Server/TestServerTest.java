@@ -75,37 +75,40 @@ class TestServerTest {
     }
 
     @Test
-    void getTestItemsByCourseId(){
+    void getTestItemsByCourseId()throws Exception{
+        ts = new TestServer(connection);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
+
+    }
+
+    @Test
+    void updateTestItemTestIsExam() throws Exception{
         ts = new TestServer(connection);
 
     }
 
     @Test
-    void updateTestItemTestIsExam(){
+    void updateTestItemTestIsDraft() throws Exception{
         ts = new TestServer(connection);
 
     }
 
     @Test
-    void updateTestItemTestIsDraft(){
+    void updateTestItemTestDraftName() throws Exception{
         ts = new TestServer(connection);
 
     }
 
     @Test
-    void updateTestItemTestDraftName(){
+    void updateTestItemQuestionLastUsedDates() throws Exception{
         ts = new TestServer(connection);
 
     }
 
     @Test
-    void updateTestItemQuestionLastUsedDates(){
-        ts = new TestServer(connection);
-
-    }
-
-    @Test
-    void deleteTestItemFromTestTable(){
+    void deleteTestItemFromTestTable() throws Exception{
         ts = new TestServer(connection);
 
     }
