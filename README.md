@@ -3,7 +3,7 @@
 
 
 [![Build Status](https://travis-ci.org/Proud-Sachinda/Segfault.svg?branch=master)](https://travis-ci.org/Proud-Sachinda/Segfault)
-
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=security_rating)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=coverage)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com%3Aqbank&metric=ncloc)](https://sonarcloud.io/dashboard?id=com%3Aqbank)
