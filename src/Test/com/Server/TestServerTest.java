@@ -34,6 +34,7 @@ class TestServerTest {
     @Mock
     TestServer ts;
 
+    @Mock
     TestItem test;
     @Mock
     LecturerItem li;
@@ -44,12 +45,13 @@ class TestServerTest {
     void setUp() throws  Exception{
         MockitoAnnotations.initMocks(this);
 
-        test.setTestDraftName("draft name");
+        /*test.setTestDraftName("draft name");
         test.setTestIsDraft(true);
         test.setTestId(2);
         test.setTestIsExam(true);
         test.setLecturerItem(li);
-        test.setCourseItem(ci);
+        test.setCourseItem(ci);*/
+        //test.setUpTestItem(resultSet);
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeUpdate(anyString())).thenReturn(1);
@@ -93,13 +95,27 @@ class TestServerTest {
 
     @Test
     void updateTestItemTestIsExam() throws Exception{
+       /* test.setTestDraftName("draft name");
+        test.setTestIsDraft(true);
+        test.setTestId(2);
+        test.setTestIsExam(true);
+        test.setLecturerItem(li);
+        test.setCourseItem(ci);*/
+
         ts = new TestServer(connection);
+        boolean isexam = ts.updateTestItemTestIsExam(test);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeUpdate(anyString());
 
     }
 
     @Test
     void updateTestItemTestIsDraft() throws Exception{
         ts = new TestServer(connection);
+        ts = new TestServer(connection);
+        boolean isexam = ts.updateTestItemTestIsDraft(test);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
 
     }
 
