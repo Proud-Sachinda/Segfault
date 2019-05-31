@@ -44,7 +44,7 @@ class TestItemTest {
         //resultSet.getBoolean("test_is_exam");
        // resultSet.getBoolean("test_is_draft");
         //resultSet.getString("test_draft_name");
-        resultSet.insertRow();
+      //  resultSet.insertRow();
 
        //Mockito.when(resultSet).thenReturn(resultSet.getInt("test_id"),resultSet.getBoolean("test_is_exam"),resultSet.getBoolean("test_is_draft"),resultSet.getString("test_draft_name"));
         Mockito.when(resultSet.next()).thenReturn(true);
@@ -62,7 +62,7 @@ class TestItemTest {
 
         test.setUpTestItem(resultSet);
 
-        Mockito.verify(resultSet,Mockito.times(1));
+       // Mockito.verify(resultSet,Mockito.times(1));
       //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
