@@ -1,5 +1,6 @@
 package com.Server;
 
+import com.Objects.LecturerItem;
 import com.Objects.QuestionItem;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
@@ -12,10 +13,8 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.validation.constraints.AssertTrue;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import static org.mockito.Matchers.anyInt;
@@ -40,6 +39,10 @@ class QuestionServerTest {
 
     @Mock
     QuestionServer qvs;
+    @Mock
+    QuestionItem qi;
+    @Mock
+    LecturerItem li;
 
     @BeforeEach
     void setUp() throws Exception{
@@ -104,12 +107,13 @@ class QuestionServerTest {
 
     @Test
     void postToQuestionTable() throws Exception{
-
-      /*  qvs = new QuestionServer(connection);
-        //qvs.postToQuestionTable(question);
-//        Mockito.verify(connection, Mockito.times(1)).createStatement();
-        Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
+        Mockito.when(qi.getQuestionType()).thenReturn("written");
+        qvs = new QuestionServer(connection);
+        qvs.postToQuestionTable(qi,li,1);
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(3)).executeUpdate(anyString());
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
         Mockito.verify(resultSet, Mockito.times(1)).getInt("question_id");
         //Assert.assertNotEquals(0,qvs.postToQuestionTable(question)); */
     }
@@ -118,17 +122,9 @@ class QuestionServerTest {
     @Test
     void incrementQuestionItemVariance()  throws Exception{
 
-
-
-
-
         qvs = new QuestionServer(connection);
         qvs.incrementQuestionItemVariance(5);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
-       // Mockito.verify(preparedStatement, Mockito.tim@es(1)).setInt(anyInt(), anyInt());
-        //Mockito.verify(preparedStatement, Mockito.times(1)).setString(anyInt(), anyString());
-       // Mockito.verify(preparedStatement, Mockito.times(1)).executeUpdate();
-
         Assert.assertTrue(qvs.incrementQuestionItemVariance(5));
     }
 
