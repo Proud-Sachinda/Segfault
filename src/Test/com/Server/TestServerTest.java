@@ -1,5 +1,7 @@
 package com.Server;
 
+import com.Objects.CourseItem;
+import com.Objects.LecturerItem;
 import com.Objects.TestItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,18 +34,22 @@ class TestServerTest {
     @Mock
     TestServer ts;
 
-    TestItem ti;
+    TestItem test;
+    @Mock
+    LecturerItem li;
+    @Mock
+    CourseItem ci;
 
     @BeforeEach
     void setUp() throws  Exception{
         MockitoAnnotations.initMocks(this);
 
-        /*test.setLectureId(1);
-        test.setCourseId(1);
-        test.setTes=tDraftName("draft name");
+        test.setTestDraftName("draft name");
         test.setTestIsDraft(true);
         test.setTestId(2);
-        test.setTestIsExam(true);*/
+        test.setTestIsExam(true);
+        test.setLecturerItem(li);
+        test.setCourseItem(ci);
 
         Mockito.when(connection.createStatement()).thenReturn(statement);
         Mockito.when(statement.executeUpdate(anyString())).thenReturn(1);
