@@ -143,7 +143,8 @@ class TestServerTest {
     void deleteTestItemFromTestTable() throws Exception{
         ts = new TestServer(connection);
         boolean delete = ts.deleteTestItemFromTestTable(test);
-        
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
 
 
     }
