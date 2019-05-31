@@ -38,7 +38,7 @@ class TestItemTest {
 
     @Test
     void setUpTestItem() throws SQLException {
-        MockitoAnnotations.initMocks(this);
+/*        MockitoAnnotations.initMocks(this);
 
 
         resultSet.insertRow();
@@ -52,11 +52,12 @@ class TestItemTest {
 
 
         test.setUpTestItem(resultSet);
-//        Mockito.verify(resultSet,Mockito.times(1));
-        //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
-        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
-        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
-        // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
+        */
+//       Mockito.verify(resultSet,Mockito.times(1));
+//          Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
+//         Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
+//         Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
+//         Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
 
 
     }

@@ -35,6 +35,7 @@ class CourseItemTest {
 
     @Test
     void shortenCourseNameIfTooLong(){
+        //The method is a static method it probably needs a different approach
         /*
         String name = "Proud man";
         Label mylabel;
