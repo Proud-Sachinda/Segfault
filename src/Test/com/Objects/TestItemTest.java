@@ -40,33 +40,24 @@ class TestItemTest {
     void setUpTestItem() throws SQLException {
         MockitoAnnotations.initMocks(this);
 
-       // resultSet.getInt("test_id");
-        //resultSet.getBoolean("test_is_exam");
-       // resultSet.getBoolean("test_is_draft");
-        //resultSet.getString("test_draft_name");
-      //  resultSet.insertRow();
 
-       //Mockito.when(resultSet).thenReturn(resultSet.getInt("test_id"),resultSet.getBoolean("test_is_exam"),resultSet.getBoolean("test_is_draft"),resultSet.getString("test_draft_name"));
+        resultSet.insertRow();
+
         Mockito.when(resultSet.next()).thenReturn(true);
         Mockito.when(resultSet.getInt("test_id")).thenReturn(1);
         Mockito.when(resultSet.getBoolean("test_is_exam")).thenReturn(true);
         Mockito.when(resultSet.getBoolean("test_is_draft")).thenReturn(true);
         Mockito.when(resultSet.getString("test_draft_name")).thenReturn("March_test");
 
-        //Mockito.doReturn(resultSetMock).when(callableStatementMock).executeQuery();
-        //Mockito.doReturn(resultSet).when()
-       // test.setTestId(1);
-        //test.setTestIsExam(true);
-        //test.setTestIsDraft(true);
-        //test.setTestDraftName("March_test");
+
 
         test.setUpTestItem(resultSet);
+//        Mockito.verify(resultSet,Mockito.times(1));
+        //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
+        // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
 
-       // Mockito.verify(resultSet,Mockito.times(1));
-      //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
-       // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
-       // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
-       // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
 
     }
 
@@ -145,4 +136,6 @@ class TestItemTest {
         test.setLecturerItem(lecturerItem);
         assertEquals(lecturerItem,test.getLecturerItem());
     }
+
+
 }

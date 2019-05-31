@@ -3,10 +3,20 @@ package com.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionItemTest {
+
+    @Mock
+    private ResultSet resultSet;
 
     QuestionItem QuestionItemObject = new QuestionItem();
 
@@ -19,6 +29,43 @@ class QuestionItemTest {
     @AfterEach
     void tearDown() {
     }
+
+    @Test
+    void setUpQuestionItem() throws SQLException {
+        MockitoAnnotations.initMocks(this);
+
+        resultSet.insertRow();
+
+
+        Mockito.when(resultSet.next()).thenReturn(true);
+        Mockito.when(resultSet.getInt("question_id")).thenReturn(1);
+        Mockito.when(resultSet.getString("question_type")).thenReturn("Practical");
+        Mockito.when(resultSet.getString("lecturer_id")).thenReturn("1");
+        Mockito.when(resultSet.getString("question_body")).thenReturn("What is meant by software is complex");
+        Mockito.when(resultSet.getString("question_ans")).thenReturn("Comprises of many simple parts");
+        Mockito.when(resultSet.getInt("question_difficulty")).thenReturn(2);
+        Mockito.when(resultSet.getDate("question_date")).thenReturn(new java.sql.Date(1221222L));
+        Mockito.when(resultSet.getBoolean("question_is_variant")).thenReturn(true);
+        Mockito.when(resultSet.getDate("question_last_used")).thenReturn(new java.sql.Date(1221222L));
+        Mockito.when(resultSet.getInt("question_variance")).thenReturn(1);
+        Mockito.when(resultSet.getInt("question_mark")).thenReturn(8);
+
+        //Mockito.doReturn(resultSetMock).when(callableStatementMock).executeQuery();
+        //Mockito.doReturn(resultSet).when()
+        // test.setTestId(1);
+        //test.setTestIsExam(true);
+        //test.setTestIsDraft(true);
+        //test.setTestDraftName("March_test");
+
+        QuestionItemObject.setUpQuestionItem(resultSet);
+
+        Mockito.verify(resultSet,Mockito.times(1));
+        //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
+        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
+        // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
+    }
+
 
     @Test
     void getQuestionIdTest() {
@@ -193,5 +240,16 @@ class QuestionItemTest {
     void setQuestionWrittenNoOfLinesTest(){
         QuestionItemObject.setQuestionWrittenNoOfLines(5);
         assertEquals(5, QuestionItemObject.getQuestionWrittenNoOfLines());
+    }
+
+    @Test
+    void getShortQuestionBody(){
+        QuestionItemObject.setQuestionBody("What is a test stub");
+        assertEquals("What is a test stub",QuestionItemObject.getShortQuestionBody());
+    }
+
+    @Test
+    void setQuestionIsVariant(){
+        QuestionItemObject.setQuestionIsVariant(true);
     }
 }

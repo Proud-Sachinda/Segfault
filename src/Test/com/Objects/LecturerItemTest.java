@@ -51,4 +51,15 @@ class LecturerItemTest {
         lecturerItem.setLecturerLname("Van Zyl");
         assertEquals("Van Zyl",lecturerItem.getLecturerLname());
     }
+    @Test
+    void getLecturer_password(){
+        lecturerItem.setLecturer_password("123abc");
+        assertEquals("123abc",lecturerItem.getLecturer_password());
+    }
+    @Test
+    void setLecturer_password(){
+        lecturerItem.setLecturer_password("123abc");
+        assertEquals("123abc",lecturerItem.getLecturer_password());
+    }
+
 }
