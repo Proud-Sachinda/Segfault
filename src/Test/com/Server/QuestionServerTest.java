@@ -110,9 +110,9 @@ class QuestionServerTest {
     void getQuestionItemVariants()throws Exception{
         qvs = new QuestionServer(connection);
         ArrayList<QuestionItem> it = qvs.getQuestionItemVariants(1);
-        Mockito.verify(connection, Mockito.times(2)).createStatement();
-        Mockito.verify(statement, Mockito.times(2)).executeQuery(anyString());
-        Mockito.verify(resultSet, Mockito.times(3)).next();
+        Mockito.verify(connection, Mockito.times(1)).createStatement();
+        Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
+        Mockito.verify(resultSet, Mockito.times(2)).next();
     }
 
     @Test
