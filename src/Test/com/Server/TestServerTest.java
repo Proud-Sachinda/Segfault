@@ -113,7 +113,7 @@ class TestServerTest {
     void updateTestItemTestIsDraft() throws Exception{
         ts = new TestServer(connection);
         ts = new TestServer(connection);
-        boolean isexam = ts.updateTestItemTestIsDraft(test);
+        boolean isdraft = ts.updateTestItemTestIsDraft(test);
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(2)).executeUpdate(anyString());
 
