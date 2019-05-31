@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Matchers.anyString;
@@ -77,6 +78,7 @@ class TestServerTest {
     @Test
     void getTestItemsByCourseId()throws Exception{
         ts = new TestServer(connection);
+        ArrayList<TestItem> tests = ts.getTestItemsByCourseId(1,"lectureid");
         Mockito.verify(connection, Mockito.times(1)).createStatement();
         Mockito.verify(statement, Mockito.times(1)).executeQuery(anyString());
         Mockito.verify(resultSet, Mockito.times(1)).getInt(anyString());
