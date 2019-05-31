@@ -7,11 +7,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Matchers.anyString;
 
 class QuestionItemTest {
 
@@ -59,11 +59,13 @@ class QuestionItemTest {
 
         QuestionItemObject.setUpQuestionItem(resultSet);
 
-        Mockito.verify(resultSet,Mockito.times(1));
-        //  Mockito.verify(resultSet.getInt("test_id"), Mockito.times(1));
-        // Mockito.verify(resultSet.getBoolean("test_is_exam"), Mockito.times(1));
-        // Mockito.verify(resultSet.getBoolean("test_is_draft"), Mockito.times(1));
-        // Mockito.verify(resultSet.getString("test_draft_name"), Mockito.times(1));
+       // Mockito.verify(resultSet,Mockito.times(1));
+       
+        Mockito.verify(resultSet,Mockito.times(4)).getString(anyString());
+        Mockito.verify(resultSet,Mockito.times(4)).getInt(anyString());
+        Mockito.verify(resultSet,Mockito.times(1)).getBoolean(anyString());
+        Mockito.verify(resultSet,Mockito.times(2)).getDate(anyString());
+
     }
 
 
