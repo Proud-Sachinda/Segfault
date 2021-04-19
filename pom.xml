@@ -215,7 +215,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
-			<version>8.7.1</version>
+			<version>8.12.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-client -->
 		<dependency>
